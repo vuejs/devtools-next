@@ -1,0 +1,57 @@
+{
+  "name": "@vue-devtools/monorepo",
+  "private": true,
+  "packageManager": "pnpm@8.7.0",
+  "description": "DevTools for Vue.js",
+  "author": "webfansplz",
+  "license": "MIT",
+  "homepage": "https://github.com/webfansplz/vue-devtools-plus#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webfansplz/vue-devtools-plus/issues"
+  },
+  "keywords": [
+    "vue-devtools",
+    "dx"
+  ],
+  "engines": {
+    "node": ">=v14.21.3"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build",
+    "release": "bumpp -r",
+    "dep:up": "taze -I major",
+    "prepare": "simple-git-hooks",
+    "test": "vitest",
+    "play": "nr -C packages/playground dev"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.41.0",
+    "@antfu/ni": "^0.21.6",
+    "@types/node": "^20.5.7",
+    "@unocss/eslint-config": "^0.55.3",
+    "bumpp": "^9.2.0",
+    "eslint": "8.48.0",
+    "esno": "^0.17.0",
+    "lint-staged": "^14.0.1",
+    "npm-run-all": "^4.1.5",
+    "pnpm": "^8.7.0",
+    "simple-git-hooks": "^2.9.0",
+    "taze": "^0.11.2",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.3",
+    "vue": "^3.3.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}

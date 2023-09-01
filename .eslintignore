@@ -1,0 +1,4 @@
+dist
+node_modules
+ci.yml
+release.yml

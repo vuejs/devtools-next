@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "DOM"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "types": [
+      "vite/client",
+      "vitest/globals"
+    ]
+  },
+  "exclude": ["node_modules", "dist", "src/node/app.js"]
+}

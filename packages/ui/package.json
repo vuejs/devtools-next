@@ -1,0 +1,62 @@
+{
+  "name": "@vue-devtools-plus/ui",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "webfansplz",
+  "license": "MIT",
+  "homepage": "https://github.com/webfansplz/vue-devtools-plus#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/webfansplz/vue-devtools-plus/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./resolver": {
+      "types": "./dist/resolver.d.ts",
+      "import": "./dist/resolver.mjs",
+      "require": "./dist/resolver.cjs"
+    },
+    "./unocss": {
+      "types": "./dist/unocss.d.ts",
+      "import": "./dist/unocss.mjs",
+      "require": "./dist/unocss.cjs"
+    },
+    "./components/*": "./dist/components/*"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "dependencies": {
+    "@unocss/core": "^0.55.3",
+    "@unocss/preset-attributify": "^0.55.3",
+    "@unocss/preset-icons": "^0.55.3",
+    "@unocss/preset-mini": "^0.55.3",
+    "@unocss/preset-uno": "^0.55.3",
+    "@unocss/reset": "^0.55.3",
+    "@vueuse/components": "^10.4.0",
+    "@vueuse/core": "^10.4.0",
+    "@vueuse/integrations": "^10.4.0",
+    "focus-trap": "^7.5.2",
+    "unocss": "^0.55.3"
+  },
+  "devDependencies": {
+    "unplugin": "^1.4.0",
+    "unplugin-vue-components": "^0.25.1"
+  }
+}

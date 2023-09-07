@@ -1,0 +1,25 @@
+{
+  "name": "@vue-devtools-plus/browser-extension",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "directory": "packages/browser-extension"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.245",
+    "vue": "^3.3.4"
+  }
+}

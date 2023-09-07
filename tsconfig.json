@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "noImplicitAny": false,
     "types": [
+      "chrome",
       "vite/client",
       "vitest/globals"
     ]

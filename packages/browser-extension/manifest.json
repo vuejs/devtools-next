@@ -1,0 +1,35 @@
+{
+  "name": "Vue.js DevTools",
+  "version": "0.0.1",
+  "version_name": "0.0.1",
+  "description": "DevTools browser extension for Vue.js",
+  "manifest_version": 3,
+  "permissions": [
+    "scripting",
+    "webNavigation",
+    "storage"
+  ],
+  "web_accessible_resources": [{
+    "resources": ["dist/*", "client/*"],
+    "matches": ["<all_urls>"]
+  }],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "web_workers": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "world": "MAIN",
+      "js": ["dist/page.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/devtools.js"],
+      "run_at": "document_end"
+    }
+  ]
+}

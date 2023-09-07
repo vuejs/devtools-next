@@ -42,6 +42,7 @@
     "pnpm": "^8.7.0",
     "simple-git-hooks": "^2.9.0",
     "taze": "^0.11.2",
+    "tsup": "^7.2.0",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
     "vite": "^4.4.9",

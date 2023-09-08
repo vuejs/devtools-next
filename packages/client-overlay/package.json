@@ -1,0 +1,41 @@
+{
+  "name": "@vue-devtools-plus/client-overlay",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "webfansplz",
+  "license": "MIT",
+  "homepage": "https://github.com/webfansplz/vue-devtools-plus#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "directory": "packages/client-overlay"
+  },
+  "bugs": {
+    "url": "https://github.com/webfansplz/vue-devtools-plus/issues"
+  },
+  "exports": {
+    "./*": "./dist/*"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=v14.21.3"
+  },
+  "scripts": {
+    "build": "vite build",
+    "stub": "vite build --watch",
+    "play": "vite --config vite.play.config.ts --open"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@iconify/json": "^2.2.106",
+    "@types/node": "^20.5.7",
+    "@vitejs/plugin-vue": "^4.3.3",
+    "@vue-devtools-plus/core": "workspace:*",
+    "@vue-devtools-plus/ui": "workspace:*",
+    "vite": "^4.4.9",
+    "vue": "^3.3.4"
+  }
+}

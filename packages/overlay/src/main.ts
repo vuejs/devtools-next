@@ -1,6 +1,6 @@
 import { createApp, h } from 'vue'
 import type { Component } from 'vue'
-import App from './Main.vue'
+import App from './App.vue'
 
 function createDevToolsContainer(App: Component) {
   const CONTAINER_ID = '__vue-devtools-container__'

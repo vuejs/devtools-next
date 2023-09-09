@@ -1,8 +1,7 @@
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
-import { useLocalStorage, useScreenSafeArea } from '@vueuse/core'
+import { useEventListener, useLocalStorage, useScreenSafeArea } from '@vueuse/core'
 import { clamp } from '../utils'
-import { useWindowEventListener } from './event'
 
 interface DevToolsFrameState {
   width: number
@@ -89,21 +88,23 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
   }
 
   onMounted(() => {
-    setWindowSize()
+    setTimeout(() => {
+      setWindowSize()
+    }, 200)
 
     bringUp()
 
-    useWindowEventListener('resize', () => {
+    useEventListener(window, 'resize', () => {
       setWindowSize()
     })
 
-    useWindowEventListener('pointerup', () => {
+    useEventListener(window, 'pointerup', () => {
       isDragging.value = false
     })
-    useWindowEventListener('pointerleave', () => {
+    useEventListener(window, 'pointerleave', () => {
       isDragging.value = false
     })
-    useWindowEventListener('pointermove', (e) => {
+    useEventListener(window, 'pointermove', (e) => {
       if (!isDragging.value)
         return
 

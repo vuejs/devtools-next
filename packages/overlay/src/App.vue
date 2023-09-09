@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { usePosition } from './composables'
-import { checkIsSafari } from './utils'
+import { useIframe, usePanelVisible, usePosition } from '~/composables'
+import { checkIsSafari } from '~/utils'
+import Frame from '~/components/FrameBox.vue'
 
 type ViewMode = 'xs' | 'default' | 'fullscreen'
 const panelEle = ref<HTMLDivElement>()
-const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical, isHidden, panelStyle } = usePosition(panelEle)
 const mode = useColorMode()
 const panelState = ref<{
   viewMode: ViewMode
@@ -21,6 +21,15 @@ const cssVars = computed(() => {
     '--vue-devtools-widget-border': dark ? '#3336' : '#efefef',
     '--vue-devtools-widget-shadow': dark ? 'rgba(0,0,0,0.3)' : 'rgba(128,128,128,0.1)',
   }
+})
+
+const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical, isHidden, panelStyle } = usePosition(panelEle)
+const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
+
+// const clientUrl = '/__devtools__/'
+const clientUrl = 'http://localhost:8829/'
+const { iframe, getIframe } = useIframe(clientUrl, async () => {
+  const iframe = getIframe()
 })
 </script>
 
@@ -40,8 +49,8 @@ const cssVars = computed(() => {
     <!-- panel -->
     <div ref="panelEle" class="vue-devtools__panel" :style="panelStyle" @pointerdown="onPointerDown">
       <div
-        class="vue-devtools__anchor-btn panel-entry-btn" title="Toggle Vue DevTools"
-        aria-label="Toggle devtools panel"
+        class="vue-devtools__anchor-btn panel-entry-btn" title="Toggle Vue DevTools" aria-label="Toggle devtools panel"
+        :style="panelVisible ? '' : 'filter:saturate(0)'" @click="togglePanelVisible"
       >
         <svg viewBox="0 0 256 198" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill="#41B883" d="M204.8 0H256L128 220.8L0 0h97.92L128 51.2L157.44 0h47.36Z" />
@@ -49,7 +58,7 @@ const cssVars = computed(() => {
           <path fill="#35495E" d="M50.56 0L128 133.12L204.8 0h-47.36L128 51.2L97.92 0H50.56Z" />
         </svg>
       </div>
-      <div style="border-left: 1px solid #8883;width:1px;height:10px;" class="vue-devtools__panel-content" />
+      <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
       <div
         class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"
         title="Toggle Component Inspector"
@@ -65,6 +74,14 @@ const cssVars = computed(() => {
         </svg>
       </div>
     </div>
+
+    <!-- iframe -->
+    <Frame
+      :style="iframeStyle" :is-dragging="isDragging" :client="{
+        close: closePanel,
+        getIFrame: getIframe,
+      }" :view-mode="panelState.viewMode"
+    />
   </div>
 </template>
 
@@ -105,6 +122,7 @@ const cssVars = computed(() => {
     }
 
     .panel-entry-btn {
+      cursor: pointer;
       flex: none;
     }
 
@@ -179,6 +197,12 @@ const cssVars = computed(() => {
 
     &-content {
       transition: opacity 0.4s ease;
+    }
+
+    &-divider {
+      border-left: 1px solid #8883;
+      width: 1px;
+      height: 10px;
     }
   }
 }

@@ -196,7 +196,13 @@ importers:
         specifier: 2.0.0-beta.8
         version: 2.0.0-beta.8(vue@3.3.4)
 
-  packages/client-overlay:
+  packages/core:
+    devDependencies:
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
+
+  packages/overlay:
     dependencies:
       '@vueuse/core':
         specifier: ^10.4.0
@@ -223,12 +229,6 @@ importers:
       vite:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.7)(sass@1.66.1)
-      vue:
-        specifier: ^3.3.4
-        version: 3.3.4
-
-  packages/core:
-    devDependencies:
       vue:
         specifier: ^3.3.4
         version: 3.3.4

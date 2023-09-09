@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue'
-import App from './Main.vue'
+import App from './App.vue'
 
 createApp({
   render: () => h(App),

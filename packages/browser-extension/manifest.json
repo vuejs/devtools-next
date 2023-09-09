@@ -10,7 +10,7 @@
     "storage"
   ],
   "web_accessible_resources": [{
-    "resources": ["dist/*", "client/*"],
+    "resources": ["dist/*", "client/*", "overlay/*"],
     "matches": ["<all_urls>"]
   }],
   "host_permissions": [

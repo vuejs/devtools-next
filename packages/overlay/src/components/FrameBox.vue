@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { state } from '~/composables'
+
+import { useFrameState } from '~/composables'
 import { PANEL_MAX, PANEL_MIN } from '~/constants'
 
 const props = defineProps<{
@@ -18,6 +19,7 @@ const props = defineProps<{
   viewMode: 'xs' | 'default' | 'fullscreen'
 }>()
 
+const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean; left?: boolean; right?: boolean; bottom?: boolean }>(false)
 
@@ -55,8 +57,11 @@ useEventListener(window, 'mousedown', (e: MouseEvent) => {
       || el.tagName?.toLowerCase() === 'iframe'
   })
 
-  if (!matched)
-    state.value.open = false
+  if (!matched) {
+    updateState({
+      open: false,
+    })
+  }
 })
 
 useEventListener(window, 'mousemove', (e) => {
@@ -71,23 +76,31 @@ useEventListener(window, 'mousemove', (e) => {
   if (isResizing.value.right) {
     const widthPx = Math.abs(e.clientX - (box?.left || 0))
     const width = widthPx / window.innerWidth * 100
-    state.value.width = Math.min(PANEL_MAX, Math.max(PANEL_MIN, width))
+    updateState({
+      width: Math.min(PANEL_MAX, Math.max(PANEL_MIN, width)),
+    })
   }
   else if (isResizing.value.left) {
     const widthPx = Math.abs((box?.right || 0) - e.clientX)
     const width = widthPx / window.innerWidth * 100
-    state.value.width = Math.min(PANEL_MAX, Math.max(PANEL_MIN, width))
+    updateState({
+      width: Math.min(PANEL_MAX, Math.max(PANEL_MIN, width)),
+    })
   }
 
   if (isResizing.value.top) {
     const heightPx = Math.abs((box?.bottom || 0) - e.clientY)
     const height = heightPx / window.innerHeight * 100
-    state.value.height = Math.min(PANEL_MAX, Math.max(PANEL_MIN, height))
+    updateState({
+      height: Math.min(PANEL_MAX, Math.max(PANEL_MIN, height)),
+    })
   }
   else if (isResizing.value.bottom) {
     const heightPx = Math.abs(e.clientY - (box?.top || 0))
     const height = heightPx / window.innerHeight * 100
-    state.value.height = Math.min(PANEL_MAX, Math.max(PANEL_MIN, height))
+    updateState({
+      height: Math.min(PANEL_MAX, Math.max(PANEL_MIN, height)),
+    })
   }
 })
 

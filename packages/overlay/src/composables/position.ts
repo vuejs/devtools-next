@@ -1,37 +1,12 @@
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
-import { useEventListener, useLocalStorage, useScreenSafeArea } from '@vueuse/core'
+import { useEventListener, useScreenSafeArea } from '@vueuse/core'
 import { clamp } from '../utils'
-
-interface DevToolsFrameState {
-  width: number
-  height: number
-  top: number
-  left: number
-  open: boolean
-  route: string
-  position: string
-  isFirstVisit: boolean
-  closeOnOutsideClick: boolean
-  minimizePanelInactive: number
-}
-
-export const state = useLocalStorage<DevToolsFrameState>('__vue-devtools-frame-state__', {
-  width: 80,
-  height: 60,
-  top: 0,
-  left: 50,
-  open: false,
-  route: '/',
-  position: 'bottom',
-  isFirstVisit: true,
-  closeOnOutsideClick: false,
-  minimizePanelInactive: 5000,
-})
-
-const SNAP_THRESHOLD = 2
+import { useFrameState } from './state'
 
 function snapToPoints(value: number) {
+  const SNAP_THRESHOLD = 2
+
   if (value < 5)
     return 0
   if (value > 95)
@@ -42,6 +17,7 @@ function snapToPoints(value: number) {
 }
 
 export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
+  const { state, updateState } = useFrameState()
   const isHovering = ref(false)
   const isDragging = ref(false)
   const draggingOffset = reactive({ x: 0, y: 0 })
@@ -125,16 +101,17 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
       const BL = Math.atan2(windowSize.height - HORIZONTAL_MARGIN - centerY, 0 - centerX)
       const BR = Math.atan2(windowSize.height - HORIZONTAL_MARGIN - centerY, windowSize.width - centerX)
 
-      state.value.position = (deg >= TL && deg <= TR)
-        ? 'top'
-        : (deg >= TR && deg <= BR)
-            ? 'right'
-            : (deg >= BR && deg <= BL)
-                ? 'bottom'
-                : 'left'
-
-      state.value.left = snapToPoints(x / windowSize.width * 100)
-      state.value.top = snapToPoints(y / windowSize.height * 100)
+      updateState({
+        position: (deg >= TL && deg <= TR)
+          ? 'top'
+          : (deg >= TR && deg <= BR)
+              ? 'right'
+              : (deg >= BR && deg <= BL)
+                  ? 'bottom'
+                  : 'left',
+        left: snapToPoints(x / windowSize.width * 100),
+        top: snapToPoints(y / windowSize.height * 100),
+      })
     })
   })
 

@@ -1,14 +1,17 @@
 import { computed, onMounted } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { state } from './position'
+import { useFrameState } from './state'
 
 export function usePanelVisible() {
+  const { state, updateState } = useFrameState()
   const visible = computed({
     get() {
       return state.value.open
     },
     set(value) {
-      state.value.open = value
+      updateState({
+        open: value,
+      })
     },
   })
 

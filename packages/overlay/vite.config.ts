@@ -10,8 +10,8 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
-      name: 'clientOverlay',
-      fileName: 'client-overlay',
+      name: 'devtoolsOverlay',
+      fileName: 'devtools-overlay',
       formats: ['iife'],
     },
     rollupOptions: {

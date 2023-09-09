@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-plus/client-overlay",
+  "name": "@vue-devtools-plus/overlay",
   "type": "module",
   "version": "0.0.1",
   "author": "webfansplz",
@@ -8,7 +8,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
-    "directory": "packages/client-overlay"
+    "directory": "packages/overlay"
   },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-plus/issues"

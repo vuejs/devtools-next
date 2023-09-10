@@ -20,8 +20,9 @@ link.onload = () => {
   body.appendChild(script)
 }
 
+// @TODO: find a better way to inject devtools client url
 // inject devtools client url variable
 const injectDevToolsClientUrl = `(${setDevToolsClientUrl})("${clientUrl}")`
-document.documentElement.setAttribute('oninject', injectDevToolsClientUrl)
-document.documentElement.dispatchEvent(new CustomEvent('inject'))
-document.documentElement.removeAttribute('oninject')
+document.documentElement.setAttribute('onreset', injectDevToolsClientUrl)
+document.documentElement.dispatchEvent(new CustomEvent('reset'))
+document.documentElement.removeAttribute('onreset')

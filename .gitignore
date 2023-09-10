@@ -86,7 +86,6 @@ components.d.ts
 
 # Project
 
-packages/browser-extension/overlay/devtools-overlay.css
-packages/browser-extension/overlay/devtools-overlay.js
-packages/vite/src/overlay/devtools-overlay.css
-packages/vite/src/overlay/devtools-overlay.js
+packages/browser-extension/overlay/**/*
+packages/browser-extension/client/**/*
+packages/vite/src/overlay/**/*

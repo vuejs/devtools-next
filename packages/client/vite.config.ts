@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
 import VueJSX from '@vitejs/plugin-vue-jsx'
+import fse from 'fs-extra'
 
 export default defineConfig({
   base: './',
@@ -50,6 +51,23 @@ export default defineConfig({
         '@vueuse/core',
       ],
     }),
+    {
+      name: 'vite-plugin-copy-devtools-overlay',
+      apply: 'build',
+      enforce: 'post',
+      async closeBundle() {
+        // copy
+        const overlayFile = resolve(__dirname, './dist')
+        fse.copySync(
+          overlayFile,
+          resolve(__dirname, '../browser-extension/client'),
+        )
+        fse.copySync(
+          overlayFile,
+          resolve(__dirname, '../vite/dist/client'),
+        )
+      },
+    },
   ],
 
   optimizeDeps: {

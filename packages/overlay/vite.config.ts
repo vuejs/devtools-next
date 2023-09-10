@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${resolve(__dirname)}/src/`,
+      '@vue-devtools-next/core': resolve(__dirname, '../core/src/index'),
     },
   },
   define: {
@@ -17,7 +18,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
       name: 'devtoolsOverlay',
-      fileName: 'devtools-overlay',
+      fileName: () => 'devtools-overlay.js',
       formats: ['iife'],
     },
     rollupOptions: {
@@ -36,9 +37,6 @@ export default defineConfig({
       apply: 'build',
       enforce: 'post',
       async closeBundle() {
-        // rename file
-        fse.renameSync(resolve(__dirname, './dist/devtools-overlay.iife.js'), resolve(__dirname, './dist/devtools-overlay.js'))
-
         // copy
         const overlayFile = resolve(__dirname, './dist')
         fse.copySync(

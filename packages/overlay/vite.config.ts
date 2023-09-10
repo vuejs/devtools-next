@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
+import fse from 'fs-extra'
 
 export default defineConfig({
   resolve: {
@@ -30,5 +31,25 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    {
+      name: 'vite-plugin-copy-devtools-overlay',
+      apply: 'build',
+      enforce: 'post',
+      async closeBundle() {
+        // rename file
+        fse.renameSync(resolve(__dirname, './dist/devtools-overlay.iife.js'), resolve(__dirname, './dist/devtools-overlay.js'))
+
+        // copy
+        const overlayFile = resolve(__dirname, './dist')
+        fse.copySync(
+          overlayFile,
+          resolve(__dirname, '../browser-extension/overlay'),
+        )
+        fse.copySync(
+          overlayFile,
+          resolve(__dirname, '../vite/overlay'),
+        )
+      },
+    },
   ],
 })

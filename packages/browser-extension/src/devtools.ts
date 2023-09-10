@@ -15,7 +15,7 @@ link.href = chrome.runtime.getURL('../overlay/devtools-overlay.css')
 
 // create script
 const script = document.createElement('script')
-script.src = chrome.runtime.getURL('../overlay/devtools-overlay.iife.js')
+script.src = chrome.runtime.getURL('../overlay/devtools-overlay.js')
 
 // append to head
 head.appendChild(link)

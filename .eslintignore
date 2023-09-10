@@ -3,4 +3,5 @@ node_modules
 ci.yml
 release.yml
 packages/browser-extension/overlay/*
+packages/vite/overlay/*
 packages/browser-extension/client/*

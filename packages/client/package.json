@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "stub": "vite build --watch"
   },
   "peerDependencies": {
     "vite": "^3.1.0 || ^4.0.0-0"

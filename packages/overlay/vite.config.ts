@@ -21,6 +21,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        assetFileNames: 'devtools-overlay.[ext]',
         globals: {
           vue: 'Vue',
         },

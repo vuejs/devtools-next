@@ -11,7 +11,7 @@ const head = document.getElementsByTagName('head')[0]
 // create link stylesheet
 const link = document.createElement('link')
 link.rel = 'stylesheet'
-link.href = chrome.runtime.getURL('../overlay/style.css')
+link.href = chrome.runtime.getURL('../overlay/devtools-overlay.css')
 
 // create script
 const script = document.createElement('script')

@@ -3,7 +3,7 @@
 const body = document.getElementsByTagName('body')[0]
 
 // const iframe = document.createElement('iframe')
-// iframe.src = chrome.runtime.getURL('../client/devtools-client.html')
+// iframe.src = chrome.runtime.getURL('../client/index.html')
 // body.appendChild(iframe)
 
 const head = document.getElementsByTagName('head')[0]

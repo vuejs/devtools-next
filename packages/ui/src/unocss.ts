@@ -11,7 +11,7 @@ import {
 
 export function unocssPreset(): Preset {
   return {
-    name: '@vue-devtools-plus/ui',
+    name: '@vue-devtools-next/ui',
     theme: mergeDeep<Theme>(unoTheme, {
       colors: {
         context: 'rgba(var(--nui-c-context),%alpha)',

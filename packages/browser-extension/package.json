@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-plus/browser-extension",
+  "name": "@vue-devtools-next/browser-extension",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
     "directory": "packages/browser-extension"
   },
   "files": [

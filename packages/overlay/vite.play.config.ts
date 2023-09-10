@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${resolve(__dirname)}/src/`,
-      '@vue-devtools-plus/core': resolve(__dirname, '../core/src/index'),
+      '@vue-devtools-next/core': resolve(__dirname, '../core/src/index'),
     },
   },
   plugins: [

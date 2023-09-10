@@ -1,12 +1,12 @@
 {
-  "name": "@vue-devtools-plus/core",
+  "name": "@vue-devtools-next/core",
   "type": "module",
   "version": "0.0.1",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
     "directory": "packages/core"
   },
   "exports": {

@@ -1,17 +1,17 @@
 {
-  "name": "@vue-devtools-plus/client",
+  "name": "@vue-devtools-next/client",
   "type": "module",
   "version": "0.0.1",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/webfansplz/vue-devtools-plus#readme",
+  "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
     "directory": "packages/client"
   },
   "bugs": {
-    "url": "https://github.com/webfansplz/vue-devtools-plus/issues"
+    "url": "https://github.com/webfansplz/vue-devtools-next/issues"
   },
   "exports": {
     "./*": "./dist/*"
@@ -54,8 +54,8 @@
     "@unocss/reset": "^0.55.3",
     "@vitejs/plugin-vue": "^4.3.3",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
-    "@vue-devtools-plus/core": "workspace:*",
-    "@vue-devtools-plus/ui": "workspace:*",
+    "@vue-devtools-next/core": "workspace:*",
+    "@vue-devtools-next/ui": "workspace:*",
     "dayjs": "^1.11.9",
     "floating-vue": "2.0.0-beta.24",
     "fuse.js": "^6.6.2",

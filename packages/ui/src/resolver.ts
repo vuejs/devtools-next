@@ -25,6 +25,6 @@ export function ComponentsResolver(options: ComponentResolverOption = {}): Compo
     if (!name.startsWith(prefix) || ignore.some(i => name.includes(i)))
       return
 
-    return { from: `@vue-devtools-plus/ui/components/${name.replace(prefix, '')}.vue` }
+    return { from: `@vue-devtools-next/ui/components/${name.replace(prefix, '')}.vue` }
   }
 }

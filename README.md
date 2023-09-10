@@ -1,2 +1,2 @@
-# vue-devtools-plus
+# vue-devtools-next
 Unified Vue DevTools

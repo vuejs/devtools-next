@@ -1,5 +1,6 @@
 import { createApp, h } from 'vue'
 import type { Component } from 'vue'
+import { createDevToolsVuePlugin } from '@vue-devtools-plus/core'
 import App from './App.vue'
 
 function createDevToolsContainer(App: Component) {
@@ -8,12 +9,14 @@ function createDevToolsContainer(App: Component) {
   el.setAttribute('id', CONTAINER_ID)
   el.setAttribute('data-v-inspector-ignore', 'true')
   document.getElementsByTagName('body')[0].appendChild(el)
-  createApp({
+  const app = createApp({
     render: () => h(App),
     devtools: {
       hide: true,
     },
-  }).mount(el)
+  })
+  app.use(createDevToolsVuePlugin())
+  app.mount(el)
 }
 
 createDevToolsContainer(App)

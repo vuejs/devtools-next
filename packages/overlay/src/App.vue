@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
+import { DevToolsHooks, useDevToolsHook } from '@vue-devtools-plus/core'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -25,6 +26,11 @@ const cssVars = computed(() => {
 
 const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical, isHidden, panelStyle } = usePosition(panelEle)
 const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
+const hook = useDevToolsHook()
+
+hook.on(DevToolsHooks.APP_INIT, (app) => {
+  console.log('APP_INIT', app)
+})
 
 // const clientUrl = '/__devtools__/'
 const clientUrl = 'http://localhost:8829/'

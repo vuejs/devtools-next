@@ -53,7 +53,7 @@ useEventListener(window, 'mousedown', (e: MouseEvent) => {
 
   const matched = e.composedPath().find((_el) => {
     const el = _el as HTMLElement
-    return Array.from(el.classList || []).some(c => c.startsWith('vue-devtools-'))
+    return Array.from(el.classList || []).some(c => c.startsWith('vue-devtools'))
       || el.tagName?.toLowerCase() === 'iframe'
   })
 

@@ -14,8 +14,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${resolve(__dirname)}/`,
-      '@vite-plugin-vue-devtools/core/compiler': resolve(__dirname, '../core/src/compiler/index'),
-      '@vite-plugin-vue-devtools/core': resolve(__dirname, '../core/src/index'),
+      '@vue-devtools-next/core': resolve(__dirname, '../core/src/index'),
     },
   },
 

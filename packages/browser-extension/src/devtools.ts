@@ -1,24 +1,27 @@
-// inject devtools client
+import { setDevToolsClientUrl } from '../../core/src/client'
 
 const body = document.getElementsByTagName('body')[0]
-
-// const iframe = document.createElement('iframe')
-// iframe.src = chrome.runtime.getURL('../client/index.html')
-// body.appendChild(iframe)
-
 const head = document.getElementsByTagName('head')[0]
 
-// create link stylesheet
+const clientUrl = chrome.runtime.getURL('../client/index.html')
+
+// create overlay link stylesheet
 const link = document.createElement('link')
 link.rel = 'stylesheet'
 link.href = chrome.runtime.getURL('../overlay/devtools-overlay.css')
+head.appendChild(link)
 
-// create script
+// create overlay script
 const script = document.createElement('script')
 script.src = chrome.runtime.getURL('../overlay/devtools-overlay.js')
 
-// append to head
-head.appendChild(link)
+link.onload = () => {
+  // append overlay to body
+  body.appendChild(script)
+}
 
-// append to body
-body.appendChild(script)
+// inject devtools client url variable
+const injectDevToolsClientUrl = `(${setDevToolsClientUrl})("${clientUrl}")`
+document.documentElement.setAttribute('oninject', injectDevToolsClientUrl)
+document.documentElement.dispatchEvent(new CustomEvent('inject'))
+document.documentElement.removeAttribute('oninject')

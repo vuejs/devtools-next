@@ -1,6 +1,5 @@
 {
   "name": "playground",
-  "version": "1.0.0-rc.3",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -18,6 +17,7 @@
     "serve": "^14.2.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
-    "vite-plugin-inspect": "^0.7.38"
+    "vite-plugin-inspect": "^0.7.38",
+    "vite-plugin-vue-devtools": "workspace:*"
   }
 }

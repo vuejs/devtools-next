@@ -1,0 +1,68 @@
+{
+  "name": "vite-plugin-vue-devtools",
+  "type": "module",
+  "version": "1.0.0-rc.3",
+  "description": "A vite plugin for Vue DevTools",
+  "author": "webfansplz",
+  "license": "MIT",
+  "homepage": "https://github.com/webfansplz/vue-devtools-plus#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-plus.git",
+    "directory": "packages/vite"
+  },
+  "bugs": {
+    "url": "https://github.com/webfansplz/vue-devtools-plus/issues"
+  },
+  "keywords": [
+    "vue-devtools",
+    "vite-plugin",
+    "vite-plugin-vue-devtools",
+    "dx"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.mjs",
+      "require": "./dist/vite.cjs"
+    },
+    "./*": "./*",
+    "./client": {
+      "types": "./client.d.ts"
+    }
+  },
+  "main": "dist/vite.cjs",
+  "module": "dist/vite.mjs",
+  "types": "dist/vite.d.ts",
+  "files": [
+    "dist",
+    "overlay",
+    "./src/overlay.js",
+    "*.d.ts"
+  ],
+  "engines": {
+    "node": ">=v14.21.3"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "peerDependencies": {
+    "vite": "^3.1.0 || ^4.0.0-0"
+  },
+  "dependencies": {
+    "@vue-devtools-plus/core": "workspace:*",
+    "@webfansplz/vuedoc-parser": "^0.0.4",
+    "birpc": "^0.2.13",
+    "execa": "^8.0.1",
+    "sirv": "^2.0.3",
+    "vite-plugin-inspect": "^0.7.38",
+    "vite-plugin-vue-inspector": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "fast-glob": "^3.3.1",
+    "image-meta": "^0.1.1",
+    "pathe": "^1.1.1"
+  }
+}

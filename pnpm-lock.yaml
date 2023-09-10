@@ -269,6 +269,9 @@ importers:
       vite-plugin-inspect:
         specifier: ^0.7.38
         version: 0.7.38(rollup@3.28.1)(vite@4.4.9)
+      vite-plugin-vue-devtools:
+        specifier: workspace:*
+        version: link:../vite
 
   packages/ui:
     dependencies:

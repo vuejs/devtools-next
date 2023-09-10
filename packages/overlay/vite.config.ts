@@ -47,7 +47,7 @@ export default defineConfig({
         )
         fse.copySync(
           overlayFile,
-          resolve(__dirname, '../vite/overlay'),
+          resolve(__dirname, '../vite/src/overlay'),
         )
       },
     },

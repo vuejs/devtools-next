@@ -84,3 +84,9 @@ dist
 auto-imports.d.ts
 components.d.ts
 
+# Project
+
+packages/browser-extension/overlay/devtools-overlay.css
+packages/browser-extension/overlay/devtools-overlay.js
+packages/vite/src/overlay/devtools-overlay.css
+packages/vite/src/overlay/devtools-overlay.js

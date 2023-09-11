@@ -21,6 +21,12 @@
   },
   "content_scripts": [
     {
+      "world": "MAIN",
+      "js": ["dist/prepare.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_start"
+    },
+    {
       "matches": ["<all_urls>"],
       "js": ["dist/devtools.js"],
       "run_at": "document_end"

@@ -74,6 +74,9 @@ importers:
       '@types/chrome':
         specifier: ^0.0.245
         version: 0.0.245
+      '@vue-devtools-next/core':
+        specifier: workspace:*
+        version: link:../core
       vue:
         specifier: ^3.3.4
         version: 3.3.4

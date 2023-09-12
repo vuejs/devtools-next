@@ -12,12 +12,26 @@ import '@unocss/reset/tailwind.css'
 
 import 'uno.css'
 
-const app = createApp(App)
-const router = createRouter({
-  history: createMemoryHistory(),
-  routes,
-})
+function connectApp(app, shell) {
+  shell.connect((bridge) => {
+    bridge.on('boom', () => {
+      console.log(
+        '🚀 ~ boom',
+      )
+    })
+    bridge.emit('client:ready')
+  })
+}
 
-app.use(router)
-app.use(FloatingVue)
-app.mount('#app')
+window.__INIT_DEVTOOLS__ = function (shell) {
+  const app = createApp(App)
+  connectApp(app, shell)
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+  })
+
+  app.use(router)
+  app.use(FloatingVue)
+  app.mount('#app')
+}

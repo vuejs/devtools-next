@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '~/': `${resolve(__dirname)}/src/`,
       '@vue-devtools-next/core': resolve(__dirname, '../core/src/index'),
+      '@vue-devtools-next/shared': resolve(__dirname, '../shared/src/index'),
     },
   },
   define: {

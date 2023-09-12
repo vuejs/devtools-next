@@ -28,6 +28,7 @@
     "play": "vite --config vite.play.config.ts --open"
   },
   "dependencies": {
+    "@vue-devtools-next/shared": "workspace:^",
     "@vueuse/core": "^10.4.0"
   },
   "devDependencies": {

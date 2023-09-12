@@ -1,1 +1,2 @@
-export * from './env.ts'
+export * from './env'
+export * from './general'

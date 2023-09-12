@@ -74,9 +74,6 @@ importers:
       '@types/chrome':
         specifier: ^0.0.245
         version: 0.0.245
-      '@vue-devtools-next/core':
-        specifier: workspace:*
-        version: link:../core
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -206,6 +203,13 @@ importers:
         version: 2.0.0-beta.8(vue@3.3.4)
 
   packages/core:
+    dependencies:
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
     devDependencies:
       vue:
         specifier: ^3.3.4
@@ -213,6 +217,9 @@ importers:
 
   packages/overlay:
     dependencies:
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@vueuse/core':
         specifier: ^10.4.0
         version: 10.4.0(vue@3.3.4)
@@ -276,6 +283,12 @@ importers:
         specifier: workspace:*
         version: link:../vite
 
+  packages/shared:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.5.9
+        version: 20.5.9
+
   packages/ui:
     dependencies:
       '@unocss/core':
@@ -324,6 +337,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@webfansplz/vuedoc-parser':
         specifier: ^0.0.4
         version: 0.0.4(pug@3.0.2)
@@ -5450,6 +5466,10 @@ packages:
     resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==}
     dev: true
 
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
+
   /mkdirp@1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
@@ -7612,7 +7632,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       sirv: 2.0.3
-      vite: 4.4.9(@types/node@20.5.7)
+      vite: 4.4.9(@types/node@20.5.9)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -7765,7 +7785,6 @@ packages:
       rollup: 3.28.1
     optionalDependencies:
       fsevents: 2.3.3
-    dev: false
 
   /vitest@0.34.3:
     resolution: {integrity: sha512-7+VA5Iw4S3USYk+qwPxHl8plCMhA5rtfwMjgoQXMT7rO5ldWcdsdo3U1QD289JgglGK4WeOzgoLTsGFu6VISyQ==}

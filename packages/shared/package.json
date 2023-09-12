@@ -1,0 +1,36 @@
+{
+  "name": "@vue-devtools-next/shared",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
+    "directory": "packages/shared"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9"
+
+  }
+}

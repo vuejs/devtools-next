@@ -21,11 +21,13 @@
     "node": ">=v14.21.3"
   },
   "scripts": {
+    "stub:shared": "nr -C packages/shared stub",
     "stub:core": "nr -C packages/core stub",
     "stub:overlay": "nr -C packages/overlay stub",
     "stub:client": "nr -C packages/client stub",
     "stub:ui": "nr -C packages/ui stub",
     "stub:vite": "nr -C packages/vite stub",
+    "build:shared": "nr -C packages/shared build",
     "build:core": "nr -C packages/core build",
     "build:overlay": "nr -C packages/overlay build",
     "build:client": "nr -C packages/client build",

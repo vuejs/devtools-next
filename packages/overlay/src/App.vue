@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { DevToolsHooks, getDevToolsClientUrl, useDevToolsHook } from '@vue-devtools-next/core'
+import { Bridge, getDevToolsClientUrl } from '@vue-devtools-next/core'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -26,15 +26,42 @@ const cssVars = computed(() => {
 
 const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical, isHidden, panelStyle } = usePosition(panelEle)
 const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
-const hook = useDevToolsHook()
-
-hook.on(DevToolsHooks.APP_INIT, (app) => {
-  console.log('APP_INIT', app)
-})
 
 const clientUrl = getDevToolsClientUrl()
+
+function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
+  const test = () => !!iframe?.contentWindow?.__INIT_DEVTOOLS__
+  if (test())
+    return
+
+  return new Promise((resolve, reject) => {
+    const interval = setInterval(() => {
+      if (test()) {
+        clearInterval(interval)
+        resolve()
+      }
+      else if (retry-- <= 0) {
+        clearInterval(interval)
+        reject(Error('Vue DevTools client injection failed'))
+      }
+    }, timeout)
+  })
+}
+
 const { iframe, getIframe } = useIframe(clientUrl, async () => {
   const iframe = getIframe()
+  await waitForClientInjection(iframe)
+  iframe?.contentWindow?.__INIT_DEVTOOLS__({
+    connect(cb) {
+      Bridge.value.on('client:ready', () => {
+        console.log(
+          '🚀 ~ client:ready',
+        )
+        Bridge.value.emit('boom')
+      })
+      cb(Bridge.value)
+    },
+  })
 })
 </script>
 

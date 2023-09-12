@@ -9,6 +9,9 @@
     "webNavigation",
     "storage"
   ],
+  "icons": {
+    "128": "icons/128.png"
+  },
   "web_accessible_resources": [{
     "resources": ["dist/*", "client/*", "overlay/*"],
     "matches": ["<all_urls>"]
@@ -19,6 +22,7 @@
   "background": {
     "web_workers": "dist/background.js"
   },
+  "devtools_page": "devtools-panel.html",
   "content_scripts": [
     {
       "world": "MAIN",

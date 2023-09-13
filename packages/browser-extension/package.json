@@ -15,11 +15,13 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "dev": "tsup --watch & nr dev:devtools",
+    "build:devtools": "vite build",
+    "dev:devtools": "vite build --watch",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.245",
+    "@vitejs/plugin-vue": "^4.3.3",
     "vue": "^3.3.4"
   }
 }

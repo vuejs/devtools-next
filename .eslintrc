@@ -2,6 +2,9 @@
   "extends": [
     "@antfu"
   ],
+  "globals": {
+    "chrome": true
+  },
   "rules": {
     "vue/no-v-text-v-html-on-component": "off",
     "no-console": "off",

@@ -14,6 +14,9 @@ importers:
       '@antfu/ni':
         specifier: ^0.21.6
         version: 0.21.6
+      '@types/chrome':
+        specifier: ^0.0.245
+        version: 0.0.245
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -74,6 +77,9 @@ importers:
       '@types/chrome':
         specifier: ^0.0.245
         version: 0.0.245
+      '@vitejs/plugin-vue':
+        specifier: ^4.3.3
+        version: 4.3.3(vite@4.4.9)(vue@3.3.4)
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -337,9 +343,6 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core
-      '@vue-devtools-next/shared':
-        specifier: workspace:^
-        version: link:../shared
       '@webfansplz/vuedoc-parser':
         specifier: ^0.0.4
         version: 0.0.4(pug@3.0.2)
@@ -7632,7 +7635,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       sirv: 2.0.3
-      vite: 4.4.9(@types/node@20.5.9)
+      vite: 4.4.9(@types/node@20.5.7)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -7785,6 +7788,7 @@ packages:
       rollup: 3.28.1
     optionalDependencies:
       fsevents: 2.3.3
+    dev: false
 
   /vitest@0.34.3:
     resolution: {integrity: sha512-7+VA5Iw4S3USYk+qwPxHl8plCMhA5rtfwMjgoQXMT7rO5ldWcdsdo3U1QD289JgglGK4WeOzgoLTsGFu6VISyQ==}

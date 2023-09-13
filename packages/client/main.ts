@@ -23,7 +23,7 @@ function connectApp(app, shell) {
   })
 }
 
-window.__INIT_DEVTOOLS__ = function (shell) {
+export function initDevTools(shell) {
   const app = createApp(App)
   connectApp(app, shell)
   const router = createRouter({
@@ -35,3 +35,5 @@ window.__INIT_DEVTOOLS__ = function (shell) {
   app.use(FloatingVue)
   app.mount('#app')
 }
+
+window.__INIT_DEVTOOLS__ = initDevTools

@@ -23,8 +23,11 @@
     "node": ">=v14.21.3"
   },
   "scripts": {
-    "build": "vite build",
-    "stub": "vite build --watch"
+    "build": "nr build:lib && vite build",
+    "stub": "nr stub:lib & vite build --watch",
+    "stub:lib": "vite build --config vite.lib.config.ts --watch",
+    "build:lib": "vite build --config vite.lib.config.ts"
+
   },
   "peerDependencies": {
     "vite": "^3.1.0 || ^4.0.0-0"

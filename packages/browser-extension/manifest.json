@@ -20,7 +20,7 @@
     "<all_urls>"
   ],
   "background": {
-    "web_workers": "dist/background.js"
+    "service_worker": "dist/background.js"
   },
   "devtools_page": "pages/devtools-background.html",
   "content_scripts": [

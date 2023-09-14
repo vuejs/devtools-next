@@ -56,7 +56,7 @@ const styles = {
     :is="component" v-bind="$attrs"
     role="button" :aria-disabled="ghost"
     class="base select-none inline-flex vertical-mid no-underline text-14px h32px fcc border-none
-       cursor-pointer base-br py-0 px-14px focus:text-gray-800" :class="[
+       cursor-pointer base-br py-0 px-14px" :class="[
       styles[props.type],
     ]"
     @click.capture="handleClick"

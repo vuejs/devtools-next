@@ -18,4 +18,12 @@ export default defineConfig({
   ],
   transformers: [transformerVariantGroup(), transformerDirectives()],
   theme,
+  shortcuts: [
+    ['base', 'box-border font-inherit'],
+    ['base-br', 'rounded-3px'],
+    ['fcc', 'flex justify-center items-center'],
+  ],
+  rules: [
+    ['font-inherit', { 'font-family': 'inherit' }],
+  ],
 })

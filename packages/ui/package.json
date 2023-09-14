@@ -15,55 +15,33 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./resolver": {
-      "types": "./dist/resolver.d.ts",
-      "import": "./dist/resolver.mjs",
-      "require": "./dist/resolver.cjs"
-    },
-    "./unocss": {
-      "types": "./dist/unocss.d.ts",
-      "import": "./dist/unocss.mjs",
-      "require": "./dist/unocss.cjs"
-    },
-    "./components/*": "./dist/components/*"
+    }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist",
     "*.d.ts"
   ],
   "scripts": {
     "build": "vite build",
-    "stub": "unbuild --stub",
+    "watch": "vite build --watch",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview"
   },
   "peerDependencies": {
+    "unocss": ">=0.50.0-0",
     "vue": ">=3.0.0-0"
-  },
-  "dependencies": {
-    "@unocss/core": "^0.55.3",
-    "@unocss/preset-attributify": "^0.55.3",
-    "@unocss/preset-icons": "^0.55.3",
-    "@unocss/preset-mini": "^0.55.3",
-    "@unocss/preset-uno": "^0.55.3",
-    "@unocss/reset": "^0.55.3",
-    "@vueuse/components": "^10.4.0",
-    "@vueuse/core": "^10.4.0",
-    "@vueuse/integrations": "^10.4.0",
-    "focus-trap": "^7.5.2",
-    "unocss": "^0.55.3"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.1",
     "@vitejs/plugin-vue": "^4.3.3",
+    "colord": "^2.9.3",
     "histoire": "^0.17.0",
     "unplugin": "^1.4.0",
     "unplugin-vue-components": "^0.25.1",

@@ -294,38 +294,8 @@ importers:
 
   packages/ui:
     dependencies:
-      '@unocss/core':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@unocss/preset-attributify':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@unocss/preset-icons':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@unocss/preset-mini':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@unocss/preset-uno':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@unocss/reset':
-        specifier: ^0.55.3
-        version: 0.55.3
-      '@vueuse/components':
-        specifier: ^10.4.0
-        version: 10.4.0(vue@3.3.4)
-      '@vueuse/core':
-        specifier: ^10.4.0
-        version: 10.4.0(vue@3.3.4)
-      '@vueuse/integrations':
-        specifier: ^10.4.0
-        version: 10.4.0(focus-trap@7.5.2)(vue@3.3.4)
-      focus-trap:
-        specifier: ^7.5.2
-        version: 7.5.2
       unocss:
-        specifier: ^0.55.3
+        specifier: '>=0.50.0-0'
         version: 0.55.3(postcss@8.4.29)(rollup@3.28.1)(vite@4.4.9)
       vue:
         specifier: '>=3.0.0-0'
@@ -337,6 +307,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^4.3.3
         version: 4.3.3(vite@4.4.9)(vue@3.3.4)
+      colord:
+        specifier: ^2.9.3
+        version: 2.9.3
       histoire:
         specifier: ^0.17.0
         version: 0.17.0(@types/node@20.5.7)(vite@4.4.9)
@@ -2665,17 +2638,6 @@ packages:
       - typescript
     dev: true
 
-  /@vueuse/components@10.4.0(vue@3.3.4):
-    resolution: {integrity: sha512-+ECAD4NcY6Rf/lLSQEyZapbjX9SE/QeEwINMVStvbMXusqPOB9Wpz9tv8i0QDtUKaFxdJ92X9uns4i6PqrtlRw==}
-    dependencies:
-      '@vueuse/core': 10.4.0(vue@3.3.4)
-      '@vueuse/shared': 10.4.0(vue@3.3.4)
-      vue-demi: 0.14.6(vue@3.3.4)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-    dev: false
-
   /@vueuse/core@10.4.0(vue@3.3.4):
     resolution: {integrity: sha512-8JnnTwiuzUqfiYIW8H4FKG/g5ZMKSE+9auoFUwUAkzhqUjy24VbMkNlDBWetQCimiptx7RAO6u1IS55H6+p1Tg==}
     dependencies:
@@ -2686,56 +2648,6 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
-
-  /@vueuse/integrations@10.4.0(focus-trap@7.5.2)(vue@3.3.4):
-    resolution: {integrity: sha512-KZ4wXX4fOQfQG3KHm2q2dHvuKoa9+eQRY3NxlgRkIYYaBxIkgHt4eLY9512RE78On1CjV+3822ZmOJrIcHGn9A==}
-    peerDependencies:
-      async-validator: '*'
-      axios: '*'
-      change-case: '*'
-      drauu: '*'
-      focus-trap: '*'
-      fuse.js: '*'
-      idb-keyval: '*'
-      jwt-decode: '*'
-      nprogress: '*'
-      qrcode: '*'
-      sortablejs: '*'
-      universal-cookie: '*'
-    peerDependenciesMeta:
-      async-validator:
-        optional: true
-      axios:
-        optional: true
-      change-case:
-        optional: true
-      drauu:
-        optional: true
-      focus-trap:
-        optional: true
-      fuse.js:
-        optional: true
-      idb-keyval:
-        optional: true
-      jwt-decode:
-        optional: true
-      nprogress:
-        optional: true
-      qrcode:
-        optional: true
-      sortablejs:
-        optional: true
-      universal-cookie:
-        optional: true
-    dependencies:
-      '@vueuse/core': 10.4.0(vue@3.3.4)
-      '@vueuse/shared': 10.4.0(vue@3.3.4)
-      focus-trap: 7.5.2
-      vue-demi: 0.14.6(vue@3.3.4)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-    dev: false
 
   /@vueuse/integrations@10.4.0(fuse.js@6.6.2)(vue@3.3.4):
     resolution: {integrity: sha512-KZ4wXX4fOQfQG3KHm2q2dHvuKoa9+eQRY3NxlgRkIYYaBxIkgHt4eLY9512RE78On1CjV+3822ZmOJrIcHGn9A==}
@@ -3487,6 +3399,10 @@ packages:
   /color-support@1.1.3:
     resolution: {integrity: sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==}
     hasBin: true
+    dev: true
+
+  /colord@2.9.3:
+    resolution: {integrity: sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==}
     dev: true
 
   /colorette@2.0.20:
@@ -4686,12 +4602,6 @@ packages:
       vue: 3.3.4
       vue-resize: 2.0.0-alpha.1(vue@3.3.4)
     dev: true
-
-  /focus-trap@7.5.2:
-    resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}
-    dependencies:
-      tabbable: 6.2.0
-    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -7770,10 +7680,6 @@ packages:
       '@pkgr/utils': 2.4.2
       tslib: 2.6.2
     dev: true
-
-  /tabbable@6.2.0:
-    resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
-    dev: false
 
   /tar@6.1.15:
     resolution: {integrity: sha512-/zKt9UyngnxIT/EAGYuxaMYgOIJiP81ab9ZfkILq4oNLPFX50qyYmu7jRj9qeXoxmJHjGlbH0+cm2uy1WCs10A==}

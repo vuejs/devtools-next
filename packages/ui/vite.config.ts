@@ -33,9 +33,16 @@ export default defineConfig({
   },
   histoire: {
     setupCode: [
-      'import "@unocss/reset/tailwind.css"',
       'import "uno.css"',
     ],
+    defaultStoryProps: {
+      layout: {
+        type: 'grid',
+        width: 320,
+      },
+      responsiveDisabled: true,
+      autoPropsDisabled: true,
+    },
     plugins: [
       HstVue(),
     ],

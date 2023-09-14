@@ -1,5 +1,7 @@
+import { colord } from 'colord'
+
 // copied from @vue/ui
-export const theme = {
+const themeDef = {
   colors: {
     'white': '#ffffff',
     'black': '#0b1015',
@@ -71,4 +73,13 @@ export const theme = {
     'info-200': '#bceef1',
     'info-100': '#e3f5f6',
   },
+}
+
+export const theme = {
+  colors: Object.entries(themeDef.colors).reduce((acc, [key, value]) => {
+    acc[key] = value
+    acc[`${key}-lighten`] = colord(value).lighten(0.025).toHex()
+    acc[`${key}-darken`] = colord(value).darken(0.08).toHex()
+    return acc
+  }, {} as Record<string, any>),
 }

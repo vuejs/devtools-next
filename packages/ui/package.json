@@ -39,8 +39,14 @@
     "*.d.ts"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
+    "build": "vite build",
+    "stub": "unbuild --stub",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0-0"
   },
   "dependencies": {
     "@unocss/core": "^0.55.3",
@@ -56,7 +62,11 @@
     "unocss": "^0.55.3"
   },
   "devDependencies": {
+    "@histoire/plugin-vue": "^0.17.1",
+    "@vitejs/plugin-vue": "^4.3.3",
+    "histoire": "^0.17.0",
     "unplugin": "^1.4.0",
-    "unplugin-vue-components": "^0.25.1"
+    "unplugin-vue-components": "^0.25.1",
+    "vite-plugin-dts": "^3.5.3"
   }
 }

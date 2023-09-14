@@ -19,7 +19,9 @@ function connectApp(app, shell) {
         '🚀 ~ boom',
       )
     })
-    bridge.emit('client:ready')
+    setTimeout(() => {
+      bridge.emit('client:ready')
+    }, 3000)
   })
 }
 

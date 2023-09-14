@@ -1,4 +1,4 @@
-import { Bridge } from '../../core/src/bridge'
+import { Bridge } from '@vue-devtools-next/core'
 
 window.addEventListener('message', handshake)
 

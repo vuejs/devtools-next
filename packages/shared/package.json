@@ -23,8 +23,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub",
+    "build": "tsup",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {

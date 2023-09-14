@@ -34,7 +34,7 @@
     "build:ui": "nr -C packages/ui build",
     "build:vite": "nr -C packages/vite build",
     "dev:browser-extension": "nr -C packages/browser-extension dev",
-    "dev": "nr stub:ui & nr stub:core & nr stub:vite && nr stub:overlay & nr stub:client",
+    "dev": "nr stub:shared && nr stub:ui & nr stub:core & nr stub:vite && nr stub:overlay & nr stub:client",
     "build": "nr build:ui && nr build:core && nr build:vite && nr build:overlay && nr build:client",
     "build:browser-extension": "nr -C packages/browser-extension build",
     "lint": "eslint .",

@@ -73,10 +73,14 @@ importers:
         version: 3.3.4
 
   packages/browser-extension:
+    dependencies:
+      '@vue-devtools-next/core':
+        specifier: workspace:^
+        version: link:../core
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
     devDependencies:
-      '@types/chrome':
-        specifier: ^0.0.245
-        version: 0.0.245
       '@vitejs/plugin-vue':
         specifier: ^4.3.3
         version: 4.3.3(vite@4.4.9)(vue@3.3.4)

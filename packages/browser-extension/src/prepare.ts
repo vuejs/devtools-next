@@ -1,3 +1,3 @@
-import { initDevToolsHook } from '../../core/src/hook'
+import { initDevToolsHook } from '@vue-devtools-next/core'
 
 initDevToolsHook()

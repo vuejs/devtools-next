@@ -1,5 +1,5 @@
+import { Bridge } from '@vue-devtools-next/core'
 import { initDevTools } from '../client/devtools-panel'
-import { Bridge } from '../../core/src/bridge'
 
 initDevTools({
   connect(cb) {

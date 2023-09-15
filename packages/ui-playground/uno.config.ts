@@ -1,4 +1,6 @@
 import { unoConfig } from '@vue-devtools-next/ui/theme'
-import { defineConfig } from 'unocss'
+import { defineConfig, mergeConfigs } from 'unocss'
 
-export default defineConfig(unoConfig)
+export default defineConfig(mergeConfigs([unoConfig, {
+  // ...
+}]))

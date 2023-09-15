@@ -8,6 +8,9 @@ export default <Options>{
     if (options.format === 'esm')
       options.outExtension = { '.js': '.mjs' }
   },
+  external: [
+    'vue',
+  ],
   clean: true,
   format: ['esm', 'cjs'],
   dts: true,

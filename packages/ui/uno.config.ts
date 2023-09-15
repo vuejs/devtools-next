@@ -21,6 +21,7 @@ export default defineConfig({
   shortcuts: [
     ['base', 'box-border font-inherit'],
     ['base-br', 'rounded-3px'],
+    ['inline-fcc', 'inline-flex justify-center items-center'],
     ['fcc', 'flex justify-center items-center'],
   ],
   rules: [

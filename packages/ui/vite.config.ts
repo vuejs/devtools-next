@@ -35,6 +35,9 @@ export default defineConfig({
     setupCode: [
       'import "uno.css"',
     ],
+    theme: {
+      title: 'Vue-Devtools-Next-UI',
+    },
     defaultStoryProps: {
       layout: {
         type: 'grid',

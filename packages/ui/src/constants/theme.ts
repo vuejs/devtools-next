@@ -78,8 +78,8 @@ const themeDef = {
 export const theme = {
   colors: Object.entries(themeDef.colors).reduce((acc, [key, value]) => {
     acc[key] = value
-    acc[`${key}-lighten`] = colord(value).lighten(0.025).toHex()
-    acc[`${key}-darken`] = colord(value).darken(0.08).toHex()
+    acc[`${key}-lighter`] = colord(value).lighten(0.025).toHex()
+    acc[`${key}-darker`] = colord(value).darken(0.08).toHex()
     return acc
   }, {} as Record<string, any>),
 }

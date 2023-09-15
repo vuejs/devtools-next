@@ -15,9 +15,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch & nr dev:devtools",
-    "build:devtools": "vite build",
-    "dev:devtools": "vite build --watch",
+    "dev": "tsup --watch",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {

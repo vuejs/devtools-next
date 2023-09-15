@@ -1,9 +1,9 @@
-import { Bridge } from '@vue-devtools-next/core'
+import { Bridge } from '../../core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
 
 initDevTools({
   connect(cb) {
-    injectScript(chrome.runtime.getURL('dist/backend.js'), () => {
+    injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
       let port: chrome.runtime.Port
 
       // connect to background to setup proxy

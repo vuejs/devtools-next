@@ -1,8 +1,8 @@
-import { Bridge } from '@vue-devtools-next/core'
+import { Bridge } from '../../core/src/bridge'
 
 window.addEventListener('message', handshake)
 
-// @TODO: init backend
+// @TODO: init user app injection
 
 function handshake(e: MessageEvent) {
   if (e.data.source === '__VUE_DEVTOOLS_PROXY__' && e.data.payload.event === 'init') {
@@ -18,7 +18,7 @@ function handshake(e: MessageEvent) {
       },
       trigger(data) {
         window.postMessage({
-          source: '__VUE_DEVTOOLS_BACKEND__',
+          source: '__VUE_DEVTOOLS_USERAPP__',
           payload: data,
         }, '*')
       },

@@ -1,7 +1,7 @@
 import { colord } from 'colord'
 
 // copied from @vue/ui
-const themeDef = {
+export const themeDef = {
   colors: {
     'white': '#ffffff',
     'black': '#0b1015',

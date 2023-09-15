@@ -1,4 +1,4 @@
+import { unoConfig } from '@vue-devtools-next/ui/theme'
 import { defineConfig } from 'unocss'
-import { unoConfig } from './theme'
 
 export default defineConfig(unoConfig)

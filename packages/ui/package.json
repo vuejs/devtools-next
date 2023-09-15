@@ -15,17 +15,21 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/types/src/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./theme": {
+      "types": "./dist/types/theme/index.d.ts",
+      "import": "./dist/theme.js",
+      "require": "./dist/theme.cjs"
     }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/src/index.d.ts",
   "files": [
-    "dist",
-    "*.d.ts"
+    "dist"
   ],
   "scripts": {
     "build": "vite build",
@@ -40,6 +44,7 @@
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.1",
+    "@types/node": "^20.6.0",
     "@vitejs/plugin-vue": "^4.3.3",
     "colord": "^2.9.3",
     "histoire": "^0.17.0",

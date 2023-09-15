@@ -1,5 +1,6 @@
 /// <reference types="histoire" />
 
+import { readFileSync, writeFileSync } from 'node:fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { HstVue } from '@histoire/plugin-vue'
@@ -12,13 +13,24 @@ export default defineConfig({
     unocss(),
     dts({
       cleanVueFileName: true,
-      include: ['src/**/*.{vue,ts}'],
+      include: ['src', 'theme'],
       outDir: 'dist/types',
     }),
+    {
+      // must mark as `@unocss-include`
+      name: 'vue-devtools-next-ui-auto-gen-unocss-include',
+      closeBundle() {
+        ;['index.js', 'index.cjs'].forEach((file) => {
+          const path = `./dist/${file}`
+          const content = readFileSync(path, 'utf-8')
+          writeFileSync(path, `// @unocss-include\n\n${content}`)
+        })
+      },
+    },
   ],
   build: {
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'unocss'],
       output: {
         globals: {
           vue: 'Vue',
@@ -26,8 +38,10 @@ export default defineConfig({
       },
     },
     lib: {
-      entry: 'src/index.ts',
-      fileName: 'index',
+      entry: {
+        index: 'src/index.ts',
+        theme: 'theme/index.ts',
+      },
       formats: ['es', 'cjs'],
     },
   },

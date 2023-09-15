@@ -84,6 +84,9 @@ dist
 auto-imports.d.ts
 components.d.ts
 
+# histoire
+.histoire
+
 # Project
 
 packages/browser-extension/overlay/**/*

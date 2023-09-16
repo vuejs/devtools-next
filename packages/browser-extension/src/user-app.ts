@@ -18,7 +18,7 @@ function handshake(e: MessageEvent) {
       },
       trigger(data) {
         window.postMessage({
-          source: '__VUE_DEVTOOLS_USERAPP__',
+          source: '__VUE_DEVTOOLS_USER_APP__',
           payload: data,
         }, '*')
       },

@@ -15,7 +15,7 @@ function sendMessageToUserApp(payload) {
 }
 
 function sendMessageToDevTools(e) {
-  if (e.data && e.data.source === '__VUE_DEVTOOLS_USERAPP__')
+  if (e.data && e.data.source === '__VUE_DEVTOOLS_USER_APP__')
     port.postMessage(e.data.payload)
 }
 

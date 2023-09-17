@@ -1,7 +1,16 @@
+import { isBrowser, target } from '@vue-devtools-next/shared'
+
 export function setDevToolsClientUrl(url: string) {
-  window.__VUE_DEVTOOLS_CLIENT_URL__ = url
+  target.__VUE_DEVTOOLS_CLIENT_URL__ = url
 }
 
 export function getDevToolsClientUrl() {
-  return window.__VUE_DEVTOOLS_CLIENT_URL__
+  return target.__VUE_DEVTOOLS_CLIENT_URL__ ?? (() => {
+    if (isBrowser) {
+      const devtoolsMeta = document.querySelector('meta[name=__VUE_DEVTOOLS_CLIENT_URL__]')
+      if (devtoolsMeta)
+        return devtoolsMeta.getAttribute('content')
+    }
+    return ''
+  })()
 }

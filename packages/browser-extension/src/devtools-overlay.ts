@@ -1,5 +1,3 @@
-import { setDevToolsClientUrl } from '../../core/src/client'
-
 const body = document.getElementsByTagName('body')[0]
 const head = document.getElementsByTagName('head')[0]
 
@@ -20,9 +18,8 @@ link.onload = () => {
   body.appendChild(script)
 }
 
-// @TODO: find a better way to inject devtools client url
 // inject devtools client url variable
-const injectDevToolsClientUrl = `(${setDevToolsClientUrl})("${clientUrl}")`
-document.documentElement.setAttribute('onreset', injectDevToolsClientUrl)
-document.documentElement.dispatchEvent(new CustomEvent('reset'))
-document.documentElement.removeAttribute('onreset')
+const meta = document.createElement('meta')
+meta.setAttribute('name', '__VUE_DEVTOOLS_CLIENT_URL__')
+meta.setAttribute('content', clientUrl)
+head.appendChild(meta)

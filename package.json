@@ -23,7 +23,7 @@
   "scripts": {
     "stub:shared": "nr -C packages/shared stub",
     "stub:core": "nr -C packages/core stub",
-    "stub:app-core": "nr -C packages/core stub",
+    "stub:app-core": "nr -C packages/app-core stub",
     "stub:overlay": "nr -C packages/overlay stub",
     "stub:client": "nr -C packages/client stub",
     "stub:ui": "nr -C packages/ui stub",

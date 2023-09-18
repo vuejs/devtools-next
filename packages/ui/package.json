@@ -43,20 +43,20 @@
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@unocss/core": "^0.55.3",
-    "@unocss/preset-attributify": "^0.55.3",
-    "@unocss/preset-icons": "^0.55.3",
-    "@unocss/preset-mini": "^0.55.3",
-    "@unocss/preset-uno": "^0.55.3",
-    "@unocss/reset": "^0.55.3",
-    "@vueuse/components": "^10.4.0",
-    "@vueuse/core": "^10.4.0",
-    "@vueuse/integrations": "^10.4.0",
+    "@unocss/core": "^0.55.7",
+    "@unocss/preset-attributify": "^0.55.7",
+    "@unocss/preset-icons": "^0.55.7",
+    "@unocss/preset-mini": "^0.55.7",
+    "@unocss/preset-uno": "^0.55.7",
+    "@unocss/reset": "^0.55.7",
+    "@vueuse/components": "^10.4.1",
+    "@vueuse/core": "^10.4.1",
+    "@vueuse/integrations": "^10.4.1",
     "focus-trap": "^7.5.2",
-    "unocss": "^0.55.3"
+    "unocss": "^0.55.7"
   },
   "devDependencies": {
-    "unplugin": "^1.4.0",
-    "unplugin-vue-components": "^0.25.1"
+    "unplugin": "^1.5.0",
+    "unplugin-vue-components": "^0.25.2"
   }
 }

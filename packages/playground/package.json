@@ -7,13 +7,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.4.0",
+    "@vueuse/core": "^10.4.1",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.3.3",
+    "@vitejs/plugin-vue": "^4.3.4",
     "serve": "^14.2.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",

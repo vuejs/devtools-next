@@ -27,10 +27,7 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
     "prepublishOnly": "pnpm build"
   },
-  "dependencies": {
-  },
   "devDependencies": {
-    "@types/node": "^20.5.9"
-
+    "@types/node": "^20.6.2"
   }
 }

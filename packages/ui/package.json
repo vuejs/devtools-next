@@ -23,8 +23,7 @@
       "types": "./dist/types/theme/index.d.ts",
       "import": "./dist/theme.js",
       "require": "./dist/theme.cjs"
-    },
-    "./style": "./dist/style.css"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

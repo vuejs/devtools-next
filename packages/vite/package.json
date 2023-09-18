@@ -26,10 +26,7 @@
       "import": "./dist/vite.mjs",
       "require": "./dist/vite.cjs"
     },
-    "./*": "./*",
-    "./client": {
-      "types": "./client.d.ts"
-    }
+    "./*": "./*"
   },
   "main": "dist/vite.cjs",
   "module": "dist/vite.mjs",

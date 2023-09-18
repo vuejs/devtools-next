@@ -1,6 +1,6 @@
 export const isBrowser = typeof navigator !== 'undefined'
 
-export const target = typeof globalThis !== 'undefined'
+export const target = (typeof globalThis !== 'undefined'
   ? globalThis
   : typeof window !== 'undefined'
     ? window
@@ -8,4 +8,4 @@ export const target = typeof globalThis !== 'undefined'
     : typeof global !== 'undefined'
       // eslint-disable-next-line no-restricted-globals
       ? global
-      : {}
+      : {}) as typeof globalThis

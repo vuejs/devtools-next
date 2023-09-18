@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vue-devtools-next/ui": "workspace:*",
+    "@vueuse/core": "^10.4.0",
     "unocss": "^0.55.3",
     "vue": "^3.3.4"
   },

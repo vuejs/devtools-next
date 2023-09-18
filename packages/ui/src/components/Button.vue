@@ -82,6 +82,8 @@ const styles = {
   >
     <LoadingIndicator v-if="loading" class="w-12px h-full mt2px" />
     <slot v-else name="icon" class="$ui-inline-fcc h-full w-12px" />
-    <slot />
+    <div>
+      <slot />
+    </div>
   </component>
 </template>

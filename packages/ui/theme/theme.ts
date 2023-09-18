@@ -82,4 +82,7 @@ export const theme = {
     acc[`${key}-darker`] = colord(value).darken(0.08).toHex()
     return acc
   }, {} as Record<string, any>),
+  fontFamily: {
+    sans: 'Avenir, Helvetica, Arial, sans-serif',
+  },
 }

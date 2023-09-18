@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { VueButton } from '@vue-devtools-next/ui'
+import { VueButton, VueDarkToggle } from '@vue-devtools-next/ui'
+import { useDark } from '@vueuse/core'
+
+const dark = useDark()
 </script>
 
 <template>
-  <VueButton>hello world</VueButton>
+  {{ dark }}
+  <VueDarkToggle>
+    <template #default="{ isDark, toggle }">
+      <VueButton @click="toggle">
+        {{ isDark }}
+      </VueButton>
+    </template>
+  </VueDarkToggle>
 </template>

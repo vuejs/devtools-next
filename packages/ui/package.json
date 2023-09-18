@@ -23,7 +23,8 @@
       "types": "./dist/types/theme/index.d.ts",
       "import": "./dist/theme.js",
       "require": "./dist/theme.cjs"
-    }
+    },
+    "./style": "./dist/style.css"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -41,6 +42,10 @@
   "peerDependencies": {
     "unocss": ">=0.50.0-0",
     "vue": ">=3.0.0-0"
+  },
+  "dependencies": {
+    "@vueuse/components": "^10.4.1",
+    "@vueuse/core": "^10.4.0"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.1",

@@ -3,6 +3,8 @@ import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
 import type { ButtonType } from '../src/components/Button.vue'
 import Button from '../src/components/Button.vue'
+import Icon from '../src/components/Icon.vue'
+import Badge from '../src/components/Badge.vue'
 
 const state = reactive<{
   type: ButtonType
@@ -56,9 +58,15 @@ const state = reactive<{
     <Variant title="With Icon">
       <Button :type="state.type">
         <template #icon>
-          <div class="i-carbon-moon" />
+          <Icon class="i-carbon-moon" />
         </template>
         Icon Button
+      </Button>
+    </Variant>
+    <Variant title="With Badge">
+      <Button :type="state.type">
+        Badge Button
+        <Badge>10</Badge>
       </Button>
     </Variant>
   </Story>

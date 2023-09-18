@@ -6,9 +6,11 @@ import { UsePreferredColorScheme as ColorScheme } from '@vueuse/components'
 const props = withDefaults(defineProps<{
   isDark?: boolean
   animation?: boolean
+  animationDuration?: number
 }>(), {
   isDark: false,
   animation: true,
+  animationDuration: 400,
 })
 
 const isDarkModel = useVModel(props, 'isDark')
@@ -60,7 +62,7 @@ function toggle(event?: MouseEvent) {
           : clipPath,
       },
       {
-        duration: 400,
+        duration: props.animationDuration,
         easing: 'ease-in',
         pseudoElement: isDark.value
           ? '::view-transition-old(root)'

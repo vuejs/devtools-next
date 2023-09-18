@@ -75,8 +75,21 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4
 
+  packages/app-core:
+    dependencies:
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
+    devDependencies:
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
+
   packages/browser-extension:
     dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:../core
@@ -223,10 +236,6 @@ importers:
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
-    devDependencies:
-      vue:
-        specifier: ^3.3.4
-        version: 3.3.4
 
   packages/overlay:
     dependencies:
@@ -347,6 +356,9 @@ importers:
 
   packages/vite:
     dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core
@@ -724,13 +736,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.22.15
-      '@babel/types': 7.22.15
+      '@babel/types': 7.22.19
 
   /@babel/helper-hoist-variables@7.22.5:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.15
+      '@babel/types': 7.22.19
 
   /@babel/helper-member-expression-to-functions@7.22.15:
     resolution: {integrity: sha512-qLNsZbgrNh0fDQBCPocSL8guki1hcPvltGDv/NxvUoABwFq7GkKSu1nRXeJkVZc+wJvne2E0RKQz+2SQrz6eAA==}
@@ -821,7 +833,7 @@ packages:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.15
+      '@babel/types': 7.22.19
 
   /@babel/helper-string-parser@7.22.5:
     resolution: {integrity: sha512-mM4COjgZox8U+JcXQwPijIZLElkgEpO5rsERVDJTc2qfCDfERyob6k5WegS14SX18IIjv+XD+GrqNumY5JRCDw==}
@@ -2553,7 +2565,7 @@ packages:
   /@vue/reactivity-transform@3.3.4:
     resolution: {integrity: sha512-MXgwjako4nu5WFLAjpBnCj/ieqcjE2aJBINUNQzkZQfzIZA4xn+0fV1tIYBJvvva3N3OvKGofRLvQIwEQPpaXw==}
     dependencies:
-      '@babel/parser': 7.22.15
+      '@babel/parser': 7.22.16
       '@vue/compiler-core': 3.3.4
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2

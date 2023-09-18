@@ -1,3 +1,5 @@
+import { target } from '@vue-devtools-next/shared'
+
 export enum DevToolsHooks {
   APP_INIT = 'app:init',
   APP_UNMOUNT = 'app:unmount',
@@ -14,7 +16,7 @@ export enum DevToolsHooks {
 }
 
 export function createDevToolsHook() {
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
+  target.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
     events: new Map<DevToolsHooks, () => void>(),
     on(event: DevToolsHooks, fn: () => void) {
       if (!this.events.has(event))
@@ -45,13 +47,13 @@ export function createDevToolsHook() {
         this.events.get(event).forEach(fn => fn(...payload))
     },
   }
-  return window.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  return target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 }
 
 function collectHookBuffer() {
-  const hook = window.__VUE_DEVTOOLS_GLOBAL_HOOK__
-  const hookBuffer = window.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
-  const collectEvents = window.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
+  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
+  const collectEvents = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
   // app init hook
   const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app) => {
     console.log('app:init', app)
@@ -98,7 +100,7 @@ function collectHookBuffer() {
 
 export function initDevToolsHook() {
   createDevToolsHook()
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__ ??= []
+  target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []
+  target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__ ??= []
   collectHookBuffer()
 }

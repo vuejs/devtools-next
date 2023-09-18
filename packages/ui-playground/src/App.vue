@@ -10,9 +10,6 @@ const show = ref(false)
 
 <template>
   {{ dark }}
-  <div class="$ui-vtr">
-    <a href="">1111</a>
-  </div>
   <VueButton @click="show = true">
     Show dialog
   </VueButton>

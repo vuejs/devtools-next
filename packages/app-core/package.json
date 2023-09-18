@@ -1,0 +1,36 @@
+{
+  "name": "@vue-devtools-next/app-core",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
+    "directory": "packages/app-core"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@vue-devtools-next/shared": "workspace:^"
+  },
+  "devDependencies": {
+    "vue": "^3.3.4"
+  }
+}

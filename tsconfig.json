@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "esnext",
-    "lib": ["esnext", "DOM"],
+    "lib": ["esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
@@ -16,7 +16,12 @@
       "vite/client",
       "vitest/globals",
       "@vue-devtools-next/core/types"
-    ]
+    ],
+    "paths": {
+    }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "**/dist/**",
+    "**/node_modules/**"
+  ]
 }

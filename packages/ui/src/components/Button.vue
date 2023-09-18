@@ -72,8 +72,10 @@ const styles = {
   <component
     :is="component" v-bind="$attrs"
     role="button" :aria-disabled="disabled"
-    class="$ui-base select-none inline-flex vertical-mid no-underline text-14px h32px $ui-inline-fcc border-none
-       cursor-pointer $ui-base-br py-0 px-14px gap5px" :class="[
+    class="$ui-base select-none inline-flex vertical-mid no-underline
+       text-14px h32px $ui-inline-fcc border-none
+       cursor-pointer $ui-base-br py-0 px-14px gap5px"
+    :class="[
       styles[props.type],
       { 'rounded-full': props.round },
       { 'opacity-50 cursor-not-allowed': disabled },

@@ -16,12 +16,21 @@ export const unoConfig = {
   ],
   transformers: [transformerVariantGroup(), transformerDirectives()],
   theme,
-  shortcuts: [
-    ['$ui-base', 'box-border font-inherit'],
-    ['$ui-base-br', 'rounded-3px'],
-    ['$ui-inline-fcc', 'inline-flex justify-center items-center'],
-    ['$ui-fcc', 'flex justify-center items-center'],
-  ],
+  shortcuts: {
+    // utilities
+    '$ui-fcc': 'flex justify-center items-center',
+    '$ui-fbc': 'flex justify-between items-center',
+    '$ui-inline-fcc': 'inline-flex justify-center items-center',
+    '$ui-z-max': 'z-2147483647',
+
+    // general
+    '$ui-bg-base': 'bg-white dark:bg-black',
+    '$ui-base': 'box-border font-inherit',
+    '$ui-transition': 'transition-all duration-300 ease-in-out',
+    '$ui-borderless': '!border-transparent !shadow-none',
+    '$ui-base-br': 'rounded-3px',
+    '$ui-border-base': 'border-gray/20',
+  },
   rules: [
     ['$ui-font-inherit', { 'font-family': 'inherit' }],
   ],

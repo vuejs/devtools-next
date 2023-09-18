@@ -21,6 +21,9 @@
     }
   },
   "exclude": [
+    "**/browser-extension/overlay/**",
+    "**/vite/src/overlay/**",
+    "**/browser-extension/client/**",
     "**/dist/**",
     "**/node_modules/**"
   ]

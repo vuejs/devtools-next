@@ -14,7 +14,8 @@
     "types": [
       "chrome",
       "vite/client",
-      "vitest/globals"
+      "vitest/globals",
+      "@vue-devtools-next/core/types"
     ]
   },
   "exclude": ["node_modules", "dist"]

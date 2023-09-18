@@ -12,7 +12,8 @@
     "resolveJsonModule": true,
     "noImplicitAny": false,
     "types": [
-      "vite/client"
+      "vite/client",
+      "@vue-devtools-next/core/types"
     ],
     "paths": {
       "~/*": ["./src/*"]

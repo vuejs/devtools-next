@@ -14,7 +14,7 @@
     "types": [
       "vite-plugin-pages/client",
       "vite/client",
-      "vite-plugin-vue-devtools/client"
+      "@vue-devtools-next/core/types"
     ],
     "paths": {
       "~/*": ["./*"]

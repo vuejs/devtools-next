@@ -26,6 +26,9 @@ importers:
       '@unocss/eslint-config':
         specifier: ^0.55.7
         version: 0.55.7(eslint@8.49.0)(typescript@5.2.2)
+      '@vue-devtools-next/core':
+        specifier: workspace:^
+        version: link:packages/core
       bumpp:
         specifier: ^9.2.0
         version: 9.2.0
@@ -90,6 +93,12 @@ importers:
 
   packages/client:
     dependencies:
+      '@vue-devtools-next/core':
+        specifier: workspace:*
+        version: link:../core
+      '@vue-devtools-next/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@vueuse/core':
         specifier: ^10.4.1
         version: 10.4.1(vue@3.3.4)
@@ -157,12 +166,6 @@ importers:
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.0.2
         version: 3.0.2(vite@4.4.9)(vue@3.3.4)
-      '@vue-devtools-next/core':
-        specifier: workspace:*
-        version: link:../core
-      '@vue-devtools-next/ui':
-        specifier: workspace:*
-        version: link:../ui
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -227,9 +230,15 @@ importers:
 
   packages/overlay:
     dependencies:
+      '@vue-devtools-next/core':
+        specifier: workspace:*
+        version: link:../core
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
+      '@vue-devtools-next/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@vueuse/core':
         specifier: ^10.4.1
         version: 10.4.1(vue@3.3.4)
@@ -243,12 +252,6 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^4.3.4
         version: 4.3.4(vite@4.4.9)(vue@3.3.4)
-      '@vue-devtools-next/core':
-        specifier: workspace:*
-        version: link:../core
-      '@vue-devtools-next/ui':
-        specifier: workspace:*
-        version: link:../ui
       sass:
         specifier: ^1.67.0
         version: 1.67.0
@@ -2492,8 +2495,8 @@ packages:
       '@babel/helper-module-imports': 7.22.15
       '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.22.20)
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.22.20
-      '@babel/types': 7.22.19
+      '@babel/traverse': 7.22.15
+      '@babel/types': 7.22.15
       '@vue/babel-helper-vue-transform-on': 1.1.5
       camelcase: 6.3.0
       html-tags: 3.3.1

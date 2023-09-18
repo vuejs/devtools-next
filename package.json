@@ -52,6 +52,7 @@
     "@types/fs-extra": "^11.0.2",
     "@types/node": "^20.6.2",
     "@unocss/eslint-config": "^0.55.7",
+    "@vue-devtools-next/core": "workspace:^",
     "bumpp": "^9.2.0",
     "eslint": "8.49.0",
     "esno": "^0.17.0",

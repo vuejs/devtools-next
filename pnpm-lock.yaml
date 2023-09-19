@@ -236,6 +236,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared

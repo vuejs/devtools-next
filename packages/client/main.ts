@@ -4,6 +4,7 @@ import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import routes from 'virtual:generated-pages'
 import { Bridge } from '@vue-devtools-next/app-core'
+import { BridgeEvents } from '@vue-devtools-next/schema'
 
 import App from './App.vue'
 
@@ -15,14 +16,8 @@ import 'uno.css'
 
 function connectApp(app, shell) {
   shell.connect((bridge) => {
-    bridge.on('boom', () => {
-      console.log(
-        '🚀 ~ boom',
-      )
-    })
-    setTimeout(() => {
-      bridge.emit('client:ready')
-    }, 3000)
+    // @TODO: find a better way to handle it
+    Bridge.value = bridge
   })
 }
 
@@ -37,6 +32,7 @@ export function initDevTools(shell) {
   app.use(router)
   app.use(FloatingVue)
   app.mount('#app')
+  Bridge.value.emit(BridgeEvents.CLIENT_READY)
 }
 
 window.addEventListener('message', (event) => {

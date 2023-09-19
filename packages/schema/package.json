@@ -17,7 +17,6 @@
       "require": "./dist/index.mjs"
     }
   },
-  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./types.d.ts",
   "files": [

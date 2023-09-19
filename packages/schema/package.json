@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/core",
+  "name": "@vue-devtools-next/schema",
   "type": "module",
   "version": "0.0.1",
   "author": "webfansplz",
@@ -7,30 +7,29 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/core"
+    "directory": "packages/schema"
   },
+  "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./types.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.mjs"
     }
   },
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./types.d.ts",
   "files": [
     "dist",
-    "types",
-    "types.d.ts"
+    "**.d.ts"
   ],
   "scripts": {
-    "build": "tsup",
-    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
+    "prepack": "unbuild",
+    "build": "pnpm run prepack",
+    "stub": "pnpm run prepack",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vue-devtools-next/app-core": "workspace:^",
-    "@vue-devtools-next/shared": "workspace:^"
   }
 }

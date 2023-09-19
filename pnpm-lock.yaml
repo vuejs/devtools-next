@@ -26,9 +26,15 @@ importers:
       '@unocss/eslint-config':
         specifier: ^0.55.7
         version: 0.55.7(eslint@8.49.0)(typescript@5.2.2)
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:packages/app-core
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:packages/core
+      '@vue-devtools-next/schema':
+        specifier: workspace:^
+        version: link:packages/schema
       bumpp:
         specifier: ^9.2.0
         version: 9.2.0
@@ -77,6 +83,9 @@ importers:
 
   packages/app-core:
     dependencies:
+      '@vue-devtools-next/schema':
+        specifier: workspace:^
+        version: link:../schema
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -313,6 +322,15 @@ importers:
       vite-plugin-vue-devtools:
         specifier: workspace:*
         version: link:../vite
+
+  packages/schema:
+    dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
 
   packages/shared:
     devDependencies:

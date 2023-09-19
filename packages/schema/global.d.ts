@@ -1,7 +1,7 @@
-// @TODO: schema package for global types (based on untyped) ?
-
-import { DevtoolsHook } from './vue'
-import type { Bridge } from '@vue-devtools-next/app-core'
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+import type { Bridge } from '../app-core/src/bridge'
+import type { DevtoolsHook } from './src/types/vue'
 
 declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook

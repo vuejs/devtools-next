@@ -1,4 +1,4 @@
-import type { App } from "vue"
+import type { App } from 'vue'
 
 interface AppRecord {
   id: number
@@ -22,7 +22,7 @@ export enum DevToolsHooks {
   RENDER_TRIGGERED = 'render:triggered',
 }
 
-declare interface DevtoolsHook {
+export interface DevtoolsHook {
   enabled?: boolean
   events: Map<DevToolsHooks, Function[]>
   emit: (event: DevToolsHooks, ...payload: any[]) => void

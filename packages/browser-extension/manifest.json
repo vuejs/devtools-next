@@ -6,19 +6,21 @@
   "manifest_version": 3,
   "permissions": [
     "scripting",
-    "webNavigation",
     "storage"
   ],
   "icons": {
     "128": "icons/128.png"
   },
   "web_accessible_resources": [{
-    "resources": ["dist/*", "client/*", "overlay/*", "panel/*"],
+    "resources": ["dist/*", "client/*", "overlay/*"],
     "matches": ["<all_urls>"]
   }],
   "host_permissions": [
     "<all_urls>"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "background": {
     "service_worker": "dist/background.js"
   },

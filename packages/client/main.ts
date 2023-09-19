@@ -3,7 +3,7 @@ import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import routes from 'virtual:generated-pages'
-import { Bridge } from '@vue-devtools-next/core'
+import { Bridge } from '@vue-devtools-next/app-core'
 
 import App from './App.vue'
 

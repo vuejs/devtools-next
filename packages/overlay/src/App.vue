@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { Bridge, getDevToolsClientUrl } from '@vue-devtools-next/core'
+import { getDevToolsClientUrl } from '@vue-devtools-next/core'
+import { Bridge } from '@vue-devtools-next/app-core'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'

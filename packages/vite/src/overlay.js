@@ -1,6 +1,6 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { Bridge, setDevToolsClientUrl } from '@vue-devtools-next/core'
-import { initDevToolsHook } from '@vue-devtools-next/app-core'
+import { setDevToolsClientUrl } from '@vue-devtools-next/core'
+import { Bridge, initDevToolsHook } from '@vue-devtools-next/app-core'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
 const body = document.getElementsByTagName('body')[0]

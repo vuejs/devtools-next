@@ -28,7 +28,8 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vue-devtools-next/shared": "workspace:^"
+    "@vue-devtools-next/shared": "workspace:^",
+    "mitt": "^3.0.1"
   },
   "devDependencies": {
     "vue": "^3.3.4"

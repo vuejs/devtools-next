@@ -1,4 +1,4 @@
-import { Bridge } from '../../core/src/bridge'
+import { Bridge } from '../../app-core/src/bridge'
 
 window.addEventListener('message', handshake)
 

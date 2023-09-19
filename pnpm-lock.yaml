@@ -80,6 +80,9 @@ importers:
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
     devDependencies:
       vue:
         specifier: ^3.3.4
@@ -106,6 +109,9 @@ importers:
 
   packages/client:
     dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core
@@ -233,12 +239,12 @@ importers:
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
-      mitt:
-        specifier: ^3.0.1
-        version: 3.0.1
 
   packages/overlay:
     dependencies:
+      '@vue-devtools-next/app-core':
+        specifier: workspace:^
+        version: link:../app-core
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core

@@ -1,5 +1,3 @@
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
 import type { Bridge } from '../app-core/src/bridge'
 import type { DevtoolsHook } from './src/types/vue'
 

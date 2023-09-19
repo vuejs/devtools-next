@@ -15,17 +15,21 @@ export enum DevToolsHooks {
   RENDER_TRIGGERED = 'render:triggered',
 }
 
+export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+
 export function createDevToolsHook() {
+  // @TODO: override directly ?
   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
-    events: new Map<DevToolsHooks, () => void>(),
-    on(event: DevToolsHooks, fn: () => void) {
+    events: new Map<DevToolsHooks, Function[]>(),
+    on(event, fn) {
       if (!this.events.has(event))
         this.events.set(event, [])
 
-      this.events.get(event).push(fn)
-      return [event, fn] as const
+      this.events.get(event)?.push(fn)
+      // cleanup function
+      return () => this.off(event, fn)
     },
-    once(event: DevToolsHooks, fn) {
+    once(event, fn) {
       const onceFn = (...args) => {
         this.off(event, onceFn)
         fn(...args)
@@ -34,17 +38,17 @@ export function createDevToolsHook() {
       this.on(event, onceFn)
       return [event, onceFn] as const
     },
-    off(event: DevToolsHooks, fn) {
+    off(event, fn) {
       if (this.events.has(event)) {
-        const eventCallbacks = this.events.get(event)
+        const eventCallbacks = this.events.get(event)!
         const index = eventCallbacks.indexOf(fn)
         if (index !== -1)
           eventCallbacks.splice(index, 1)
       }
     },
-    emit(event: DevToolsHooks, ...payload) {
+    emit(event, ...payload) {
       if (this.events.has(event))
-        this.events.get(event).forEach(fn => fn(...payload))
+        this.events.get(event)!.forEach(fn => fn(...payload))
     },
   }
   return target.__VUE_DEVTOOLS_GLOBAL_HOOK__

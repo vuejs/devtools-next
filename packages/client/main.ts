@@ -39,8 +39,6 @@ export function initDevTools(shell) {
   app.mount('#app')
 }
 
-window.__INIT_DEVTOOLS__ = initDevTools
-
 window.addEventListener('message', (event) => {
   if (event.data === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
     initDevTools({

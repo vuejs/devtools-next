@@ -1,5 +1,4 @@
 import { Bridge } from '../../app-core/src/bridge'
-import { prepareInjection } from '../../app-core/src/injection'
 import { initDevTools } from '../client/devtools-panel'
 
 initDevTools({
@@ -29,8 +28,6 @@ initDevTools({
           port.postMessage(data)
         },
       })
-
-      prepareInjection(bridge)
 
       cb(bridge)
     })

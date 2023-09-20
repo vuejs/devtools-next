@@ -1,8 +1,7 @@
 import { Bridge } from '../../app-core/src/bridge'
+import { prepareInjection } from '../../app-core/src/injection'
 
 window.addEventListener('message', handshake)
-
-// @TODO: init user app injection
 
 function handshake(e: MessageEvent) {
   if (e.data.source === '__VUE_DEVTOOLS_PROXY__' && e.data.payload.event === 'init') {
@@ -32,10 +31,6 @@ function handshake(e: MessageEvent) {
       window.addEventListener('message', handshake)
     })
 
-    bridge.on('client:ready', () => {
-      console.log('client:ready 🎉')
-    })
-
-    bridge.emit('boom', 'hello world!')
+    prepareInjection(bridge)
   }
 }

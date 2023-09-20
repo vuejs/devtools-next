@@ -14,16 +14,19 @@ import '@unocss/reset/tailwind.css'
 
 import 'uno.css'
 
-function connectApp(app, shell) {
-  shell.connect((bridge) => {
-    // @TODO: find a better way to handle it
-    Bridge.value = bridge
+async function connectApp(app, shell) {
+  return new Promise<void>((resolve) => {
+    shell.connect((bridge) => {
+      // @TODO: find a better way to handle it
+      Bridge.value = bridge
+      resolve()
+    })
   })
 }
 
-export function initDevTools(shell) {
+export async function initDevTools(shell) {
   const app = createApp(App)
-  connectApp(app, shell)
+  await connectApp(app, shell)
   const router = createRouter({
     history: createMemoryHistory(),
     routes,

@@ -23,8 +23,8 @@
     "node": ">=v14.21.3"
   },
   "scripts": {
-    "build": "nr build:lib && vite build",
-    "stub": "nr stub:lib && vite build --watch",
+    "build": "nr build:lib & vite build",
+    "stub": "nr stub:lib & vite build --watch",
     "stub:lib": "vite build --config vite.lib.config.ts --watch",
     "build:lib": "vite build --config vite.lib.config.ts"
   },

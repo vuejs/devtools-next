@@ -4,7 +4,7 @@ export default defineBuildConfig({
   entries: [
     'src/vite',
   ],
-  clean: false,
+  clean: true,
   declaration: true,
   externals: [
     'vite',

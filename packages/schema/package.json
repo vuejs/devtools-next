@@ -24,9 +24,9 @@
     "**.d.ts"
   ],
   "scripts": {
-    "prepack": "unbuild",
-    "build": "pnpm run prepack",
-    "stub": "pnpm run prepack",
+    "prepare": "tsup --dts-only",
+    "build": "tsup --clean",
+    "stub": "tsup --watch",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {

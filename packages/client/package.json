@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "nr build:lib && vite build",
-    "stub": "nr stub:lib & vite build --watch",
+    "stub": "nr stub:lib && vite build --watch",
     "stub:lib": "vite build --config vite.lib.config.ts --watch",
     "build:lib": "vite build --config vite.lib.config.ts"
   },

@@ -323,14 +323,7 @@ importers:
         specifier: workspace:*
         version: link:../vite
 
-  packages/schema:
-    dependencies:
-      '@vue-devtools-next/app-core':
-        specifier: workspace:^
-        version: link:../app-core
-      '@vue-devtools-next/shared':
-        specifier: workspace:^
-        version: link:../shared
+  packages/schema: {}
 
   packages/shared:
     devDependencies:

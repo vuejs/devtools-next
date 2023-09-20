@@ -6,6 +6,7 @@ export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 export function createDevToolsHook() {
   // @TODO: override directly ?
   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
+    appRecords: [],
     events: new Map<DevToolsHooks, Function[]>(),
     on(event, fn) {
       if (!this.events.has(event))
@@ -45,9 +46,13 @@ function collectHookBuffer() {
   const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
   const collectEvents = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
   // app init hook
-  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app) => {
-    console.log('app:init', app)
-    hookBuffer.push([DevToolsHooks.APP_INIT, app])
+  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app, version) => {
+    hook.appRecords.push({
+      id: hook.appRecords.length,
+      app,
+      version,
+    })
+    hookBuffer.push([DevToolsHooks.APP_INIT, { app, version }])
   })
 
   // component added hook
@@ -93,4 +98,25 @@ export function initDevToolsHook() {
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__ ??= []
   collectHookBuffer()
+}
+
+export function checkVueAppInitialized() {
+  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  return new Promise<void>((resolve, reject) => {
+    if (hook.appRecords.length) {
+      resolve()
+    }
+    else {
+      const timer = setInterval(() => {
+        const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+
+        if (hook.appRecords.length) {
+          clearInterval(timer)
+          resolve()
+        }
+      }, 200)
+
+      // @TODO: reject logic
+    }
+  })
 }

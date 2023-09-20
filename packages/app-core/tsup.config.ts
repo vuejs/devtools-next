@@ -11,7 +11,7 @@ export default <Options>{
   external: [
     'vue',
   ],
-  clean: true,
+  // clean: true,
   format: ['esm', 'cjs'],
   dts: true,
   shims: true,

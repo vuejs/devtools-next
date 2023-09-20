@@ -3,7 +3,7 @@ import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import routes from 'virtual:generated-pages'
-import { Bridge } from '@vue-devtools-next/app-core'
+import { Bridge, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 
 import App from './App.vue'
@@ -34,6 +34,7 @@ export async function initDevTools(shell) {
 
   app.use(router)
   app.use(FloatingVue)
+  app.use(createDevToolsVuePlugin())
   app.mount('#app')
   Bridge.value.emit(BridgeEvents.CLIENT_READY)
 }

@@ -4,7 +4,7 @@ interface AppRecord {
   id: number
   app: App
   version: string
-  types: Record<string, string | Symbol>
+  types?: Record<string, string | Symbol>
 }
 
 export enum DevToolsHooks {
@@ -29,6 +29,6 @@ export interface DevtoolsHook {
   on: (event: DevToolsHooks, handler: Function) => () => void
   once: (event: DevToolsHooks, handler: Function) => void
   off: (event: DevToolsHooks, handler: Function) => void
-  appRecords?: AppRecord[]
+  appRecords: AppRecord[]
   cleanupBuffer?: (matchArg: unknown) => boolean
 }

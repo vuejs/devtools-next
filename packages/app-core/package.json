@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup --clean",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
     "prepublishOnly": "pnpm build"
   },

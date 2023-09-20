@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { getDevToolsClientUrl } from '@vue-devtools-next/core'
-import { Bridge } from '@vue-devtools-next/app-core'
+import { Bridge, prepareInjection } from '@vue-devtools-next/app-core'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -47,6 +47,8 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
         }, '*')
       },
     })
+
+    prepareInjection(bridge)
 
     window.addEventListener('message', (data) => {
       if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { Bridge, getDevToolsClientUrl } from '@vue-devtools-next/core'
+import { getDevToolsClientUrl } from '@vue-devtools-next/core'
+import { Bridge, prepareInjection } from '@vue-devtools-next/app-core'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -30,38 +31,35 @@ const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
 const clientUrl = getDevToolsClientUrl()
 
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
-  const test = () => !!iframe?.contentWindow?.__INIT_DEVTOOLS__
-  if (test())
-    return
+  return new Promise((resolve) => {
+    iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
+    const bridge = new Bridge({
+      tracker(fn) {
+        window.addEventListener('message', (e) => {
+          if (e.data.source === '__VUE_DEVTOOLS_CLIENT__')
+            fn(e.data.data)
+        })
+      },
+      trigger(data) {
+        iframe?.contentWindow?.postMessage({
+          source: '__VUE_DEVTOOLS_USER_APP__',
+          data,
+        }, '*')
+      },
+    })
 
-  return new Promise((resolve, reject) => {
-    const interval = setInterval(() => {
-      if (test()) {
-        clearInterval(interval)
+    prepareInjection(bridge)
+
+    window.addEventListener('message', (data) => {
+      if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')
         resolve()
-      }
-      else if (retry-- <= 0) {
-        clearInterval(interval)
-        reject(Error('Vue DevTools client injection failed'))
-      }
-    }, timeout)
+    })
   })
 }
 
 const { iframe, getIframe } = useIframe(clientUrl, async () => {
   const iframe = getIframe()
   await waitForClientInjection(iframe)
-  iframe?.contentWindow?.__INIT_DEVTOOLS__({
-    connect(cb) {
-      Bridge.value.on('client:ready', () => {
-        console.log(
-          '🚀 ~ client:ready',
-        )
-        Bridge.value.emit('boom')
-      })
-      cb(Bridge.value)
-    },
-  })
 })
 </script>
 

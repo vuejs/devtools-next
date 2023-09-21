@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "esnext",
-    "lib": ["esnext", "DOM"],
+    "lib": ["esnext", "dom"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
@@ -14,8 +14,23 @@
     "types": [
       "chrome",
       "vite/client",
-      "vitest/globals"
-    ]
+      "vitest/globals",
+      "@vue-devtools-next/schema"
+    ],
+    "paths": {
+      "@vue-devtools-next/shared": ["./packages/shared/src/index.ts"],
+      "@vue-devtools-next/core": ["./packages/core/src/index.ts"],
+      "@vue-devtools-next/app-core": ["./packages/app-core/src/index.ts"],
+      "@vue-devtools-next/schema": ["./packages/schema/src/index.ts"],
+      "@vue-devtools-next/ui": ["./packages/ui/src/index.ts"],
+      "@vue-devtools-next/vite": ["./packages/vite/src/index.ts"]
+    }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "**/browser-extension/overlay/**",
+    "**/vite/src/overlay/**",
+    "**/browser-extension/client/**",
+    "**/dist/**",
+    "**/node_modules/**"
+  ]
 }

@@ -1,3 +1,3 @@
-import { initDevToolsHook } from '../../core/src/hook'
+import { initDevToolsHook } from '../../app-core/src/hook'
 
 initDevToolsHook()

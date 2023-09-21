@@ -1,6 +1,7 @@
 import { createApp, h } from 'vue'
 import type { Component } from 'vue'
-import { createDevToolsVuePlugin } from '@vue-devtools-next/core'
+
+// import { createDevToolsVuePlugin } from '@vue-devtools-next/core'
 import App from './App.vue'
 
 function createDevToolsContainer(App: Component) {
@@ -15,7 +16,7 @@ function createDevToolsContainer(App: Component) {
       hide: true,
     },
   })
-  app.use(createDevToolsVuePlugin())
+  // app.use(createDevToolsVuePlugin())
   app.mount(el)
 }
 

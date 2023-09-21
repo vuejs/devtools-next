@@ -1,9 +1,9 @@
+import { Bridge } from '../../app-core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
-import { Bridge } from '../../core/src/bridge'
 
 initDevTools({
   connect(cb) {
-    injectScript(chrome.runtime.getURL('dist/backend.js'), () => {
+    injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
       let port: chrome.runtime.Port
 
       // connect to background to setup proxy

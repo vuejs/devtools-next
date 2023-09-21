@@ -25,10 +25,10 @@ export class Bridge<Events extends Record<EventType, unknown>, Key extends keyof
   }
 
   static get value() {
-    return target.__VUE_DEVTOOLS_BRIDGE__ as InstanceType<typeof Bridge>
+    return target.__VUE_DEVTOOLS_BRIDGE__
   }
 
-  static set value(value: InstanceType<typeof Bridge>) {
+  static set value(value) {
     target.__VUE_DEVTOOLS_BRIDGE__ = value
   }
 

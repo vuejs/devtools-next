@@ -3,6 +3,8 @@ import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import routes from 'virtual:generated-pages'
+import { Bridge, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
+import { BridgeEvents } from '@vue-devtools-next/schema'
 
 import App from './App.vue'
 
@@ -12,22 +14,19 @@ import '@unocss/reset/tailwind.css'
 
 import 'uno.css'
 
-function connectApp(app, shell) {
-  shell.connect((bridge) => {
-    bridge.on('boom', () => {
-      console.log(
-        '🚀 ~ boom',
-      )
+async function connectApp(app, shell) {
+  return new Promise<void>((resolve) => {
+    shell.connect((bridge) => {
+      // @TODO: find a better way to handle it
+      Bridge.value = bridge
+      resolve()
     })
-    setTimeout(() => {
-      bridge.emit('client:ready')
-    }, 3000)
   })
 }
 
-export function initDevTools(shell) {
+export async function initDevTools(shell) {
   const app = createApp(App)
-  connectApp(app, shell)
+  await connectApp(app, shell)
   const router = createRouter({
     history: createMemoryHistory(),
     routes,
@@ -35,7 +34,34 @@ export function initDevTools(shell) {
 
   app.use(router)
   app.use(FloatingVue)
+  app.use(createDevToolsVuePlugin())
   app.mount('#app')
+  Bridge.value.emit(BridgeEvents.CLIENT_READY)
 }
 
-window.__INIT_DEVTOOLS__ = initDevTools
+window.addEventListener('message', (event) => {
+  if (event.data === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
+    initDevTools({
+      connect: (callback) => {
+        const bridge = new Bridge({
+          tracker(fn) {
+            window.addEventListener('message', (e) => {
+              if (e.data.source === '__VUE_DEVTOOLS_USER_APP__')
+                fn(e.data.data)
+            })
+          },
+          trigger(data) {
+            event?.source?.postMessage({
+              source: '__VUE_DEVTOOLS_CLIENT__',
+              data,
+            }, {
+              targetOrigin: '*',
+            })
+          },
+        })
+        callback(bridge)
+      },
+    })
+    event.source?.postMessage('__VUE_DEVTOOLS_CLIENT_READY__')
+  }
+})

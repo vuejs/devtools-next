@@ -1,47 +1,47 @@
-import { isNumeric } from '../../shared/src/general'
+import { isNumeric } from '@vue-devtools-next/shared'
 
 type PortInfo = Record<'tab' | 'name', string | number> & { port: chrome.runtime.Port }
-type PortDetail = Record<'devtools' | 'backend', chrome.runtime.Port>
+type PortDetail = Record<'devtools' | 'userApp', chrome.runtime.Port>
 const ports: Record<string | number, PortDetail> = {}
 
-function initPort(portInfo: PortInfo): Record<'devtools' | 'backend', chrome.runtime.Port> {
+function initPort(portInfo: PortInfo): Record<'devtools' | 'userApp', chrome.runtime.Port> {
   const { tab, name, port } = portInfo
   ports[tab] ??= {
     devtools: null,
-    backend: null,
+    userApp: null,
   } as unknown as PortDetail
   ports[tab][name] = port
   return ports[tab]
 }
 
-function devtoolsBackendPipe(tabId: string | number) {
-  const { devtools, backend } = ports[tabId]
+function devtoolsUserAppPipe(tabId: string | number) {
+  const { devtools, userApp } = ports[tabId]
 
   function onDevtoolsMessage(message) {
     // @TODO: dev only
-    console.log('%cdevtools -> backend', 'color:#888;', message)
-    backend.postMessage(message)
+    console.log('%cdevtools -> userApp', 'color:#888;', message)
+    userApp.postMessage(message)
   }
   devtools.onMessage.addListener(onDevtoolsMessage)
 
-  function onBackendMessage(message) {
+  function onUserAppMessage(message) {
     // @TODO: dev only
-    console.log('%cbackend -> devtools', 'color:#888;', message)
+    console.log('%cuserApp -> devtools', 'color:#888;', message)
     devtools.postMessage(message)
   }
-  backend.onMessage.addListener(onBackendMessage)
+  userApp.onMessage.addListener(onUserAppMessage)
 
   function shutdown() {
-    const { devtools, backend } = ports[tabId]
+    const { devtools, userApp } = ports[tabId]
     devtools.onMessage.removeListener(onDevtoolsMessage)
-    backend.onMessage.removeListener(onBackendMessage)
+    userApp.onMessage.removeListener(onUserAppMessage)
     devtools?.disconnect()
-    backend?.disconnect()
+    userApp?.disconnect()
     ports[tabId] = null as unknown as PortDetail
   }
 
   devtools.onDisconnect.addListener(shutdown)
-  backend.onDisconnect.addListener(shutdown)
+  userApp.onDisconnect.addListener(shutdown)
 }
 
 chrome.runtime.onConnect.addListener((port) => {
@@ -63,16 +63,16 @@ chrome.runtime.onConnect.addListener((port) => {
     }, (res) => {
     })
   }
-  // backend (user application)
+  // userApp (user application)
   else {
     portInfo.tab = port.sender!.tab!.id!
-    portInfo.name = 'backend'
+    portInfo.name = 'userApp'
   }
 
   const tab = initPort(portInfo)
 
-  if (tab.devtools && tab.backend)
-    devtoolsBackendPipe(portInfo.tab)
+  if (tab.devtools && tab.userApp)
+    devtoolsUserAppPipe(portInfo.tab)
 
   port.onDisconnect.addListener(() => {
     console.log('----port.onDisconnect', port.name)

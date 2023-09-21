@@ -15,13 +15,16 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch & nr dev:devtools",
-    "build:devtools": "vite build",
-    "dev:devtools": "vite build --watch",
+    "dev": "tsup --watch",
     "prepublishOnly": "pnpm build"
   },
+  "dependencies": {
+    "@vue-devtools-next/app-core": "workspace:^",
+    "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/shared": "workspace:^"
+  },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.3.3",
+    "@vitejs/plugin-vue": "^4.3.4",
     "vue": "^3.3.4"
   }
 }

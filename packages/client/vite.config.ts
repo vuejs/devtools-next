@@ -7,7 +7,7 @@ export default defineConfig(mergeConfig(baseConfig, {
   base: './',
   plugins: [
     {
-      name: 'vite-plugin-copy-devtools-overlay',
+      name: 'vite-plugin-copy-devtools-client-bundle',
       apply: 'build',
       enforce: 'post',
       async closeBundle() {

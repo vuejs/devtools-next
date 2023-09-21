@@ -15,48 +15,47 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "types": "./dist/types/src/index.d.ts",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./resolver": {
-      "types": "./dist/resolver.d.ts",
-      "import": "./dist/resolver.mjs",
-      "require": "./dist/resolver.cjs"
-    },
-    "./unocss": {
-      "types": "./dist/unocss.d.ts",
-      "import": "./dist/unocss.mjs",
-      "require": "./dist/unocss.cjs"
-    },
-    "./components/*": "./dist/components/*"
+    "./theme": {
+      "types": "./dist/types/theme/index.d.ts",
+      "import": "./dist/theme.js",
+      "require": "./dist/theme.cjs"
+    }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/types/src/index.d.ts",
   "files": [
-    "dist",
-    "*.d.ts"
+    "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
+    "build": "vite build",
+    "stub": "vite build --watch",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
+  },
+  "peerDependencies": {
+    "unocss": ">=0.50.0-0",
+    "vue": ">=3.0.0-0"
   },
   "dependencies": {
-    "@unocss/core": "^0.55.7",
-    "@unocss/preset-attributify": "^0.55.7",
-    "@unocss/preset-icons": "^0.55.7",
-    "@unocss/preset-mini": "^0.55.7",
-    "@unocss/preset-uno": "^0.55.7",
-    "@unocss/reset": "^0.55.7",
     "@vueuse/components": "^10.4.1",
-    "@vueuse/core": "^10.4.1",
-    "@vueuse/integrations": "^10.4.1",
-    "focus-trap": "^7.5.2",
-    "unocss": "^0.55.7"
+    "@vueuse/core": "^10.4.0",
+    "@vueuse/integrations": "^10.4.0",
+    "focus-trap": "^7.5.2"
   },
   "devDependencies": {
-    "unplugin": "^1.5.0",
-    "unplugin-vue-components": "^0.25.2"
+    "@histoire/plugin-vue": "^0.17.1",
+    "@types/node": "^20.6.0",
+    "@vitejs/plugin-vue": "^4.3.3",
+    "colord": "^2.9.3",
+    "histoire": "^0.17.0",
+    "unplugin": "^1.4.0",
+    "unplugin-vue-components": "^0.25.1",
+    "vite-plugin-dts": "^3.5.3"
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="n-card n-card-base">
+  <div class="$ui-base border $ui-border-base rounded shadow-sm">
     <slot />
   </div>
 </template>

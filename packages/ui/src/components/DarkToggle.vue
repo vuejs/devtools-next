@@ -1,16 +1,30 @@
 <script setup lang="ts">
 import { computed, nextTick } from 'vue'
-import { useColorMode } from '@vueuse/core'
+import { useColorMode, useVModel } from '@vueuse/core'
 import { UsePreferredColorScheme as ColorScheme } from '@vueuse/components'
 
-const mode = useColorMode()
-const isDark = computed<boolean>({
-  get() {
-    return mode.value === 'dark'
+const props = withDefaults(defineProps<{
+  isDark?: boolean
+  animation?: boolean
+  animationDuration?: number
+}>(), {
+  isDark: false,
+  animation: true,
+  animationDuration: 400,
+})
+
+const isDarkModel = useVModel(props, 'isDark')
+
+const mode = useColorMode({
+  initialValue: isDarkModel.value ? 'dark' : 'light',
+  onChanged: (value) => {
+    isDarkModel.value = value === 'dark'
   },
-  set() {
-    mode.value = isDark.value ? 'light' : 'dark'
-  },
+})
+
+const isDark = computed({
+  get: () => mode.value === 'dark',
+  set: v => mode.value = v ? 'dark' : 'light',
 })
 
 // @ts-expect-error: Transition API
@@ -21,7 +35,7 @@ const isAppearanceTransition = document.startViewTransition
  * @see https://github.com/vuejs/vitepress/pull/2347
  */
 function toggle(event?: MouseEvent) {
-  if (!isAppearanceTransition || !event) {
+  if (!isAppearanceTransition || !event || !props.animation) {
     isDark.value = !isDark.value
     return
   }
@@ -48,7 +62,7 @@ function toggle(event?: MouseEvent) {
           : clipPath,
       },
       {
-        duration: 400,
+        duration: props.animationDuration,
         easing: 'ease-in',
         pseudoElement: isDark.value
           ? '::view-transition-old(root)'
@@ -65,7 +79,7 @@ const context = {
 </script>
 
 <template>
-  <ColorScheme tag="span">
+  <ColorScheme tag="span" class="$ui-dark-toggle-vtr">
     <slot v-bind="context" />
   </ColorScheme>
 </template>

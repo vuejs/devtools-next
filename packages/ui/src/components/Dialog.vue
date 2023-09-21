@@ -1,19 +1,26 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watchEffect } from 'vue'
-import { onClickOutside, useVModel } from '@vueuse/core'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import Card from './Card.vue'
+import { onKeyStroke, useScrollLock, useVModel } from '@vueuse/core'
+import { watchEffect } from 'vue'
+import Button from './Button.vue'
 
 const props = withDefaults(
   defineProps<{
     modelValue?: boolean
     dim?: boolean
+    blur?: boolean
     autoClose?: boolean
+    title?: string
+    width: string
+    height: string
   }>(),
   {
+    title: 'Dialog',
     modelValue: false,
     dim: true,
+    blur: true,
     autoClose: true,
+    width: '500px',
+    height: '300px',
   },
 )
 
@@ -23,54 +30,78 @@ const emit = defineEmits<{
 }>()
 
 const show = useVModel(props, 'modelValue', emit, { passive: true })
-const card = ref(null)
-const shown = ref(false)
 
-const { activate, deactivate } = useFocusTrap(computed(() => card.value || document.body), { immediate: false })
+const isScrollLocked = useScrollLock(() => window.document.documentElement)
+watchEffect(() => {
+  if (show.value)
+    isScrollLocked.value = true
+  else
+    isScrollLocked.value = false
+})
 
-watchEffect(
-  () => {
-    if (!shown.value && show.value)
-      shown.value = true
-
-    if (show.value && card.value)
-      nextTick(activate)
-    else
-      deactivate()
-  },
-)
-
-onClickOutside(card, () => {
-  if (props.modelValue && props.autoClose) {
+const close = () => {
+  if (show.value && props.autoClose)
     show.value = false
-    emit('close')
-  }
-}, {
-  ignore: ['a', 'button', 'summary'],
+}
+
+onKeyStroke('Escape', () => {
+  close()
 })
 </script>
 
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-}
-</script>
-
 <template>
-  <Teleport v-if="shown" to="body">
-    <div
-      v-show="show" class="n-dialog fixed inset-0 z-100 flex items-center justify-center n-transition" :class="[
-        show ? '' : 'op0 pointer-events-none visibility-none',
-      ]" role="dialog" aria-modal="true"
+  <Teleport to="body">
+    <Transition
+      enter-from-class="opacity-0 [&_.modal]:scale-95 [&_.content,&_.footer]:translate-y--10px [&_.content,&_.footer]:opacity-0"
+      enter-to-class="opacity-100 [&_.modal]:scale-100"
+      leave-from-class="opacity-100 [&_.modal]:scale-100"
+      leave-to-class="opacity-0 [&_.modal]:scale-95"
     >
       <div
-        class="absolute inset-0 -z-1" :class="[
-          dim ? 'bg-black/50' : '',
+        v-if="show" class="
+         $ui-z-max $ui-fcc w-100vw h-100vh absolute top-0 left-0
+         transition-duration-300 transition-opacity
+         $ui-bg-base absolute
+        "
+        :class="[
+          dim ? 'bg-opacity-50' : 'bg-opacity-0',
+          blur ? 'backdrop-blur-sm' : '',
         ]"
-      />
-      <Card v-bind="$attrs" ref="card" class="max-h-screen of-auto">
-        <slot />
-      </Card>
-    </div>
+      >
+        <div
+          class="modal rounded-sm relative $ui-bg-base
+        shadow-2xl transition-duration-300 transition-transform
+          max-w-[calc(100vw-100px)] max-h-[calc(100vh-100x)]
+          min-w-200px min-h-100px p24px $ui-base
+          grid grid-rows-[30px_1fr_40px] gap-10px
+        "
+          :style="{
+            width: props.width,
+            height: props.height,
+          }"
+        >
+          <div class="w-full h-30px $ui-fbc">
+            <div class="text-18px">
+              <slot name="title">
+                {{ props.title }}
+              </slot>
+            </div>
+            <div class="i-carbon-close cursor-pointer" @click="close" />
+          </div>
+          <div class="content transition-all transition-duration-300">
+            <slot />
+          </div>
+          <div class="w-full h32px footer delay-250 transition-all transition-duration-300">
+            <slot name="footer">
+              <div class="$ui-fcc">
+                <Button type="primary" @click="close">
+                  close
+                </Button>
+              </div>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </Teleport>
 </template>

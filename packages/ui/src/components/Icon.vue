@@ -5,5 +5,5 @@ defineProps<{
 </script>
 
 <template>
-  <div class="n-icon" :class="icon" />
+  <div class="$ui-base" :class="icon" />
 </template>

@@ -1,2 +1,1 @@
-export * from './resolver'
-export * from './unocss'
+export * from './components'

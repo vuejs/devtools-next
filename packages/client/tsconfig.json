@@ -5,10 +5,11 @@
     "module": "esnext",
     "lib": ["esnext", "dom"],
     "types": [
+      "vite/client",
       "vite-plugin-pages/client"
     ],
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]

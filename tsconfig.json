@@ -23,7 +23,9 @@
       "@vue-devtools-next/app-core": ["./packages/app-core/src/index.ts"],
       "@vue-devtools-next/schema": ["./packages/schema/src/index.ts"],
       "@vue-devtools-next/ui": ["./packages/ui/src/index.ts"],
+      "@vue-devtools-next/ui/theme": ["./packages/ui/theme/index.ts"],
       "@vue-devtools-next/vite": ["./packages/vite/src/index.ts"]
+
     }
   },
   "exclude": [

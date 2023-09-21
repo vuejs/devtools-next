@@ -7,13 +7,11 @@ import Unocss from 'unocss/vite'
 import VueJSX from '@vitejs/plugin-vue-jsx'
 
 export default {
-
   resolve: {
     alias: {
-      '~/': `${resolve(__dirname)}/`,
+      '~/': `${resolve(__dirname)}/src/`,
     },
   },
-
   plugins: [
     {
       name: 'local-object-transform',
@@ -30,14 +28,14 @@ export default {
       pagesDir: 'pages',
     }),
     Components({
-      dirs: ['components'],
+      dirs: ['./src/components'],
       dts: join(__dirname, 'components.d.ts'),
     }),
     Unocss(),
     AutoImport({
       dirs: [
-        './utils',
-        './composables',
+        './src/utils',
+        './src/composables',
       ],
       dts: join(__dirname, 'auto-imports.d.ts'),
       imports: [

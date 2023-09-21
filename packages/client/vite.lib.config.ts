@@ -4,13 +4,14 @@ import fse from 'fs-extra'
 import baseConfig from './vite.base.config'
 
 export default defineConfig(mergeConfig(baseConfig, {
+
   define: {
     'process.env': process.env,
   },
   build: {
     emptyOutDir: false,
     lib: {
-      entry: resolve(__dirname, 'index.ts'),
+      entry: resolve(__dirname, './src/index.ts'),
       name: 'devtoolsPanel',
       fileName: () => 'devtools-panel.js',
       formats: ['es'],

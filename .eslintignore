@@ -2,6 +2,7 @@ dist
 node_modules
 ci.yml
 release.yml
+**.svg
 packages/browser-extension/overlay/*
 packages/vite/src/overlay/*
 packages/browser-extension/client/*

@@ -1,5 +1,5 @@
-import { unoConfig } from '@vue-devtools-next/ui/theme'
 import { defineConfig, mergeConfigs, presetAttributify } from 'unocss'
+import { unoConfig } from '../ui/theme/index'
 
 export default defineConfig(mergeConfigs([unoConfig, {
   shortcuts: {

@@ -10,8 +10,6 @@ export default {
   resolve: {
     alias: {
       '~/': `${resolve(__dirname)}/src/`,
-      '@vue-devtools-next/ui/theme': resolve(__dirname, '../ui/theme/index'),
-      '@vue-devtools-next/ui': resolve(__dirname, '../ui/src/index'),
     },
   },
   plugins: [

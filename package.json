@@ -39,7 +39,7 @@
     "build:vite": "nr -C packages/vite build",
     "dev:browser-extension": "nr -C packages/browser-extension dev",
     "dev:start": "nr stub:shared && nr stub:ui && nr stub:core && nr stub:app-core && nr stub:vite & nr stub:overlay & nr stub:client",
-    "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" nr -C packages/schema prepare && nr -C packages/ui build && pnpm -r --parallel --filter='./packages/**' run stub",
+    "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" nr -C packages/schema prepare && pnpm -r --parallel --filter='./packages/**' run stub",
     "build": "pnpm -r --filter='./packages/**' run build",
     "build:browser-extension": "nr -C packages/browser-extension build",
     "lint": "eslint .",

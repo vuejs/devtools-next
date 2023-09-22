@@ -25,7 +25,7 @@ export default {
     Vue(),
     VueJSX(),
     Pages({
-      pagesDir: 'pages',
+      pagesDir: 'src/pages',
     }),
     Components({
       dirs: ['./src/components'],

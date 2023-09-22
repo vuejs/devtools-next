@@ -8,4 +8,7 @@ export default defineConfig({
     vue(),
     VueDevtools(),
   ],
+  server: {
+    port: 3000,
+  },
 })

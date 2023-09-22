@@ -124,6 +124,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:*
         version: link:../core
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@vue-devtools-next/ui':
         specifier: workspace:*
         version: link:../ui

@@ -10,7 +10,7 @@ import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
 
-// import './styles/main.css'
+import '~/assets/styles/main.css'
 import 'uno.css'
 
 async function connectApp(app, shell) {

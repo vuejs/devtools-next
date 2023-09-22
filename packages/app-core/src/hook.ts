@@ -1,5 +1,6 @@
 import { target } from '@vue-devtools-next/shared'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
+import type { App } from 'vue'
 
 export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
@@ -46,7 +47,10 @@ function collectHookBuffer() {
   const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
   const collectEvents = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
   // app init hook
-  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app, version) => {
+  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app: App & { _instance: { type: { devtools: { hide: boolean } } } }, version: string) => {
+    if (app?._instance?.type?.devtools?.hide)
+      return
+
     hook.appRecords.push({
       id: hook.appRecords.length,
       app,

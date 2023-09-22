@@ -33,7 +33,9 @@ export async function initDevTools(shell) {
 
   app.use(router)
   app.use(FloatingVue)
-  app.use(createDevToolsVuePlugin())
+  app.use(createDevToolsVuePlugin({
+    bridge: Bridge.value,
+  }))
   app.mount('#app')
   Bridge.value.emit(BridgeEvents.CLIENT_READY)
 }

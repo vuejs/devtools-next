@@ -26,4 +26,7 @@ const router = createRouter({
 
 app.use(router)
 app.use(pinia)
-app.mount('#app')
+
+setTimeout(() => {
+  app.mount('#app')
+}, 2000)

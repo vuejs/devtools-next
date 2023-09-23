@@ -8,6 +8,7 @@ interface AppRecord {
 }
 
 export enum DevToolsHooks {
+  // internal
   APP_INIT = 'app:init',
   APP_UNMOUNT = 'app:unmount',
   COMPONENT_UPDATED = 'component:updated',
@@ -30,5 +31,6 @@ export interface DevtoolsHook {
   once: (event: DevToolsHooks, handler: Function) => void
   off: (event: DevToolsHooks, handler: Function) => void
   appRecords: AppRecord[]
+  apps: Record<number, { componentCount: number }>
   cleanupBuffer?: (matchArg: unknown) => boolean
 }

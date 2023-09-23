@@ -2,11 +2,13 @@ import { target } from '@vue-devtools-next/shared'
 
 export interface DevToolsContext {
   connected: boolean
+  componentCount: number
 }
 
 export function createDevToolsContext(): DevToolsContext {
   return {
     connected: false,
+    componentCount: 0,
   }
 }
 

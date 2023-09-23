@@ -9,17 +9,29 @@ export interface DevToolsPluginOptions {
 }
 
 function initDevToolsContext(bridge: DevToolsPluginOptions['bridge']) {
+  // @TODO: bug fixes
   const connected = ref(!!target.__VUE_DEVTOOLS_CTX__?.connected)
+  const componentCount = ref(target.__VUE_DEVTOOLS_CTX__?.componentCount)
+
+  // app connected
   bridge.on(BridgeEvents.APP_CONNECTED, () => {
     connected.value = true
   })
+
+  // component count updated
+  bridge.on(BridgeEvents.COMPONENT_COUNT_UPDDATED, (count) => {
+    // @TODO: bridge event type
+    componentCount.value = count as number
+  })
+
   return {
     connected,
+    componentCount,
   }
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<InstanceType<typeof Bridge>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsContextSymbol: InjectionKey<{ connected: Ref<boolean> }> = Symbol('VueDevToolsContextSymbol')
+const VueDevToolsContextSymbol: InjectionKey<{ connected: Ref<boolean>; componentCount: Ref<number> }> = Symbol('VueDevToolsContextSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

@@ -1,6 +1,10 @@
 import { target } from '@vue-devtools-next/shared'
-import { DevToolsHooks } from '@vue-devtools-next/schema'
+import { BridgeEvents, DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
+import { Bridge } from './bridge'
+import { createDevToolsContext } from './context'
+
+ type HookAppInstance = App & { _instance: { type: { devtools: { hide: boolean } } } }
 
 export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
@@ -8,6 +12,7 @@ export function createDevToolsHook() {
   // @TODO: override directly ?
   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
     appRecords: [],
+    apps: {},
     events: new Map<DevToolsHooks, Function[]>(),
     on(event, fn) {
       if (!this.events.has(event))
@@ -42,17 +47,34 @@ export function createDevToolsHook() {
   return target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 }
 
+function updateComponentCount(options: { id: number;type: 'add' | 'remove' }, cb?: (count: number) => void) {
+  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  const { id, type } = options
+  hook.apps[id] ??= {
+    componentCount: 0,
+  }
+  const targetApp = hook.apps[id]
+
+  if (type === 'add')
+    targetApp.componentCount++
+  else
+    targetApp.componentCount--
+
+  target.__VUE_DEVTOOLS_CTX__.componentCount = targetApp.componentCount
+  cb?.(targetApp.componentCount)
+}
+
 function collectHookBuffer() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
   const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
   const collectEvents = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
   // app init hook
-  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app: App & { _instance: { type: { devtools: { hide: boolean } } } }, version: string) => {
+  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app: HookAppInstance, version: string) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
     hook.appRecords.push({
-      id: hook.appRecords.length,
+      id: app._uid,
       app,
       version,
     })
@@ -60,9 +82,16 @@ function collectHookBuffer() {
   })
 
   // component added hook
-  const componentAddedCleanup = hook.on(DevToolsHooks.COMPONENT_ADDED, (...args) => {
+  const componentAddedCleanup = hook.on(DevToolsHooks.COMPONENT_ADDED, (app: HookAppInstance) => {
+    if (app?._instance?.type?.devtools?.hide)
+      return
+
+    updateComponentCount({ id: app._uid, type: 'add' }, (count) => {
+      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDDATED, count)
+    })
+
     hookBuffer.push([DevToolsHooks.COMPONENT_ADDED, {
-      ...args,
+      app,
     }])
   })
 
@@ -74,9 +103,15 @@ function collectHookBuffer() {
   })
 
   // component removed hook
-  const componentRemovedCleanup = hook.on(DevToolsHooks.COMPONENT_REMOVED, (...args) => {
+  const componentRemovedCleanup = hook.on(DevToolsHooks.COMPONENT_REMOVED, (app: HookAppInstance) => {
+    if (app?._instance?.type?.devtools?.hide)
+      return
+
+    updateComponentCount({ id: app._uid, type: 'remove' }, (count) => {
+      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDDATED, count)
+    })
     hookBuffer.push([DevToolsHooks.COMPONENT_REMOVED, {
-      ...args,
+      app,
     }])
   })
 
@@ -97,10 +132,12 @@ function collectHookBuffer() {
   // @TODO: handle dynamic router
 }
 
+// @TODO: rename function name
 export function initDevToolsHook() {
   createDevToolsHook()
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__ ??= []
+  target.__VUE_DEVTOOLS_CTX__ = createDevToolsContext()
   collectHookBuffer()
 }
 

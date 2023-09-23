@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue-devtools-next/shared'
+import { useDevToolsContext } from '@vue-devtools-next/app-core'
 
 // @TODO: chore ui style and import path
 import { VueButton } from '../../../ui/src/index'
+
+const { componentCount } = useDevToolsContext()
+console.log(componentCount.value)
 </script>
 
 <template>
@@ -43,7 +47,7 @@ import { VueButton } from '../../../ui/src/index'
       </RouterLink>
       <RouterLink flex="~ col auto" to="/components" replace min-w-40 p4 theme-card-lime>
         <div i-carbon-assembly-cluster text-3xl />
-        <div>10 components</div>
+        <div>{{ componentCount }} components</div>
       </RouterLink>
     </div>
     <div flex="~ gap-6 wrap" mt-5 items-center justify-center>

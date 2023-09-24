@@ -87,7 +87,7 @@ function collectHookBuffer() {
       return
 
     updateComponentCount({ id: app._uid, type: 'add' }, (count) => {
-      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDDATED, count)
+      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
     })
 
     hookBuffer.push([DevToolsHooks.COMPONENT_ADDED, {
@@ -108,7 +108,7 @@ function collectHookBuffer() {
       return
 
     updateComponentCount({ id: app._uid, type: 'remove' }, (count) => {
-      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDDATED, count)
+      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
     })
     hookBuffer.push([DevToolsHooks.COMPONENT_REMOVED, {
       app,

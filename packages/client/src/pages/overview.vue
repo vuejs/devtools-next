@@ -6,7 +6,6 @@ import { useDevToolsContext } from '@vue-devtools-next/app-core'
 import { VueButton } from '../../../ui/src/index'
 
 const { componentCount } = useDevToolsContext()
-console.log(componentCount.value)
 </script>
 
 <template>

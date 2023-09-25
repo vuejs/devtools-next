@@ -21,6 +21,12 @@ function sendMessageToDevTools(e) {
 
 port.onMessage.addListener(sendMessageToUserApp)
 window.addEventListener('message', sendMessageToDevTools)
+port.onDisconnect.addListener(() => {
+  window.removeEventListener('message', sendMessageToDevTools)
+  sendMessageToUserApp({
+    event: 'shutdown',
+  })
+})
 
 sendMessageToUserApp({
   event: 'init',

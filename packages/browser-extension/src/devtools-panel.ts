@@ -1,28 +1,45 @@
 import { Bridge } from '../../app-core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
 
+const connectionInfo: {
+  retryTimer: NodeJS.Timeout | null
+  count: number
+} = {
+  retryTimer: null,
+  count: 0,
+}
+
 initDevTools({
   connect(cb) {
     injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
       let port: chrome.runtime.Port
 
+      const listeners: Function[] = []
+
       // connect to background to setup proxy
       function connect() {
-        // @TODO: add retry logic
-        port = chrome.runtime.connect({
-          name: `${chrome.devtools.inspectedWindow.tabId}`,
-        })
-        port.onDisconnect.addListener(() => {
-          console.log('port.onDisconnect')
-        })
+        try {
+          clearTimeout(connectionInfo.retryTimer!)
+
+          // @TODO: add retry logic
+          port = chrome.runtime.connect({
+            name: `${chrome.devtools.inspectedWindow.tabId}`,
+          })
+
+          port.onDisconnect.addListener(() => {
+            connectionInfo.retryTimer = setTimeout(connect, 1000)
+          })
+        }
+        catch (e) {
+          connectionInfo.retryTimer = setTimeout(connect, 5000)
+        }
       }
       connect()
 
       const bridge = new Bridge({
-        tracker(fn) {
-          port.onMessage.addListener((e) => {
-            fn(e)
-          })
+        tracker(fn: any) {
+          port.onMessage.addListener(fn)
+          listeners.push(fn)
         },
         trigger(data) {
           port.postMessage(data)
@@ -31,6 +48,9 @@ initDevTools({
 
       cb(bridge)
     })
+  },
+  reload(fn) {
+    chrome.devtools.network.onNavigated.addListener(fn)
   },
 })
 

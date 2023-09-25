@@ -32,6 +32,8 @@ function devtoolsUserAppPipe(tabId: string | number) {
   userApp.onMessage.addListener(onUserAppMessage)
 
   function shutdown() {
+    if (!ports[tabId])
+      return
     const { devtools, userApp } = ports[tabId]
     devtools.onMessage.removeListener(onDevtoolsMessage)
     userApp.onMessage.removeListener(onUserAppMessage)
@@ -73,8 +75,4 @@ chrome.runtime.onConnect.addListener((port) => {
 
   if (tab.devtools && tab.userApp)
     devtoolsUserAppPipe(portInfo.tab)
-
-  port.onDisconnect.addListener(() => {
-    console.log('----port.onDisconnect', port.name)
-  })
 })

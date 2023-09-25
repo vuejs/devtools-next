@@ -23,6 +23,8 @@ async function connectApp(app, shell) {
       Bridge.value = bridge
       resolve()
     })
+    shell.reload(() => {
+    })
   })
 }
 

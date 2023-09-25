@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { Bridge, BridgeRpc, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
+import { Bridge, BridgeRpc, HandShakeServer, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import App from './App.vue'
 import Overview from '~/pages/overview.vue'
@@ -30,18 +30,20 @@ export async function initDevTools(shell) {
   const app = createApp(App)
   await connectApp(app, shell)
   BridgeRpc.onDataFromUserApp()
-  const router = createRouter({
-    history: createMemoryHistory(),
-    routes,
-  })
+  new HandShakeServer(Bridge.value).onnConnect().then(() => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes,
+    })
 
-  app.use(router)
-  app.use(FloatingVue)
-  app.use(createDevToolsVuePlugin({
-    bridge: Bridge.value,
-  }))
-  app.mount('#app')
-  Bridge.value.emit(BridgeEvents.CLIENT_READY)
+    app.use(router)
+    app.use(FloatingVue)
+    app.use(createDevToolsVuePlugin({
+      bridge: Bridge.value,
+    }))
+    app.mount('#app')
+    Bridge.value.emit(BridgeEvents.CLIENT_READY)
+  })
 }
 
 window.addEventListener('message', (event) => {

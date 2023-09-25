@@ -9,8 +9,8 @@ import { createDevToolsContext } from './context'
 export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
 export function createDevToolsHook() {
-  // @TODO: override directly ?
-  target.__VUE_DEVTOOLS_GLOBAL_HOOK__ ??= {
+  // override directly
+  target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = {
     appRecords: [],
     apps: {},
     events: new Map<DevToolsHooks, Function[]>(),

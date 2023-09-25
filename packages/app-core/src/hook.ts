@@ -133,7 +133,7 @@ function collectHookBuffer() {
 }
 
 // @TODO: rename function name
-export function initDevToolsHook() {
+export function initDevTools() {
   createDevToolsHook()
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__ ??= []

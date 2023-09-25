@@ -8,6 +8,8 @@ const { connected } = useDevToolsContext()
 watch(connected, (v) => {
   if (v)
     router.replace('/overview')
+}, {
+  immediate: true,
 })
 </script>
 

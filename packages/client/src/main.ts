@@ -2,16 +2,19 @@ import { createApp } from 'vue'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import routes from 'virtual:generated-pages'
 import { Bridge, BridgeRpc, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
 import { BridgeEvents } from '@vue-devtools-next/schema'
-
 import App from './App.vue'
+import Overview from '~/pages/overview.vue'
 
 import '@unocss/reset/tailwind.css'
 
 import '~/assets/styles/main.css'
 import 'uno.css'
+
+const routes = [
+  { path: '/overview', component: Overview },
+]
 
 async function connectApp(app, shell) {
   return new Promise<void>((resolve) => {

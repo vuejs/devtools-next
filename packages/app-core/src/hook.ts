@@ -87,7 +87,8 @@ function collectHookBuffer() {
       return
 
     updateComponentCount({ id: app._uid, type: 'add' }, (count) => {
-      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
+      target.__VUE_DEVTOOLS_CTX__.componentCount = count
+      Bridge.value?.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
     })
 
     hookBuffer.push([DevToolsHooks.COMPONENT_ADDED, {
@@ -108,7 +109,8 @@ function collectHookBuffer() {
       return
 
     updateComponentCount({ id: app._uid, type: 'remove' }, (count) => {
-      Bridge.value.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
+      target.__VUE_DEVTOOLS_CTX__.componentCount = count
+      Bridge.value?.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
     })
     hookBuffer.push([DevToolsHooks.COMPONENT_REMOVED, {
       app,
@@ -132,7 +134,6 @@ function collectHookBuffer() {
   // @TODO: handle dynamic router
 }
 
-// @TODO: rename function name
 export function initDevTools() {
   createDevToolsHook()
   target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__ ??= []

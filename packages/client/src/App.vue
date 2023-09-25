@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useDevToolsContext } from '@vue-devtools-next/app-core'
 
-useDark()
+// @TODO: fix browser extension cross-origin localStorage issue
+useColorMode()
 const router = useRouter()
 const { connected } = useDevToolsContext()
 

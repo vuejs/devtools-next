@@ -5,17 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <title>Vue DevTools Client</title>
+  <script src="/color-scheme.js"></script>
 </head>
 <body>
   <div id="app"></div>
-  <script>
-    (function () {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      const setting = localStorage.getItem('color-schema') || 'auto'
-      if (setting === 'dark' || (prefersDark && setting !== 'light'))
-        document.documentElement.classList.toggle('dark', true)
-    })()
-  </script>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

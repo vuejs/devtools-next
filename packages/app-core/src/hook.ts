@@ -1,7 +1,7 @@
 import { target } from '@vue-devtools-next/shared'
-import { BridgeEvents, DevToolsHooks } from '@vue-devtools-next/schema'
+import type { AppRecord } from '@vue-devtools-next/schema'
+import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
-import { Bridge } from './bridge'
 import { createDevToolsContext } from './context'
 
  type HookAppInstance = App & { _instance: { type: { devtools: { hide: boolean } } } }
@@ -47,23 +47,6 @@ export function createDevToolsHook() {
   return target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 }
 
-function updateComponentCount(options: { id: number;type: 'add' | 'remove' }, cb?: (count: number) => void) {
-  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
-  const { id, type } = options
-  hook.apps[id] ??= {
-    componentCount: 0,
-  }
-  const targetApp = hook.apps[id]
-
-  if (type === 'add')
-    targetApp.componentCount++
-  else
-    targetApp.componentCount--
-
-  target.__VUE_DEVTOOLS_CTX__.componentCount = targetApp.componentCount
-  cb?.(targetApp.componentCount)
-}
-
 function collectHookBuffer() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
   const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
@@ -86,11 +69,6 @@ function collectHookBuffer() {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    updateComponentCount({ id: app._uid, type: 'add' }, (count) => {
-      target.__VUE_DEVTOOLS_CTX__.componentCount = count
-      Bridge.value?.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
-    })
-
     hookBuffer.push([DevToolsHooks.COMPONENT_ADDED, {
       app,
     }])
@@ -108,10 +86,6 @@ function collectHookBuffer() {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    updateComponentCount({ id: app._uid, type: 'remove' }, (count) => {
-      target.__VUE_DEVTOOLS_CTX__.componentCount = count
-      Bridge.value?.emit(BridgeEvents.COMPONENT_COUNT_UPDATED, count)
-    })
     hookBuffer.push([DevToolsHooks.COMPONENT_REMOVED, {
       app,
     }])
@@ -144,9 +118,9 @@ export function initDevTools() {
 
 export function checkVueAppInitialized() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
-  return new Promise<void>((resolve, reject) => {
+  return new Promise<AppRecord>((resolve, reject) => {
     if (hook.appRecords.length) {
-      resolve()
+      resolve(hook.appRecords[0])
     }
     else {
       const timer = setInterval(() => {
@@ -154,7 +128,7 @@ export function checkVueAppInitialized() {
 
         if (hook.appRecords.length) {
           clearInterval(timer)
-          resolve()
+          resolve(hook.appRecords[0])
         }
       }, 200)
 

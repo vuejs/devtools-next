@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 
-interface AppRecord {
+export interface AppRecord {
   id: number
   app: App
   version: string

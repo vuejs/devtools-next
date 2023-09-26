@@ -2,7 +2,6 @@ import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import type { BridgeInstanceType } from './bridge'
-import { BridgeRpc } from './bridge'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -11,6 +10,7 @@ export interface DevToolsPluginOptions {
 function initDevToolsContext() {
   const connected = ref(false)
   const componentCount = ref(0)
+  const vueVersion = ref('')
 
   function initBridge(bridge: DevToolsPluginOptions['bridge']) {
     // app connected
@@ -18,19 +18,28 @@ function initDevToolsContext() {
       connected.value = state
     })
 
-    // component count updated
-    bridge.on(BridgeEvents.COMPONENT_COUNT_UPDATED, (count) => {
-    // @TODO: bridge event type
-      componentCount.value = count as number
-    })
-    BridgeRpc.getDataFromUserApp<{ data: { connected: boolean;componentCount: number } }>({ type: 'context' }).then((res) => {
-      connected.value = res.data.connected
-      componentCount.value = res.data.componentCount
+    // @TODO: types and may need a reactivity cross-messaging way ?
+    bridge.on(BridgeEvents.UPDATE_DEVTOOLS_CONTEXT, (params) => {
+      const { keys, values } = params
+      keys.forEach((key) => {
+        switch (key) {
+          case 'connected':
+            connected.value = values.connected
+            break
+          case 'componentCount':
+            componentCount.value = values.componentCount
+            break
+          case 'activeAppVueVersion':
+            vueVersion.value = values.activeAppVueVersion
+            break
+        }
+      })
     })
   }
 
   return {
     initBridge,
+    vueVersion,
     connected,
     componentCount,
   }

@@ -5,7 +5,7 @@ import { useDevToolsContext } from '@vue-devtools-next/app-core'
 // @TODO: chore ui style and import path
 import { VueButton } from '../../../ui/src/index'
 
-const { componentCount } = useDevToolsContext()
+const { vueVersion } = useDevToolsContext()
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const { componentCount } = useDevToolsContext()
           <span op40>
             Vue DevTools
           </span>
-          <code op40>v3.3.4</code>
+          <code op40>v0.0.1</code>
         </div>
       </div>
 
@@ -37,7 +37,7 @@ const { componentCount } = useDevToolsContext()
       <div flex="~ gap2 wrap">
         <div p4 theme-card-green flex="~ col auto">
           <div i-logos-vue text-3xl />
-          <code>v3.3.4</code>
+          <code>v{{ vueVersion }}</code>
         </div>
         <RouterLink flex="~ col auto" to="/pages" replace min-w-40 p4 theme-card-lime>
           <div i-carbon-tree-view-alt text-3xl />
@@ -45,7 +45,7 @@ const { componentCount } = useDevToolsContext()
         </RouterLink>
         <RouterLink flex="~ col auto" to="/components" replace min-w-40 p4 theme-card-lime>
           <div i-carbon-assembly-cluster text-3xl />
-          <div>{{ componentCount }} components</div>
+          <div>3 components</div>
         </RouterLink>
       </div>
       <div flex="~ gap-6 wrap" mt-5 items-center justify-center>

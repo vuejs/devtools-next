@@ -2,3 +2,7 @@
 html.dark {
   color-scheme: dark;
 }
+
+body {
+  font-size: 16px;
+}

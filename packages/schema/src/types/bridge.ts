@@ -1,7 +1,7 @@
 export enum BridgeEvents {
+  UPDATE_DEVTOOLS_CONTEXT = 'update-devtools-context',
   // user app
   APP_CONNECTED = 'user-app:connected',
-  COMPONENT_COUNT_UPDATED = 'user-app:component-count-updated',
   GET_USER_APP_DATA_REQUEST = 'user-app:get-data-request',
   GET_USER_APP_DATA_RESPONSE = 'user-app:get-data-response',
   // devtools client

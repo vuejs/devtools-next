@@ -1,4 +1,4 @@
-import { defineConfig, mergeConfigs, presetAttributify, presetIcons } from 'unocss'
+import { defineConfig, mergeConfigs, presetAttributify } from 'unocss'
 import { unoConfig } from '../ui/theme/index'
 
 export default defineConfig(mergeConfigs([unoConfig, {
@@ -32,13 +32,5 @@ export default defineConfig(mergeConfigs([unoConfig, {
   ],
   presets: [
     presetAttributify(),
-    presetIcons({
-      prefix: ['i-'],
-      scale: 1.2,
-      extraProperties: {
-        'display': 'inline-block',
-        'vertical-align': 'middle',
-      },
-    }),
   ],
 }]))

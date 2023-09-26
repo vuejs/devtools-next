@@ -16,6 +16,19 @@ const routes = [
   { path: '/overview', component: Overview },
 ]
 
+async function reload(app, shell) {
+  Bridge.value.emit(BridgeEvents.APP_CONNECTED, false)
+  Bridge.value.removeAllListeners()
+  shell.connect((bridge) => {
+    Bridge.value = bridge
+    BridgeRpc.onDataFromUserApp()
+    new HandShakeServer(Bridge.value).onnConnect().then(() => {
+      app.config.globalProperties.__UPDATE_VUE_DEVTOOLS__(Bridge.value)
+      Bridge.value.emit(BridgeEvents.CLIENT_READY)
+    })
+  })
+}
+
 async function connectApp(app, shell) {
   return new Promise<void>((resolve) => {
     shell.connect((bridge) => {
@@ -24,6 +37,7 @@ async function connectApp(app, shell) {
       resolve()
     })
     shell.reload(() => {
+      reload(app, shell)
     })
   })
 }

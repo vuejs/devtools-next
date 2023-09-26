@@ -4,9 +4,11 @@ import { initDevTools } from '../client/devtools-panel'
 const connectionInfo: {
   retryTimer: NodeJS.Timeout | null
   count: number
+  disconnected: boolean
 } = {
   retryTimer: null,
   count: 0,
+  disconnected: false,
 }
 
 initDevTools({
@@ -14,23 +16,28 @@ initDevTools({
     injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
       let port: chrome.runtime.Port
 
-      const listeners: Function[] = []
+      const listeners: Array<() => void> = []
 
       // connect to background to setup proxy
       function connect() {
         try {
           clearTimeout(connectionInfo.retryTimer!)
-
+          connectionInfo.count++
           // @TODO: add retry logic
           port = chrome.runtime.connect({
             name: `${chrome.devtools.inspectedWindow.tabId}`,
           })
 
+          connectionInfo.disconnected = false
           port.onDisconnect.addListener(() => {
+            connectionInfo.disconnected = true
             connectionInfo.retryTimer = setTimeout(connect, 1000)
           })
+          if (connectionInfo.count > 1)
+            listeners.forEach(fn => port.onMessage.addListener(fn))
         }
         catch (e) {
+          connectionInfo.disconnected = true
           connectionInfo.retryTimer = setTimeout(connect, 5000)
         }
       }
@@ -42,7 +49,9 @@ initDevTools({
           listeners.push(fn)
         },
         trigger(data) {
-          port.postMessage(data)
+          if (connectionInfo.disconnected)
+            return
+          port?.postMessage(data)
         },
       })
 

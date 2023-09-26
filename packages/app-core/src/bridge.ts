@@ -66,6 +66,10 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
     })
     this._emit(eventName, data)
   }
+
+  public removeAllListeners(): void {
+    this.emitter.all.clear()
+  }
 }
 
 export class BridgeRpc {

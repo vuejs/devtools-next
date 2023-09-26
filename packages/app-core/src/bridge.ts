@@ -8,6 +8,8 @@ export interface BridgeAdapterOptions {
   trigger: (data: Record<string, any>) => void
 }
 
+export type BridgeInstanceType = InstanceType<typeof Bridge>
+
 // @TODO: add unit tests
 export class Bridge<Events extends Record<EventType, any>, Key extends keyof Events> {
   private emitter: Emitter<Events>

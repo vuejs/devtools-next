@@ -1,11 +1,11 @@
 import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import { BridgeEvents } from '@vue-devtools-next/schema'
-import type { Bridge } from './bridge'
+import type { BridgeInstanceType } from './bridge'
 import { BridgeRpc } from './bridge'
 
 export interface DevToolsPluginOptions {
-  bridge: InstanceType<typeof Bridge>
+  bridge: BridgeInstanceType
 }
 
 function initDevToolsContext() {
@@ -36,7 +36,7 @@ function initDevToolsContext() {
   }
 }
 
-const VueDevToolsBridgeSymbol: InjectionKey<Ref<InstanceType<typeof Bridge>>> = Symbol('VueDevToolsBridgeSymbol')
+const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
 const VueDevToolsContextSymbol: InjectionKey<{ connected: Ref<boolean>; componentCount: Ref<number> }> = Symbol('VueDevToolsContextSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {

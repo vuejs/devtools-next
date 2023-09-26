@@ -1,4 +1,4 @@
-import type { Bridge } from './bridge'
+import type { BridgeInstanceType } from './bridge'
 
 export enum HandShakeEvents {
   SYN = 'syn',
@@ -8,15 +8,15 @@ export enum HandShakeEvents {
 
 class HandShake {
   public connected = false
-  public socket: InstanceType<typeof Bridge>
+  public socket: BridgeInstanceType
 
-  constructor(bridge: InstanceType<typeof Bridge>) {
+  constructor(bridge: BridgeInstanceType) {
     this.socket = bridge
   }
 }
 
 export class HandShakeClient extends HandShake {
-  constructor(bridge: InstanceType<typeof Bridge>) {
+  constructor(bridge: BridgeInstanceType) {
     super(bridge)
   }
 
@@ -37,7 +37,7 @@ export class HandShakeClient extends HandShake {
 }
 
 export class HandShakeServer extends HandShake {
-  constructor(bridge: InstanceType<typeof Bridge>) {
+  constructor(bridge: BridgeInstanceType) {
     super(bridge)
   }
 

@@ -23,7 +23,6 @@ initDevTools({
         try {
           clearTimeout(connectionInfo.retryTimer!)
           connectionInfo.count++
-          // @TODO: add retry logic
           port = chrome.runtime.connect({
             name: `${chrome.devtools.inspectedWindow.tabId}`,
           })

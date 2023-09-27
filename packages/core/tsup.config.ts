@@ -1,9 +1,10 @@
 import type { Options } from 'tsup'
 
 export default <Options>{
-  entryPoints: [
-    'src/index.ts',
-  ],
+  entry: {
+    index: 'src/index.ts',
+    vue: 'src/vue/index.ts',
+  },
   esbuildOptions(options) {
     if (options.format === 'esm')
       options.outExtension = { '.js': '.mjs' }

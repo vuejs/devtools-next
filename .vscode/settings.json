@@ -5,6 +5,7 @@
   },
   "editor.formatOnSave": false,
   "unocss.root": [
-    "packages/ui"
+    "packages/ui",
+    "packages/client"
   ]
 }

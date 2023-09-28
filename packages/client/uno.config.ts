@@ -19,6 +19,20 @@ export default defineConfig(mergeConfigs([unoConfig, {
       'background-size': '40px 40px',
     }],
   ],
+  variants: [
+    {
+      name: '@active',
+      match(matcher) {
+        if (!matcher.startsWith('@active'))
+          return matcher
+
+        return {
+          matcher: matcher.slice(8),
+          selector: s => `${s}.active`,
+        }
+      },
+    },
+  ],
   shortcuts: [{
     // general
     'bg-base': 'bg-white dark:bg-black',
@@ -27,6 +41,9 @@ export default defineConfig(mergeConfigs([unoConfig, {
     // panel grids
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',
     'panel-grids-center': 'panel-grids flex flex-col h-full gap-2 items-center justify-center',
+
+    // components
+    'tree-node-selectable-item': 'flex items-center gap-2 px-2 py-1 rounded cursor-pointer bg-base hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 [ & > span]:text-white)',
   },
   [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border border-base bg-base items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`],
   ],

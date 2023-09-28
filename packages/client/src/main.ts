@@ -6,6 +6,7 @@ import { Bridge, BridgeRpc, HandShakeServer, createDevToolsVuePlugin } from '@vu
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import App from './App.vue'
 import Overview from '~/pages/overview.vue'
+import Components from '~/pages/components.vue'
 
 import '@unocss/reset/tailwind.css'
 
@@ -14,6 +15,7 @@ import 'uno.css'
 
 const routes = [
   { path: '/overview', component: Overview },
+  { path: '/components', component: Components },
 ]
 
 async function reload(app, shell) {

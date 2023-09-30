@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { App, ComponentInternalInstance } from 'vue'
 
 export interface AppRecord {
   id: number
@@ -33,4 +33,13 @@ export interface DevtoolsHook {
   appRecords: AppRecord[]
   apps: Record<number, { componentCount: number }>
   cleanupBuffer?: (matchArg: unknown) => boolean
+}
+
+export type VueAppInstance = ComponentInternalInstance & {
+  type: {
+    _componentTag: string | undefined
+    components: Record<string, ComponentInternalInstance['type']>
+    __VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__: string
+  }
+  parent: VueAppInstance
 }

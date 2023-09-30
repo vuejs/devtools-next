@@ -4,18 +4,23 @@ import { Pane, Splitpanes } from 'splitpanes'
 const tree = [
   {
     name: 'App',
+    id: 'root',
     children: [
       {
         name: 'Home',
+        id: 'home',
       },
       {
         name: 'About',
+        id: 'about',
         children: [
           {
             name: 'Header',
+            id: 'header',
           },
           {
             name: 'Footer',
+            id: 'footer',
           },
         ],
       },

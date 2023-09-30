@@ -20,6 +20,17 @@ export default defineConfig(mergeConfigs([unoConfig, {
     }],
   ],
   variants: [
+    // @children:[span]:bg-red => .@children\:\[span\]\:bg-red > span { bg-red }
+    (input: string) => {
+      const prefix = '@children:'
+      const reg = /(@children:)\[(.*)\]:(.*)$/
+      if (input.startsWith(prefix)) {
+        return {
+          matcher: input.replace(reg, '$3'),
+          selector: s => `${s} > ${input.replace(reg, '$2')}`,
+        }
+      }
+    },
     {
       name: '@active',
       match(matcher) {
@@ -42,8 +53,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',
     'panel-grids-center': 'panel-grids flex flex-col h-full gap-2 items-center justify-center',
 
-    // components
-    'tree-node-selectable-item': 'flex items-center gap-2 px-2 py-1 rounded cursor-pointer bg-base hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 [ & > span]:text-white)',
+    'selectable-item': 'flex items-center gap-2 px-2 py-1 rounded cursor-pointer bg-base hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
   },
   [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border border-base bg-base items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`],
   ],

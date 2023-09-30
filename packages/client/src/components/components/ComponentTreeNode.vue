@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div tree-node-selectable-item class="active [&>span]:(text-primary-400) [&.active>span]:(text-white)">
-    <span>
+  <div class="selectable-item [&.active>span]:(text-white) group active">
+    <span text-primary-400 group-hover:text-white>
       App
     </span>
   </div>

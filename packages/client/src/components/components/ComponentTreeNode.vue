@@ -23,16 +23,16 @@ function select() {
 
 <template>
   <div
-    class="selectable-item [&.active>span,&.active>i]:(text-white) group"
+    class="selectable-item group"
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
     :class="{ active: selectedComponent === data.id }"
     @click="select"
   >
     <!-- expand-icon -->
-    <ExpandIcon v-if="data.children" :value="isExpanded" group-hover:text-white @click.prevent.stop="toggleExpanded" />
+    <ExpandIcon v-if="data.children" :value="isExpanded" group-hover:text-white class="[.active_&]:text-white" @click.prevent.stop="toggleExpanded" />
     <i v-else inline-block h-6 w-6 />
     <!-- component name -->
-    <span text-primary-400 group-hover:text-white>
+    <span text-primary-400 group-hover:text-white class="[.active_&]:text-white">
       {{ data.name }}
     </span>
   </div>

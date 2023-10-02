@@ -22,6 +22,6 @@ export class ComponentFilter {
   }
 }
 
-export function componentFilter(filterText: string) {
+export function createComponentFilter(filterText: string) {
   return new ComponentFilter(filterText)
 }

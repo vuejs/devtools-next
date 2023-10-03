@@ -1,4 +1,4 @@
-import type { App, ComponentInternalInstance, ConcreteComponent, VNode } from 'vue'
+import type { App, ComponentInternalInstance, ConcreteComponent, SuspenseBoundary, VNode } from 'vue'
 
 export enum DevToolsHooks {
   // internal
@@ -58,6 +58,7 @@ export type VueAppInstance = ComponentInternalInstance & {
       __VUE_DEVTOOLS_APP_RECORD__: AppRecord
     }
   }
+  suspense: SuspenseBoundary & { suspenseKey: string }
 }
 
 export interface AppRecord {
@@ -68,4 +69,21 @@ export interface AppRecord {
   types?: Record<string, string | Symbol>
   instanceMap: Map<string, unknown>
   rootInstance: VueAppInstance
+}
+
+export interface ComponentTreeNode {
+  uid: number | string
+  id: string
+  name: string
+  renderKey: string | number
+  inactive: boolean
+  isFragment: boolean
+  children: ComponentTreeNode[]
+  domOrder?: number[]
+  tags: {
+    label: string
+    textColor: number
+    backgroundColor: number
+  }[]
+  autoOpen: boolean
 }

@@ -73,7 +73,7 @@ export function getUniqueComponentId(instance: VueAppInstance) {
   return `${appId}:${instanceId}`
 }
 
-export function getRenderKey(value: number | string | any[] | Object): string | number {
+export function getRenderKey(value: number | string | unknown[] | Object | null): string | number {
   if (value == null)
     return ''
   if (typeof value === 'number')

@@ -16,6 +16,23 @@ function saveComponentGussedName(instance: VueAppInstance, name: string) {
   return name
 }
 
+export function getAppRecord(instance: VueAppInstance) {
+  if (instance.root)
+    return instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD__
+}
+
+export function isFragment(instance: VueAppInstance) {
+  const appRecord = getAppRecord(instance)
+  // @TODO
+  return false
+  // if (appRecord)
+  // return appRecord.options.types.Fragment === instance.subTree?.type
+}
+
+export function isBeingDestroyed(instance: VueAppInstance) {
+  return instance._isBeingDestroyed || instance.isUnmounted
+}
+
 /**
  * Get the appropriate display name for an instance.
  *
@@ -43,4 +60,31 @@ export function getInstanceName(instance: VueAppInstance) {
     return fileName
 
   return 'Anonymous Component'
+}
+
+/**
+ * Returns a devtools unique id for instance.
+ * @param {Vue} instance
+ */
+export function getUniqueComponentId(instance: VueAppInstance) {
+  // @TODO
+  const appId = instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD_ID__ ?? 0
+  const instanceId = instance === instance.root ? 'root' : instance.uid
+  return `${appId}:${instanceId}`
+}
+
+export function getRenderKey(value: number | string | any[] | Object): string | number {
+  if (value == null)
+    return ''
+  if (typeof value === 'number')
+    return value
+
+  else if (typeof value === 'string')
+    return `'${value}'`
+
+  else if (Array.isArray(value))
+    return 'Array'
+
+  else
+    return 'Object'
 }

@@ -1,11 +1,4 @@
-import type { App, ComponentInternalInstance } from 'vue'
-
-export interface AppRecord {
-  id: number
-  app: App
-  version: string
-  types?: Record<string, string | Symbol>
-}
+import type { App, ComponentInternalInstance, ConcreteComponent, VNode } from 'vue'
 
 export enum DevToolsHooks {
   // internal
@@ -35,11 +28,44 @@ export interface DevtoolsHook {
   cleanupBuffer?: (matchArg: unknown) => boolean
 }
 
+type CacheKey = string | number | symbol | ConcreteComponent
+type Cache = Map<CacheKey, VNode>
+
 export type VueAppInstance = ComponentInternalInstance & {
   type: {
     _componentTag: string | undefined
     components: Record<string, ComponentInternalInstance['type']>
     __VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__: string
+    __isKeepAlive: boolean
+    devtools: {
+      hide: boolean
+    }
   }
+  __v_cache: Cache
+  __VUE_DEVTOOLS_UID__: string
+  _isBeingDestroyed: boolean
+  _instance: VueAppInstance
+  _container: {
+    _vnode: {
+      component: VueAppInstance
+    }
+  }
+  isUnmounted: boolean
   parent: VueAppInstance
+  appContext: {
+    app: VueAppInstance & App & {
+      __VUE_DEVTOOLS_APP_RECORD_ID__: string
+      __VUE_DEVTOOLS_APP_RECORD__: AppRecord
+    }
+  }
+}
+
+export interface AppRecord {
+  id: string | number
+  name: string
+  app?: App
+  version?: string
+  types?: Record<string, string | Symbol>
+  instanceMap: Map<string, unknown>
+  rootInstance: VueAppInstance
 }

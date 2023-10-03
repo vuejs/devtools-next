@@ -1,10 +1,11 @@
 import { target } from '@vue-devtools-next/shared'
-import type { AppRecord } from '@vue-devtools-next/schema'
+import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
+import slug from 'speakingurl'
 import { createDevToolsContext } from './context'
 
- type HookAppInstance = App & { _instance: { type: { devtools: { hide: boolean } } } }
+ type HookAppInstance = App & VueAppInstance
 
 export const HOOK = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
@@ -47,20 +48,90 @@ export function createDevToolsHook() {
   return target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 }
 
+// @TODO: move to @devtools/kit
+
+const appRecordInfo = {
+  id: 0,
+  appIds: new Set<string>(),
+}
+
+function getAppRecordName(app: VueAppInstance['appContext']['app'], fallbackName: string) {
+  if (app._component)
+    return app._component.name!
+  return `App ${fallbackName}`
+}
+
+function getAppRootInstance(app: VueAppInstance['appContext']['app']) {
+  if (app._instance)
+    return app._instance
+
+  else if (app._container?._vnode?.component)
+    return app._container?._vnode?.component
+}
+
+function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: string): string {
+  if (app.__VUE_DEVTOOLS_APP_RECORD_ID__ != null)
+    return app.__VUE_DEVTOOLS_APP_RECORD_ID__
+
+  let id = defaultId ?? (appRecordInfo.id++).toString()
+
+  if (defaultId && appRecordInfo.appIds.has(id)) {
+    let count = 1
+    while (appRecordInfo.appIds.has(`${defaultId}_${count}`))
+      count++
+    id = `${defaultId}_${count}`
+  }
+
+  appRecordInfo.appIds.add(id)
+
+  app.__VUE_DEVTOOLS_APP_RECORD_ID__ = id
+  return id
+}
+
+function createAppRecord(app: VueAppInstance['appContext']['app']): AppRecord {
+  const rootInstance = getAppRootInstance(app)
+  if (rootInstance) {
+    appRecordInfo.id++
+    const name = getAppRecordName(app, appRecordInfo.id.toString())
+    const id = getAppRecordId(app, slug(name))
+
+    const record: AppRecord = {
+      id,
+      name,
+      instanceMap: new Map(),
+      rootInstance,
+    }
+
+    app.__VUE_DEVTOOLS_APP_RECORD__ = record
+    const rootId = `${record.id}:root`
+    record.instanceMap.set(rootId, record.rootInstance)
+    record.rootInstance.__VUE_DEVTOOLS_UID__ = rootId
+
+    return record
+  }
+  else {
+    return {} as AppRecord
+  }
+}
+
 function collectHookBuffer() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
   const hookBuffer = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__
   const collectEvents = target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__
   // app init hook
-  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app: HookAppInstance, version: string) => {
+  const appInitCleanup = hook.on(DevToolsHooks.APP_INIT, (app: VueAppInstance['appContext']['app'], version: string) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
+    const record = createAppRecord(app)
+
     hook.appRecords.push({
-      id: app._uid,
+      ...record,
+      id: app._uid, // @TODO: check it
       app,
       version,
     })
+
     hookBuffer.push([DevToolsHooks.APP_INIT, { app, version }])
   })
 

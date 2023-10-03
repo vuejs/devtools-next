@@ -30,7 +30,8 @@
   "dependencies": {
     "@vue-devtools-next/schema": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "speakingurl": "^14.0.1"
   },
   "devDependencies": {
     "vue": "^3.3.4"

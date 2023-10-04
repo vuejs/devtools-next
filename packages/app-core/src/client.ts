@@ -32,7 +32,6 @@ export function onDevToolsClientConnected(fn: (client: VueDevToolsClient) => voi
   if (target.__VUE_DEVTOOLS_CLIENT_CONNECTED__)
     fns.forEach(fn => fn(target.__VUE_DEVTOOLS_CLIENT_CONNECTED__))
 
-  // @TODO: use vue devtools client instance or context instead.
   Object.defineProperty(target, '__VUE_DEVTOOLS_CLIENT_CONNECTED__', {
     set(value) {
       if (value)

@@ -3,7 +3,7 @@ import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
 import slug from 'speakingurl'
-import { ComponentWalker } from './vue'
+import { ComponentWalker, getAppRecord, getComponentId } from './vue'
 import { createDevToolsContext } from './context'
 
  type HookAppInstance = App & VueAppInstance
@@ -165,9 +165,29 @@ function collectHookBuffer() {
   })
 
   // component added hook
-  const componentAddedCleanup = hook.on(DevToolsHooks.COMPONENT_ADDED, (app: HookAppInstance) => {
+  const componentAddedCleanup = hook.on(DevToolsHooks.COMPONENT_ADDED, async (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
     if (app?._instance?.type?.devtools?.hide)
       return
+
+    if (!app || (typeof uid !== 'number' && !uid) || !component)
+      return
+
+    const id = await getComponentId({
+      app, uid, instance: component,
+    }) as string
+    const appRecord = await getAppRecord(app)
+
+    if (component) {
+      if (component.__VUE_DEVTOOLS_UID__ == null)
+        component.__VUE_DEVTOOLS_UID__ = id
+
+      if (!appRecord?.instanceMap.has(id))
+        appRecord?.instanceMap.set(id, component)
+    }
+
+    if (parentUid != null) {
+      // @TODO: implement this case
+    }
 
     hookBuffer.push([DevToolsHooks.COMPONENT_ADDED, {
       app,
@@ -175,16 +195,28 @@ function collectHookBuffer() {
   })
 
   // component updated hook
-  const componentUpdatedCleanup = hook.on(DevToolsHooks.COMPONENT_UPDATED, (...args) => {
+  const componentUpdatedCleanup = hook.on(DevToolsHooks.COMPONENT_UPDATED, (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
+    if (!app || (typeof uid !== 'number' && !uid) || !component)
+      return
+
     hookBuffer.push([DevToolsHooks.COMPONENT_UPDATED, {
-      ...args,
+      app,
     }])
   })
 
   // component removed hook
-  const componentRemovedCleanup = hook.on(DevToolsHooks.COMPONENT_REMOVED, (app: HookAppInstance) => {
+  const componentRemovedCleanup = hook.on(DevToolsHooks.COMPONENT_REMOVED, async (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
     if (app?._instance?.type?.devtools?.hide)
       return
+
+    if (!app || (typeof uid !== 'number' && !uid) || !component)
+      return
+
+    const appRecord = await getAppRecord(app)
+
+    if (parentUid != null) {
+      // @TODO: implement this case
+    }
 
     hookBuffer.push([DevToolsHooks.COMPONENT_REMOVED, {
       app,

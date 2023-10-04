@@ -1,0 +1,40 @@
+{
+  "name": "vue-devtools-kit",
+  "type": "module",
+  "version": "0.0.1.aplha.0",
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
+    "directory": "packages/devtools-kit"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --clean",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/schema": "workspace:^",
+    "@vue-devtools-next/shared": "workspace:^",
+    "mitt": "^3.0.1",
+    "speakingurl": "^14.0.1"
+  },
+  "devDependencies": {
+    "vue": "^3.3.4"
+  }
+}

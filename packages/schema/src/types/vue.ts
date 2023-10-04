@@ -67,7 +67,7 @@ export interface AppRecord {
   app?: App
   version?: string
   types?: Record<string, string | Symbol>
-  instanceMap: Map<string, unknown>
+  instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
 }
 

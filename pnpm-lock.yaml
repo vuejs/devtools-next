@@ -83,6 +83,9 @@ importers:
 
   packages/app-core:
     dependencies:
+      '@vue-devtools-next/core':
+        specifier: workspace:^
+        version: link:../core
       '@vue-devtools-next/schema':
         specifier: workspace:^
         version: link:../schema

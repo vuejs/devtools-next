@@ -3,6 +3,7 @@ import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
 import slug from 'speakingurl'
+import { ComponentWalker } from '../../core/src/vue'
 import { createDevToolsContext } from './context'
 
  type HookAppInstance = App & VueAppInstance
@@ -53,6 +54,28 @@ export function createDevToolsHook() {
 const appRecordInfo = {
   id: 0,
   appIds: new Set<string>(),
+}
+
+function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
+  if (!instanceId)
+    instanceId = `${appRecord.id}:root`
+
+  const instance = appRecord.instanceMap.get(instanceId)
+
+  return instance
+}
+
+async function getComponentTree(options: { appRecord: AppRecord; instanceId?: string ;filterText: string;recursively: boolean }) {
+  const { appRecord, instanceId } = options
+  const instance = getComponentInstance(appRecord, instanceId)
+  if (instance) {
+    const walker = new ComponentWalker({
+      filterText: options.filterText,
+      maxDepth: 2,
+      recursively: options.recursively,
+    })
+    console.log('tree-node', await walker.getComponentTree(instance))
+  }
 }
 
 function getAppRecordName(app: VueAppInstance['appContext']['app'], fallbackName: string) {
@@ -127,12 +150,18 @@ function collectHookBuffer() {
 
     hook.appRecords.push({
       ...record,
-      id: app._uid, // @TODO: check it
+      // id: app._uid, // @TODO: check it
       app,
       version,
     })
 
     hookBuffer.push([DevToolsHooks.APP_INIT, { app, version }])
+
+    getComponentTree({
+      appRecord: record,
+      filterText: '',
+      recursively: false,
+    })
   })
 
   // component added hook

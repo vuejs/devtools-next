@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@vue-devtools-next/app-core": "workspace:^",
-    "@vue-devtools-next/core": "workspace:*",
     "@vue-devtools-next/shared": "workspace:^",
     "@vue-devtools-next/ui": "workspace:*",
     "@vueuse/core": "^10.4.1"

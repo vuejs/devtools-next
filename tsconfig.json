@@ -19,8 +19,6 @@
     ],
     "paths": {
       "@vue-devtools-next/shared": ["./packages/shared/src/index.ts"],
-      "@vue-devtools-next/core": ["./packages/core/src/index.ts"],
-      "@vue-devtools-next/core/vue": ["./packages/core/src/vue/index.ts"],
       "@vue-devtools-next/app-core": ["./packages/app-core/src/index.ts"],
       "@vue-devtools-next/schema": ["./packages/schema/src/index.ts"],
       "@vue-devtools-next/ui": ["./packages/ui/src/index.ts"],

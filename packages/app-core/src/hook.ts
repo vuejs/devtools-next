@@ -3,7 +3,7 @@ import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
 import slug from 'speakingurl'
-import { ComponentWalker } from '../../core/src/vue'
+import { ComponentWalker } from './vue'
 import { createDevToolsContext } from './context'
 
  type HookAppInstance = App & VueAppInstance

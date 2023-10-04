@@ -9,6 +9,7 @@ declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__: [string, Record<string, unknown>][]
   var __VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER_COLLECT_EVENT__: Array<() => void>
   var __VUE_DEVTOOLS_STOP_COLLECT_HOOK_BUFFER__: () => void
+  var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
   var __VUE_DEVTOOLS_CTX__: DevToolsContext
 }
 

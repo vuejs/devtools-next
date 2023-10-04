@@ -1,3 +1,4 @@
+import { target } from '@vue-devtools-next/shared'
 import type { BridgeInstanceType } from './bridge'
 
 export enum HandShakeEvents {
@@ -12,6 +13,16 @@ class HandShake {
 
   constructor(bridge: BridgeInstanceType) {
     this.socket = bridge
+
+    Object.defineProperty(this, 'connected', {
+      set(value) {
+        target.__VUE_DEVTOOLS_CLIENT_CONNECTED__ = value
+      },
+      get() {
+        return target.__VUE_DEVTOOLS_CLIENT_CONNECTED__
+      },
+      configurable: true,
+    })
   }
 }
 

@@ -1,5 +1,6 @@
 import type { BridgeInstanceType } from '../app-core/src/bridge'
 import type { DevToolsContext } from '../app-core/src/context'
+import type { VueDevToolsClient } from '../app-core/src/client'
 import type { DevtoolsHook } from './src/types/vue'
 
 declare global {
@@ -11,6 +12,7 @@ declare global {
   var __VUE_DEVTOOLS_STOP_COLLECT_HOOK_BUFFER__: () => void
   var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
   var __VUE_DEVTOOLS_CTX__: DevToolsContext
+  var __VUE_DEVTOOLS_CLIENT__: VueDevToolsClient
 }
 
 export { }

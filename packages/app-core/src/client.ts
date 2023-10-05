@@ -1,6 +1,4 @@
 import { isBrowser, target } from '@vue-devtools-next/shared'
-import type { Ref } from 'vue'
-import { shallowRef } from 'vue'
 
 export function setDevToolsClientUrl(url: string) {
   target.__VUE_DEVTOOLS_CLIENT_URL__ = url
@@ -19,23 +17,22 @@ export function getDevToolsClientUrl() {
 
 // @TODO: move to @devtools/kit
 
-interface VueDevToolsClient {
+export interface VueDevToolsClient {
 
 }
 
-const fns = [] as ((client: VueDevToolsClient) => void)[]
+const fns = [] as (() => void)[]
 
-let clientRef: Ref<VueDevToolsClient | undefined> | undefined
-export function onDevToolsClientConnected(fn: (client: VueDevToolsClient) => void) {
+export function onDevToolsClientConnected(fn: () => void) {
   fns.push(fn)
 
   if (target.__VUE_DEVTOOLS_CLIENT_CONNECTED__)
-    fns.forEach(fn => fn(target.__VUE_DEVTOOLS_CLIENT_CONNECTED__))
+    fns.forEach(fn => fn())
 
   Object.defineProperty(target, '__VUE_DEVTOOLS_CLIENT_CONNECTED__', {
     set(value) {
       if (value)
-        fns.forEach(fn => fn(value))
+        fns.forEach(fn => fn())
     },
     get() {
     },
@@ -45,18 +42,4 @@ export function onDevToolsClientConnected(fn: (client: VueDevToolsClient) => voi
   return () => {
     fns.splice(fns.indexOf(fn), 1)
   }
-}
-
-export function useDevToolsClient() {
-  if (!clientRef) {
-    clientRef = shallowRef<VueDevToolsClient | undefined>()
-
-    onDevToolsClientConnected(setup)
-  }
-
-  function setup(client: VueDevToolsClient) {
-    clientRef!.value = client
-  }
-
-  return clientRef
 }

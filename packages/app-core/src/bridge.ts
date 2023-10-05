@@ -75,27 +75,42 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 }
 
 export class BridgeRpc {
-  static getDataFromUserApp<T>(options: { type: string }) {
+  static getDataFromUserApp<T>(options: { type: string }, cb?: (payload: T) => void) {
     // @TODO: reject fallback logic
     return new Promise<T>((resolve, reject) => {
       Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_REQUEST, options)
-      Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload) => {
-        resolve(payload)
-      })
+      if (cb) {
+        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: T) => {
+          cb(payload)
+        })
+      }
+      else {
+        Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: T) => {
+          resolve(payload)
+        })
+      }
     })
+  }
+
+  static getDevToolsData(type: string) {
+    function normalizePayload(type: string) {
+      if (type === 'context')
+        return target.__VUE_DEVTOOLS_CTX__
+    }
+
+    Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
+      data: normalizePayload(type),
+    })
+  }
+
+  static triggerDevToolsDataUpdate(type: string) {
+    this.getDevToolsData(type)
   }
 
   static onDataFromDevTools() {
     Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_REQUEST, (options: { type: string }) => {
       const { type } = options
-      function normalizePayload(type: string) {
-        if (type === 'context')
-          return target.__VUE_DEVTOOLS_CTX__
-      }
-
-      Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
-        data: normalizePayload(type),
-      })
+      this.getDevToolsData(type)
     })
   }
 
@@ -115,5 +130,11 @@ export class BridgeRpc {
         data: 'hello',
       })
     })
+  }
+}
+
+export class BridgeApi {
+  static getDevToolsContext<T extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: T['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<T>({ type: 'context' }, ({ data }) => cb(data))
   }
 }

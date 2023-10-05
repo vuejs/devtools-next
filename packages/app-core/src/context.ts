@@ -1,6 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
-import { BridgeEvents } from '@vue-devtools-next/schema'
-import { Bridge } from './bridge'
+import { BridgeRpc } from './bridge'
 
 export interface DevToolsContext {
   connected: boolean
@@ -18,8 +17,5 @@ export function createDevToolsContext(): DevToolsContext {
 
 export function updateDevToolsContext(params: Partial<DevToolsContext>) {
   Object.assign(target.__VUE_DEVTOOLS_CTX__, params)
-  Bridge.value?.emit(BridgeEvents.UPDATE_DEVTOOLS_CONTEXT, {
-    keys: Object.keys(params),
-    values: params,
-  })
+  BridgeRpc.triggerDevToolsDataUpdate('context')
 }

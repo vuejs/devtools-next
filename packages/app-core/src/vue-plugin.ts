@@ -1,7 +1,7 @@
 import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import { BridgeEvents } from '@vue-devtools-next/schema'
 import type { BridgeInstanceType } from './bridge'
+import { BridgeApi } from './bridge'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -12,36 +12,32 @@ function initDevToolsContext() {
   const componentCount = ref(0)
   const vueVersion = ref('')
 
-  function initBridge(bridge: DevToolsPluginOptions['bridge']) {
-    // app connected
-    bridge.on(BridgeEvents.APP_CONNECTED, (state = true) => {
-      connected.value = state
-    })
-
-    // @TODO: types and may need a reactivity cross-messaging way ?
-    bridge.on(BridgeEvents.UPDATE_DEVTOOLS_CONTEXT, (params) => {
-      const { keys, values } = params
-      keys.forEach((key) => {
-        switch (key) {
-          case 'connected':
-            connected.value = values.connected
-            break
-          case 'componentCount':
-            componentCount.value = values.componentCount
-            break
-          case 'activeAppVueVersion':
-            vueVersion.value = values.activeAppVueVersion
-            break
-        }
-      })
+  function init() {
+    BridgeApi.getDevToolsContext((payload) => {
+      connected.value = payload.connected
+      componentCount.value = payload.componentCount
+      vueVersion.value = payload.activeAppVueVersion
     })
   }
 
   return {
-    initBridge,
+    init,
+    restore: init,
     vueVersion,
     connected,
     componentCount,
+  }
+}
+
+function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
+  const bridge = ref(_bridge) as Ref<DevToolsPluginOptions['bridge']>
+
+  function restore(_bridge: DevToolsPluginOptions['bridge']) {
+    bridge.value = _bridge
+  }
+  return {
+    bridge,
+    restore,
   }
 }
 
@@ -50,16 +46,15 @@ const VueDevToolsContextSymbol: InjectionKey<{ connected: Ref<boolean>; componen
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {
-      // @TODO: refactor this
       const { bridge: _bridge } = pluginOptions
-      const bridge = ref(_bridge) as Ref<DevToolsPluginOptions['bridge']>
       const context = initDevToolsContext()
-      context.initBridge(bridge.value)
-      app.provide(VueDevToolsBridgeSymbol, bridge)
+      const bridgeContext = initDevToolsBridge(_bridge)
+      context.init()
+      app.provide(VueDevToolsBridgeSymbol, bridgeContext.bridge)
       app.provide(VueDevToolsContextSymbol, context)
-      app.config.globalProperties.__UPDATE_VUE_DEVTOOLS__ = (_bridge: DevToolsPluginOptions['bridge']) => {
-        bridge.value = _bridge
-        context.initBridge(bridge.value)
+      app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__ = (_bridge: DevToolsPluginOptions['bridge']) => {
+        bridgeContext.restore(_bridge)
+        context.restore()
       }
     },
   }

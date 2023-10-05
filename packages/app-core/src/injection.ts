@@ -5,10 +5,11 @@ import type { BridgeInstanceType } from './bridge'
 import { checkVueAppInitialized } from './hook'
 import { updateDevToolsContext } from './context'
 import { HandShakeClient } from './handshake'
+import { dispatchDevToolsRequests, syncUpdatedToDevTools } from './dispatcher'
 
 export function prepareInjection(bridge: BridgeInstanceType) {
   Bridge.value = bridge
-  BridgeRpc.onDataFromDevTools()
+  BridgeRpc.onDataFromDevTools(dispatchDevToolsRequests, syncUpdatedToDevTools)
   new HandShakeClient(bridge).onnConnect().then(() => {
     bridge.on(BridgeEvents.CLIENT_READY, () => {
       checkVueAppInitialized().then((appRecord: AppRecord) => {

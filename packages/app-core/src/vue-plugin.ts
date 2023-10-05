@@ -64,6 +64,10 @@ export function useDevToolsBridge() {
   return inject(VueDevToolsBridgeSymbol)!
 }
 
+export function useDevToolsBridgeApi() {
+  return BridgeApi
+}
+
 export function useDevToolsContext() {
   return inject(VueDevToolsContextSymbol)!
 }

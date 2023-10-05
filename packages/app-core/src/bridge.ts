@@ -1,7 +1,9 @@
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
 import { NOOP, target } from '@vue-devtools-next/shared'
+import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 import { BridgeEvents } from '@vue-devtools-next/schema'
+import type { DispatchDevToolsRequestsOptions } from './dispatcher'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -75,42 +77,38 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 }
 
 export class BridgeRpc {
-  static getDataFromUserApp<T>(options: { type: string }, cb?: (payload: T) => void) {
+  static getDataFromUserApp<RES, REQ = unknown>(options: { type: string; params?: REQ }, cb?: (payload: RES) => void) {
     // @TODO: reject fallback logic
-    return new Promise<T>((resolve, reject) => {
+    return new Promise<RES>((resolve, reject) => {
       Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_REQUEST, options)
       if (cb) {
-        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: T) => {
-          cb(payload)
+        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: RES & { type: string }) => {
+          payload.type === options.type && cb(payload)
         })
       }
       else {
-        Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: T) => {
-          resolve(payload)
+        Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: RES & { type: string }) => {
+          payload.type === options.type && resolve(payload)
         })
       }
     })
   }
 
-  static getDevToolsData(type: string) {
-    function normalizePayload(type: string) {
-      if (type === 'context')
-        return target.__VUE_DEVTOOLS_CTX__
-    }
-
-    Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
-      data: normalizePayload(type),
-    })
-  }
-
-  static triggerDevToolsDataUpdate(type: string) {
-    this.getDevToolsData(type)
-  }
-
-  static onDataFromDevTools() {
-    Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_REQUEST, (options: { type: string }) => {
+  static onDataFromDevTools(dispatcher: (options: DispatchDevToolsRequestsOptions) => Promise<unknown>, syncer: (cb: (data: unknown) => void) => void) {
+    Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_REQUEST, (options: DispatchDevToolsRequestsOptions) => {
       const { type } = options
-      this.getDevToolsData(type)
+      dispatcher(options).then((res) => {
+        Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
+          data: res,
+          type,
+        })
+      })
+      syncer((data) => {
+        Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
+          data,
+          type,
+        })
+      })
     })
   }
 
@@ -134,7 +132,11 @@ export class BridgeRpc {
 }
 
 export class BridgeApi {
-  static getDevToolsContext<T extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: T['data']) => void) {
-    return BridgeRpc.getDataFromUserApp<T>({ type: 'context' }, ({ data }) => cb(data))
+  static getDevToolsContext<RES extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: RES['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<RES>({ type: 'context' }, ({ data }) => cb(data))
+  }
+
+  static getComponentTree<RES extends { data: ComponentTreeNode }, REQ extends { instanceId?: string }>(params?: REQ, cb?: (payload: RES['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<RES, REQ>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 }

@@ -8,7 +8,7 @@ const { connected } = useDevToolsContext()
 
 watch(connected, (v) => {
   if (v)
-    router.replace('/components')
+    router.replace('/overview')
 }, {
   immediate: true,
 })

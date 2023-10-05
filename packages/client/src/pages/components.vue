@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
+import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
 
+const bridgeApi = useDevToolsBridgeApi()
+onDevToolsClientConnected(() => {
+  bridgeApi.getComponentTree().then((tree) => {
+    console.log(tree)
+  })
+})
+console.log(bridgeApi)
 const tree = [
   {
     name: 'App',

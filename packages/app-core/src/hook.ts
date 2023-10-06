@@ -247,6 +247,7 @@ export function checkVueAppInitialized() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
   return new Promise<AppRecord>((resolve, reject) => {
     if (hook.appRecords.length) {
+      // @TODO: define active app record variable
       resolve(hook.appRecords[0])
     }
     else {

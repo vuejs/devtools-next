@@ -65,15 +65,16 @@ function getComponentInstance(appRecord: AppRecord, instanceId: string | undefin
   return instance
 }
 
-export async function getComponentTree(options: { appRecord: AppRecord; instanceId?: string ;filterText: string;recursively: boolean }) {
-  const { appRecord, instanceId } = options
+export async function getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string;recursively?: boolean }) {
+  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  const { appRecord = hook.appRecords?.[0], instanceId, filterText = '', recursively = false } = options
   const instance = getComponentInstance(appRecord, instanceId)
   if (instance) {
     // @TODO
     const walker = new ComponentWalker({
-      filterText: options.filterText,
+      filterText,
       maxDepth: 500,
-      recursively: options.recursively,
+      recursively,
     })
     return await walker.getComponentTree(instance)
   }

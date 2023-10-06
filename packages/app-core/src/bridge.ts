@@ -77,17 +77,17 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 }
 
 export class BridgeRpc {
-  static getDataFromUserApp<RES, REQ = unknown>(options: { type: string; params?: REQ }, cb?: (payload: RES) => void) {
+  static getDataFromUserApp<S, Q = unknown>(options: { type: string; params?: Q }, cb?: (payload: S) => void) {
     // @TODO: reject fallback logic
-    return new Promise<RES>((resolve, reject) => {
+    return new Promise<S>((resolve, reject) => {
       Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_REQUEST, options)
       if (cb) {
-        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: RES & { type: string }) => {
+        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
           payload.type === options.type && cb(payload)
         })
       }
       else {
-        Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: RES & { type: string }) => {
+        Bridge.value.once(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
           payload.type === options.type && resolve(payload)
         })
       }
@@ -132,11 +132,11 @@ export class BridgeRpc {
 }
 
 export class BridgeApi {
-  static getDevToolsContext<RES extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: RES['data']) => void) {
-    return BridgeRpc.getDataFromUserApp<RES>({ type: 'context' }, ({ data }) => cb(data))
+  static getDevToolsContext<S extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: S['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<S>({ type: 'context' }, ({ data }) => cb(data))
   }
 
-  static getComponentTree<RES extends { data: ComponentTreeNode }, REQ extends { instanceId?: string }>(params?: REQ, cb?: (payload: RES['data']) => void) {
-    return BridgeRpc.getDataFromUserApp<RES, REQ>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
+  static getComponentTree<S extends { data: ComponentTreeNode }, Q extends { instanceId?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 }

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import Foo from '../components/Foo.vue'
 
-const visible = ref(true)
+const visible = ref(false)
 </script>
 
 <template>

@@ -1,40 +1,15 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 
 const bridgeApi = useDevToolsBridgeApi()
+const treeNode = ref<ComponentTreeNode[]>([])
 onDevToolsClientConnected(() => {
-  bridgeApi.getComponentTree().then((tree) => {
-    console.log(tree)
+  bridgeApi.getComponentTree({}, (tree) => {
+    treeNode.value = tree
   })
 })
-console.log(bridgeApi)
-const tree = [
-  {
-    name: 'App',
-    id: 'root',
-    children: [
-      {
-        name: 'Home',
-        id: 'home',
-      },
-      {
-        name: 'About',
-        id: 'about',
-        children: [
-          {
-            name: 'Header',
-            id: 'header',
-          },
-          {
-            name: 'Footer',
-            id: 'footer',
-          },
-        ],
-      },
-    ],
-  },
-]
 </script>
 
 <template>
@@ -42,7 +17,7 @@ const tree = [
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2>
-          <ComponentTreeNode v-for="(item, index) in tree" :key="index" :data="item" />
+          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" />
         </div>
       </Pane>
       <Pane flex flex-col>

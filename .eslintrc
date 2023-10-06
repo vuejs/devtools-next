@@ -10,6 +10,7 @@
     "no-console": "off",
     "@typescript-eslint/ban-types": "off",
     "n/prefer-global/process": "off",
-    "antfu/top-level-function" : "off"
+    "antfu/top-level-function" : "off",
+    "@typescript-eslint/consistent-type-imports": "off"
   }
 }

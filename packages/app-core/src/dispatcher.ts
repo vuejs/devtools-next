@@ -1,4 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
+import { getComponentTree } from './hook'
 
 export interface DispatchDevToolsRequestsOptions {
   type: string
@@ -11,8 +12,22 @@ export interface SyncUpdatedToDevToolsOptions {
 
 export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions) {
   const { type } = options
-  if (type === 'context')
+  if (type === 'context') {
     return target.__VUE_DEVTOOLS_CTX__
+  }
+  else if (type === 'component-tree') {
+    const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+    // @TODO
+    const currentAppRecord = hook.appRecords?.[0]
+    if (currentAppRecord) {
+      const treeNode = await getComponentTree({
+        appRecord: currentAppRecord,
+        filterText: '',
+        recursively: false,
+      })
+      return treeNode
+    }
+  }
 }
 
 export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
@@ -23,7 +38,6 @@ export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
   Object.defineProperty(target, '__VUE_DEVTOOLS_CTX__', {
     set(value) {
       proxy.context = value
-      console.log(proxy.context, value)
       cb?.(value)
     },
     get() {

@@ -142,7 +142,7 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S>({ type: 'context' }, ({ data }) => cb(data))
   }
 
-  static getComponentTree<S extends { data: ComponentTreeNode }, Q extends { instanceId?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getComponentTree<S extends { data: ComponentTreeNode[] }, Q extends { instanceId?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 }

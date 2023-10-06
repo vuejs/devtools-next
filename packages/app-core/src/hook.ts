@@ -65,16 +65,17 @@ function getComponentInstance(appRecord: AppRecord, instanceId: string | undefin
   return instance
 }
 
-async function getComponentTree(options: { appRecord: AppRecord; instanceId?: string ;filterText: string;recursively: boolean }) {
+export async function getComponentTree(options: { appRecord: AppRecord; instanceId?: string ;filterText: string;recursively: boolean }) {
   const { appRecord, instanceId } = options
   const instance = getComponentInstance(appRecord, instanceId)
   if (instance) {
+    // @TODO
     const walker = new ComponentWalker({
       filterText: options.filterText,
-      maxDepth: 2,
+      maxDepth: 500,
       recursively: options.recursively,
     })
-    console.log('tree-node', await walker.getComponentTree(instance))
+    return await walker.getComponentTree(instance)
   }
 }
 
@@ -156,12 +157,6 @@ function collectHookBuffer() {
     })
 
     hookBuffer.push([DevToolsHooks.APP_INIT, { app, version }])
-
-    getComponentTree({
-      appRecord: record,
-      filterText: '',
-      recursively: false,
-    })
   })
 
   // component added hook

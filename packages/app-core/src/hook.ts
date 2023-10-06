@@ -151,7 +151,6 @@ function collectHookBuffer() {
 
     hook.appRecords.push({
       ...record,
-      // id: app._uid, // @TODO: check it
       app,
       version,
     })

@@ -104,13 +104,13 @@ export class BridgeRpc {
     Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_REQUEST, (options: DispatchDevToolsRequestsOptions) => {
       const { type } = options
       dispatcher(options).then((res) => {
-        Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
+        res && Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
           data: res,
           type,
         })
       })
       syncer((data) => {
-        Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
+        data && Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_RESPONSE, {
           data,
           type,
         })

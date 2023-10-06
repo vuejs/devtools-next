@@ -9,7 +9,10 @@ import { dispatchDevToolsRequests, syncUpdatedToDevTools } from './dispatcher'
 
 export function prepareInjection(bridge: BridgeInstanceType) {
   Bridge.value = bridge
-  BridgeRpc.onDataFromDevTools(dispatchDevToolsRequests, syncUpdatedToDevTools)
+  BridgeRpc.onDataFromDevTools({
+    dispatcher: dispatchDevToolsRequests,
+    syncer: syncUpdatedToDevTools,
+  })
   new HandShakeClient(bridge).onnConnect().then(() => {
     bridge.on(BridgeEvents.CLIENT_READY, () => {
       checkVueAppInitialized().then((appRecord: AppRecord) => {

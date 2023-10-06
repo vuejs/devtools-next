@@ -94,7 +94,13 @@ export class BridgeRpc {
     })
   }
 
-  static onDataFromDevTools(dispatcher: (options: DispatchDevToolsRequestsOptions) => Promise<unknown>, syncer: (cb: (data: unknown) => void) => void) {
+  static onDataFromDevTools(
+    options: {
+      dispatcher: (options: DispatchDevToolsRequestsOptions) => Promise<unknown>
+      syncer: (cb: (data: unknown) => void) => void
+    }) {
+    const { dispatcher, syncer } = options
+
     Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_REQUEST, (options: DispatchDevToolsRequestsOptions) => {
       const { type } = options
       dispatcher(options).then((res) => {

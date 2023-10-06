@@ -25,7 +25,8 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
         filterText: '',
         recursively: false,
       })
-      return treeNode
+      target.__VUE_DEVTOOLS_COMPONENT_TREE_ = treeNode!
+      // return treeNode
     }
   }
 }
@@ -33,6 +34,7 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
 export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
   const proxy = {
     context: target.__VUE_DEVTOOLS_CTX__,
+    componentTree: target.__VUE_DEVTOOLS_COMPONENT_TREE_,
   }
   // @TODO: use proxy api to handle it?
   Object.defineProperty(target, '__VUE_DEVTOOLS_CTX__', {
@@ -42,6 +44,17 @@ export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
     },
     get() {
       return proxy.context
+    },
+    configurable: true,
+  })
+
+  Object.defineProperty(target, '__VUE_DEVTOOLS_COMPONENT_TREE_', {
+    set(value) {
+      proxy.componentTree = value
+      cb?.(value)
+    },
+    get() {
+      return proxy.componentTree
     },
     configurable: true,
   })

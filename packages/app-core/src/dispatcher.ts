@@ -1,4 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
+import { devtools } from 'vue-devtools-kit'
 import { getComponentTree } from './hook'
 
 export interface DispatchDevToolsRequestsOptions {
@@ -12,8 +13,12 @@ export interface SyncUpdatedToDevToolsOptions {
 
 export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions) {
   const { type } = options
-  if (type === 'context') {
-    return target.__VUE_DEVTOOLS_CTX__
+  if (type === 'state') {
+    const state = devtools.state
+    return {
+      connected: state.connected,
+      vueVersion: state.activeAppRecord?.version || '',
+    }
   }
   else if (type === 'component-tree') {
     const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
@@ -32,21 +37,16 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
 }
 
 export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
+  devtools.api.on.devtoolsStateUpdated((payload) => {
+    cb({
+      connected: payload.connected,
+      vueVersion: payload.activeAppRecord?.version || '',
+    })
+  })
+
   const proxy = {
-    context: target.__VUE_DEVTOOLS_CTX__,
     componentTree: target.__VUE_DEVTOOLS_COMPONENT_TREE_,
   }
-  // @TODO: use proxy api to handle it?
-  Object.defineProperty(target, '__VUE_DEVTOOLS_CTX__', {
-    set(value) {
-      proxy.context = value
-      cb?.(value)
-    },
-    get() {
-      return proxy.context
-    },
-    configurable: true,
-  })
 
   Object.defineProperty(target, '__VUE_DEVTOOLS_COMPONENT_TREE_', {
     set(value) {

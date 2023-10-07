@@ -138,8 +138,8 @@ export class BridgeRpc {
 }
 
 export class BridgeApi {
-  static getDevToolsContext<S extends { data: { connected: boolean;componentCount: 0;activeAppVueVersion: string } }>(cb: (payload: S['data']) => void) {
-    return BridgeRpc.getDataFromUserApp<S>({ type: 'context' }, ({ data }) => cb(data))
+  static getDevToolsState<S extends { data: { connected: boolean;vueVersion: string } }>(cb: (payload: S['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<S>({ type: 'state' }, ({ data }) => cb(data))
   }
 
   static getComponentTree<S extends { data: ComponentTreeNode[] }, Q extends { instanceId?: string }>(params?: Q, cb?: (payload: S['data']) => void) {

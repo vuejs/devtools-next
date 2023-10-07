@@ -87,3 +87,9 @@ export interface ComponentTreeNode {
   }[]
   autoOpen: boolean
 }
+
+export interface DevToolsState {
+  connected: boolean
+  appRecords: AppRecord[]
+  activeAppRecord: AppRecord | null
+}

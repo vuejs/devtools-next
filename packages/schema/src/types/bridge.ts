@@ -1,5 +1,4 @@
 export enum BridgeEvents {
-  UPDATE_DEVTOOLS_CONTEXT = 'update-devtools-context',
   // user app
   APP_CONNECTED = 'user-app:connected',
   GET_USER_APP_DATA_REQUEST = 'user-app:get-data-request',

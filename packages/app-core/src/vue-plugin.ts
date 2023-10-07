@@ -7,16 +7,15 @@ export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
 }
 
-function initDevToolsContext() {
+function initDevToolsState() {
   const connected = ref(false)
   const componentCount = ref(0)
   const vueVersion = ref('')
 
   function init() {
-    BridgeApi.getDevToolsContext((payload) => {
+    BridgeApi.getDevToolsState((payload) => {
       connected.value = payload.connected
-      componentCount.value = payload.componentCount
-      vueVersion.value = payload.activeAppVueVersion
+      vueVersion.value = payload.vueVersion || ''
     })
   }
 
@@ -42,19 +41,19 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsContextSymbol: InjectionKey<{ connected: Ref<boolean>; componentCount: Ref<number>; vueVersion: Ref<string> }> = Symbol('VueDevToolsContextSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>; componentCount: Ref<number>; vueVersion: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {
       const { bridge: _bridge } = pluginOptions
-      const context = initDevToolsContext()
+      const state = initDevToolsState()
       const bridgeContext = initDevToolsBridge(_bridge)
-      context.init()
+      state.init()
       app.provide(VueDevToolsBridgeSymbol, bridgeContext.bridge)
-      app.provide(VueDevToolsContextSymbol, context)
+      app.provide(VueDevToolsStateSymbol, state)
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__ = (_bridge: DevToolsPluginOptions['bridge']) => {
         bridgeContext.restore(_bridge)
-        context.restore()
+        state.restore()
       }
     },
   }
@@ -68,6 +67,6 @@ export function useDevToolsBridgeApi() {
   return BridgeApi
 }
 
-export function useDevToolsContext() {
-  return inject(VueDevToolsContextSymbol)!
+export function useDevToolsState() {
+  return inject(VueDevToolsStateSymbol)!
 }

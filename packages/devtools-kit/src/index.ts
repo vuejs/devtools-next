@@ -4,7 +4,7 @@ import { devtoolsState } from './runtime/global-state'
 import { DevToolsEvents, api, callBuffer } from './api'
 
 // usage: inject to user application and call it before the vue app is created
-export function initDevTools() {
+function initDevTools() {
   // override directly to prevent conflict with the old devtools
   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
 
@@ -24,7 +24,7 @@ export function initDevTools() {
 
     if (devtoolsState.appRecords.length === 1) {
       // set first app as default record
-      devtoolsState.activeAppRecord = record
+      devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
       devtoolsState.connected = true
       // mark vue app as connected
       callBuffer(DevToolsEvents.APP_CONNECTED)

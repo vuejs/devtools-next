@@ -92,6 +92,9 @@ importers:
       speakingurl:
         specifier: ^14.0.1
         version: 14.0.1
+      vue-devtools-kit:
+        specifier: workspace:^
+        version: link:../devtools-kit
     devDependencies:
       vue:
         specifier: ^3.3.4
@@ -118,6 +121,9 @@ importers:
       '@vue-devtools-next/app-core':
         specifier: workspace:^
         version: link:../app-core
+      '@vue-devtools-next/schema':
+        specifier: workspace:*
+        version: link:../schema
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -435,6 +441,9 @@ importers:
       vite-plugin-vue-inspector:
         specifier: ^3.7.1
         version: 3.7.1(vite@4.4.9)
+      vue-devtools-kit:
+        specifier: workspace:^
+        version: link:../devtools-kit
     devDependencies:
       '@types/node':
         specifier: ^20.6.2

@@ -1,7 +1,9 @@
 import { target } from '@vue-devtools-next/shared'
-import { createAppRecord, createDevToolsHook, onVueAppInit, subscribeDevToolsHook } from './runtime'
+import { createAppRecord, createDevToolsHook, subscribeDevToolsHook } from './runtime'
+import { devtoolsGlobalState } from './runtime/global-state'
+import { api } from './api'
 
-export { createDevToolsHook, subscribeDevToolsHook, onVueAppInit } from './runtime'
+export * from './runtime'
 
 // usage: inject to user application and call it before the vue app is created
 export function initDevTools() {
@@ -11,17 +13,21 @@ export function initDevTools() {
   target.__VUE_DEVTOOLS_APP_RECORDS__ ??= []
 
   // create app record
-  onVueAppInit((app, version) => {
+  api.on.vueAppInit((app, version) => {
     const record = createAppRecord(app)
-    target.__VUE_DEVTOOLS_APP_RECORDS__.push({
-      ...record,
-      app,
-      version,
-    })
+    devtoolsGlobalState.appRecords = [
+      ...(devtoolsGlobalState.appRecords ?? []),
+      {
+        ...record,
+        app,
+        version,
+      },
+    ]
 
-    if (target.__VUE_DEVTOOLS_GLOBAL_HOOK_BUFFER__.length === 1) {
-      // set default app record
-      target.__VUE_DEVTOOLS_ACTIVE_APP_RECORD__ = record
+    if (devtoolsGlobalState.appRecords.length === 1) {
+      // set first app as default record
+      devtoolsGlobalState.activeAppRecord = record
+      devtoolsGlobalState.vueAppInitialized = true
     }
   })
 

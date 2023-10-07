@@ -1,22 +1,9 @@
 import { DevToolsHooks, DevtoolsHook, VueAppInstance } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
+import { DevToolsEvents, callBuffer } from '../api'
 
 type HookAppInstance = App & VueAppInstance
-
-interface DevToolsHookEvents {
-  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
-  [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
-  [DevToolsHooks.COMPONENT_UPDATED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
-  [DevToolsHooks.COMPONENT_REMOVED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
-}
-
-const devtoolsHookBuffer = {
-  [DevToolsHooks.APP_INIT]: [] as Array<DevToolsHookEvents[DevToolsHooks.APP_INIT]>,
-  [DevToolsHooks.COMPONENT_ADDED]: [] as Array<DevToolsHookEvents[DevToolsHooks.COMPONENT_ADDED]>,
-  [DevToolsHooks.COMPONENT_UPDATED]: [] as Array<DevToolsHookEvents[DevToolsHooks.COMPONENT_UPDATED]>,
-  [DevToolsHooks.COMPONENT_REMOVED]: [] as Array<DevToolsHookEvents[DevToolsHooks.COMPONENT_REMOVED]>,
-}
 
 export function createDevToolsHook(): DevtoolsHook {
   return {
@@ -55,22 +42,6 @@ export function createDevToolsHook(): DevtoolsHook {
   }
 }
 
-export function onVueAppInit(subscribeFn: DevToolsHookEvents[DevToolsHooks.APP_INIT]) {
-  devtoolsHookBuffer[DevToolsHooks.APP_INIT].push(subscribeFn)
-}
-
-export function onVueComponentAdded(subscribeFn: DevToolsHookEvents[DevToolsHooks.COMPONENT_ADDED]) {
-  devtoolsHookBuffer[DevToolsHooks.COMPONENT_ADDED].push(subscribeFn)
-}
-
-export function onVueComponentUpdated(subscribeFn: DevToolsHookEvents[DevToolsHooks.COMPONENT_UPDATED]) {
-  devtoolsHookBuffer[DevToolsHooks.COMPONENT_UPDATED].push(subscribeFn)
-}
-
-export function onVueComponentRemoved(subscribeFn: DevToolsHookEvents[DevToolsHooks.COMPONENT_REMOVED]) {
-  devtoolsHookBuffer[DevToolsHooks.COMPONENT_REMOVED].push(subscribeFn)
-}
-
 export function subscribeDevToolsHook() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
   // app init hook
@@ -78,8 +49,7 @@ export function subscribeDevToolsHook() {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    // call buffer
-    devtoolsHookBuffer[DevToolsHooks.APP_INIT].forEach(fn => fn(app, version))
+    callBuffer(DevToolsEvents.APP_INIT, app, version)
     // const record = createAppRecord(app)
 
     // hook.appRecords.push({
@@ -97,8 +67,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    // call buffer
-    devtoolsHookBuffer[DevToolsHooks.COMPONENT_ADDED].forEach(fn => fn(app, uid, parentUid, component))
+    callBuffer(DevToolsEvents.COMPONENT_ADDED, app, uid, parentUid, component)
   })
 
   // component updated hook
@@ -106,8 +75,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    // call buffer
-    devtoolsHookBuffer[DevToolsHooks.COMPONENT_UPDATED].forEach(fn => fn(app, uid, parentUid, component))
+    callBuffer(DevToolsEvents.COMPONENT_UPDATED, app, uid, parentUid, component)
   })
 
   // component removed hook
@@ -115,7 +83,6 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    // call buffer
-    devtoolsHookBuffer[DevToolsHooks.COMPONENT_REMOVED].forEach(fn => fn(app, uid, parentUid, component))
+    callBuffer(DevToolsEvents.COMPONENT_REMOVED, app, uid, parentUid, component)
   })
 }

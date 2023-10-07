@@ -2,12 +2,12 @@ import { target as global } from '@vue-devtools-next/shared'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 global[StateKey] ??= {
-  vueAppInitialized: false,
+  connected: false,
   appRecords: [],
   activeAppRecord: null,
 }
 
-export const devtoolsGlobalState = new Proxy(global[StateKey], {
+export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
     return global[StateKey][property]
   },

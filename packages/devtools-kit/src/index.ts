@@ -1,9 +1,7 @@
 import { target } from '@vue-devtools-next/shared'
 import { createAppRecord, createDevToolsHook, subscribeDevToolsHook } from './runtime'
-import { devtoolsGlobalState } from './runtime/global-state'
-import { api } from './api'
-
-export * from './runtime'
+import { devtoolsState } from './runtime/global-state'
+import { DevToolsEvents, api, callBuffer } from './api'
 
 // usage: inject to user application and call it before the vue app is created
 export function initDevTools() {
@@ -15,8 +13,8 @@ export function initDevTools() {
   // create app record
   api.on.vueAppInit((app, version) => {
     const record = createAppRecord(app)
-    devtoolsGlobalState.appRecords = [
-      ...(devtoolsGlobalState.appRecords ?? []),
+    devtoolsState.appRecords = [
+      ...(devtoolsState.appRecords ?? []),
       {
         ...record,
         app,
@@ -24,12 +22,35 @@ export function initDevTools() {
       },
     ]
 
-    if (devtoolsGlobalState.appRecords.length === 1) {
+    if (devtoolsState.appRecords.length === 1) {
       // set first app as default record
-      devtoolsGlobalState.activeAppRecord = record
-      devtoolsGlobalState.vueAppInitialized = true
+      devtoolsState.activeAppRecord = record
+      devtoolsState.connected = true
+      // mark vue app as connected
+      callBuffer(DevToolsEvents.APP_CONNECTED)
     }
   })
 
   subscribeDevToolsHook()
+}
+
+export function onDevToolsConnected(fn: () => void) {
+  return new Promise<void>((resolve) => {
+    if (devtoolsState.connected) {
+      fn()
+      resolve()
+      return
+    }
+
+    api.on.vueAppConnected(() => {
+      fn()
+      resolve()
+    })
+  })
+}
+
+export const devtools = {
+  api,
+  state: devtoolsState,
+  init: initDevTools,
 }

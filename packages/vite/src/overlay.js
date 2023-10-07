@@ -1,5 +1,6 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { Bridge, initDevTools, setDevToolsClientUrl } from '@vue-devtools-next/app-core'
+import { setDevToolsClientUrl } from '@vue-devtools-next/app-core'
+import { devtools } from 'vue-devtools-kit'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
 const body = document.getElementsByTagName('body')[0]
@@ -7,11 +8,7 @@ const head = document.getElementsByTagName('head')[0]
 
 setDevToolsClientUrl(`${vueDevToolsOptions.base || '/'}__devtools__/`)
 
-const bridge = new Bridge()
-
-Bridge.value = bridge
-
-initDevTools()
+devtools.init()
 
 // create link stylesheet
 const link = document.createElement('link')

@@ -89,9 +89,6 @@ importers:
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
-      speakingurl:
-        specifier: ^14.0.1
-        version: 14.0.1
       vue-devtools-kit:
         specifier: workspace:^
         version: link:../devtools-kit

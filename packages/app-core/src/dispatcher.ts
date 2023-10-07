@@ -1,6 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
-import { getComponentTree } from './hook'
 
 export interface DispatchDevToolsRequestsOptions {
   type: string
@@ -21,18 +20,11 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     }
   }
   else if (type === 'component-tree') {
-    const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
-    // @TODO
-    const currentAppRecord = hook.appRecords?.[0]
-    if (currentAppRecord) {
-      const treeNode = await getComponentTree({
-        appRecord: currentAppRecord,
-        filterText: '',
-        recursively: false,
-      })
-      target.__VUE_DEVTOOLS_COMPONENT_TREE_ = treeNode!
-      // return treeNode
-    }
+    const treeNode = await devtools.api.getComponentTree({
+      filterText: '',
+      recursively: false,
+    })
+    return treeNode
   }
 }
 

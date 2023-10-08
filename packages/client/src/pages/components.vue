@@ -5,9 +5,11 @@ import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 
 const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])
+
 onDevToolsClientConnected(() => {
-  bridgeApi.getComponentTree({}, (tree) => {
-    treeNode.value = tree
+  bridgeApi.getComponentTree({}, (data) => {
+    initComponentTreeState(data)
+    treeNode.value = data
   })
 })
 </script>

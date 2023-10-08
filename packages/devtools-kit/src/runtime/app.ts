@@ -1,7 +1,8 @@
 import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
+import { target } from '@vue-devtools-next/shared'
 import slug from 'speakingurl'
 
-const appRecordInfo = {
+const appRecordInfo = target.__VUE_DEVTOOLS_APP_RECROD_INFO__ ??= {
   id: 0,
   appIds: new Set<string>(),
 }

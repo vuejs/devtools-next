@@ -7,12 +7,12 @@ import { getRootElementsFromComponentInstance } from './el'
 
 interface ComponentWalkerOptions {
   filterText?: string
-  maxDepth: number
+  maxDepth: number | null
   recursively: boolean
 }
 
 export class ComponentWalker {
-  maxDepth: number
+  maxDepth: number | null
   recursively: boolean
   componentFilter: InstanceType<typeof ComponentFilter>
   // Dedupe instances (Some instances may be both on a component and on a child abstract/functional component)

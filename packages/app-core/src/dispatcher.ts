@@ -1,4 +1,3 @@
-import { target } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
 
 export interface DispatchDevToolsRequestsOptions {
@@ -10,10 +9,18 @@ export interface SyncUpdatedToDevToolsOptions {
   type: string
 }
 
-export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions) {
+export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions, cb: (data: unknown) => void) {
   const { type } = options
   if (type === 'state') {
     const state = devtools.state
+    // sync updated
+    devtools.api.on.devtoolsStateUpdated((payload) => {
+      cb({
+        connected: payload.connected,
+        vueVersion: payload.activeAppRecord?.version || '',
+      })
+    })
+
     return {
       connected: state.connected,
       vueVersion: state.activeAppRecord?.version || '',
@@ -24,30 +31,10 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
       filterText: '',
       recursively: false,
     })
+    // sync updated
+    devtools.api.on.componentTreeUpdated((payload) => {
+      cb(payload)
+    })
     return treeNode
   }
-}
-
-export async function syncUpdatedToDevTools(cb: (data: unknown) => void) {
-  devtools.api.on.devtoolsStateUpdated((payload) => {
-    cb({
-      connected: payload.connected,
-      vueVersion: payload.activeAppRecord?.version || '',
-    })
-  })
-
-  const proxy = {
-    componentTree: target.__VUE_DEVTOOLS_COMPONENT_TREE_,
-  }
-
-  Object.defineProperty(target, '__VUE_DEVTOOLS_COMPONENT_TREE_', {
-    set(value) {
-      proxy.componentTree = value
-      cb?.(value)
-    },
-    get() {
-      return proxy.componentTree
-    },
-    configurable: true,
-  })
 }

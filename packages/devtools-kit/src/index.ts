@@ -1,5 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
-import { createAppRecord, createDevToolsHook, subscribeDevToolsHook } from './runtime'
+import { createAppRecord, createDevToolsHook, initComponentTree, subscribeDevToolsHook } from './runtime'
 import { devtoolsState } from './runtime/global-state'
 import { DevToolsEvents, api, callBuffer } from './api'
 
@@ -30,6 +30,8 @@ function initDevTools() {
       callBuffer(DevToolsEvents.APP_CONNECTED)
     }
   })
+
+  initComponentTree()
 
   subscribeDevToolsHook()
 }

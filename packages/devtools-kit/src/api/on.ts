@@ -21,7 +21,7 @@ interface DevToolsEvent {
   [DevToolsEvents.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
   [DevToolsEvents.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsEvents.COMPONENT_REMOVED]: DevToolsEvent['component:added']
-  [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode) => void
+  [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
 }
 
 const devtoolsEventsBuffer: {

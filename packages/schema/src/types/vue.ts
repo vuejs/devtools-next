@@ -58,6 +58,7 @@ export type VueAppInstance = ComponentInternalInstance & {
       __VUE_DEVTOOLS_APP_RECORD__: AppRecord
     }
   }
+  __VUE_DEVTOOLS_APP_RECORD__: AppRecord
   suspense: SuspenseBoundary & { suspenseKey: string }
 }
 

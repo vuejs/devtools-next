@@ -17,7 +17,9 @@ function saveComponentGussedName(instance: VueAppInstance, name: string) {
 }
 
 export function getAppRecord(instance: VueAppInstance) {
-  if (instance.root)
+  if (instance.__VUE_DEVTOOLS_APP_RECORD__)
+    return instance.__VUE_DEVTOOLS_APP_RECORD__
+  else if (instance.root)
     return instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD__
 }
 

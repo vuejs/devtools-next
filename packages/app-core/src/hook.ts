@@ -2,7 +2,6 @@ import { target } from '@vue-devtools-next/shared'
 import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { App } from 'vue'
-import slug from 'speakingurl'
 import { ComponentWalker, getAppRecord, getComponentId } from './vue'
 
 type HookAppInstance = App & VueAppInstance
@@ -76,7 +75,7 @@ function createAppRecord(app: VueAppInstance['appContext']['app']): AppRecord {
   if (rootInstance) {
     appRecordInfo.id++
     const name = getAppRecordName(app, appRecordInfo.id.toString())
-    const id = getAppRecordId(app, slug(name))
+    const id = 'app'
 
     const record: AppRecord = {
       id,

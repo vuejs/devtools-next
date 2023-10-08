@@ -1,4 +1,4 @@
-import { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import { ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
 
@@ -10,6 +10,7 @@ export enum DevToolsEvents {
   COMPONENT_ADDED = 'component:added',
   COMPONENT_UPDATED = 'component:updated',
   COMPONENT_REMOVED = 'component:removed',
+  COMPONENT_TREE_UPDATED = 'component-tree:updated',
 }
 
 type HookAppInstance = App & VueAppInstance
@@ -20,6 +21,7 @@ interface DevToolsEvent {
   [DevToolsEvents.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
   [DevToolsEvents.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsEvents.COMPONENT_REMOVED]: DevToolsEvent['component:added']
+  [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode) => void
 }
 
 const devtoolsEventsBuffer: {
@@ -31,6 +33,11 @@ const devtoolsEventsBuffer: {
   [DevToolsEvents.COMPONENT_ADDED]: [],
   [DevToolsEvents.COMPONENT_UPDATED]: [],
   [DevToolsEvents.COMPONENT_REMOVED]: [],
+  [DevToolsEvents.COMPONENT_TREE_UPDATED]: [],
+}
+
+function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
+  devtoolsEventsBuffer[event].push(fn)
 }
 
 export function callBuffer<T extends keyof DevToolsEvent>(eventName: T, ...args: Parameters<DevToolsEvent[T]>) {
@@ -40,21 +47,24 @@ export function callBuffer<T extends keyof DevToolsEvent>(eventName: T, ...args:
 
 export const on = {
   vueAppInit(fn: DevToolsEvent[DevToolsEvents.APP_INIT]) {
-    devtoolsEventsBuffer[DevToolsEvents.APP_INIT].push(fn)
+    collectBuffer(DevToolsEvents.APP_INIT, fn)
   },
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
-    devtoolsEventsBuffer[DevToolsEvents.DEVTOOLS_STATE_UPDATED].push(fn)
+    collectBuffer(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
   },
   vueAppConnected(fn: DevToolsEvent[DevToolsEvents.APP_CONNECTED]) {
-    devtoolsEventsBuffer[DevToolsEvents.APP_CONNECTED].push(fn)
+    collectBuffer(DevToolsEvents.APP_CONNECTED, fn)
   },
   componentAdded(fn: DevToolsEvent[DevToolsEvents.COMPONENT_ADDED]) {
-    devtoolsEventsBuffer[DevToolsEvents.COMPONENT_ADDED].push(fn)
+    collectBuffer(DevToolsEvents.COMPONENT_ADDED, fn)
   },
   componentUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_UPDATED]) {
-    devtoolsEventsBuffer[DevToolsEvents.COMPONENT_UPDATED].push(fn)
+    collectBuffer(DevToolsEvents.COMPONENT_UPDATED, fn)
   },
   componentRemoved(fn: DevToolsEvent[DevToolsEvents.COMPONENT_REMOVED]) {
-    devtoolsEventsBuffer[DevToolsEvents.COMPONENT_REMOVED].push(fn)
+    collectBuffer(DevToolsEvents.COMPONENT_REMOVED, fn)
+  },
+  componentTreeUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_TREE_UPDATED]) {
+    collectBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, fn)
   },
 }

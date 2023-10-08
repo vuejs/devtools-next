@@ -21,10 +21,10 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
       })
     })
 
-    return {
+    cb({
       connected: state.connected,
       vueVersion: state.activeAppRecord?.version || '',
-    }
+    })
   }
   else if (type === 'component-tree') {
     const treeNode = await devtools.api.getComponentTree({
@@ -35,6 +35,6 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     devtools.api.on.componentTreeUpdated((payload) => {
       cb(payload)
     })
-    return treeNode
+    cb(treeNode)
   }
 }

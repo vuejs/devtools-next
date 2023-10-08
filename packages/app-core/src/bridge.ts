@@ -108,7 +108,7 @@ export class BridgeRpc {
           type,
         })
       }
-      dispatcher(options, cb).then(cb)
+      dispatcher(options, cb)
     })
   }
 

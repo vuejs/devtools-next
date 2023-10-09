@@ -17,6 +17,30 @@ const data = [
     dataTypeName: 'Ref',
   },
   {
+    key: 'list',
+    value: 'Array[6]',
+    type: 'array',
+    children: [
+      {
+        key: '0',
+        value: 0,
+        type: 'literal',
+        editable: true,
+        dataType: 'ref',
+        dataTypeName: 'Ref',
+      },
+      {
+        key: '1',
+        value: 1,
+        type: 'literal',
+        editable: true,
+        dataType: 'ref',
+        dataTypeName: 'Ref',
+      },
+    ],
+    editable: true,
+  },
+  {
     key: '$route',
     value: 'Router',
     type: 'object',

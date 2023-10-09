@@ -19,6 +19,11 @@ export default defineConfig(mergeConfigs([unoConfig, {
       'background-size': '40px 40px',
     }],
   ],
+  theme: {
+    fontFamily: {
+      'data-field': 'Roboto Mono, Menlo, Consolas, monospace',
+    },
+  },
   variants: [
     // @children:[span]:bg-red => .@children\:\[span\]\:bg-red > span { bg-red }
     (input: string) => {

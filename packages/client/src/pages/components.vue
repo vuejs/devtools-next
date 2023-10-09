@@ -23,7 +23,9 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        Component Details
+        <div p-2>
+          <ComponentState />
+        </div>
       </Pane>
     </Splitpanes>
   </div>

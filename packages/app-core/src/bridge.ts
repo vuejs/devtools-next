@@ -141,7 +141,7 @@ export class BridgeApi {
   }
 
   // @TODO: data type
-  static getComponentState<S extends { data: any }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getInstanceState<S extends { data: any }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
   }
 }

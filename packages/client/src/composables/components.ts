@@ -27,7 +27,7 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
     return
   if (!selectedComponent.value) {
     selectedComponent.value = treeNode?.[0].id
-    bridgeApi.getComponentState({ instanceId: treeNode?.[0].id })
+    bridgeApi.getInstanceState({ instanceId: treeNode?.[0].id })
   }
 }
 
@@ -52,7 +52,7 @@ export function useToggleComponentExpanded(id: string) {
 export function useSelectComponent() {
   function selectComponent(id: string) {
     selectedComponent.value = id
-    bridgeApi.getComponentState({ instanceId: id })
+    bridgeApi.getInstanceState({ instanceId: id })
   }
 
   return {

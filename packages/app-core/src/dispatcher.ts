@@ -38,7 +38,7 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     cb(treeNode)
   }
   else if (type === 'component-state') {
-    const componentState = devtools.api.getComponentState(params as { instanceId: string })
+    const componentState = devtools.api.getInstanceState(params as { instanceId: string })
     cb(componentState)
   }
 }

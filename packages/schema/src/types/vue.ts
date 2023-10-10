@@ -1,4 +1,4 @@
-import type { App, ComponentInternalInstance, ConcreteComponent, SuspenseBoundary, VNode } from 'vue'
+import type { App, ComponentInternalInstance, ComponentOptions, ConcreteComponent, SuspenseBoundary, VNode } from 'vue'
 
 export enum DevToolsHooks {
   // internal
@@ -40,6 +40,8 @@ export type VueAppInstance = ComponentInternalInstance & {
     devtools: {
       hide: boolean
     }
+    mixins: ComponentOptions[]
+    extends: ComponentOptions
   }
   __v_cache: Cache
   __VUE_DEVTOOLS_UID__: string

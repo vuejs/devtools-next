@@ -10,7 +10,7 @@ export interface SyncUpdatedToDevToolsOptions {
 }
 
 export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions, cb: (data: unknown) => void) {
-  const { type } = options
+  const { type, params } = options
   if (type === 'state') {
     const state = devtools.state
     // sync updated
@@ -36,5 +36,9 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
       cb(payload)
     })
     cb(treeNode)
+  }
+  else if (type === 'component-state') {
+    const componentState = devtools.api.getComponentState(params as { instanceId: string })
+    cb(componentState)
   }
 }

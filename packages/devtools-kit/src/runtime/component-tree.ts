@@ -3,7 +3,7 @@ import { DevToolsEvents, api, callBuffer } from '../api'
 import { ComponentWalker, getAppRecord, getComponentId } from './vue'
 import { devtoolsState } from './global-state'
 
-function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
+export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
   if (!instanceId)
     instanceId = `${appRecord.id}:root`
 
@@ -13,8 +13,8 @@ function getComponentInstance(appRecord: AppRecord, instanceId: string | undefin
 }
 
 export async function getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
-  const { appRecord = devtoolsState.appRecords?.[0], maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options
-  const instance = getComponentInstance(appRecord, instanceId)
+  const { appRecord = devtoolsState.activeAppRecord, maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options
+  const instance = getComponentInstance(appRecord!, instanceId)
   if (instance) {
     // @TODO
     const walker = new ComponentWalker({

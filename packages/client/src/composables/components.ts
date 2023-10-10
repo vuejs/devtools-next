@@ -1,5 +1,8 @@
 import { computed, ref } from 'vue'
 import type { ComponentTreeNode } from '@vue-devtools-next/schema'
+import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+
+const bridgeApi = useDevToolsBridgeApi()
 
 const componentExpandedMap = ref<Record<string, boolean>>({})
 
@@ -22,8 +25,10 @@ function initExpandedComponent(treeNode: ComponentTreeNode[]) {
 function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
     return
-  if (!selectedComponent.value)
+  if (!selectedComponent.value) {
     selectedComponent.value = treeNode?.[0].id
+    bridgeApi.getComponentState({ instanceId: treeNode?.[0].id })
+  }
 }
 
 export function initComponentTreeState(treeNode: ComponentTreeNode[]) {
@@ -47,6 +52,7 @@ export function useToggleComponentExpanded(id: string) {
 export function useSelectComponent() {
   function selectComponent(id: string) {
     selectedComponent.value = id
+    bridgeApi.getComponentState({ instanceId: id })
   }
 
   return {

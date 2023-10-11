@@ -108,3 +108,12 @@ export function getRenderKey(value: number | string | unknown[] | Object | null)
   else
     return 'Object'
 }
+
+export function returnError(cb: () => unknown) {
+  try {
+    return cb()
+  }
+  catch (e) {
+    return e
+  }
+}

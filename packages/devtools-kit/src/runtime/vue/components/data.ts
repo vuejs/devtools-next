@@ -1,4 +1,23 @@
 import { VueAppInstance } from '@vue-devtools-next/schema'
+import { camelize } from '@vue-devtools-next/shared'
+import { returnError } from './util'
+
+const fnTypeRE = /^(?:function|class) (\w+)/
+/**
+ * Convert prop type constructor to string.
+ */
+function getPropType(type: Array<string | null | Function | number> | string | null | Function | number) {
+  if (Array.isArray(type))
+    return type.map(t => getPropType(t)).join(' or ')
+
+  if (type == null)
+    return 'null'
+
+  const match = type.toString().match(fnTypeRE)
+  return typeof type === 'function'
+    ? (match && match[1]) || 'any'
+    : 'any'
+}
 
 function mergeOptions(
   to: any,
@@ -46,6 +65,35 @@ function resolveMergedOptions(
   return options
 }
 
+function processProps(instance: VueAppInstance) {
+  const props: any[] = []
+  const propDefinitions = instance.type.props
+
+  for (const key in instance.props) {
+    const propDefinition = propDefinitions ? propDefinitions[key] : null
+    const camelizeKey = camelize(key)
+    props.push({
+      type: 'props',
+      key: camelizeKey,
+      value: returnError(() => instance.props[key]),
+      meta: propDefinition
+        ? {
+            type: propDefinition.type ? getPropType(propDefinition.type) : 'any',
+            required: !!propDefinition.required,
+            ...propDefinition.default
+              ? {
+                  default: propDefinition.default.toString(),
+                }
+              : {},
+          }
+        : { type: 'invalid' },
+    })
+  }
+
+  return instance.type.props
+}
+
 export function processInstanceState(instance: VueAppInstance) {
   const mergedType = resolveMergedOptions(instance)
+  return processProps(instance)
 }

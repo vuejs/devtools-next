@@ -10,5 +10,7 @@ export function getInstanceState(params: { instanceId: string }) {
   const name = getInstanceName(instance!)
   const file = instance?.type?.__file
 
-  processInstanceState(instance!)
+  const state = processInstanceState(instance!)
+
+  console.log(state)
 }

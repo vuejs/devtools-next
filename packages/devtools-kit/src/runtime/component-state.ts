@@ -1,7 +1,7 @@
 import { devtoolsState } from './global-state'
 import { getComponentInstance } from './component-tree'
 import { getInstanceName, getUniqueComponentId } from './vue/components/util'
-import { processInstanceState } from './vue/components/data'
+import { processInstanceState, stringify } from './vue/components/data'
 
 export function getInstanceState(params: { instanceId: string }) {
   const instance = getComponentInstance(devtoolsState.activeAppRecord!, params.instanceId)
@@ -11,6 +11,6 @@ export function getInstanceState(params: { instanceId: string }) {
   const file = instance?.type?.__file
 
   const state = processInstanceState(instance!)
-
-  console.log(state)
+  const stringifyedState = stringify<typeof state>(state) as string
+  console.log(JSON.parse(stringifyedState))
 }

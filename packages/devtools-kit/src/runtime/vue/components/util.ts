@@ -11,6 +11,14 @@ function getComponentFileName(options: VueAppInstance['type']) {
     return classify(basename(file, '.vue'))
 }
 
+export function getComponentName(options: VueAppInstance['type']) {
+  const name = options.displayName || options.name || options._componentTag
+  if (name)
+    return name
+
+  return getComponentFileName(options)
+}
+
 function saveComponentGussedName(instance: VueAppInstance, name: string) {
   instance.type.__VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__ = name
   return name

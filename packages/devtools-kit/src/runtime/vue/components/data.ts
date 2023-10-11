@@ -1,6 +1,21 @@
 import { ComponentState, VueAppInstance } from '@vue-devtools-next/schema'
 import { camelize } from '@vue-devtools-next/shared'
 import { returnError } from './util'
+import { stringifyCircularAutoChunks } from './transfer'
+import {
+  getBigIntDetails,
+  getComponentDefinitionDetails,
+  getFunctionDetails,
+  getHTMLElementDetails,
+  getInstanceDetails,
+  getMapDetails,
+  getObjectDetails,
+  getRouterDetails,
+  getSetDetails,
+  getSetupStateInfo,
+  getStoreDetails,
+  toRaw,
+} from './state-formatter'
 
 const vueBuiltins = [
   'nextTick',
@@ -56,36 +71,31 @@ const vueBuiltins = [
   'withModifiers',
 ]
 const fnTypeRE = /^(?:function|class) (\w+)/
+const MAX_STRING_SIZE = 10000
+const MAX_ARRAY_SIZE = 5000
+export const UNDEFINED = '__vue_devtool_undefined__'
+export const INFINITY = '__vue_devtool_infinity__'
+export const NEGATIVE_INFINITY = '__vue_devtool_negative_infinity__'
+export const NAN = '__vue_devtool_nan__'
 
-function isRef(raw: any): boolean {
-  return !!raw.__v_isRef
+function isVueInstance(value) {
+  return value._ && Object.keys(value._).includes('vnode')
 }
 
-function isComputed(raw: any): boolean {
-  return isRef(raw) && !!raw.effect
+export function isPlainObject(obj: unknown) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
-function isReactive(raw: any): boolean {
-  return !!raw.__v_isReactive
-}
+function isPrimitive(data: unknown) {
+  if (data == null)
+    return true
 
-function isReadOnly(raw: any): boolean {
-  return !!raw.__v_isReadonly
-}
-
-function toRaw(value: any) {
-  if (value?.__v_raw)
-    return value.__v_raw
-
-  return value
-}
-function getSetupStateInfo(raw: any) {
-  return {
-    ref: isRef(raw),
-    computed: isComputed(raw),
-    reactive: isReactive(raw),
-    readonly: isReadOnly(raw),
-  }
+  const type = typeof data
+  return (
+    type === 'string'
+    || type === 'number'
+    || type === 'boolean'
+  )
 }
 
 /**
@@ -386,6 +396,26 @@ function processEventListeners(instance: VueAppInstance) {
   return result
 }
 
+/**
+ * Sanitize data to be posted to the other side.
+ * Since the message posted is sent with structured clone,
+ * we need to filter out any types that might cause an error.
+ */
+function sanitize(data: unknown) {
+  if (
+    !isPrimitive(data)
+    && !Array.isArray(data)
+    && !isPlainObject(data)
+  ) {
+    // handle types that will probably cause issues in
+    // the structured clone
+    return Object.prototype.toString.call(data)
+  }
+  else {
+    return data
+  }
+}
+
 export function processInstanceState(instance: VueAppInstance) {
   const mergedType = resolveMergedOptions(instance)
   return processProps(instance).concat(
@@ -395,6 +425,109 @@ export function processInstanceState(instance: VueAppInstance) {
     processAttrs(instance),
     processProvide(instance),
     processInject(instance, mergedType),
+    processRefs(instance),
     processEventListeners(instance),
   )
+}
+
+function replacerForInternal(key: string) {
+  // @ts-expect-error this
+  // eslint-disable-next-line @typescript-eslint/no-invalid-this
+  const val: unknown = this[key]
+  const type = typeof val
+  if (Array.isArray(val)) {
+    const l = val.length
+    if (l > MAX_ARRAY_SIZE) {
+      return {
+        _isArray: true,
+        length: l,
+        items: val.slice(0, MAX_ARRAY_SIZE),
+      }
+    }
+    return val
+  }
+  else if (typeof val === 'string') {
+    if (val.length > MAX_STRING_SIZE)
+      return `${val.substring(0, MAX_STRING_SIZE)}... (${(val.length)} total length)`
+
+    else
+      return val
+  }
+  else if (type === 'undefined') {
+    return UNDEFINED
+  }
+  else if (val === Number.POSITIVE_INFINITY) {
+    return INFINITY
+  }
+  else if (val === Number.NEGATIVE_INFINITY) {
+    return NEGATIVE_INFINITY
+  }
+  else if (typeof val === 'function') {
+    return getFunctionDetails(val)
+  }
+  else if (type === 'symbol') {
+    return `[native Symbol ${Symbol.prototype.toString.call(val)}]`
+  }
+  else if (typeof val === 'bigint') {
+    return getBigIntDetails(val)
+  }
+  else if (val !== null && typeof val === 'object') {
+    const proto = Object.prototype.toString.call(val)
+    if (proto === '[object Map]') {
+      return getMapDetails(val as Map<string, unknown>)
+    }
+    else if (proto === '[object Set]') {
+      return getSetDetails(val as Set<unknown>)
+    }
+    else if (proto === '[object RegExp]') {
+      // special handling of native type
+      return `[native RegExp ${RegExp.prototype.toString.call(val)}]`
+    }
+    else if (proto === '[object Date]') {
+      return `[native Date ${Date.prototype.toString.call(val)}]`
+    }
+    else if (proto === '[object Error]') {
+      return `[native Error ${(val as Error).message}<>${(val as Error).stack}]`
+    }
+    // @ts-expect-error skip type check
+    else if (val.state && val._vm) {
+      return getStoreDetails(val)
+    }
+    else if (val.constructor && val.constructor.name === 'VueRouter') {
+      return getRouterDetails(val)
+    }
+    else if (isVueInstance(val)) {
+      return getInstanceDetails(val)
+    }
+    // @ts-expect-error skip type check
+    else if (typeof val.render === 'function') {
+      return getComponentDefinitionDetails(val)
+    }
+    else if (val.constructor && val.constructor.name === 'VNode') {
+    // @ts-expect-error skip type check
+      return `[native VNode <${val.tag}>]`
+    }
+    else if (typeof HTMLElement !== 'undefined' && val instanceof HTMLElement) {
+      return getHTMLElementDetails(val)
+    }
+    // @ts-expect-error skip type check
+    else if (val.constructor?.name === 'Store' && val._wrappedGetters) {
+      return '[object Store]'
+    }
+    // @ts-expect-error skip type check
+    else if (val.currentRoute) {
+      return '[object Router]'
+    }
+    const customDetails = getObjectDetails(val)
+    if (customDetails != null)
+      return customDetails
+  }
+  else if (Number.isNaN(val)) {
+    return NAN
+  }
+  return sanitize(val)
+}
+
+export function stringify<T extends Object = Record<string, unknown>>(data: T) {
+  return stringifyCircularAutoChunks(data as Record<string, unknown>, replacerForInternal)
 }

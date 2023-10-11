@@ -21,5 +21,6 @@ const router = useRouter()
       toggle dark mode
     </button>
     <RouterView />
+    {{ doubleCount }}
   </div>
 </template>

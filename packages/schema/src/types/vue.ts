@@ -42,6 +42,10 @@ export type VueAppInstance = ComponentInternalInstance & {
     }
     mixins: ComponentOptions[]
     extends: ComponentOptions
+    vuex: {
+      getters: Record<string, unknown>
+    }
+    computed: Record<string, unknown>
   }
   __v_cache: Cache
   __VUE_DEVTOOLS_UID__: string
@@ -62,6 +66,11 @@ export type VueAppInstance = ComponentInternalInstance & {
   }
   __VUE_DEVTOOLS_APP_RECORD__: AppRecord
   suspense: SuspenseBoundary & { suspenseKey: string }
+  renderContext: Record<string, unknown>
+  devtoolsRawSetupState: Record<string, unknown>
+  setupState: Record<string, unknown>
+  provides: Record<string | symbol, unknown>
+  ctx: Record<string, unknown>
 }
 
 export interface AppRecord {
@@ -95,4 +104,19 @@ export interface DevToolsState {
   connected: boolean
   appRecords: AppRecord[]
   activeAppRecord: AppRecord | null
+}
+
+export interface ComponentState {
+  key: string
+  value: string | number | Record<string, unknown>
+  type: string
+  stateTypeName?: string
+  meta?: Record<string, boolean | string>
+  raw?: string
+  editable?: boolean
+  children?: {
+    key: string
+    value: string | number
+    type: string
+  }[]
 }

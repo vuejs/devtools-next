@@ -109,11 +109,11 @@ export function getRenderKey(value: number | string | unknown[] | Object | null)
     return 'Object'
 }
 
-export function returnError(cb: () => unknown) {
+export function returnError(cb: () => unknown): number | string {
   try {
-    return cb()
+    return cb() as number | string
   }
   catch (e) {
-    return e
+    return e as string
   }
 }

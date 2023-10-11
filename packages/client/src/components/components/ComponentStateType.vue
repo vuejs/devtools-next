@@ -1,15 +1,8 @@
 <script setup lang="ts">
+import type { ComponentState } from '@vue-devtools-next/schema'
+
 withDefaults(defineProps<{
-  data: {
-    key: string
-    value: string | number
-    type: string
-    children?: {
-      key: string
-      value: string | number
-      type: string
-    }[]
-  }[]
+  data: ComponentState[]
   depth?: number
 }>(), {
   depth: 0,

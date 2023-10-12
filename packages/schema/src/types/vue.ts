@@ -108,7 +108,12 @@ export interface DevToolsState {
 
 export interface ComponentState {
   key: string
-  value: string | number | Record<string, unknown>
+  value: string | number | Record<string, unknown> | {
+    _custom?: {
+      stateTypeName: string
+    }
+    stateTypeName?: string
+  } | Array<unknown>
   type: string
   stateTypeName?: string
   meta?: Record<string, boolean | string>

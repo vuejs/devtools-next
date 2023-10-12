@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { ComponentTreeNode } from '@vue-devtools-next/schema'
+import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
 import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
 
 const bridgeApi = useDevToolsBridgeApi()
@@ -7,6 +7,25 @@ const bridgeApi = useDevToolsBridgeApi()
 const componentExpandedMap = ref<Record<string, boolean>>({})
 
 const selectedComponent = ref<string>('')
+
+const activeComponentState = ref<Record<string, ComponentState[]>>({})
+
+function normalizeComponentState(state: string) {
+  const parsedState: { state: ComponentState[] } = JSON.parse(state)
+  const res = {}
+  parsedState.state.forEach((item) => {
+    if (!res[item.type])
+      res[item.type] = []
+    res[item.type].push(item)
+  })
+  return res
+}
+
+function getComponentState(id: string) {
+  bridgeApi.getInstanceState({ instanceId: id }).then(({ data }: { data: string }) => {
+    activeComponentState.value = normalizeComponentState(data)
+  })
+}
 
 function initExpandedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
@@ -27,7 +46,7 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
     return
   if (!selectedComponent.value) {
     selectedComponent.value = treeNode?.[0].id
-    bridgeApi.getInstanceState({ instanceId: treeNode?.[0].id })
+    getComponentState(treeNode?.[0].id)
   }
 }
 
@@ -52,11 +71,17 @@ export function useToggleComponentExpanded(id: string) {
 export function useSelectComponent() {
   function selectComponent(id: string) {
     selectedComponent.value = id
-    bridgeApi.getInstanceState({ instanceId: id })
+    getComponentState(id)
   }
 
   return {
     selectedComponent,
     selectComponent,
+  }
+}
+
+export function useComponentState() {
+  return {
+    activeComponentState,
   }
 }

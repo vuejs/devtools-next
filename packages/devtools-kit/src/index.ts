@@ -56,3 +56,6 @@ export const devtools = {
   state: devtoolsState,
   init: initDevTools,
 }
+
+// @TODO: shouldn't be exported from here
+export { valueType, formattedValue } from './runtime'

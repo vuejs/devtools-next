@@ -157,6 +157,9 @@ importers:
       vite-hot-client:
         specifier: ^0.2.2
         version: 0.2.2(vite@4.4.9)
+      vue-devtools-kit:
+        specifier: workspace:^
+        version: link:../devtools-kit
       vue-router:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)

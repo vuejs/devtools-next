@@ -11,6 +11,17 @@ export function getInstanceState(params: { instanceId: string }) {
   const file = instance?.type?.__file
 
   const state = processInstanceState(instance!)
-  const stringifyedState = stringify<typeof state>(state) as string
-  console.log(JSON.parse(stringifyedState))
+  const stringifyedState = stringify<{
+    id: string
+    name: string
+    file: string | undefined
+    state: typeof state
+  }>({
+    id,
+    name,
+    file,
+    state,
+  }) as string
+  console.log('stringifyedState', stringifyedState)
+  return stringifyedState
 }

@@ -5,6 +5,7 @@ import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 
 const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])
+const { activeComponentState } = useComponentState()
 
 onDevToolsClientConnected(() => {
   bridgeApi.getComponentTree({}, (data) => {
@@ -24,7 +25,7 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane flex flex-col>
         <div p-2>
-          <ComponentState />
+          <ComponentState v-for="(state, key) in activeComponentState" :key="key" :data="state" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

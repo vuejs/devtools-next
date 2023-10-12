@@ -36,3 +36,13 @@ export function basename(filename: string, ext: string): string {
   }
   return ''
 }
+
+export function sortByKey(state: unknown[]) {
+  return state && (state.slice() as Record<'key', number>[]).sort((a, b) => {
+    if (a.key < b.key)
+      return -1
+    if (a.key > b.key)
+      return 1
+    return 0
+  })
+}

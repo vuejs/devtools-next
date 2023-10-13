@@ -46,10 +46,10 @@ const rawValue = computed(() => {
   const isCustom = type === 'custom'
   let inherit = {}
   if (isCustom) {
-  // @ts-expect-error @TODO: type
-    inherit = props.data?._custom.fields || {}
     // @ts-expect-error @TODO: type
-    value = props.data?._custom.value
+    inherit = props.data?.value?._custom?.fields || {}
+    // @ts-expect-error @TODO: type
+    value = props.data?.value?._custom.value
   }
   // @ts-expect-error @TODO: type
   if (value && value._isArray)
@@ -61,7 +61,6 @@ const rawValue = computed(() => {
 
 const normalizedChildField = computed(() => {
   let { value, inherit } = rawValue.value
-
   if (Array.isArray(value)) {
     // @TODO: show more
     const silced = value.slice(0, 20)
@@ -79,6 +78,9 @@ const normalizedChildField = computed(() => {
     }))
     if (type !== 'custom')
       value = sortByKey(value)
+  }
+  else {
+    value = []
   }
 
   return value === props.data.value ? {} : value
@@ -106,9 +108,7 @@ const hasChildren = computed(() => {
           <ExpandIcon :value="isExpanded(`${data.key}-${no}`)" group-hover:text-white absolute left--6 />
           <span state-key>{{ data.key }}</span>
           <span mx-1>:</span>
-          <span :class="[type && `state-value-${type}`]">
-            {{ normalizedValue }}
-          </span>
+          <span :class="[type && `state-value-${type}`]" v-html="decodeURIComponent(normalizedValue)" />
         </div>
         <div v-if="isExpanded(`${data.key}-${no}`)">
           <ComponentStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />

@@ -22,6 +22,5 @@ export function getInstanceState(params: { instanceId: string }) {
     file,
     state,
   }) as string
-  console.log('stringifyedState', stringifyedState)
   return stringifyedState
 }

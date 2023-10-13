@@ -407,8 +407,11 @@ function processEventListeners(instance: VueAppInstance) {
         type: 'event listeners',
         key: eventName,
         value: {
+          // @TODO: refactor
           _custom: {
             display: isDeclared ? '✅ Declared' : '⚠️ Not declared',
+            key: isDeclared ? '✅ Declared' : '⚠️ Not declared',
+            value: isDeclared ? '✅ Declared' : '⚠️ Not declared',
             tooltip: !isDeclared ? `The event <code>${eventName}</code> is not declared in the <code>emits</code> option. It will leak into the component's attributes (<code>$attrs</code>).` : null,
           },
         },
@@ -556,7 +559,7 @@ export function stringify<T extends Object = Record<string, unknown>>(data: T) {
 
 // @TODO: move to ?
 
-export function valueType(value: string | number | Record<string, any> | Array<unknown>, raw = true) {
+export function valueType(value, raw = true) {
   const type = typeof value
   if (value == null || value === UNDEFINED) {
     return 'null'
@@ -570,14 +573,12 @@ export function valueType(value: string | number | Record<string, any> | Array<u
   ) {
     return 'literal'
   }
-  else if (typeof value === 'object' && !Array.isArray(value)) {
-    if (value?._custom) {
-      if ((raw || value._custom.display != null))
-        return 'custom'
+  else if (value?._custom) {
+    if ((raw || value._custom.display != null))
+      return 'custom'
 
-      else
-        return valueType(value._custom.value)
-    }
+    else
+      return valueType(value._custom.value)
   }
   else if (typeof value === 'string') {
     const typeMatch = specialTypeRE.exec(value)
@@ -589,7 +590,6 @@ export function valueType(value: string | number | Record<string, any> | Array<u
       return 'string'
     }
   }
-  // @ts-expect-error skip
   else if (Array.isArray(value) || (value?._isArray)) {
     return 'array'
   }
@@ -601,7 +601,7 @@ export function valueType(value: string | number | Record<string, any> | Array<u
   }
 }
 
-export function formattedValue(value, quotes = true) {
+export function formattedValue(value, quotes = false) {
   let result
   const type = valueType(value, false)
   if (type !== 'custom' && value?._custom)

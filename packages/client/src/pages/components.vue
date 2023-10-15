@@ -21,13 +21,13 @@ onDevToolsClientConnected(() => {
   <div h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
-        <div h-screen select-none overflow-scroll p-2>
+        <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
           <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" />
         </div>
       </Pane>
-      <Pane flex flex-col>
+      <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <ComponentState v-for="(state, key) in activeComponentState" :key="key" :data="state" :name="`${key}`" />
+          <ComponentState v-for="(state, key) in activeComponentState" :id="key" :key="key" :data="state" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

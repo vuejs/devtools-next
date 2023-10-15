@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
-const { isExpanded, toggleExpanded } = useToggleComponentExpanded(props.data.id)
+const { isExpanded, toggleExpanded } = useToggleComponentTreeExpanded(props.data.id)
 const { selectedComponent, selectComponent } = useSelectComponent()
 
 function select() {

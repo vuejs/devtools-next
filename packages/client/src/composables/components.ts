@@ -1,17 +1,19 @@
-import { computed, ref } from 'vue'
-import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
 import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
+import { computed, ref } from 'vue'
+import { parse } from 'vue-devtools-kit/shared'
 
 const bridgeApi = useDevToolsBridgeApi()
 
-const componentExpandedMap = ref<Record<string, boolean>>({})
+const componentTreeExpandedMap = ref<Record<string, boolean>>({})
+const componentStateExpandedMap = ref<Record<string, boolean>>({})
 
 const selectedComponent = ref<string>('')
 
 const activeComponentState = ref<Record<string, ComponentState[]>>({})
 
 function normalizeComponentState(state: string) {
-  const parsedState: { state: ComponentState[] } = JSON.parse(state)
+  const parsedState: { state: ComponentState[] } = parse(state)
   const res = {}
   parsedState.state.forEach((item) => {
     if (!res[item.type])
@@ -24,15 +26,19 @@ function normalizeComponentState(state: string) {
 function getComponentState(id: string) {
   bridgeApi.getInstanceState({ instanceId: id }).then(({ data }: { data: string }) => {
     activeComponentState.value = normalizeComponentState(data)
+    const defaultExpandedId = Object.keys(activeComponentState.value)[0]
+    componentStateExpandedMap.value = {
+      [defaultExpandedId]: true,
+    }
   })
 }
 
 function initExpandedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
     return
-  if (!Object.keys(componentExpandedMap.value).length) {
+  if (!Object.keys(componentTreeExpandedMap.value).length) {
     // expand root and its children
-    componentExpandedMap.value = {
+    componentTreeExpandedMap.value = {
       [treeNode?.[0].id]: true,
       ...treeNode?.[0].children?.reduce((acc, cur) => {
         acc[cur.id] = true
@@ -55,11 +61,24 @@ export function initComponentTreeState(treeNode: ComponentTreeNode[]) {
   initSelectedComponent(treeNode)
 }
 
-export function useToggleComponentExpanded(id: string) {
-  const isExpanded = computed(() => componentExpandedMap.value[id] || false)
+export function useToggleComponentTreeExpanded(id: string) {
+  const isExpanded = computed(() => componentTreeExpandedMap.value[id] || false)
 
   function toggleExpanded() {
-    componentExpandedMap.value[id] = !componentExpandedMap.value[id]
+    componentTreeExpandedMap.value[id] = !componentTreeExpandedMap.value[id]
+  }
+
+  return {
+    isExpanded,
+    toggleExpanded,
+  }
+}
+
+export function useToggleComponentStateExpanded(id: string) {
+  const isExpanded = computed(() => componentStateExpandedMap.value[id] || false)
+
+  function toggleExpanded() {
+    componentStateExpandedMap.value[id] = !componentStateExpandedMap.value[id]
   }
 
   return {

@@ -207,9 +207,10 @@ export function getComponentDefinitionDetails(definition) {
     _custom: {
       type: 'component-definition',
       stateTypeName: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
-      // @TODO: refactor
+      // @TODO: refactor: show component name and open in editor
       key: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
       value: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
+      display: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
       tooltip: 'Component definition',
       ...definition.__file
         ? {

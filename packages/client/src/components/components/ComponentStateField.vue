@@ -33,11 +33,11 @@ const normalizedValue = computed(() => {
     return ''
   }
   else {
-    // @TOOD: += stateTypeName
-    // if (stateTypeName)
-    //   return stateTypeName
+    const result = `<span class="state-value-${type}">${value}</span>`
+    if (stateTypeName)
+      return `${result} <span class="text-gray-500">(${stateTypeName})</span>`
 
-    return value
+    return result
   }
 })
 
@@ -95,20 +95,18 @@ const hasChildren = computed(() => {
   <div class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
-        <span state-key>{{ data.key }}</span>
+        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
-        <span :class="[type && `state-value-${type}`]">
-          {{ normalizedValue }}
-        </span>
+        <span v-html="normalizedValue" />
       </div>
     </template>
     <template v-else>
       <div cursor-pointer>
         <div flex items-center relative @click="toggleExpanded(`${data.key}-${no}`)">
           <ExpandIcon :value="isExpanded(`${data.key}-${no}`)" group-hover:text-white absolute left--6 />
-          <span state-key>{{ data.key }}</span>
+          <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
           <span mx-1>:</span>
-          <span :class="[type && `state-value-${type}`]" v-html="decodeURIComponent(normalizedValue)" />
+          <span v-html="normalizedValue" />
         </div>
         <div v-if="isExpanded(`${data.key}-${no}`)">
           <ComponentStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />

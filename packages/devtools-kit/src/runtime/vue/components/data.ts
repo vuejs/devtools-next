@@ -1,7 +1,5 @@
-import { ComponentState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentState, VueAppInstance } from '@vue-devtools-next/schema'
 import { camelize } from '@vue-devtools-next/shared'
-import { returnError } from './util'
-import { stringifyCircularAutoChunks } from './transfer'
 import {
   getBigIntDetails,
   getComponentDefinitionDetails,
@@ -16,6 +14,8 @@ import {
   getStoreDetails,
   toRaw,
 } from './state-formatter'
+import { parseCircularAutoChunks, stringifyCircularAutoChunks } from './transfer'
+import { returnError } from './util'
 
 const vueBuiltins = [
   'nextTick',
@@ -456,8 +456,8 @@ export function processInstanceState(instance: VueAppInstance) {
 }
 
 function replacerForInternal(key: string) {
-  // @ts-expect-error this
-  // eslint-disable-next-line @typescript-eslint/no-invalid-this
+  /* eslint-disable ts/no-invalid-this */
+  // @ts-expect-error invalid this
   const val: unknown = this[key]
   const type = typeof val
   if (Array.isArray(val)) {
@@ -553,8 +553,12 @@ function replacerForInternal(key: string) {
   return sanitize(val)
 }
 
-export function stringify<T extends Object = Record<string, unknown>>(data: T) {
+export function stringify<T extends object = Record<string, unknown>>(data: T) {
   return stringifyCircularAutoChunks(data as Record<string, unknown>, replacerForInternal)
+}
+
+export function parse(data: any, revive = false) {
+  return parseCircularAutoChunks(data)
 }
 
 // @TODO: move to ?

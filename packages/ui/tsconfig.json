@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "module": "esnext",
+    "jsx": "preserve",
     "lib": ["esnext", "DOM"],
+    "module": "esnext",
     "moduleResolution": "node",
-    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,
-    "resolveJsonModule": true,
-    "jsx": "preserve"
+    "esModuleInterop": true
   },
   "include": [
     "env.d.ts",

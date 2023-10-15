@@ -2,15 +2,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
     "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
     "types": [
       "vite/client",
       "vite-plugin-pages/client"
-    ],
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    ]
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]
 }

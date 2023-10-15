@@ -39,7 +39,7 @@ watchEffect(() => {
     isScrollLocked.value = false
 })
 
-const close = () => {
+function close() {
   if (show.value && props.autoClose)
     show.value = false
 }

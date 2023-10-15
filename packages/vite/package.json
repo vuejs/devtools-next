@@ -32,10 +32,10 @@
   "module": "dist/vite.mjs",
   "types": "dist/vite.d.ts",
   "files": [
-    "dist",
-    "overlay",
+    "*.d.ts",
     "./src/overlay.js",
-    "*.d.ts"
+    "dist",
+    "overlay"
   ],
   "engines": {
     "node": ">=v14.21.3"

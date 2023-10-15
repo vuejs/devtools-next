@@ -1,7 +1,8 @@
 import type { BridgeInstanceType } from '../app-core/src/bridge'
 import type { VueDevToolsClient } from '../app-core/src/client'
-import type { DevtoolsHook, ComponentTreeNode, AppRecord, DevToolsState } from './src/types/vue'
+import type { AppRecord, ComponentTreeNode, DevToolsState, DevtoolsHook } from './src/types/vue'
 
+/* eslint-disable vars-on-top, no-var */
 declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook
   var __VUE_DEVTOOLS_CLIENT_URL__: string

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
-import type { ComponentTreeNode } from '@vue-devtools-next/schema'
+import { ComponentTreeNode } from '@vue-devtools-next/schema'
 
 const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])

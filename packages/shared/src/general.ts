@@ -1,4 +1,4 @@
-export const NOOP = () => { }
+export function NOOP() { }
 export const isNumeric = (str: string | number) => `${+str}` === str
 export const isMacOS = () => navigator?.platform ? navigator?.platform.toLowerCase().includes('mac') : /Macintosh/.test(navigator.userAgent)
 const classifyRE = /(?:^|[-_/])(\w)/g
@@ -9,15 +9,15 @@ function toUpper(_: string, c: string) {
   return c ? c.toUpperCase() : ''
 }
 
-export const classify = (str: string) => {
+export function classify(str: string) {
   return str && (`${str}`).replace(classifyRE, toUpper)
 }
 
-export const camelize = (str: string) => {
+export function camelize(str: string) {
   return str && str.replace(camelizeRE, toUpper)
 }
 
-export const kebabize = (str: string) => {
+export function kebabize(str: string) {
   return str && str
     .replace(kebabizeRE, (_, lowerCaseCharacter: string, upperCaseLetter: string) => {
       return `${lowerCaseCharacter}-${upperCaseLetter}`

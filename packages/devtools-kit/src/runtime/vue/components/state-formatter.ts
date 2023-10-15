@@ -1,4 +1,4 @@
-import { ComponentState } from '@vue-devtools-next/schema'
+import type { ComponentState } from '@vue-devtools-next/schema'
 import { getComponentName, getInstanceName } from './util'
 import { processInstanceState } from './data'
 
@@ -58,7 +58,7 @@ export function getFunctionDetails(func: Function) {
   }
 }
 
-export function getBigIntDetails(val: BigInt | bigint) {
+export function getBigIntDetails(val: bigint | bigint) {
   const stringifiedBigInt = BigInt.prototype.toString.call(val)
   return {
     _custom: {
@@ -165,7 +165,7 @@ function reduceStateList(list: ComponentState[]) {
     return undefined
 
   return list.reduce((map, item) => {
-    const key = (item['type'] || 'data') as string
+    const key = (item.type || 'data') as string
     const obj = map[key] = map[key] || {}
     obj[item.key as string] = item.value
     return map

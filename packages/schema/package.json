@@ -20,8 +20,8 @@
   "module": "./dist/index.mjs",
   "types": "./types.d.ts",
   "files": [
-    "dist",
-    "**.d.ts"
+    "**.d.ts",
+    "dist"
   ],
   "scripts": {
     "prepare": "tsup --dts-only",

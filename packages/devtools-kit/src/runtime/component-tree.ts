@@ -35,7 +35,9 @@ export function initComponentTree() {
       return
 
     const id = await getComponentId({
-      app, uid, instance: component,
+      app,
+      uid,
+      instance: component,
     }) as string
     const appRecord = await getAppRecord(app)
 
@@ -66,7 +68,9 @@ export function initComponentTree() {
       return
 
     const id = await getComponentId({
-      app, uid, instance: component,
+      app,
+      uid,
+      instance: component,
     }) as string
     const appRecord = await getAppRecord(app)
 
@@ -102,7 +106,9 @@ export function initComponentTree() {
       return
 
     const id = await getComponentId({
-      app, uid, instance: component,
+      app,
+      uid,
+      instance: component,
     }) as string
     appRecord?.instanceMap.delete(id)
 

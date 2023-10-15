@@ -1,4 +1,5 @@
-import { DevToolsHooks, DevtoolsHook, VueAppInstance } from '@vue-devtools-next/schema'
+import type { DevtoolsHook, VueAppInstance } from '@vue-devtools-next/schema'
+import { DevToolsHooks } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
 import { DevToolsEvents, callBuffer } from '../api'

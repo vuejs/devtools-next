@@ -1,4 +1,4 @@
-import { ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
 

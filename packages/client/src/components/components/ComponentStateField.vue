@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComponentState } from '@vue-devtools-next/schema'
-import { formattedValue, valueType } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
+import { componentStateValueType, formatComponentStateValue } from 'vue-devtools-kit/shared'
 
 const props = withDefaults(defineProps<{
   data: ComponentState
@@ -11,8 +11,8 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
-const value = formattedValue(props.data.value)
-const type = valueType(props.data.value)
+const value = formatComponentStateValue(props.data.value)
+const type = componentStateValueType(props.data.value)
 
 const stateExpandedMap = ref<Record<string, boolean>>({})
 

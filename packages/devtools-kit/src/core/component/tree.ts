@@ -1,7 +1,7 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { DevToolsEvents, api, callBuffer } from '../api'
-import { ComponentWalker, getAppRecord, getComponentId } from './vue'
-import { devtoolsState } from './global-state'
+import { DevToolsEvents, api, callBuffer } from '../../api'
+import { devtoolsState } from '../general/state'
+import { ComponentWalker, getAppRecord, getComponentId } from './general'
 
 export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
   if (!instanceId)

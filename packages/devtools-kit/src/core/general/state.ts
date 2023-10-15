@@ -1,5 +1,5 @@
 import { target as global } from '@vue-devtools-next/shared'
-import { DevToolsEvents, callBuffer } from '../api'
+import { DevToolsEvents, callBuffer } from '../../api'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 global[StateKey] ??= {

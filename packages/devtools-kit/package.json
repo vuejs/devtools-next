@@ -5,15 +5,20 @@
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
+    "directory": "packages/devtools-kit",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/devtools-kit"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./shared": {
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared/index.mjs",
+      "require": "./dist/shared/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -24,8 +29,8 @@
   ],
   "scripts": {
     "build": "tsup --clean",
-    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
     "@vue-devtools-next/schema": "workspace:^",

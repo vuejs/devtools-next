@@ -1,5 +1,5 @@
-import { getComponentTree } from '../runtime/component-tree'
-import { getInstanceState } from '../runtime/component-state'
+import { getInstanceState } from '../core/component/state'
+import { getComponentTree } from '../core/component/tree'
 
 export const emit = {
   getComponentTree,

@@ -1,6 +1,6 @@
 import type { ComponentState } from '@vue-devtools-next/schema'
-import { getComponentName, getInstanceName } from './util'
 import { processInstanceState } from './data'
+import { getComponentName, getInstanceName } from './util'
 
 function isRef(raw): boolean {
   return !!raw.__v_isRef

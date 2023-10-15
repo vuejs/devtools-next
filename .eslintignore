@@ -6,3 +6,4 @@ release.yml
 packages/browser-extension/overlay/*
 packages/vite/src/overlay/*
 packages/browser-extension/client/*
+eslint.config.js

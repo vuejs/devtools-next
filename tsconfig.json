@@ -1,22 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
-    "lib": ["esnext", "dom"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "strict": true,
     "jsx": "preserve",
-    "allowJs": true,
-    "strictNullChecks": true,
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "types": [
-      "chrome",
-      "vite/client",
-      "vitest/globals",
-      "@vue-devtools-next/schema"
-    ],
+    "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
       "@vue-devtools-next/shared": ["./packages/shared/src/index.ts"],
       "@vue-devtools-next/app-core": ["./packages/app-core/src/index.ts"],
@@ -25,13 +13,24 @@
       "@vue-devtools-next/ui": ["./packages/ui/src/index.ts"],
       "@vue-devtools-next/ui/theme": ["./packages/ui/theme/index.ts"],
       "@vue-devtools-next/vite": ["./packages/vite/src/index.ts"]
-    }
+    },
+    "resolveJsonModule": true,
+    "types": [
+      "chrome",
+      "vite/client",
+      "vitest/globals",
+      "@vue-devtools-next/schema"
+    ],
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true
   },
   "exclude": [
-    "**/browser-extension/overlay/**",
     "**/vite/src/overlay/**",
-    "**/browser-extension/client/**",
     "**/dist/**",
-    "**/node_modules/**"
+    "**/node_modules/**",
+    "**/**/*.js"
   ]
 }

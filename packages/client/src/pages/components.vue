@@ -27,7 +27,7 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <ComponentState v-for="(state, key) in activeComponentState" :id="key" :key="key" :data="state" :name="`${key}`" />
+          <ComponentState v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()" :data="state" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

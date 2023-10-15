@@ -104,6 +104,7 @@ export interface DevToolsState {
   connected: boolean
   appRecords: AppRecord[]
   activeAppRecord: AppRecord | null
+  selectedComponentId: string | null
 }
 
 export interface ComponentState {

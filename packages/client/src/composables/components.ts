@@ -24,7 +24,7 @@ function normalizeComponentState(state: string) {
 }
 
 function getComponentState(id: string) {
-  bridgeApi.getInstanceState({ instanceId: id }).then(({ data }: { data: string }) => {
+  bridgeApi.getInstanceState({ instanceId: id }, ({ data }) => {
     activeComponentState.value = normalizeComponentState(data)
     const defaultExpandedId = Object.keys(activeComponentState.value)[0]
     componentStateExpandedMap.value = {

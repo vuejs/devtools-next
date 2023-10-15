@@ -11,6 +11,7 @@ export enum DevToolsEvents {
   COMPONENT_UPDATED = 'component:updated',
   COMPONENT_REMOVED = 'component:removed',
   COMPONENT_TREE_UPDATED = 'component-tree:updated',
+  COMPONENT_STATE_UPDATED = 'component-state:updated',
 }
 
 type HookAppInstance = App & VueAppInstance
@@ -22,6 +23,7 @@ interface DevToolsEvent {
   [DevToolsEvents.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsEvents.COMPONENT_REMOVED]: DevToolsEvent['component:added']
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
+  [DevToolsEvents.COMPONENT_STATE_UPDATED]: (id: string) => void
 }
 
 const devtoolsEventsBuffer: {
@@ -34,6 +36,7 @@ const devtoolsEventsBuffer: {
   [DevToolsEvents.COMPONENT_UPDATED]: [],
   [DevToolsEvents.COMPONENT_REMOVED]: [],
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: [],
+  [DevToolsEvents.COMPONENT_STATE_UPDATED]: [],
 }
 
 function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
@@ -66,5 +69,8 @@ export const on = {
   },
   componentTreeUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_TREE_UPDATED]) {
     collectBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, fn)
+  },
+  componentStateUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_UPDATED]) {
+    collectBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, fn)
   },
 }

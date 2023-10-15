@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useDark } from '@vueuse/core'
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDark } from '@vueuse/core'
 
 const count = ref(0)
 const isDark = useDark()
@@ -22,5 +22,9 @@ const router = useRouter()
     </button>
     <RouterView />
     {{ doubleCount }}
+    {{ isDark }}
+    <button @click="count++">
+      Increment
+    </button>
   </div>
 </template>

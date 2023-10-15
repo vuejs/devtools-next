@@ -1,8 +1,8 @@
-import type { Emitter, EventType, Handler } from 'mitt'
-import mitt from 'mitt'
-import { NOOP, target } from '@vue-devtools-next/shared'
 import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 import { BridgeEvents } from '@vue-devtools-next/schema'
+import { NOOP, target } from '@vue-devtools-next/shared'
+import type { Emitter, EventType, Handler } from 'mitt'
+import mitt from 'mitt'
 import type { DispatchDevToolsRequestsOptions } from './dispatcher'
 
 export interface BridgeAdapterOptions {
@@ -141,9 +141,7 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 
-  // @TODO: data type
-  static getInstanceState<S extends { data: any }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
-    return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params })
-    // return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
+  static getInstanceState<S extends { data: { data: string } }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+    return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
   }
 }

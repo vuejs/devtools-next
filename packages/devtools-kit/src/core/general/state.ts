@@ -6,6 +6,7 @@ global[StateKey] ??= {
   connected: false,
   appRecords: [],
   activeAppRecord: null,
+  selectedComponentId: null,
 }
 
 export const devtoolsState = new Proxy(global[StateKey], {

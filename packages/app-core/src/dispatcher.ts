@@ -38,7 +38,16 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     cb(treeNode)
   }
   else if (type === 'component-state') {
+    devtools.state.selectedComponentId = params?.instanceId as string
     const componentState = devtools.api.getInstanceState(params as { instanceId: string })
-    cb(componentState)
+    // sync updated
+    // @TODO: remove listener side effect
+    devtools.api.on.componentStateUpdated((id) => {
+      if (id === devtools.state.selectedComponentId) {
+        const componentState = devtools.api.getInstanceState({ instanceId: devtools.state.selectedComponentId! })
+        cb({ data: componentState })
+      }
+    })
+    cb({ data: componentState })
   }
 }

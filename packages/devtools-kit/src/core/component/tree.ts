@@ -89,8 +89,8 @@ export function initComponentTree() {
       appRecord,
       recursively: false,
     })
-
     callBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
+    callBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, id)
   })
 
   api.on.componentRemoved(async (app, uid, parentUid, component) => {

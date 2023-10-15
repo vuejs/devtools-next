@@ -23,6 +23,14 @@ function normalizeComponentState(state: string) {
   return res
 }
 
+function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
+  if (!treeNode.length)
+    return false
+  if (treeNode.find(item => item.id === id))
+    return true
+  return treeNode.some(item => checkComponentInTree(item.children || [], id))
+}
+
 function getComponentState(id: string) {
   bridgeApi.getInstanceState({ instanceId: id }, ({ data }) => {
     activeComponentState.value = normalizeComponentState(data)
@@ -53,6 +61,13 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   if (!selectedComponent.value) {
     selectedComponent.value = treeNode?.[0].id
     getComponentState(treeNode?.[0].id)
+  }
+  else {
+    // fallback to root if selected component is not in the tree
+    if (!checkComponentInTree(treeNode, selectedComponent.value)) {
+      selectedComponent.value = treeNode?.[0].id
+      getComponentState(treeNode?.[0].id)
+    }
   }
 }
 

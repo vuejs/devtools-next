@@ -14,6 +14,7 @@ export enum DevToolsHooks {
   REMOVE_ROUTE = 'router:remove-route',
   RENDER_TRACKED = 'render:tracked',
   RENDER_TRIGGERED = 'render:triggered',
+  SETUP_DEVTOOLS_PLUGIN = 'devtools-plugin:setup',
 }
 
 export interface DevtoolsHook {
@@ -72,6 +73,48 @@ export type VueAppInstance = ComponentInternalInstance & {
   provides: Record<string | symbol, unknown>
   ctx: Record<string, unknown>
 }
+
+export declare type PluginSettingsItem = {
+  label: string
+  description?: string
+} & ({
+  type: 'boolean'
+  defaultValue: boolean
+} | {
+  type: 'choice'
+  defaultValue: string | number
+  options: {
+    value: string | number
+    label: string
+  }[]
+  component?: 'select' | 'button-group'
+} | {
+  type: 'text'
+  defaultValue: string
+})
+
+export interface PluginDescriptor {
+  id: string
+  label: string
+  app: App
+  packageName?: string
+  homepage?: string
+  componentStateTypes?: string[]
+  logo?: string
+  disableAppScope?: boolean
+  disablePluginScope?: boolean
+  /**
+   * Run the plugin setup and expose the api even if the devtools is not opened yet.
+   * Useful to record timeline events early.
+   */
+  enableEarlyProxy?: boolean
+  settings?: Record<string, PluginSettingsItem>
+}
+
+// @TODO
+export type PluginApi = any
+
+export type PluginSetupFunction = (api: PluginApi) => void
 
 export interface AppRecord {
   id: string | number

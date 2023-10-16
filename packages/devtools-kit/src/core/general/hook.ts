@@ -1,4 +1,4 @@
-import type { DevtoolsHook, VueAppInstance } from '@vue-devtools-next/schema'
+import type { DevtoolsHook, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
@@ -85,5 +85,10 @@ export function subscribeDevToolsHook() {
       return
 
     callBuffer(DevToolsEvents.COMPONENT_REMOVED, app, uid, parentUid, component)
+  })
+
+  // devtools plugin setup
+  hook.on(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => {
+    callBuffer(DevToolsEvents.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
   })
 }

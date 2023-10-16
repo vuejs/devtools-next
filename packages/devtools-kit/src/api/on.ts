@@ -1,4 +1,4 @@
-import type { ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, DevToolsState, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
 
@@ -12,6 +12,7 @@ export enum DevToolsEvents {
   COMPONENT_REMOVED = 'component:removed',
   COMPONENT_TREE_UPDATED = 'component-tree:updated',
   COMPONENT_STATE_UPDATED = 'component-state:updated',
+  SETUP_DEVTOOLS_PLUGIN = 'devtools-plugin:setup',
 }
 
 type HookAppInstance = App & VueAppInstance
@@ -24,6 +25,7 @@ interface DevToolsEvent {
   [DevToolsEvents.COMPONENT_REMOVED]: DevToolsEvent['component:added']
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
   [DevToolsEvents.COMPONENT_STATE_UPDATED]: (id: string) => void
+  [DevToolsEvents.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
 }
 
 const devtoolsEventsBuffer: {
@@ -37,6 +39,7 @@ const devtoolsEventsBuffer: {
   [DevToolsEvents.COMPONENT_REMOVED]: [],
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: [],
   [DevToolsEvents.COMPONENT_STATE_UPDATED]: [],
+  [DevToolsEvents.SETUP_DEVTOOLS_PLUGIN]: [],
 }
 
 function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
@@ -72,5 +75,8 @@ export const on = {
   },
   componentStateUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_UPDATED]) {
     collectBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, fn)
+  },
+  devtoolsPluginSetup(fn: DevToolsEvent[DevToolsEvents.SETUP_DEVTOOLS_PLUGIN]) {
+    collectBuffer(DevToolsEvents.SETUP_DEVTOOLS_PLUGIN, fn)
   },
 }

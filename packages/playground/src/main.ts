@@ -1,10 +1,10 @@
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
-import { createPinia } from 'pinia'
+import App from './App.vue'
 import Home from './pages/Home.vue'
 import './style.css'
-import App from './App.vue'
 
 const pinia = createPinia()
 
@@ -27,6 +27,4 @@ const router = createRouter({
 app.use(router)
 app.use(pinia)
 
-setTimeout(() => {
-  app.mount('#app')
-}, 2000)
+app.mount('#app')

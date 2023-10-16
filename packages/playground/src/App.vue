@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useDark } from '@vueuse/core'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAppStore } from './stores'
 
-const count = ref(0)
+const app = useAppStore()
 const isDark = useDark()
 const doubleCount = computed(() => {
-  return count.value * 2
+  return app.count * 2
 })
 const p = reactive({
   age: 18,
@@ -23,7 +24,7 @@ const router = useRouter()
     <RouterView />
     {{ doubleCount }}
     {{ isDark }}
-    <button @click="count++">
+    <button @click="app.increment">
       Increment
     </button>
   </div>

@@ -1,4 +1,4 @@
-import { stringify } from '../../shared'
+// import { stringify } from '../../shared'
 import { devtoolsContext } from '../general/state'
 import { processInstanceState } from './general/data'
 import { getInstanceName, getUniqueComponentId } from './general/util'
@@ -12,16 +12,11 @@ export function getInstanceState(params: { instanceId: string }) {
   const file = instance?.type?.__file
 
   const state = processInstanceState(instance!)
-  const stringifyedState = stringify<{
-    id: string
-    name: string
-    file: string | undefined
-    state: typeof state
-  }>({
+  return {
     id,
     name,
     file,
     state,
-  }) as string
-  return stringifyedState
+    instance,
+  }
 }

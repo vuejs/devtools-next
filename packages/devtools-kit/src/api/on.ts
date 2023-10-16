@@ -1,4 +1,4 @@
-import type { ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentState, ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
 
@@ -7,6 +7,7 @@ export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
   COMPONENT_TREE_UPDATED = 'component-tree:updated',
   COMPONENT_STATE_UPDATED = 'component-state:updated',
+  COMPONENT_STATE_INSPECT = 'component-state:inspect',
 }
 
 type HookAppInstance = App & VueAppInstance
@@ -15,6 +16,17 @@ interface DevToolsEvent {
   [DevToolsEvents.APP_CONNECTED]: () => void
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
   [DevToolsEvents.COMPONENT_STATE_UPDATED]: (id: string) => void
+  [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
+    componentInstance: VueAppInstance | undefined
+    app: VueAppInstance | undefined
+    instanceData: {
+      id: string
+      name: string
+      file: string | undefined
+      state: ComponentState[]
+      instance: VueAppInstance | undefined
+    }
+  }) => void
 }
 
 const devtoolsEventsBuffer: {
@@ -24,6 +36,7 @@ const devtoolsEventsBuffer: {
   [DevToolsEvents.APP_CONNECTED]: [],
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: [],
   [DevToolsEvents.COMPONENT_STATE_UPDATED]: [],
+  [DevToolsEvents.COMPONENT_STATE_INSPECT]: [],
 }
 
 function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
@@ -49,8 +62,8 @@ export const on = {
     collectBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, fn)
   },
   // compatible
-  inspectComponent() {
-    console.log('ok?')
+  inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {
+    collectBuffer(DevToolsEvents.COMPONENT_STATE_INSPECT, fn)
   },
   visitComponentTree() {},
   getInspectorTree() {},

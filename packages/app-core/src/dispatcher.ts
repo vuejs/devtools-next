@@ -14,7 +14,7 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
   if (type === 'state') {
     const state = devtools.state
     // sync updated
-    devtools.api.on.devtoolsStateUpdated((payload) => {
+    devtools.context.api.on.devtoolsStateUpdated((payload) => {
       cb({
         connected: payload.connected,
         vueVersion: payload.activeAppRecord?.version || '',
@@ -44,7 +44,7 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     // @TODO: remove listener side effect
     devtools.context.api.on.componentStateUpdated((id) => {
       if (id === devtools.state.selectedComponentId) {
-        const componentState = devtools.api.getInstanceState({ instanceId: devtools.state.selectedComponentId! })
+        const componentState = devtools.context.api.getInstanceState({ instanceId: devtools.state.selectedComponentId! })
         cb({ data: componentState })
       }
     })

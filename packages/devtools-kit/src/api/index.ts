@@ -1,8 +1,9 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
 import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
+import { stringify } from '../shared'
 import { emit } from './emit'
-import { on } from './on'
+import { DevToolsEvents, callBuffer, on } from './on'
 
 export { DevToolsEvents, callBuffer } from './on'
 export * from './plugin'
@@ -18,7 +19,16 @@ export class DevToolsPluginApi {
   }
 
   getInstanceState(params: { instanceId: string }) {
-    return getInstanceState(params)
+    const result = getInstanceState(params)
+    const componentInstance = result.instance
+    const app = result.instance?.appContext.app
+    const payload = {
+      componentInstance,
+      app,
+      instanceData: result,
+    }
+    callBuffer(DevToolsEvents.COMPONENT_STATE_INSPECT, payload)
+    return stringify(result)
   }
 
   getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {

@@ -1,6 +1,6 @@
 import type { ComponentState, VueAppInstance } from '@vue-devtools-next/schema'
 import { camelize, target } from '@vue-devtools-next/shared'
-import { devtoolsState } from '../../general/state'
+import { devtoolsContext } from '../../general/state'
 import {
   getBigIntDetails,
   getComponentDefinitionDetails,
@@ -591,7 +591,7 @@ export function revive(val) {
   else if (val && val._custom) {
     const { _custom: custom } = val
     if (custom.type === 'component')
-      return devtoolsState.activeAppRecord?.instanceMap.get(custom.id)
+      return devtoolsContext.appRecord?.instanceMap.get(custom.id)
     else if (custom.type === 'map')
       return reviveMap(val)
     else if (custom.type === 'set')

@@ -27,22 +27,22 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     })
   }
   else if (type === 'component-tree') {
-    const treeNode = await devtools.api.getComponentTree({
+    const treeNode = await devtools.context.api.getComponentTree({
       filterText: '',
       recursively: false,
     })
     // sync updated
-    devtools.api.on.componentTreeUpdated((payload) => {
+    devtools.context.api.on.componentTreeUpdated((payload) => {
       cb(payload)
     })
     cb(treeNode)
   }
   else if (type === 'component-state') {
     devtools.state.selectedComponentId = params?.instanceId as string
-    const componentState = devtools.api.getInstanceState(params as { instanceId: string })
+    const componentState = devtools.context.api.getInstanceState(params as { instanceId: string })
     // sync updated
     // @TODO: remove listener side effect
-    devtools.api.on.componentStateUpdated((id) => {
+    devtools.context.api.on.componentStateUpdated((id) => {
       if (id === devtools.state.selectedComponentId) {
         const componentState = devtools.api.getInstanceState({ instanceId: devtools.state.selectedComponentId! })
         cb({ data: componentState })

@@ -1,6 +1,7 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { DevToolsEvents, api, callBuffer } from '../../api'
-import { devtoolsState } from '../general/state'
+import { DevToolsEvents, callBuffer } from '../../api'
+import { hook } from '../general/hook'
+import { devtoolsContext } from '../general/state'
 import { ComponentWalker, getAppRecord, getComponentId } from './general'
 
 export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
@@ -13,7 +14,7 @@ export function getComponentInstance(appRecord: AppRecord, instanceId: string | 
 }
 
 export async function getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
-  const { appRecord = devtoolsState.activeAppRecord, maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options
+  const { appRecord = devtoolsContext.appRecord, maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options
   const instance = getComponentInstance(appRecord!, instanceId)
   if (instance) {
     // @TODO
@@ -27,7 +28,7 @@ export async function getComponentTree(options: { appRecord?: AppRecord; instanc
 }
 
 export function initComponentTree() {
-  api.on.componentAdded(async (app, uid, parentUid, component) => {
+  hook.on.componentAdded(async (app, uid, parentUid, component) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
@@ -60,7 +61,7 @@ export function initComponentTree() {
     callBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
   })
 
-  api.on.componentUpdated(async (app, uid, parentUid, component) => {
+  hook.on.componentUpdated(async (app, uid, parentUid, component) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
@@ -93,7 +94,7 @@ export function initComponentTree() {
     callBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, id)
   })
 
-  api.on.componentRemoved(async (app, uid, parentUid, component) => {
+  hook.on.componentRemoved(async (app, uid, parentUid, component) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 

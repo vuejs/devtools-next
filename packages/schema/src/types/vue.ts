@@ -14,6 +14,7 @@ export enum DevToolsHooks {
   REMOVE_ROUTE = 'router:remove-route',
   RENDER_TRACKED = 'render:tracked',
   RENDER_TRIGGERED = 'render:triggered',
+  APP_CONNECTED = 'app:connected',
   SETUP_DEVTOOLS_PLUGIN = 'devtools-plugin:setup',
 }
 
@@ -96,7 +97,7 @@ export declare type PluginSettingsItem = {
 export interface PluginDescriptor {
   id: string
   label: string
-  app: App
+  app: VueAppInstance
   packageName?: string
   homepage?: string
   componentStateTypes?: string[]
@@ -124,6 +125,7 @@ export interface AppRecord {
   types?: Record<string, string | symbol>
   instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
+  api?: unknown
 }
 
 export interface ComponentTreeNode {
@@ -148,6 +150,7 @@ export interface DevToolsState {
   appRecords: AppRecord[]
   activeAppRecord: AppRecord | null
   selectedComponentId: string | null
+  pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
 }
 
 export interface ComponentState {

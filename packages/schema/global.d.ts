@@ -1,5 +1,6 @@
 import type { BridgeInstanceType } from '../app-core/src/bridge'
 import type { VueDevToolsClient } from '../app-core/src/client'
+import type { DevToolsContext } from './src/types/context'
 import type { AppRecord, ComponentTreeNode, DevToolsState, DevtoolsHook } from './src/types/vue'
 
 /* eslint-disable vars-on-top, no-var */
@@ -19,6 +20,8 @@ declare global {
   }
   // devtools global state
   var __VUE_DEVTOOLS_GLOBAL_STATE__: DevToolsState
+  // devtools context
+  var __VUE_DEVTOOLS_CONTEXT__: DevToolsContext
 }
 
 export { }

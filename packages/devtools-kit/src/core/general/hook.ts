@@ -2,9 +2,57 @@ import type { DevtoolsHook, PluginDescriptor, PluginSetupFunction, VueAppInstanc
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
 import type { App } from 'vue'
-import { DevToolsEvents, callBuffer } from '../../api'
 
 type HookAppInstance = App & VueAppInstance
+interface DevToolsEvent {
+  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
+  [DevToolsHooks.APP_CONNECTED]: () => void
+  [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
+  [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
+  [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
+  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
+}
+
+const devtoolsHookEventsBuffer: {
+  [P in DevToolsHooks]: Array<DevToolsEvent[keyof DevToolsEvent]>
+} = target.__VUE_DEVTOOLS_HOOK_EVENT_BUFFER__ ??= {
+  [DevToolsHooks.APP_INIT]: [],
+  [DevToolsHooks.APP_CONNECTED]: [],
+  [DevToolsHooks.COMPONENT_ADDED]: [],
+  [DevToolsHooks.COMPONENT_UPDATED]: [],
+  [DevToolsHooks.COMPONENT_REMOVED]: [],
+  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: [],
+}
+
+function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
+  devtoolsHookEventsBuffer[event].push(fn)
+}
+
+function callBuffer<T extends keyof DevToolsEvent>(eventName: T, ...args: Parameters<DevToolsEvent[T]>) {
+  // @ts-expect-error tuple rest
+  devtoolsHookEventsBuffer[eventName].forEach(fn => fn(...args))
+}
+
+const on = {
+  vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]) {
+    collectBuffer(DevToolsHooks.APP_INIT, fn)
+  },
+  vueAppConnected(fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) {
+    collectBuffer(DevToolsHooks.APP_CONNECTED, fn)
+  },
+  componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) {
+    collectBuffer(DevToolsHooks.COMPONENT_ADDED, fn)
+  },
+  componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) {
+    collectBuffer(DevToolsHooks.COMPONENT_UPDATED, fn)
+  },
+  componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) {
+    collectBuffer(DevToolsHooks.COMPONENT_REMOVED, fn)
+  },
+  setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) {
+    collectBuffer(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
+  },
+}
 
 export function createDevToolsHook(): DevtoolsHook {
   return {
@@ -50,7 +98,7 @@ export function subscribeDevToolsHook() {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    callBuffer(DevToolsEvents.APP_INIT, app, version)
+    callBuffer(DevToolsHooks.APP_INIT, app, version)
     // const record = createAppRecord(app)
 
     // hook.appRecords.push({
@@ -68,7 +116,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsEvents.COMPONENT_ADDED, app, uid, parentUid, component)
+    callBuffer(DevToolsHooks.COMPONENT_ADDED, app, uid, parentUid, component)
   })
 
   // component updated hook
@@ -76,7 +124,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsEvents.COMPONENT_UPDATED, app, uid, parentUid, component)
+    callBuffer(DevToolsHooks.COMPONENT_UPDATED, app, uid, parentUid, component)
   })
 
   // component removed hook
@@ -84,11 +132,15 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsEvents.COMPONENT_REMOVED, app, uid, parentUid, component)
+    callBuffer(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)
   })
 
   // devtools plugin setup
   hook.on(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => {
-    callBuffer(DevToolsEvents.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
+    callBuffer(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
   })
+}
+
+export const hook = {
+  on,
 }

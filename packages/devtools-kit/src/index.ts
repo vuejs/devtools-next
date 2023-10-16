@@ -1,10 +1,12 @@
 import { api } from './api'
-import { devtoolsState, initDevTools, onDevToolsConnected } from './core/general'
+import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected } from './core/general'
 
 export const devtools = {
   api,
   state: devtoolsState,
+  context: devtoolsContext,
   init: initDevTools,
+  hook,
 }
 
 export {

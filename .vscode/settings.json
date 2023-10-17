@@ -34,5 +34,6 @@
     "json",
     "jsonc",
     "yaml"
-  ]
+  ],
+  "scss.lint.unknownAtRules": "ignore"
 }

@@ -55,7 +55,7 @@ const iconMapping = {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .container {
   @apply $ui-base;
   .message {

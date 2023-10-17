@@ -36,6 +36,8 @@ const value = useVModel(props, 'modelValue', emit)
 const noFocusAnimation = computed(() => props.variant === 'flat')
 
 const disabled = computed(() => props.disabled || props.loading)
+
+const inputRef = ref<HTMLInputElement>()
 </script>
 
 <template>
@@ -46,13 +48,16 @@ const disabled = computed(() => props.disabled || props.loading)
       'accent': variant === 'accent',
       'focused': focused,
     }"
-    @click="focused = true"
+    @click="() => {
+      focused = true
+      inputRef?.focus()
+    }"
   >
     <div v-if="leftIcon" class="icon">
       <VueIcon :icon="leftIcon" />
     </div>
     <input
-      v-model="value"
+      ref="inputRef" v-model="value"
       class="input" v-bind="$attrs" :type="props.password ? 'password' : 'text'"
       placeholder="placeholder" :disabled="disabled"
       @blur="focused = false"
@@ -72,10 +77,10 @@ const disabled = computed(() => props.disabled || props.loading)
 
 <style lang="scss" scoped>
 .container {
-  @apply relative w-auto min-w-200px overflow-hidden b-1 border-primary-100
+  @apply relative w-auto min-w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
          flex justify-between items-center gap-2px py-5px px12px color-gray-800 dark:color-gray-100;
   .input {
-    @apply $ui-base w-full outline-none rounded-sm bg-white color-inherit
+    @apply $ui-base w-full outline-none bg-transparent color-inherit
         placeholder-color-gray-500 dark:placeholder-gray-300;
   }
   .icon {

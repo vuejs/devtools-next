@@ -7,6 +7,8 @@ import Card from './Card.vue'
 import Dialog from './Dialog.vue'
 import Input from './Input.vue'
 import FormField from './FormField.vue'
+import Dropdown from './Dropdown.vue'
+import DropdownButton from './DropdownButton.vue'
 
 export {
   Badge as VueBadge,
@@ -18,4 +20,6 @@ export {
   DarkToggle as VueDarkToggle,
   Input as VueInput,
   FormField as VueFormField,
+  Dropdown as VueDropdown,
+  DropdownButton as VueDropdownButton,
 }

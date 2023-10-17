@@ -14,13 +14,7 @@ const props = withDefaults(defineProps<{
 const value = formatComponentStateValue(props.data.value)
 const type = componentStateValueType(props.data.value)
 
-const stateExpandedMap = ref<Record<string, boolean>>({})
-
-const isExpanded = (id: string) => stateExpandedMap.value[id]
-
-function toggleExpanded(id: string) {
-  stateExpandedMap.value[id] = !stateExpandedMap.value[id]
-}
+const { isExpanded, toggleCollapse } = useCollapse('component-state', `${props.no}-${props.depth}-${props.data.key}`)
 
 const normalizedValue = computed(() => {
   // @ts-expect-error @TODO: type
@@ -102,13 +96,13 @@ const hasChildren = computed(() => {
     </template>
     <template v-else>
       <div cursor-pointer>
-        <div flex items-center relative @click="toggleExpanded(`${data.key}-${no}`)">
-          <ExpandIcon :value="isExpanded(`${data.key}-${no}`)" group-hover:text-white absolute left--6 />
+        <div flex items-center relative @click="toggleCollapse">
+          <ExpandIcon :value="isExpanded" group-hover:text-white absolute left--6 />
           <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
           <span mx-1>:</span>
           <span v-html="normalizedValue" />
         </div>
-        <div v-if="isExpanded(`${data.key}-${no}`)">
+        <div v-if="isExpanded">
           <ComponentStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
         </div>
       </div>

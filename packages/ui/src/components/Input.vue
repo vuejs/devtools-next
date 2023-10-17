@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
+import { refWithControl, useVModel } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import VueIcon from './Icon.vue'
 import VueLoading from './LoadingIndicator.vue'
@@ -26,13 +26,17 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
+  'updateFocused': [value: boolean]
   'keyTab': [e: KeyboardEvent]
 }>()
 
-const focused = ref(false)
-
 const value = useVModel(props, 'modelValue', emit)
 
+const focused = refWithControl(false, {
+  onChanged(value) {
+    emit('updateFocused', value)
+  },
+})
 const noFocusAnimation = computed(() => props.variant === 'flat')
 
 const disabled = computed(() => props.disabled || props.loading)
@@ -59,7 +63,7 @@ const inputRef = ref<HTMLInputElement>()
     <input
       ref="inputRef" v-model="value"
       class="input" v-bind="$attrs" :type="props.password ? 'password' : 'text'"
-      placeholder="placeholder" :disabled="disabled"
+      :placeholder="placeholder" :disabled="disabled"
       @blur="focused = false"
     >
     <div v-if="loading" class="icon">

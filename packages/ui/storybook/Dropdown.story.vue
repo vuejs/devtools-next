@@ -8,6 +8,7 @@ import DropdownButton from '../src/components/DropdownButton.vue'
 
 const input = ref('')
 const placement = ref<Placement>('auto')
+const disabled = ref(false)
 </script>
 
 <template>
@@ -22,9 +23,10 @@ const placement = ref<Placement>('auto')
           return acc
         }, {})"
       />
+      <HstCheckbox v-model="disabled" title="Disabled" />
     </template>
     <Variant title="Dropdown buttons">
-      <Dropdown label="Dropdown" :distance="5" :placement="placement">
+      <Dropdown label="Dropdown" :disabled="disabled" :distance="5" :placement="placement">
         <div class="py5px w200px">
           <DropdownButton>
             Edit
@@ -33,7 +35,7 @@ const placement = ref<Placement>('auto')
       </Dropdown>
     </Variant>
     <Variant title="Dropdown with input">
-      <Dropdown label="Dropdown" :distance="5" :placement="placement">
+      <Dropdown label="Dropdown" :disabled="disabled" :distance="5" :placement="placement">
         <div class="p10px">
           <VueInput v-model="input" left-icon="i-carbon-search" placeholder="Search things..." />
           <div class="mt5px">

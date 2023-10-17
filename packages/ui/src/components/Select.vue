@@ -9,9 +9,11 @@ const props = withDefaults(defineProps<{
   options: { label: V; value: K }[]
   placeholder?: string
   autoClose?: boolean
+  disabled?: boolean
 }>(), {
   placeholder: 'Select...',
   autoClose: true,
+  disabled: false,
 })
 
 const emit = defineEmits<{
@@ -25,10 +27,10 @@ const value = computed({
 </script>
 
 <template>
-  <VueDropdown :label="placeholder">
+  <VueDropdown :label="placeholder" :disabled="disabled">
     <div class="m1 flex flex-col min-w-140px w-auto">
       <VueButton
-        v-for="item in options" :key="item.value" v-close-popper="props.autoClose" round="normal"
+        v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
         class="flex-[auto_1_1] button"
         :class="{
           active: item.value === value,

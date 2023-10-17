@@ -9,6 +9,9 @@ import Input from './Input.vue'
 import FormField from './FormField.vue'
 import Dropdown from './Dropdown.vue'
 import DropdownButton from './DropdownButton.vue'
+import Confirm from './Confirm.vue'
+import Select from './Select.vue'
+import Switch from './Switch.vue'
 
 export {
   Badge as VueBadge,
@@ -22,4 +25,7 @@ export {
   FormField as VueFormField,
   Dropdown as VueDropdown,
   DropdownButton as VueDropdownButton,
+  Confirm as VueConfirm,
+  Select as VueSelect,
+  Switch as VueSwitch,
 }

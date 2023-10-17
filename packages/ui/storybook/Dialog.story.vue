@@ -11,7 +11,7 @@ const modalShow = ref(false)
       Show Dialog
     </HstButton>
     <Dialog v-model="modalShow">
-      <div class="w-100px h-100px bg-red" />
+      <div class="w-100px h-40px bg-red" />
     </Dialog>
   </Story>
 </template>

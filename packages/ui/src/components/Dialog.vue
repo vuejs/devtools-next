@@ -12,6 +12,7 @@ const props = withDefaults(
     title?: string
     width: string
     height: string
+    closable?: boolean
   }>(),
   {
     title: 'Dialog',
@@ -21,6 +22,7 @@ const props = withDefaults(
     autoClose: true,
     width: '500px',
     height: '300px',
+    closable: true,
   },
 )
 
@@ -86,7 +88,7 @@ onKeyStroke('Escape', () => {
                 {{ props.title }}
               </slot>
             </div>
-            <div class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
+            <div v-if="closable" class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
               <div class="i-carbon-close" />
             </div>
           </div>
@@ -95,11 +97,13 @@ onKeyStroke('Escape', () => {
           </div>
           <div class="w-full h32px footer delay-250 transition-all transition-duration-300">
             <slot name="footer">
-              <div class="$ui-fcc">
-                <Button type="primary" @click="close">
-                  close
-                </Button>
-              </div>
+              <slot name="footer">
+                <div class="$ui-fcc">
+                  <Button type="primary" @click="close">
+                    close
+                  </Button>
+                </div>
+              </slot>
             </slot>
           </div>
         </div>

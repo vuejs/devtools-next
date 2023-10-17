@@ -26,6 +26,7 @@ export const unoConfig = {
     '$ui-fcc': 'flex justify-center items-center',
     '$ui-fbc': 'flex justify-between items-center',
     '$ui-fsc': 'flex justify-start items-center',
+    '$ui-fec': 'flex justify-end items-center',
     '$ui-inline-fcc': 'inline-flex justify-center items-center',
     '$ui-z-max': 'z-2147483647',
 

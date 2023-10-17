@@ -352,6 +352,12 @@ importers:
       '@vueuse/integrations':
         specifier: ^10.4.0
         version: 10.4.1(focus-trap@7.5.2)(vue@3.3.4)
+      colord:
+        specifier: ^2.9.3
+        version: 2.9.3
+      floating-vue:
+        specifier: 2.0.0-beta.24
+        version: 2.0.0-beta.24(vue@3.3.4)
       focus-trap:
         specifier: ^7.5.2
         version: 7.5.2
@@ -371,18 +377,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^4.3.3
         version: 4.3.4(vite@4.4.11)(vue@3.3.4)
-      colord:
-        specifier: ^2.9.3
-        version: 2.9.3
       histoire:
         specifier: ^0.17.0
         version: 0.17.0(@types/node@20.6.2)(vite@4.4.11)
-      unplugin:
-        specifier: ^1.4.0
-        version: 1.5.0
-      unplugin-vue-components:
-        specifier: ^0.25.1
-        version: 0.25.2(rollup@3.28.1)(vue@3.3.4)
       vite-plugin-dts:
         specifier: ^3.5.3
         version: 3.5.3(@types/node@20.6.2)(rollup@3.28.1)(typescript@5.2.2)(vite@4.4.11)
@@ -1612,17 +1609,14 @@ packages:
     resolution: {integrity: sha512-jk3WqquEJRlcyu7997NtR5PibI+y5bi+LS3hPmguVClypenMsCY3CBa3LAQnozRCtCrYWSEtAdiskpamuJRFOQ==}
     dependencies:
       '@floating-ui/utils': 0.1.1
-    dev: true
 
   /@floating-ui/dom@1.1.1:
     resolution: {integrity: sha512-TpIO93+DIujg3g7SykEAGZMDtbJRrmnYRCNYSjJlvIbGhBjRSNTLVbNeDQBrzy9qDgUbiWdc7KA0uZHZ2tJmiw==}
     dependencies:
       '@floating-ui/core': 1.4.1
-    dev: true
 
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
-    dev: true
 
   /@fortawesome/fontawesome-common-types@6.4.2:
     resolution: {integrity: sha512-1DgP7f+XQIJbLFCTX1V2QnxVmpLdKdzzo2k8EmvDOePfchaIGQ9eCHj2up3/jNEbZuBqel5OxiaOJf37TWauRA==}
@@ -2760,7 +2754,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.4.11(@types/node@20.8.6)
+      vite: 4.4.11(@types/node@20.6.2)
       vue: 3.3.4
     dev: true
 
@@ -3934,7 +3928,7 @@ packages:
 
   /colord@2.9.3:
     resolution: {integrity: sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==}
-    dev: true
+    dev: false
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
@@ -5145,7 +5139,6 @@ packages:
       '@floating-ui/dom': 1.1.1
       vue: 3.3.4
       vue-resize: 2.0.0-alpha.1(vue@3.3.4)
-    dev: true
 
   /focus-trap@7.5.2:
     resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}
@@ -9524,7 +9517,6 @@ packages:
       vue: ^3.0.0
     dependencies:
       vue: 3.3.4
-    dev: true
 
   /vue-router@4.2.4(vue@3.3.4):
     resolution: {integrity: sha512-9PISkmaCO02OzPVOMq2w82ilty6+xJmQrarYZDkjZBfl4RvYAlt4PKnEX21oW4KTtWfa9OuO/b3qk1Od3AEdCQ==}

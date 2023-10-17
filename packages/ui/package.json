@@ -46,16 +46,15 @@
     "@vueuse/components": "^10.4.1",
     "@vueuse/core": "^10.4.0",
     "@vueuse/integrations": "^10.4.0",
+    "colord": "^2.9.3",
+    "floating-vue": "2.0.0-beta.24",
     "focus-trap": "^7.5.2"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.1",
     "@types/node": "^20.6.0",
     "@vitejs/plugin-vue": "^4.3.3",
-    "colord": "^2.9.3",
     "histoire": "^0.17.0",
-    "unplugin": "^1.4.0",
-    "unplugin-vue-components": "^0.25.1",
     "vite-plugin-dts": "^3.5.3"
   }
 }

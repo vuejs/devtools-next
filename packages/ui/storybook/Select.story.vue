@@ -33,5 +33,8 @@ const current = ref(options[0].value)
     <Variant title="custom placeholder">
       <Select v-model="current" :options="options" placeholder="Select a option to apply" />
     </Variant>
+    <Variant title="auto-close set false">
+      <Select v-model="current" :options="options" :auto-close="false" />
+    </Variant>
   </Story>
 </template>

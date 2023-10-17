@@ -63,7 +63,7 @@ const iconMapping = {
   }
   &:not(.focused) {
     .message {
-      @apply opacity-75;
+      @apply opacity-65;
     }
   }
 }

@@ -57,13 +57,13 @@ const iconMapping = {
 
 <style scoped>
 .container {
-  @apply $ui-base;
+  --apply: $ui-base;
   .message {
-    @apply $ui-base text-14px transition-opacity mt2;
+    --apply: $ui-base text-14px transition-opacity mt2;
   }
   &:not(.focused) {
     .message {
-      @apply opacity-65;
+      --apply: opacity-65;
     }
   }
 }

@@ -64,12 +64,12 @@ onKeyStroke('Escape', () => {
          $ui-bg-base absolute
         "
         :class="[
-          dim ? 'bg-opacity-50' : 'bg-opacity-0',
+          dim ? 'bg-opacity-50!' : 'bg-opacity-0!',
           blur ? 'backdrop-blur-sm' : '',
         ]"
       >
         <div
-          class="modal rounded-sm relative $ui-bg-base dark:(color-gray-200) color-gray-800
+          class="modal rounded-md relative bg-white dark:bg-gray-900 dark:color-gray-200 color-gray-800
         shadow-2xl transition-duration-300 transition-transform
           max-w-[calc(100vw-100px)] max-h-[calc(100vh-100x)]
           min-w-200px min-h-100px px24px py18px $ui-base
@@ -86,7 +86,7 @@ onKeyStroke('Escape', () => {
                 {{ props.title }}
               </slot>
             </div>
-            <div class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-800" @click="close">
+            <div class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
               <div class="i-carbon-close" />
             </div>
           </div>

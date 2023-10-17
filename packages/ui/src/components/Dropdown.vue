@@ -24,6 +24,12 @@ withDefaults(defineProps<{
   <Dropdown class="dropdown" :triggers="[trigger]" :distance="distance + 6" :placement="placement">
     <VueButton :type="buttonType" :class="buttonClass">
       {{ label }}
+      <template #icon>
+        <slot name="button-icon" />
+      </template>
+      <template #icon-right>
+        <slot name="button-icon-right" />
+      </template>
     </VueButton>
     <template #popper>
       <div class="popper">

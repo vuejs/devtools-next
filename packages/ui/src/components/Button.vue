@@ -90,5 +90,6 @@ const styles = {
     <div>
       <slot />
     </div>
+    <slot name="icon-right" />
   </component>
 </template>

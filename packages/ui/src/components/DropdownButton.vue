@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<ButtonProps & {
     v-close-popper
     v-bind="{
       ...props,
-      border: false,
+      round: false,
     }"
     class="transition-colors button w-full"
   >

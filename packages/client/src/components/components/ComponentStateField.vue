@@ -13,6 +13,15 @@ const props = withDefaults(defineProps<{
 
 const value = formatComponentStateValue(props.data.value)
 const type = componentStateValueType(props.data.value)
+const stateFormatClass = computed(() => {
+  if (type === 'custom') {
+    // @ts-expect-error @TODO: type
+    return `state-format-${props.data.value?._custom?.type}`
+  }
+  else {
+    return ``
+  }
+})
 
 const { isExpanded, toggleCollapse } = useCollapse('component-state', `${props.no}-${props.depth}-${props.data.key}`)
 
@@ -91,7 +100,9 @@ const hasChildren = computed(() => {
       <div>
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
-        <span v-html="normalizedValue" />
+        <span :class="stateFormatClass">
+          <span v-html="normalizedValue" />
+        </span>
       </div>
     </template>
     <template v-else>
@@ -100,7 +111,9 @@ const hasChildren = computed(() => {
           <ExpandIcon :value="isExpanded" group-hover:text-white absolute left--6 />
           <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
           <span mx-1>:</span>
-          <span v-html="normalizedValue" />
+          <span :class="stateFormatClass">
+            <span v-html="normalizedValue" />
+          </span>
         </div>
         <div v-if="isExpanded">
           <ComponentStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
@@ -109,3 +122,21 @@ const hasChildren = computed(() => {
     </template>
   </div>
 </template>
+
+<style lang="scss" scoped>
+// @TODO: other custom type
+:deep(.state-format-function) {
+  --at-apply: "font-italic";
+  & > span {
+    --at-apply: "text-#0033cc dark:text-#997fff";
+    font-family: Menlo, monospace;
+  }
+}
+
+:deep(.state-format-component-definition) {
+  --at-apply: text-primary-500;
+  & > span {
+    --at-apply: "text-#aaa";
+  }
+}
+</style>

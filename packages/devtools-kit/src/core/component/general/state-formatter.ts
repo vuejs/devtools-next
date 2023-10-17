@@ -2,6 +2,19 @@ import type { ComponentState } from '@vue-devtools-next/schema'
 import { processInstanceState } from './data'
 import { getComponentName, getInstanceName } from './util'
 
+const ESC = {
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  '&': '&amp;',
+}
+
+function escape(s: string) {
+  return s.replace(/[<>"&]/g, (s: string) => {
+    return ESC[s] || s
+  })
+}
+
 function isRef(raw): boolean {
   return !!raw.__v_isRef
 }
@@ -49,10 +62,13 @@ export function getFunctionDetails(func: Function) {
     ? match
     : '(?)'
   const name = typeof func.name === 'string' ? func.name : ''
+  // @TODO: refactor
   return {
     _custom: {
       type: 'function',
       stateTypeName: `${escape(name)}${args}`,
+      display: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
+      value: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
       detail: string.trim() ? `${string}` : null,
     },
   }

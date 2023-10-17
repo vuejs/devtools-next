@@ -9,8 +9,26 @@ const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])
 const { activeComponentState } = useComponentState()
 
+// create collapse context
+const { collapseMap: componentTreeCollapseMap } = createCollapseContext('component-tree')
+createCollapseContext('component-state')
+
+function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
+  if (!Object.keys(componentTreeCollapseMap.value).length) {
+    // expand root and its children
+    componentTreeCollapseMap.value = {
+      [treeNode[0].id]: true,
+      ...treeNode?.[0].children?.reduce((acc, cur) => {
+        acc[cur.id] = true
+        return acc
+      }, {}),
+    }
+  }
+}
+
 onDevToolsClientConnected(() => {
   bridgeApi.getComponentTree({}, (data) => {
+    normalizeComponentTreeCollapsed(data)
     initComponentTreeState(data)
     treeNode.value = data
   })

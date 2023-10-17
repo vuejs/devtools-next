@@ -72,7 +72,7 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 }
 
 export function initComponentTreeState(treeNode: ComponentTreeNode[]) {
-  initExpandedComponent(treeNode)
+  // initExpandedComponent(treeNode)
   initSelectedComponent(treeNode)
 }
 

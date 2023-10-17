@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
-const { isExpanded, toggleExpanded } = useToggleComponentTreeExpanded(props.data.id)
+const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
 const { selectedComponent, selectComponent } = useSelectComponent()
 
 function select() {
@@ -29,7 +29,7 @@ function select() {
     @click="select"
   >
     <!-- expand-icon -->
-    <ExpandIcon v-if="data.children?.length" :value="isExpanded" group-hover:text-white class="[.active_&]:text-white" @click.prevent.stop="toggleExpanded" />
+    <ExpandIcon v-if="data.children?.length" :value="isExpanded" group-hover:text-white class="[.active_&]:text-white" @click.prevent.stop="toggleCollapse" />
     <i v-else inline-block h-6 w-6 />
     <!-- component name -->
     <span text-primary-400 group-hover:text-white class="[.active_&]:text-white">

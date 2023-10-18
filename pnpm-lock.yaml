@@ -343,6 +343,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@unocss/reset':
+        specifier: '>=0.50.0-0'
+        version: 0.55.7
       '@vueuse/components':
         specifier: ^10.4.1
         version: 10.4.1(vue@3.3.4)
@@ -386,6 +389,9 @@ importers:
 
   packages/ui-playground:
     dependencies:
+      '@unocss/reset':
+        specifier: ^0.55.3
+        version: 0.55.7
       '@vue-devtools-next/ui':
         specifier: workspace:*
         version: link:../ui
@@ -2754,7 +2760,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.4.11(@types/node@20.6.2)
+      vite: 4.4.11(@types/node@20.8.6)
       vue: 3.3.4
     dev: true
 

@@ -1,6 +1,6 @@
-import { classify, kebabize } from '@vue-devtools-next/shared'
 import type { VueAppInstance } from '@vue-devtools-next/schema'
-import { getInstanceName } from './util'
+import { classify, kebabize } from '@vue-devtools-next/shared'
+import { getInstanceName } from '../general/util'
 
 export class ComponentFilter {
   filter: string

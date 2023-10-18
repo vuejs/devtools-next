@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
 import { basename, classify } from '@vue-devtools-next/shared'
 
 function getComponentTypeName(options: VueAppInstance['type']) {
@@ -124,4 +124,13 @@ export function returnError(cb: () => unknown): number | string {
   catch (e) {
     return e as string
   }
+}
+
+export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
+  if (!instanceId)
+    instanceId = `${appRecord.id}:root`
+
+  const instance = appRecord.instanceMap.get(instanceId)
+
+  return instance
 }

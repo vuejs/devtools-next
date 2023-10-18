@@ -1,17 +1,9 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { DevToolsEvents, callBuffer } from '../../api'
-import { hook } from '../general/hook'
-import { devtoolsContext } from '../general/state'
-import { ComponentWalker, getAppRecord, getComponentId } from './general'
-
-export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
-  if (!instanceId)
-    instanceId = `${appRecord.id}:root`
-
-  const instance = appRecord.instanceMap.get(instanceId)
-
-  return instance
-}
+import { DevToolsEvents, callBuffer } from '../../../api'
+import { hook } from '../../general/hook'
+import { devtoolsContext } from '../../general/state'
+import { getAppRecord, getComponentId, getComponentInstance } from '../general'
+import { ComponentWalker } from './walker'
 
 export async function getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
   const { appRecord = devtoolsContext.appRecord, maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options

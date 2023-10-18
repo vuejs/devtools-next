@@ -1,6 +1,6 @@
 import { devtoolsContext } from '../../general/state'
+import { getComponentInstance } from '../general'
 import { getInstanceName, getUniqueComponentId } from '../general/util'
-import { getComponentInstance } from '../tree'
 import { processInstanceState } from './process'
 
 export function getInstanceState(params: { instanceId: string }) {

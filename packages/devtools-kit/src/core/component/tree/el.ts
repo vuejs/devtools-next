@@ -1,6 +1,6 @@
-import type { VNode } from 'vue'
 import type { VueAppInstance } from '@vue-devtools-next/schema'
-import { isFragment } from './util'
+import type { VNode } from 'vue'
+import { isFragment } from '../general/util'
 
 export function getRootElementsFromComponentInstance(instance: VueAppInstance): VNode[] {
   if (isFragment(instance))

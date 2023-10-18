@@ -44,13 +44,12 @@ const iconMapping = {
   <div class="$ui-base">
     <VueInput v-model="value" v-model:focused="focused" :placeholder="placeholder" @update-focused="f => focused = f" />
     <div
-      class="$ui-base text-14px transition-opacity mt2 [&:not(.focused)]:opacity-65!" :class="[
-        shouldRenderMessage ? 'opacity-100' : 'opacity-0!',
+      class="$ui-base text-14px mt2" :class="[
         statusMapping[status],
-        { focused },
+        { 'opacity-65': !focused },
       ]"
     >
-      <VueIcon v-if="status !== 'normal'" inline :icon="iconMapping[status]" />
+      <VueIcon v-if="status !== 'normal' && shouldRenderMessage" inline :icon="iconMapping[status]" />
       {{ shouldRenderMessage ? message : '' }}
     </div>
   </div>

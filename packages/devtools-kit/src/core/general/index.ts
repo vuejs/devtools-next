@@ -1,5 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
-import { DevToolsEvents, DevToolsPluginApi, api, callBuffer, collectRegisteredPlugin, registerPlugin } from '../../api'
+import { DevToolsEvents, DevToolsPluginApi, api, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
 import { initComponentTree } from '../component/tree'
 import { createAppRecord } from './app'
 import { createDevToolsHook, hook, subscribeDevToolsHook } from './hook'
@@ -31,7 +31,7 @@ export function initDevTools() {
       devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
       devtoolsState.connected = true
       // mark vue app as connected
-      callBuffer(DevToolsEvents.APP_CONNECTED)
+      apiHooks.callHook(DevToolsEvents.APP_CONNECTED)
     }
     registerPlugin({
       app,

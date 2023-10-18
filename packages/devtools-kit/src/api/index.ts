@@ -3,9 +3,9 @@ import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
 import { stringify } from '../shared'
 import { emit } from './emit'
-import { DevToolsEvents, callBuffer, on } from './on'
+import { DevToolsEvents, apiHooks, on } from './on'
 
-export { DevToolsEvents, callBuffer } from './on'
+export { DevToolsEvents, apiHooks } from './on'
 export * from './plugin'
 export const api = {
   on,
@@ -27,7 +27,7 @@ export class DevToolsPluginApi {
       app,
       instanceData: result,
     }
-    callBuffer(DevToolsEvents.COMPONENT_STATE_INSPECT, payload)
+    apiHooks.callHook(DevToolsEvents.COMPONENT_STATE_INSPECT, payload)
     return stringify(result)
   }
 

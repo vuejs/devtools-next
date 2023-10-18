@@ -1,7 +1,7 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
 import { target as global } from '@vue-devtools-next/shared'
 import type { DevToolsPluginApi } from '../../api'
-import { DevToolsEvents, callBuffer } from '../../api'
+import { DevToolsEvents, apiHooks } from '../../api'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const ContextKey = '__VUE_DEVTOOLS_CONTEXT__'
@@ -31,7 +31,7 @@ export const devtoolsState = new Proxy(global[StateKey], {
       global[ContextKey].api = value.api
     }
 
-    callBuffer(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)
+    apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)
     return true
   },
   deleteProperty(target, property) {

@@ -1,5 +1,5 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { DevToolsEvents, callBuffer } from '../../../api'
+import { DevToolsEvents, apiHooks } from '../../../api'
 import { hook } from '../../general/hook'
 import { devtoolsContext } from '../../general/state'
 import { getAppRecord, getComponentId, getComponentInstance } from '../general'
@@ -50,7 +50,7 @@ export function initComponentTree() {
       recursively: false,
     })
 
-    callBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
+    apiHooks.callHook(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
   })
 
   hook.on.componentUpdated(async (app, uid, parentUid, component) => {
@@ -82,8 +82,8 @@ export function initComponentTree() {
       appRecord,
       recursively: false,
     })
-    callBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
-    callBuffer(DevToolsEvents.COMPONENT_STATE_UPDATED, id)
+    apiHooks.callHook(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
+    apiHooks.callHook(DevToolsEvents.COMPONENT_STATE_UPDATED, id)
   })
 
   hook.on.componentRemoved(async (app, uid, parentUid, component) => {
@@ -110,6 +110,6 @@ export function initComponentTree() {
       recursively: false,
     })
 
-    callBuffer(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
+    apiHooks.callHook(DevToolsEvents.COMPONENT_TREE_UPDATED, treeNode!)
   })
 }

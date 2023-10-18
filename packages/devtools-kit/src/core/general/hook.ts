@@ -1,6 +1,8 @@
 import type { DevtoolsHook, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue-devtools-next/schema'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import { target } from '@vue-devtools-next/shared'
+import type { HookKeys, Hookable } from 'hookable'
+import { createHooks } from 'hookable'
 import type { App } from 'vue'
 
 type HookAppInstance = App & VueAppInstance
@@ -13,44 +15,26 @@ interface DevToolsEvent {
   [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
 }
 
-const devtoolsHookEventsBuffer: {
-  [P in DevToolsHooks]: Array<DevToolsEvent[keyof DevToolsEvent]>
-} = target.__VUE_DEVTOOLS_HOOK_EVENT_BUFFER__ ??= {
-  [DevToolsHooks.APP_INIT]: [],
-  [DevToolsHooks.APP_CONNECTED]: [],
-  [DevToolsHooks.COMPONENT_ADDED]: [],
-  [DevToolsHooks.COMPONENT_UPDATED]: [],
-  [DevToolsHooks.COMPONENT_REMOVED]: [],
-  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: [],
-}
-
-function collectBuffer<T extends keyof DevToolsEvent>(event: T, fn: DevToolsEvent[T]) {
-  devtoolsHookEventsBuffer[event].push(fn)
-}
-
-function callBuffer<T extends keyof DevToolsEvent>(eventName: T, ...args: Parameters<DevToolsEvent[T]>) {
-  // @ts-expect-error tuple rest
-  devtoolsHookEventsBuffer[eventName].forEach(fn => fn(...args))
-}
+export const devtoolsHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = createHooks<DevToolsEvent>()
 
 const on = {
   vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]) {
-    collectBuffer(DevToolsHooks.APP_INIT, fn)
+    devtoolsHooks.hook(DevToolsHooks.APP_INIT, fn)
   },
   vueAppConnected(fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) {
-    collectBuffer(DevToolsHooks.APP_CONNECTED, fn)
+    devtoolsHooks.hook(DevToolsHooks.APP_CONNECTED, fn)
   },
   componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) {
-    collectBuffer(DevToolsHooks.COMPONENT_ADDED, fn)
+    devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
   },
   componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) {
-    collectBuffer(DevToolsHooks.COMPONENT_UPDATED, fn)
+    devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
   },
   componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) {
-    collectBuffer(DevToolsHooks.COMPONENT_REMOVED, fn)
+    devtoolsHooks.hook(DevToolsHooks.COMPONENT_REMOVED, fn)
   },
   setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) {
-    collectBuffer(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
+    devtoolsHooks.hook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
   },
 }
 
@@ -98,7 +82,7 @@ export function subscribeDevToolsHook() {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    callBuffer(DevToolsHooks.APP_INIT, app, version)
+    devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version)
     // const record = createAppRecord(app)
 
     // hook.appRecords.push({
@@ -116,7 +100,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsHooks.COMPONENT_ADDED, app, uid, parentUid, component)
+    devtoolsHooks.callHook(DevToolsHooks.COMPONENT_ADDED, app, uid, parentUid, component)
   })
 
   // component updated hook
@@ -124,7 +108,7 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsHooks.COMPONENT_UPDATED, app, uid, parentUid, component)
+    devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED, app, uid, parentUid, component)
   })
 
   // component removed hook
@@ -132,12 +116,12 @@ export function subscribeDevToolsHook() {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
-    callBuffer(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)
+    devtoolsHooks.callHook(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)
   })
 
   // devtools plugin setup
   hook.on(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => {
-    callBuffer(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
+    devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
   })
 }
 

@@ -35,6 +35,7 @@
   "dependencies": {
     "@vue-devtools-next/schema": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
+    "hookable": "^5.5.3",
     "mitt": "^3.0.1",
     "speakingurl": "^14.0.1"
   },

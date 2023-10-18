@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentState } from '@vue-devtools-next/schema'
+import type { ComponentCustomState, ComponentState } from '@vue-devtools-next/schema'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatComponentStateValue, getComponentStateValueType } from 'vue-devtools-kit/shared'
 
@@ -14,20 +14,17 @@ const props = withDefaults(defineProps<{
 const value = formatComponentStateValue(props.data.value)
 const type = getComponentStateValueType(props.data.value)
 const stateFormatClass = computed(() => {
-  if (type === 'custom') {
-    // @ts-expect-error @TODO: type
-    return `state-format-${props.data.value?._custom?.type}`
-  }
-  else {
+  if (type === 'custom')
+    return `state-format-${(props.data.value as ComponentCustomState)._custom?.type}`
+
+  else
     return ``
-  }
 })
 
 const { isExpanded, toggleCollapse } = useCollapse('component-state', `${props.no}-${props.depth}-${props.data.key}`)
 
 const normalizedValue = computed(() => {
-  // @ts-expect-error @TODO: type
-  const stateTypeName = props.data?._custom?.stateTypeName || props.data?.stateTypeName
+  const stateTypeName = (props.data as ComponentCustomState)._custom?.stateTypeName || props.data?.stateTypeName
   if (stateTypeName === 'Reactive') {
     return stateTypeName
   }
@@ -49,10 +46,9 @@ const rawValue = computed(() => {
   const isCustom = type === 'custom'
   let inherit = {}
   if (isCustom) {
-    // @ts-expect-error @TODO: type
-    inherit = props.data?.value?._custom?.fields || {}
-    // @ts-expect-error @TODO: type
-    value = props.data?.value?._custom.value
+    const data = props.data.value as ComponentCustomState
+    inherit = data._custom?.fields || {}
+    value = data._custom?.value as string
   }
   // @ts-expect-error @TODO: type
   if (value && value._isArray)

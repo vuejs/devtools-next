@@ -153,14 +153,22 @@ export interface DevToolsState {
   pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
 }
 
+export interface ComponentCustomState {
+  _custom?: {
+    type?: string
+    displayText?: string
+    tooltipText?: string
+    value?: string
+    stateTypeName?: string
+    fields?: {
+      abstract?: boolean
+    }
+  }
+}
+
 export interface ComponentState {
   key: string
-  value: string | number | Record<string, unknown> | {
-    _custom?: {
-      stateTypeName: string
-    }
-    stateTypeName?: string
-  } | Array<unknown>
+  value: string | number | Record<string, unknown> | ComponentCustomState | Array<unknown>
   type: string
   stateTypeName?: string
   meta?: Record<string, boolean | string>

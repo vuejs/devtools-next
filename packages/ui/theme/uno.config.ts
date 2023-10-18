@@ -21,10 +21,24 @@ export const unoConfig = {
   ],
   transformers: [transformerVariantGroup(), transformerDirectives()],
   theme,
+  variants: [
+    (matcher) => {
+      const prefix = 'not-action:'
+      if (!matcher.startsWith(prefix))
+        return matcher
+      return {
+        matcher: matcher.slice(prefix.length),
+        selector: s => `${s}:not(:hover):not(:focus):not(:active)`,
+      }
+    },
+  ],
   shortcuts: {
     // utilities
     '$ui-fcc': 'flex justify-center items-center',
     '$ui-fbc': 'flex justify-between items-center',
+    '$ui-fsc': 'flex justify-start items-center',
+    '$ui-if-sc': 'inline-flex justify-start items-center',
+    '$ui-fec': 'flex justify-end items-center',
     '$ui-inline-fcc': 'inline-flex justify-center items-center',
     '$ui-z-max': 'z-2147483647',
 

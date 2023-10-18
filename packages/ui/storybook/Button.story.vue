@@ -46,7 +46,7 @@ const state = reactive<{
       </Button>
     </Variant>
     <Variant title="Round Button">
-      <Button round :type="state.type">
+      <Button round="full" :type="state.type">
         Round Button
       </Button>
     </Variant>

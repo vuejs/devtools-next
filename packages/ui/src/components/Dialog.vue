@@ -10,8 +10,9 @@ const props = withDefaults(
     blur?: boolean
     autoClose?: boolean
     title?: string
-    width: string
-    height: string
+    width?: string
+    height?: string
+    closable?: boolean
   }>(),
   {
     title: 'Dialog',
@@ -21,6 +22,7 @@ const props = withDefaults(
     autoClose: true,
     width: '500px',
     height: '300px',
+    closable: true,
   },
 )
 
@@ -64,15 +66,15 @@ onKeyStroke('Escape', () => {
          $ui-bg-base absolute
         "
         :class="[
-          dim ? 'bg-opacity-50' : 'bg-opacity-0',
+          dim ? 'bg-opacity-50!' : 'bg-opacity-0!',
           blur ? 'backdrop-blur-sm' : '',
         ]"
       >
         <div
-          class="modal rounded-sm relative $ui-bg-base
+          class="modal rounded-md relative bg-white dark:bg-gray-900 dark:color-gray-200 color-gray-800
         shadow-2xl transition-duration-300 transition-transform
           max-w-[calc(100vw-100px)] max-h-[calc(100vh-100x)]
-          min-w-200px min-h-100px p24px $ui-base
+          min-w-200px min-h-100px px24px py18px $ui-base
           grid grid-rows-[30px_1fr_40px] gap-10px
         "
           :style="{
@@ -86,18 +88,22 @@ onKeyStroke('Escape', () => {
                 {{ props.title }}
               </slot>
             </div>
-            <div class="i-carbon-close cursor-pointer" @click="close" />
+            <div v-if="closable" class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
+              <div class="i-carbon-close" />
+            </div>
           </div>
           <div class="content transition-all transition-duration-300">
             <slot />
           </div>
           <div class="w-full h32px footer delay-250 transition-all transition-duration-300">
             <slot name="footer">
-              <div class="$ui-fcc">
-                <Button type="primary" @click="close">
-                  close
-                </Button>
-              </div>
+              <slot name="footer">
+                <div class="$ui-fcc">
+                  <Button type="primary" @click="close">
+                    close
+                  </Button>
+                </div>
+              </slot>
             </slot>
           </div>
         </div>

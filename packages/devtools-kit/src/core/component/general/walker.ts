@@ -1,9 +1,9 @@
 import type { ComponentTreeNode, VueAppInstance } from '@vue-devtools-next/schema'
 import type { SuspenseBoundary, VNode } from 'vue'
+import { getRootElementsFromComponentInstance } from './el'
 import type { ComponentFilter } from './filter'
 import { createComponentFilter } from './filter'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from './util'
-import { getRootElementsFromComponentInstance } from './el'
 
 interface ComponentWalkerOptions {
   filterText?: string

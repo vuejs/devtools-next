@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComponentState } from '@vue-devtools-next/schema'
 import { sortByKey } from '@vue-devtools-next/shared'
-import { componentStateValueType, formatComponentStateValue } from 'vue-devtools-kit/shared'
+import { formatComponentStateValue, getComponentStateValueType } from 'vue-devtools-kit/shared'
 
 const props = withDefaults(defineProps<{
   data: ComponentState
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
 })
 
 const value = formatComponentStateValue(props.data.value)
-const type = componentStateValueType(props.data.value)
+const type = getComponentStateValueType(props.data.value)
 const stateFormatClass = computed(() => {
   if (type === 'custom') {
     // @ts-expect-error @TODO: type

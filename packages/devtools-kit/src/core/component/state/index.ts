@@ -1,8 +1,7 @@
-// import { stringify } from '../../shared'
-import { devtoolsContext } from '../general/state'
-import { processInstanceState } from './general/data'
-import { getInstanceName, getUniqueComponentId } from './general/util'
-import { getComponentInstance } from './tree'
+import { devtoolsContext } from '../../general/state'
+import { getInstanceName, getUniqueComponentId } from '../general/util'
+import { getComponentInstance } from '../tree'
+import { processInstanceState } from './process'
 
 export function getInstanceState(params: { instanceId: string }) {
   const instance = getComponentInstance(devtoolsContext.appRecord, params.instanceId)

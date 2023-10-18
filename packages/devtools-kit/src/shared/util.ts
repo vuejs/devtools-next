@@ -1,8 +1,10 @@
-import { componentStateValueType, formatComponentStateValue, replacerForInternal, reviver } from '../core/component/general/data'
+import { formatComponentStateValue, getComponentStateValueType } from '../core/component/state/format'
+import { stringifyReplacer } from '../core/component/state/replacer'
+import { reviver } from '../core/component/state/reviver'
 import { parseCircularAutoChunks, stringifyCircularAutoChunks } from './transfer'
 
 export function stringify<T extends object = Record<string, unknown>>(data: T) {
-  return stringifyCircularAutoChunks(data as Record<string, unknown>, replacerForInternal)
+  return stringifyCircularAutoChunks(data as Record<string, unknown>, stringifyReplacer)
 }
 
 export function parse(data: string, revive = false) {
@@ -12,6 +14,6 @@ export function parse(data: string, revive = false) {
 }
 
 export {
-  componentStateValueType,
   formatComponentStateValue,
+  getComponentStateValueType,
 }

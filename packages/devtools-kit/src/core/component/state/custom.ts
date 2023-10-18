@@ -1,50 +1,7 @@
 import type { ComponentState } from '@vue-devtools-next/schema'
-import { processInstanceState } from './data'
-import { getComponentName, getInstanceName } from './util'
-
-const ESC = {
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  '&': '&amp;',
-}
-
-function escape(s: string) {
-  return s.replace(/[<>"&]/g, (s: string) => {
-    return ESC[s] || s
-  })
-}
-
-function isRef(raw): boolean {
-  return !!raw.__v_isRef
-}
-
-function isComputed(raw): boolean {
-  return isRef(raw) && !!raw.effect
-}
-
-function isReactive(raw): boolean {
-  return !!raw.__v_isReactive
-}
-
-function isReadOnly(raw): boolean {
-  return !!raw.__v_isReadonly
-}
-
-export function toRaw(value) {
-  if (value?.__v_raw)
-    return value.__v_raw
-
-  return value
-}
-export function getSetupStateInfo(raw) {
-  return {
-    ref: isRef(raw),
-    computed: isComputed(raw),
-    reactive: isReactive(raw),
-    readonly: isReadOnly(raw),
-  }
-}
+import { getComponentName, getInstanceName } from '../general/util'
+import { processInstanceState } from './process'
+import { escape, getSetupStateType, toRaw } from './util'
 
 export function getFunctionDetails(func: Function) {
   let string = ''
@@ -66,10 +23,11 @@ export function getFunctionDetails(func: Function) {
   return {
     _custom: {
       type: 'function',
-      stateTypeName: `${escape(name)}${args}`,
-      display: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
-      value: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
-      detail: string.trim() ? `${string}` : null,
+      displayText: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
+      tooltipText: string.trim() ? `<pre>${string}</pre>` : null,
+      // stateTypeName: `${escape(name)}${args}`,
+      // value: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
+      // detail: string.trim() ? `${string}` : null,
     },
   }
 }
@@ -79,7 +37,7 @@ export function getBigIntDetails(val: bigint | bigint) {
   return {
     _custom: {
       type: 'bigint',
-      stateTypeName: `BigInt(${stringifiedBigInt})`,
+      displayText: `BigInt(${stringifiedBigInt})`,
       value: stringifiedBigInt,
     },
   }
@@ -96,7 +54,7 @@ export function getMapDetails(val: Map<string, unknown>) {
   return {
     _custom: {
       type: 'map',
-      stateTypeName: 'Map',
+      displayText: 'Map',
       value: list,
       readOnly: true,
       fields: {
@@ -111,14 +69,13 @@ export function getSetDetails(val: Set<unknown>) {
   return {
     _custom: {
       type: 'set',
-      stateTypeName: `Set[${list.length}]`,
+      displayText: `Set[${list.length}]`,
       value: list,
       readOnly: true,
     },
   }
 }
 
-// @TODO: refactor
 function getCatchedGetters(store) {
   const getters = {}
 
@@ -140,40 +97,6 @@ function getCatchedGetters(store) {
   }
 
   return getters
-}
-
-// @TODO: refactor
-export function getStoreDetails(store) {
-  return {
-    _custom: {
-      type: 'store',
-      stateTypeName: 'Store',
-      value: {
-        state: store.state,
-        getters: getCatchedGetters(store),
-      },
-      fields: {
-        abstract: true,
-      },
-    },
-  }
-}
-
-// @TODO: refactor
-export function getRouterDetails(router) {
-  return {
-    _custom: {
-      type: 'router',
-      stateTypeName: 'VueRouter',
-      value: {
-        options: router.options,
-        currentRoute: router.currentRoute,
-      },
-      fields: {
-        abstract: true,
-      },
-    },
-  }
 }
 
 function reduceStateList(list: ComponentState[]) {
@@ -198,6 +121,38 @@ function namedNodeMapToObject(map: NamedNodeMap) {
   return result
 }
 
+export function getStoreDetails(store) {
+  return {
+    _custom: {
+      type: 'store',
+      displayText: 'Store',
+      value: {
+        state: store.state,
+        getters: getCatchedGetters(store),
+      },
+      fields: {
+        abstract: true,
+      },
+    },
+  }
+}
+
+export function getRouterDetails(router) {
+  return {
+    _custom: {
+      type: 'router',
+      displayText: 'VueRouter',
+      value: {
+        options: router.options,
+        currentRoute: router.currentRoute,
+      },
+      fields: {
+        abstract: true,
+      },
+    },
+  }
+}
+
 // @TODO: fix circular dependency
 export function getInstanceDetails(instance) {
   if (instance._)
@@ -207,8 +162,8 @@ export function getInstanceDetails(instance) {
     _custom: {
       type: 'component',
       id: instance.__VUE_DEVTOOLS_UID__,
-      stateTypeName: getInstanceName(instance),
-      tooltip: 'Component instance',
+      displayText: getInstanceName(instance),
+      tooltipText: 'Component instance',
       value: reduceStateList(state),
       fields: {
         abstract: true,
@@ -218,16 +173,19 @@ export function getInstanceDetails(instance) {
 }
 
 export function getComponentDefinitionDetails(definition) {
-  const display = getComponentName(definition)
+  let display = getComponentName(definition)
+  if (display) {
+    if (definition.name && definition.__file)
+      display += ` <span>(${definition.__file})</span>`
+  }
+  else {
+    display = '<i>Unknown Component</i>'
+  }
   return {
     _custom: {
       type: 'component-definition',
-      stateTypeName: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
-      // @TODO: refactor: show component name and open in editor
-      key: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
-      value: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
-      display: display && definition.__file && definition.name ? display + definition.__file : 'Unknown Component',
-      tooltip: 'Component definition',
+      displayText: display,
+      tooltipText: 'Component definition',
       ...definition.__file
         ? {
             file: definition.__file,
@@ -242,7 +200,7 @@ export function getHTMLElementDetails(value: HTMLElement) {
     return {
       _custom: {
         type: 'HTMLElement',
-        stateTypeName: value.tagName.toLowerCase(),
+        displayText: `<span class="opacity-30">&lt;</span><span class="text-blue-500">${value.tagName.toLowerCase()}</span><span class="opacity-30">&gt;</span>`,
         value: namedNodeMapToObject(value.attributes),
       },
     }
@@ -251,14 +209,14 @@ export function getHTMLElementDetails(value: HTMLElement) {
     return {
       _custom: {
         type: 'HTMLElement',
-        stateTypeName: String(value),
+        displayText: `<span class="text-blue-500">${String(value)}</span>`,
       },
     }
   }
 }
 
 export function getObjectDetails(object: Record<string, any>) {
-  const info = getSetupStateInfo(object)
+  const info = getSetupStateType(object)
 
   const isState = info.ref || info.computed || info.reactive
   if (isState) {
@@ -270,7 +228,7 @@ export function getObjectDetails(object: Record<string, any>) {
         type: stateTypeName?.toLowerCase(),
         stateTypeName,
         value,
-        ...raw ? { raw } : {},
+        ...raw ? { tooltipText: `<span class="font-mono">${raw}</span>` } : {},
       },
     }
   }

@@ -42,12 +42,16 @@ const noFocusAnimation = computed(() => props.variant === 'flat')
 const disabled = computed(() => props.disabled || props.loading)
 
 const inputRef = ref<HTMLInputElement>()
+
+const iconClasses = 'transition-colors $ui-fcc color-gray-500 dark:color-gray-300 group-[&.focused]:color-primary-500; group-[&.accent.focused]:color-accent-500'
 </script>
 
 <template>
   <div
-    class="container" :class="{
-      'border-none bg-transparent': variant === 'flat',
+    class="relative w-auto min-w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
+           flex justify-between items-center gap-2px py-5px px12px color-gray-800 dark:color-gray-100 group"
+    :class="{
+      'border-none bg-transparent group': variant === 'flat',
       'cursor-not-allowed opacity-50': disabled,
       'accent': variant === 'accent',
       'focused': focused,
@@ -57,61 +61,30 @@ const inputRef = ref<HTMLInputElement>()
       inputRef?.focus()
     }"
   >
-    <div v-if="leftIcon" class="icon">
+    <div v-if="leftIcon" :class="iconClasses">
       <VueIcon :icon="leftIcon" />
     </div>
     <input
       ref="inputRef" v-model="value"
-      class="input" v-bind="$attrs" :type="props.password ? 'password' : 'text'"
+      class="$ui-base w-full outline-none bg-transparent color-inherit
+        placeholder-color-gray-500 dark:placeholder-gray-300" v-bind="$attrs" :type="props.password ? 'password' : 'text'"
       :placeholder="placeholder" :disabled="disabled"
       @blur="focused = false"
     >
-    <div v-if="loading" class="icon">
+    <div v-if="loading" :class="iconClasses">
       <VueLoading />
     </div>
-    <div v-else-if="rightIcon" class="icon">
+    <div v-else-if="rightIcon" :class="iconClasses">
       <VueIcon :icon="rightIcon" />
     </div>
     <!-- Focus animation -->
     <div
-      v-if="!noFocusAnimation" class="animation"
+      v-if="!noFocusAnimation" class="absolute z-9999 bottom--1px bg-primary-500
+           h-3px pointer-events-none transition-all duration-240
+           left-50% right-50% opacity-0
+           group-[&.focused]:(left-0 right-0 opacity-100)
+           group-[&.accent.focused]:bg-accent-500
+      "
     />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.container {
-  @apply relative w-auto min-w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
-         flex justify-between items-center gap-2px py-5px px12px color-gray-800 dark:color-gray-100;
-  .input {
-    @apply $ui-base w-full outline-none bg-transparent color-inherit
-        placeholder-color-gray-500 dark:placeholder-gray-300;
-  }
-  .icon {
-    @apply transition-colors $ui-fcc color-gray-500 dark:color-gray-300;
-  }
-  .animation {
-    @apply absolute z-9999 bottom--1px bg-primary-500
-           h-3px pointer-events-none transition-all duration-240
-           left-50% right-50% opacity-0;
-  }
-  &.accent {
-    &.focused {
-      .icon {
-        @apply color-accent-500;
-      }
-    }
-    .animation {
-      @apply bg-accent-500;
-    }
-  }
-  &.focused {
-    .icon {
-      @apply color-primary-500;
-    }
-    .animation {
-      @apply left-0 right-0 opacity-100;
-    }
-  }
-}
-</style>

@@ -31,7 +31,7 @@ const value = computed({
     <div class="m1 flex flex-col min-w-140px w-auto">
       <VueButton
         v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
-        class="flex-[auto_1_1] button"
+        class="flex-[auto_1_1] not-action:[&:not(.active)]:bg-transparent!"
         :class="{
           active: item.value === value,
         }"
@@ -47,9 +47,3 @@ const value = computed({
     </template>
   </VueDropdown>
 </template>
-
-<style scoped lang="scss">
-.button:not(:hover):not(:focus):not(:active):not(.active) {
-  background: transparent !important;
-}
-</style>

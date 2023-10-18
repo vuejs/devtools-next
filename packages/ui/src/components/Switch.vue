@@ -15,35 +15,24 @@ const toggleValue = useToggle(value)
 
 <template>
   <div
-    class="checkbox" :class="{
-      selected: value,
-    }" role="checkbox" @click="toggleValue()"
+    class="vertical-mid select-none text-14px $ui-base cursor-pointer $ui-if-sc gap5px" role="checkbox" @click="toggleValue()"
   >
-    <div>
-      <slot />
-    </div>
-    <div class="wrapper group">
-      <div class="switcher group-hover:opacity-75 group-active:scale-85" />
+    <slot />
+    <div
+      :class="{
+        selected: value,
+      }"
+      class="$ui-base w32px h16px rounded-8px transition-colors
+            relative bg-primary-100 dark:bg-gray-700 group
+            [&.selected]:bg-primary-500
+      "
+    >
+      <div
+        class="w16px h16px rounded-full transition-transform
+              group-[&.selected]:transform-translate-x-16px
+             bg-primary-800 dark:bg-white group-hover:opacity-75 group-active:scale-85
+        "
+      />
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.checkbox {
-  @apply inline-block vertical-mid select-none text-14px $ui-base cursor-pointer $ui-fsc gap5px;
-  .wrapper {
-    @apply $ui-base w32px h16px rounded-8px transition-colors relative bg-primary-100 dark:bg-gray-700;
-    .switcher {
-      @apply w16px h16px rounded-full transition-transform bg-primary-800 dark:bg-white
-    }
-  }
-  &.selected {
-    .wrapper {
-      @apply bg-primary-500;
-      .switcher {
-        @apply transform-translate-x-16px;
-      }
-    }
-  }
-}
-</style>

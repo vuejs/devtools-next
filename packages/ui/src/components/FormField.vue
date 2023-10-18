@@ -42,7 +42,7 @@ const iconMapping = {
 
 <template>
   <div class="$ui-base">
-    <VueInput v-model="value" v-model:focused="focused" :placeholder="placeholder" @update-focused="f => focused = f" />
+    <VueInput v-model="value" :placeholder="placeholder" @update-focused="f => focused = f" />
     <div
       class="$ui-base text-14px mt2" :class="[
         statusMapping[status],

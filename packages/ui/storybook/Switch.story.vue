@@ -15,5 +15,10 @@ const value = ref(false)
         Select
       </Switch>
     </Variant>
+    <Variant title="disabled">
+      <Switch v-model="value" disabled>
+        Select
+      </Switch>
+    </Variant>
   </Story>
 </template>

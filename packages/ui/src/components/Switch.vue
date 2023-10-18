@@ -3,6 +3,7 @@ import { useToggle, useVModel } from '@vueuse/core'
 
 const props = defineProps<{
   modelValue: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -15,7 +16,10 @@ const toggleValue = useToggle(value)
 
 <template>
   <div
-    class="vertical-mid select-none text-14px $ui-base cursor-pointer $ui-if-sc gap5px" role="checkbox" @click="toggleValue()"
+    :class="[
+      disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+    ]"
+    class="vertical-mid select-none text-14px $ui-base cursor-pointer $ui-if-sc gap5px" role="checkbox" @click="!disabled && toggleValue()"
   >
     <slot />
     <div
@@ -30,8 +34,12 @@ const toggleValue = useToggle(value)
       <div
         class="w16px h16px rounded-full transition-transform
               group-[&.selected]:transform-translate-x-16px
-             bg-primary-800 dark:bg-white group-hover:opacity-75 group-active:scale-85
+             bg-primary-800 dark:bg-white
         "
+        :class="[
+          { 'group-hover:opacity-75 group-active:scale-85': !disabled },
+          { 'opacity-65': disabled },
+        ]"
       />
     </div>
   </div>

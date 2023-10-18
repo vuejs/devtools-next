@@ -10,8 +10,8 @@ const props = withDefaults(
     blur?: boolean
     autoClose?: boolean
     title?: string
-    width: string
-    height: string
+    width?: string
+    height?: string
     closable?: boolean
   }>(),
   {

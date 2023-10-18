@@ -26,7 +26,7 @@ provide('$ui-dropdown-disabled', computed(() => props.disabled))
 </script>
 
 <template>
-  <Dropdown :disabled="disabled" class="dropdown" :triggers="[trigger]" :distance="distance + 6" :placement="placement">
+  <Dropdown :disabled="disabled" class="inline-block w-auto" :triggers="[trigger]" :distance="distance + 6" :placement="placement">
     <VueButton :type="buttonType" :class="buttonClass" :disabled="disabled">
       {{ label }}
       <template #icon>
@@ -37,7 +37,7 @@ provide('$ui-dropdown-disabled', computed(() => props.disabled))
       </template>
     </VueButton>
     <template #popper>
-      <div class="popper">
+      <div class="rounded-lg shadow-lg overflow-hidden">
         <slot>
           <div class="p2 opacity-40">
             Empty...
@@ -47,12 +47,3 @@ provide('$ui-dropdown-disabled', computed(() => props.disabled))
     </template>
   </Dropdown>
 </template>
-
-<style scoped lang="scss">
-.dropdown {
-  @apply inline-block w-auto;
-}
-.popper {
-  @apply rounded-lg shadow-lg overflow-hidden;
-}
-</style>

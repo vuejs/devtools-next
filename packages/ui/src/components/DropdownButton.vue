@@ -22,17 +22,8 @@ const disabled = inject<ComputedGetter<boolean> | undefined>('$ui-dropdown-disab
       round: false,
     }"
     :disabled="disabled"
-    class="transition-colors button w-full"
+    class="transition-colors justify-start w-full not-action:bg-transparent!"
   >
     <slot />
   </VueButton>
 </template>
-
-<style scoped lang="scss">
-.button {
-  justify-content: flex-start;
-}
-.button:not(:hover):not(:focus):not(:active) {
-  background: transparent !important;
-}
-</style>

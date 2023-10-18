@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick } from 'vue'
 import { useColorMode, useVModel } from '@vueuse/core'
-import { UsePreferredColorScheme as ColorScheme } from '@vueuse/components'
 
 const props = withDefaults(defineProps<{
   isDark?: boolean
@@ -79,7 +78,7 @@ const context = {
 </script>
 
 <template>
-  <ColorScheme tag="span" class="$ui-dark-toggle-vtr">
+  <span class="$ui-dark-toggle-vtr">
     <slot v-bind="context" />
-  </ColorScheme>
+  </span>
 </template>

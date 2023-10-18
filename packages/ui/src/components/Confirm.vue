@@ -71,5 +71,3 @@ function close(close = false) {
     </template>
   </VueDialog>
 </template>
-
-<style scoped></style>

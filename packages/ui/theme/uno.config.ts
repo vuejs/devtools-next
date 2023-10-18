@@ -21,6 +21,17 @@ export const unoConfig = {
   ],
   transformers: [transformerVariantGroup(), transformerDirectives()],
   theme,
+  variants: [
+    (matcher) => {
+      const prefix = 'not-action:'
+      if (!matcher.startsWith(prefix))
+        return matcher
+      return {
+        matcher: matcher.slice(prefix.length),
+        selector: s => `${s}:not(:hover):not(:focus):not(:active)`,
+      }
+    },
+  ],
   shortcuts: {
     // utilities
     '$ui-fcc': 'flex justify-center items-center',

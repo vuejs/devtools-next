@@ -9,7 +9,6 @@ export async function getComponentTree(options: { appRecord?: AppRecord; instanc
   const { appRecord = devtoolsContext.appRecord, maxDepth = 100, instanceId = undefined, filterText = '', recursively = false } = options
   const instance = getComponentInstance(appRecord!, instanceId)
   if (instance) {
-    // @TODO
     const walker = new ComponentWalker({
       filterText,
       maxDepth,

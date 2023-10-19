@@ -19,15 +19,11 @@ export function getFunctionDetails(func: Function) {
     ? match
     : '(?)'
   const name = typeof func.name === 'string' ? func.name : ''
-  // @TODO: refactor
   return {
     _custom: {
       type: 'function',
       displayText: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
       tooltipText: string.trim() ? `<pre>${string}</pre>` : null,
-      // stateTypeName: `${escape(name)}${args}`,
-      // value: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
-      // detail: string.trim() ? `${string}` : null,
     },
   }
 }

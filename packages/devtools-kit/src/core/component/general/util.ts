@@ -95,13 +95,12 @@ export function getInstanceName(instance: VueAppInstance) {
  * @param {Vue} instance
  */
 export function getUniqueComponentId(instance: VueAppInstance) {
-  // @TODO
   const appId = instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD_ID__ ?? 0
   const instanceId = instance === instance.root ? 'root' : instance.uid
   return `${appId}:${instanceId}`
 }
 
-export function getRenderKey(value: number | string | unknown[] | object | null): string | number {
+export function getRenderKey(value: symbol | number | string | unknown[] | symbol | object | null): string | number {
   if (value == null)
     return ''
   if (typeof value === 'number')

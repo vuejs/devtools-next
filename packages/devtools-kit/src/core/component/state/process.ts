@@ -275,12 +275,11 @@ function processEventListeners(instance: VueAppInstance) {
         type: 'event listeners',
         key: eventName,
         value: {
-          // @TODO: refactor
           _custom: {
-            display: isDeclared ? '✅ Declared' : '⚠️ Not declared',
+            displayText: isDeclared ? '✅ Declared' : '⚠️ Not declared',
             key: isDeclared ? '✅ Declared' : '⚠️ Not declared',
             value: isDeclared ? '✅ Declared' : '⚠️ Not declared',
-            tooltip: !isDeclared ? `The event <code>${eventName}</code> is not declared in the <code>emits</code> option. It will leak into the component's attributes (<code>$attrs</code>).` : null,
+            tooltipText: !isDeclared ? `The event <code>${eventName}</code> is not declared in the <code>emits</code> option. It will leak into the component's attributes (<code>$attrs</code>).` : null,
           },
         },
       })

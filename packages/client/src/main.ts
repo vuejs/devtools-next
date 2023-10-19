@@ -1,21 +1,22 @@
-import { createApp } from 'vue'
-import FloatingVue from 'floating-vue'
-import 'floating-vue/dist/style.css'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import '@unocss/reset/tailwind.css'
 import { Bridge, BridgeRpc, HandShakeServer, createDevToolsVuePlugin } from '@vue-devtools-next/app-core'
 import { BridgeEvents } from '@vue-devtools-next/schema'
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+import { createApp } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
-import Overview from '~/pages/overview.vue'
 import Components from '~/pages/components.vue'
+import Overview from '~/pages/overview.vue'
+import Pinia from '~/pages/pinia.vue'
 
-import '@unocss/reset/tailwind.css'
-
-import '~/assets/styles/main.css'
 import 'uno.css'
+import '~/assets/styles/main.css'
 
 const routes = [
   { path: '/overview', component: Overview },
   { path: '/components', component: Components },
+  { path: '/pinia', component: Pinia },
 ]
 
 async function reload(app, shell) {

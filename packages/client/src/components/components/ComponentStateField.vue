@@ -120,7 +120,7 @@ const hasChildren = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-// @TODO: other custom type
+// function
 :deep(.state-format-function) {
   --at-apply: "font-italic";
   & > span {
@@ -129,9 +129,24 @@ const hasChildren = computed(() => {
   }
 }
 
+// component-definition
 :deep(.state-format-component-definition) {
   --at-apply: text-primary-500;
   & > span {
+    --at-apply: "text-#aaa";
+  }
+}
+
+// component
+:deep(.state-format-component) {
+  --at-apply: text-primary-500;
+  &::before {
+    content: "<";
+  }
+   &::after {
+    content: ">";
+  }
+  &::before, &::after {
     --at-apply: "text-#aaa";
   }
 }

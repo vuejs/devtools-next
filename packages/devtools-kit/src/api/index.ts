@@ -27,7 +27,10 @@ export class DevToolsPluginApi {
       app,
       instanceData: result,
     }
-    apiHooks.callHook(DevToolsEvents.COMPONENT_STATE_INSPECT, payload)
+    // @ts-expect-error hookable
+    apiHooks.callHookWith((callbacks) => {
+      callbacks.forEach(cb => cb(payload))
+    }, DevToolsEvents.COMPONENT_STATE_INSPECT)
     return stringify(result)
   }
 

@@ -1,16 +1,14 @@
 import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
 import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
 import { ref } from 'vue'
-import { parse } from 'vue-devtools-kit/shared'
 
 const bridgeApi = useDevToolsBridgeApi()
 
 const activeComponentState = ref<Record<string, ComponentState[]>>({})
 
-function normalizeComponentState(state: string) {
-  const parsedState: { state: ComponentState[] } = parse(state)
+function normalizeComponentState(data: { state: ComponentState[] }) {
   const res = {}
-  parsedState.state.forEach((item) => {
+  data.state.forEach((item) => {
     if (!res[item.type])
       res[item.type] = []
     res[item.type].push(item)

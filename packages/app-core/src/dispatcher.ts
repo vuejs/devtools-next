@@ -1,4 +1,5 @@
 import { devtools } from 'vue-devtools-kit'
+import { parse } from 'vue-devtools-kit/shared'
 
 export interface DispatchDevToolsRequestsOptions {
   type: string
@@ -48,6 +49,10 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
         cb({ data: componentState })
       }
     })
-    cb({ data: componentState })
+    cb({ data: parse(componentState) })
+  }
+  else if (type === 'inspector-tree') {
+    const state = devtools.context.api.getInspectorTree(params)
+    cb({ data: parse(state) })
   }
 }

@@ -180,3 +180,22 @@ export interface ComponentState {
     type: string
   }[]
 }
+
+export interface DevToolsPluginInspectorState {
+  id: string
+  label: string
+  icon?: string
+  treeFilterPlaceholder?: string
+  actions?: {
+    icon: string
+    tooltip: string
+    action: (payload: unknown) => void
+  }[]
+}
+
+export interface DevToolsPluginInspectorTree {
+  app: VueAppInstance
+  inspectorId: string
+  filter?: string
+  rootNodes: ComponentTreeNode[]
+}

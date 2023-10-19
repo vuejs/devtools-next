@@ -1,4 +1,4 @@
-import type { ComponentState, ComponentTreeNode, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentState, ComponentTreeNode, DevToolsPluginInspectorTree, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 
@@ -8,6 +8,7 @@ export enum DevToolsEvents {
   COMPONENT_TREE_UPDATED = 'component-tree:updated',
   COMPONENT_STATE_UPDATED = 'component-state:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
+  GET_INSPECTOR_TREE = 'inspector-tree:get',
 }
 
 interface DevToolsEvent {
@@ -26,6 +27,7 @@ interface DevToolsEvent {
       instance: VueAppInstance | undefined
     }
   }) => void
+  [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: DevToolsPluginInspectorTree) => void
 }
 
 // export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
@@ -49,7 +51,9 @@ export const on = {
     apiHooks.hook(DevToolsEvents.COMPONENT_STATE_INSPECT, fn)
   },
   visitComponentTree() {},
-  getInspectorTree() {},
+  getInspectorTree(fn: DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]) {
+    apiHooks.hook(DevToolsEvents.GET_INSPECTOR_TREE, fn)
+  },
   sendInspectorTree() {},
   getInspectorState() {},
   sendInspectorState() {},

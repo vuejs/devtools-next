@@ -17,7 +17,7 @@ export function getComponentStateValueType(value, raw = true) {
     return 'literal'
   }
   else if (value?._custom) {
-    if ((raw || value._custom.displayText != null))
+    if ((raw || value._custom.display != null || value._custom.displayText != null))
       return 'custom'
 
     else
@@ -55,7 +55,7 @@ export function formatComponentStateValue(value, quotes = false) {
     return result
   }
   else if (type === 'custom') {
-    return value._custom.displayText
+    return value._custom.displayText ?? value._custom.display
   }
   else if (type === 'array') {
     return `Array[${value.length}]`

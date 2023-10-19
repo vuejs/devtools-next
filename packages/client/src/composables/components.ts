@@ -5,8 +5,6 @@ import { parse } from 'vue-devtools-kit/shared'
 
 const bridgeApi = useDevToolsBridgeApi()
 
-const selectedComponent = ref<string>('')
-
 const activeComponentState = ref<Record<string, ComponentState[]>>({})
 
 function normalizeComponentState(state: string) {
@@ -30,7 +28,7 @@ export function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
   }
 }
 
-function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
+export function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
   if (!treeNode.length)
     return false
   if (treeNode.find(item => item.id === id))
@@ -38,38 +36,10 @@ function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
   return treeNode.some(item => checkComponentInTree(item.children || [], id))
 }
 
-function getComponentState(id: string) {
+export function getComponentState(id: string) {
   bridgeApi.getInstanceState({ instanceId: id }, ({ data }) => {
     activeComponentState.value = normalizeComponentState(data)
   })
-}
-
-export function initSelectedComponent(treeNode: ComponentTreeNode[]) {
-  if (!treeNode.length)
-    return
-  if (!selectedComponent.value) {
-    selectedComponent.value = treeNode?.[0].id
-    getComponentState(treeNode?.[0].id)
-  }
-  else {
-    // fallback to root if selected component is not in the tree
-    if (!checkComponentInTree(treeNode, selectedComponent.value)) {
-      selectedComponent.value = treeNode?.[0].id
-      getComponentState(treeNode?.[0].id)
-    }
-  }
-}
-
-export function useSelectComponent() {
-  function selectComponent(id: string) {
-    selectedComponent.value = id
-    getComponentState(id)
-  }
-
-  return {
-    selectedComponent,
-    selectComponent,
-  }
 }
 
 export function useComponentState() {

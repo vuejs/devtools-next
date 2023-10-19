@@ -9,9 +9,28 @@ const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])
 const { activeComponentState } = useComponentState()
 
+// create component context
+const { selected: selectedComponentTree } = createSelectContext('component-tree')
+
 // create collapse context
 const { collapseMap: componentTreeCollapseMap } = createCollapseContext('component-tree')
 createCollapseContext('component-state')
+
+function initSelectedComponent(treeNode: ComponentTreeNode[]) {
+  if (!treeNode.length)
+    return
+  if (!selectedComponentTree.value) {
+    selectedComponentTree.value = treeNode?.[0].id
+    getComponentState(treeNode?.[0].id)
+  }
+  else {
+    // fallback to root if selected component is not in the tree
+    if (!checkComponentInTree(treeNode, selectedComponentTree.value)) {
+      selectedComponentTree.value = treeNode?.[0].id
+      getComponentState(treeNode?.[0].id)
+    }
+  }
+}
 
 onDevToolsClientConnected(() => {
   bridgeApi.getComponentTree({}, (data) => {
@@ -21,6 +40,10 @@ onDevToolsClientConnected(() => {
     initSelectedComponent(data)
   })
 })
+
+function selectComponentTree(id: string) {
+  getComponentState(id)
+}
 </script>
 
 <template>
@@ -28,7 +51,7 @@ onDevToolsClientConnected(() => {
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" />
+          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" />
         </div>
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">

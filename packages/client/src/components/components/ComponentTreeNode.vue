@@ -13,20 +13,21 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
+const emit = defineEmits<{
+  (e: 'select', id: string): void
+}>()
 const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
-const { selectedComponent, selectComponent } = useSelectComponent()
-
-function select() {
-  selectComponent(props.data.id)
-}
+const { isSelected, toggleSelected } = useSelect('component-tree', (id) => {
+  emit('select', id)
+})
 </script>
 
 <template>
   <div
     class="selectable-item group"
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
-    :class="{ active: selectedComponent === data.id }"
-    @click="select"
+    :class="{ active: isSelected(data.id) }"
+    @click.stop="toggleSelected(data.id)"
   >
     <!-- expand-icon -->
     <ExpandIcon v-if="data.children?.length" :value="isExpanded" group-hover:text-white class="[.active_&]:text-white" @click.prevent.stop="toggleCollapse" />
@@ -37,6 +38,6 @@ function select() {
     </span>
   </div>
   <template v-if="data.children?.length && isExpanded">
-    <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" />
+    <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" @select="(id) => emit('select', id)" />
   </template>
 </template>

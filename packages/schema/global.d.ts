@@ -1,5 +1,4 @@
 import type { BridgeInstanceType } from '../app-core/src/bridge'
-import type { VueDevToolsClient } from '../app-core/src/client'
 import type { DevToolsContext } from './src/types/context'
 import type { AppRecord, ComponentTreeNode, DevToolsState, DevtoolsHook } from './src/types/vue'
 
@@ -9,7 +8,6 @@ declare global {
   var __VUE_DEVTOOLS_CLIENT_URL__: string
   var __VUE_DEVTOOLS_BRIDGE__: BridgeInstanceType
   var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
-  var __VUE_DEVTOOLS_CLIENT__: VueDevToolsClient
   var __VUE_DEVTOOLS_COMPONENT_TREE_: ComponentTreeNode[]
   // app record info
   var __VUE_DEVTOOLS_APP_RECORDS__: AppRecord[]

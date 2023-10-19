@@ -15,12 +15,6 @@ export function getDevToolsClientUrl() {
   })()
 }
 
-// @TODO: move to @devtools/kit
-
-export interface VueDevToolsClient {
-
-}
-
 const fns = [] as (() => void)[]
 
 export function onDevToolsClientConnected(fn: () => void) {

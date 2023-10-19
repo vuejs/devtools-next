@@ -1,5 +1,5 @@
 import { target } from '@vue-devtools-next/shared'
-import { DevToolsEvents, DevToolsPluginApi, api, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
+import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
 import { initComponentTree } from '../component/tree'
 import { createAppRecord } from './app'
 import { createDevToolsHook, hook, subscribeDevToolsHook } from './hook'
@@ -55,7 +55,7 @@ export function onDevToolsConnected(fn: () => void) {
       return
     }
 
-    api.on.vueAppConnected(() => {
+    devtoolsContext.api.on.vueAppConnected(() => {
       fn()
       resolve()
     })

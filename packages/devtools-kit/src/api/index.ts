@@ -2,15 +2,10 @@ import type { AppRecord } from '@vue-devtools-next/schema'
 import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
 import { stringify } from '../shared'
-import { emit } from './emit'
 import { DevToolsEvents, apiHooks, on } from './on'
 
 export { DevToolsEvents, apiHooks } from './on'
 export * from './plugin'
-export const api = {
-  on,
-  ...emit,
-}
 
 export class DevToolsPluginApi {
   public on: typeof on

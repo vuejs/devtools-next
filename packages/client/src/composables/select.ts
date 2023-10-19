@@ -19,9 +19,9 @@ function useSelectContext(id: string) {
   }
 }
 
-export function useSelect(groupId: string, onSelect?: (id: string) => void) {
+export function useSelect(groupId: string, id: string, onSelect?: (id: string) => void) {
   const { selected } = useSelectContext(groupId)
-  const isSelected = (id: string) => selected.value === id
+  const isSelected = computed(() => selected.value === id)
   const toggleSelected = (id: string) => {
     selected.value = id
     onSelect?.(id)

@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'select', id: string): void
 }>()
 const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
-const { isSelected, toggleSelected } = useSelect('component-tree', (id) => {
+const { isSelected, toggleSelected } = useSelect('component-tree', props.data.id, (id) => {
   emit('select', id)
 })
 </script>
@@ -26,7 +26,7 @@ const { isSelected, toggleSelected } = useSelect('component-tree', (id) => {
   <div
     class="selectable-item group"
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
-    :class="{ active: isSelected(data.id) }"
+    :class="{ active: isSelected }"
     @click.stop="toggleSelected(data.id)"
   >
     <!-- expand-icon -->

@@ -145,7 +145,7 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
   }
 
-  static getInspetorTree<S extends { data: { data: { id: string;label: string }[] } }, Q extends { inspectorId?: string; filter?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getInspectorTree<S extends { data: { data: { id: string;label: string }[] } }, Q extends { inspectorId?: string; filter?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'inspector-tree', params }, ({ data }) => cb?.(data))
   }
 }

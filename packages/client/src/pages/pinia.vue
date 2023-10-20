@@ -9,7 +9,7 @@ const { selected } = createSelectContext('pinia-store-tree')
 const tree = ref<{ id: string;label: string }[]>([])
 
 onDevToolsClientConnected(() => {
-  bridgeApi.getInspetorTree({ inspectorId: 'pinia', filter: '' }, ({ data }) => {
+  bridgeApi.getInspectorTree({ inspectorId: 'pinia', filter: '' }, ({ data }) => {
     tree.value = data
     if (!selected.value && data.length)
       selected.value = data[0].id

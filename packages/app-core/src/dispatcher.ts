@@ -71,7 +71,7 @@ export async function dispatchDevToolsRequests<T extends DispatchDevtoolsRequest
     devtools.context.api.on.componentStateUpdated((id) => {
       if (id === devtools.state.selectedComponentId) {
         const componentState = devtools.context.api.getInstanceState({ instanceId: devtools.state.selectedComponentId! })
-        cb({ data: componentState })
+        cb({ data: parse(componentState) })
       }
     })
     cb({ data: parse(componentState) })

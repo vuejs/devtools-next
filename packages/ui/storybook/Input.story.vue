@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { logEvent } from 'histoire/client'
 import Input from '../src/components/Input.vue'
 
@@ -7,6 +7,16 @@ const value = ref('')
 
 const disable = ref(false)
 const loading = ref(false)
+
+watchEffect(() => {
+  if (value.value === 'aaa') {
+    loading.value = true
+    setTimeout(() => {
+      loading.value = false
+      value.value = ''
+    }, 1000)
+  }
+})
 </script>
 
 <template>

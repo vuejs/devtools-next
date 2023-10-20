@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { refWithControl, useVModel } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, watchEffect } from 'vue'
 import VueIcon from './Icon.vue'
 import VueLoading from './LoadingIndicator.vue'
 
@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<{
   leftIcon?: string
   rightIcon?: string
   loading?: boolean
+  autoFocus?: boolean
 }>(), {
   placeholder: '',
   variant: 'normal',
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<{
    * loading will auto enable disabled
    */
   loading: false,
+  autoFocus: true,
 })
 
 const emit = defineEmits<{
@@ -44,6 +46,24 @@ const disabled = computed(() => props.disabled || props.loading)
 const inputRef = ref<HTMLInputElement>()
 
 const iconClasses = 'transition-colors $ui-fcc color-gray-500 dark:color-gray-300 group-[&.focused]:color-primary-500; group-[&.accent.focused]:color-accent-500'
+
+let focusedOnLoading = false
+watchEffect(() => {
+  if (props.loading && focused.value) {
+    focusedOnLoading = true
+  }
+  else if (!props.loading && focusedOnLoading) {
+    focusedOnLoading = false
+    nextTick(() => {
+      focused.value = true
+    })
+  }
+})
+
+watchEffect(() => {
+  if (focused.value)
+    inputRef.value?.focus()
+})
 </script>
 
 <template>
@@ -58,7 +78,6 @@ const iconClasses = 'transition-colors $ui-fcc color-gray-500 dark:color-gray-30
     }"
     @click="() => {
       focused = true
-      inputRef?.focus()
     }"
   >
     <div v-if="leftIcon" :class="iconClasses">

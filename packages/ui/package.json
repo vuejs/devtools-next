@@ -34,7 +34,6 @@
   ],
   "scripts": {
     "build": "vite build",
-    "stub": "vite build --watch",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview"

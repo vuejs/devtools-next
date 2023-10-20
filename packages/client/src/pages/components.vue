@@ -4,10 +4,15 @@ import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-n
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 import { Pane, Splitpanes } from 'splitpanes'
+import { VueInput } from '@vue-devtools-next/ui'
 
 const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])
 const { activeComponentState } = useComponentState()
+
+// UX related state
+const loaded = ref(false)
+const [filtered, toggleFiltered] = useToggle(true)
 
 // create component context
 const { selected: selectedComponentTree } = createSelectContext('component-tree')
@@ -32,24 +37,46 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   }
 }
 
+function getComponentTree(filterText?: string) {
+  return new Promise<void>((resolve) => {
+    bridgeApi.getComponentTree({ filterText }, (data) => {
+      const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
+      treeNode.value = data
+      isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
+      initSelectedComponent(data)
+      resolve()
+    })
+  })
+}
+
 onDevToolsClientConnected(() => {
-  bridgeApi.getComponentTree({}, (data) => {
-    const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
-    treeNode.value = data
-    isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
-    initSelectedComponent(data)
+  getComponentTree().then(() => {
+    loaded.value = true
   })
 })
 
 function selectComponentTree(id: string) {
   getComponentState(id)
 }
+
+const filterName = ref('')
+
+watchDebounced(filterName, (value) => {
+  value = value.trim().toLowerCase()
+  toggleFiltered()
+  getComponentTree(value).then(() => {
+    toggleFiltered()
+  })
+}, { debounce: 300 })
 </script>
 
 <template>
   <div h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
+        <div w-full px10px py12px>
+          <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." />
+        </div>
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
           <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" />
         </div>

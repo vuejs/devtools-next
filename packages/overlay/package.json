@@ -31,14 +31,14 @@
     "@vue-devtools-next/app-core": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
     "@vue-devtools-next/ui": "workspace:*",
-    "@vueuse/core": "^10.4.1"
+    "@vueuse/core": "^10.5.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.116",
-    "@types/node": "^20.6.2",
-    "@vitejs/plugin-vue": "^4.3.4",
-    "sass": "^1.67.0",
-    "vite": "^4.4.9",
-    "vue": "^3.3.4"
+    "@iconify/json": "^2.2.131",
+    "@types/node": "^20.8.7",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "sass": "^1.69.4",
+    "vite": "^4.5.0",
+    "vue": "^3.3.5"
   }
 }

@@ -27,6 +27,6 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@types/node": "^20.6.2"
+    "@types/node": "^20.8.7"
   }
 }

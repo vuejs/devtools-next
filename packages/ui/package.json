@@ -34,7 +34,6 @@
   ],
   "scripts": {
     "build": "vite build",
-    "stub": "nr build",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview"

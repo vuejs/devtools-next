@@ -82,11 +82,7 @@ export class BridgeRpc {
     return new Promise<S>((resolve, reject) => {
       Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_REQUEST, options)
       if (cb) {
-        const off = Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
-          if (payload.type === options.type) {
-            cb(payload)
-            off()
-          }
+        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
           payload.type === options.type && cb(payload)
         })
       }

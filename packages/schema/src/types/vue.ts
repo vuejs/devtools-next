@@ -199,3 +199,9 @@ export interface DevToolsPluginInspectorTree {
   filter?: string
   rootNodes: ComponentTreeNode[]
 }
+
+export interface DevToolsPluginInspectorState {
+  app: VueAppInstance
+  inspectorId: string
+  nodeId: string
+}

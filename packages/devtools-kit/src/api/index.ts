@@ -30,14 +30,14 @@ export class DevToolsPluginApi {
     return stringify(result) as string
   }
 
-  getComponentTree(options: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
-    return getComponentTree(options)
+  getComponentTree(payload: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
+    return getComponentTree(payload)
   }
 
   addTimelineEvent() {}
-  getInspectorTree(options: { inspectorId?: string; filter?: string } = {}) {
-    const { inspectorId, filter = '' } = options
-    const payload = {
+  getInspectorTree(payload: { inspectorId?: string; filter?: string } = {}) {
+    const { inspectorId, filter = '' } = payload
+    const _payload = {
       app: devtoolsContext.appRecord.app,
       inspectorId,
       filter,
@@ -46,13 +46,27 @@ export class DevToolsPluginApi {
 
     // @ts-expect-error hookable
     apiHooks.callHookWith((callbacks) => {
-      callbacks.forEach(cb => cb(payload))
+      callbacks.forEach(cb => cb(_payload))
     }, DevToolsEvents.GET_INSPECTOR_TREE)
-    return stringify(payload.rootNodes) as string
+    return stringify(_payload.rootNodes) as string
+  }
+
+  getInspectorState(payload: { inspectorId?: string; nodeId?: string } = {}) {
+    const { inspectorId, nodeId } = payload
+    const _payload = {
+      app: devtoolsContext.appRecord.app,
+      inspectorId,
+      nodeId,
+    }
+
+    // @ts-expect-error hookable
+    apiHooks.callHookWith((callbacks) => {
+      callbacks.forEach(cb => cb(_payload))
+    }, DevToolsEvents.GET_INSPECTOR_STATE)
+    return stringify(_payload) as string
   }
 
   sendInspectorTree() {}
-  getInspectorState() {}
   sendInspectorState() {}
   addInspector(state: DevToolsPluginInspectorState) {
     // @TODO: register inspector and use to judge if pinia and router is used

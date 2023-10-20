@@ -1,7 +1,7 @@
 import { devtools } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 
-export type DispatchDevtoolsRequestType = 'state' | 'component-tree' | 'component-state' | 'inspector-tree'
+export type DispatchDevtoolsRequestType = 'state' | 'component-tree' | 'component-state' | 'inspector-tree' | 'inspector-state'
 
 export interface DispatchDevtoolsRequestPayload {
   state: Record<PropertyKey, never>
@@ -14,6 +14,10 @@ export interface DispatchDevtoolsRequestPayload {
   'inspector-tree': {
     inspectorId?: string
     filter?: string
+  }
+  'inspector-state': {
+    inspectorId: string
+    nodeId: string
   }
 }
 
@@ -78,6 +82,10 @@ export async function dispatchDevToolsRequests<T extends DispatchDevtoolsRequest
   }
   else if (type === 'inspector-tree') {
     const state = devtools.context.api.getInspectorTree(params)
+    cb({ data: parse(state) })
+  }
+  else if (type === 'inspector-state') {
+    const state = devtools.context.api.getInspectorState(params)
     cb({ data: parse(state) })
   }
 }

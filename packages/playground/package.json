@@ -7,17 +7,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.4.1",
-    "pinia": "^2.1.6",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "@vueuse/core": "^10.5.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.3.5",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.3.4",
+    "@vitejs/plugin-vue": "^4.4.0",
     "serve": "^14.2.1",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vite-plugin-inspect": "^0.7.38",
+    "vite": "^4.5.0",
+    "vite-plugin-inspect": "^0.7.40",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

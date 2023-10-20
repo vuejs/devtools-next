@@ -44,18 +44,20 @@
     "vue": ">=3.0.0-0"
   },
   "dependencies": {
-    "@vueuse/components": "^10.4.1",
-    "@vueuse/core": "^10.4.0",
-    "@vueuse/integrations": "^10.4.0",
+    "@vueuse/components": "^10.5.0",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/integrations": "^10.5.0",
     "colord": "^2.9.3",
     "floating-vue": "2.0.0-beta.24",
-    "focus-trap": "^7.5.2"
+    "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.1",
-    "@types/node": "^20.6.0",
-    "@vitejs/plugin-vue": "^4.3.3",
-    "histoire": "^0.17.0",
-    "vite-plugin-dts": "^3.5.3"
+    "@types/node": "^20.8.7",
+    "@unocss/reset": "^0.56.5",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "histoire": "^0.17.2",
+    "unocss": "^0.56.5",
+    "vite-plugin-dts": "^3.6.0"
   }
 }

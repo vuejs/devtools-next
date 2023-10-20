@@ -6,7 +6,9 @@ const bridgeApi = useDevToolsBridgeApi()
 
 const activeComponentState = ref<Record<string, ComponentState[]>>({})
 
-function normalizeComponentState(data: { state: ComponentState[] }) {
+function normalizeComponentState(data: { state?: ComponentState[] }) {
+  if (!data.state)
+    return {}
   const res = {}
   data.state.forEach((item) => {
     if (!res[item.type])

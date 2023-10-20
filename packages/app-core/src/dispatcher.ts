@@ -1,18 +1,43 @@
 import { devtools } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 
-export interface DispatchDevToolsRequestsOptions {
-  type: string
-  params?: Record<string, unknown>
+export type DispatchDevtoolsRequestType = 'state' | 'component-tree' | 'component-state' | 'inspector-tree'
+
+export interface DispatchDevtoolsRequestPayload {
+  state: Record<PropertyKey, never>
+  'component-tree': {
+    filterText?: string
+  }
+  'component-state': {
+    instanceId: string
+  }
+  'inspector-tree': {
+    inspectorId?: string
+    filter?: string
+  }
 }
 
-export interface SyncUpdatedToDevToolsOptions {
-  type: string
+export interface DispatchDevToolsRequestsOptions<T extends DispatchDevtoolsRequestType = DispatchDevtoolsRequestType> {
+  type: T
+  params: DispatchDevtoolsRequestPayload[T]
 }
 
-export async function dispatchDevToolsRequests(options: DispatchDevToolsRequestsOptions, cb: (data: unknown) => void) {
+export interface SyncUpdatedToDevToolsOptions<T extends DispatchDevtoolsRequestType> {
+  type: T
+  data: Record<string, unknown>
+}
+
+export function assertType<T extends DispatchDevtoolsRequestType>(
+  type: DispatchDevtoolsRequestType,
+  assertType: T,
+  _params: unknown,
+): _params is DispatchDevtoolsRequestPayload[T] {
+  return type === assertType
+}
+
+export async function dispatchDevToolsRequests<T extends DispatchDevtoolsRequestType>(options: DispatchDevToolsRequestsOptions<T>, cb: (data: unknown) => void) {
   const { type, params } = options
-  if (type === 'state') {
+  if (assertType(type, 'state', params)) {
     const state = devtools.state
     // sync updated
     devtools.context.api.on.devtoolsStateUpdated((payload) => {
@@ -27,9 +52,9 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
       vueVersion: state.activeAppRecord?.version || '',
     })
   }
-  else if (type === 'component-tree') {
+  else if (assertType(type, 'component-tree', params)) {
     const treeNode = await devtools.context.api.getComponentTree({
-      filterText: '',
+      filterText: params.filterText ?? '',
       recursively: false,
     })
     // sync updated
@@ -38,7 +63,7 @@ export async function dispatchDevToolsRequests(options: DispatchDevToolsRequests
     })
     cb(treeNode)
   }
-  else if (type === 'component-state') {
+  else if (assertType(type, 'component-state', params)) {
     devtools.state.selectedComponentId = params?.instanceId as string
     const componentState = devtools.context.api.getInstanceState(params as { instanceId: string })
     // sync updated

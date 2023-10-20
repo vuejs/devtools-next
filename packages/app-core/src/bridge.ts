@@ -3,7 +3,7 @@ import { BridgeEvents } from '@vue-devtools-next/schema'
 import { NOOP, target } from '@vue-devtools-next/shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
-import type { DispatchDevToolsRequestsOptions } from './dispatcher'
+import type { DispatchDevToolsRequestsOptions, DispatchDevtoolsRequestPayload } from './dispatcher'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -82,7 +82,11 @@ export class BridgeRpc {
     return new Promise<S>((resolve, reject) => {
       Bridge.value.emit(BridgeEvents.GET_USER_APP_DATA_REQUEST, options)
       if (cb) {
-        Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
+        const off = Bridge.value.on(BridgeEvents.GET_USER_APP_DATA_RESPONSE, (payload: S & { type: string }) => {
+          if (payload.type === options.type) {
+            cb(payload)
+            off()
+          }
           payload.type === options.type && cb(payload)
         })
       }
@@ -137,11 +141,14 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S>({ type: 'state' }, ({ data }) => cb(data))
   }
 
-  static getComponentTree<S extends { data: ComponentTreeNode[] }, Q extends { instanceId?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getComponentTree<S extends { data: ComponentTreeNode[] }, Q = DispatchDevtoolsRequestPayload['component-tree']>(
+    params?: Q,
+    cb?: (payload: S['data']) => void,
+  ) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 
-  static getInstanceState<S extends { data: { data: ComponentState[] } }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getInstanceState<S extends { data: { data: { state: ComponentState[] } } }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { refWithControl, useVModel } from '@vueuse/core'
+import { refDebounced, refWithControl, useVModel } from '@vueuse/core'
 import { computed, nextTick, ref, watchEffect } from 'vue'
 import VueIcon from './Icon.vue'
 import VueLoading from './LoadingIndicator.vue'
@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
   rightIcon?: string
   loading?: boolean
   autoFocus?: boolean
+  loadingDebounceTime?: number
 }>(), {
   placeholder: '',
   variant: 'normal',
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<{
    */
   loading: false,
   autoFocus: true,
+  loadingDebounceTime: 0,
 })
 
 const emit = defineEmits<{
@@ -33,6 +35,7 @@ const emit = defineEmits<{
 }>()
 
 const value = useVModel(props, 'modelValue', emit)
+const loading = refDebounced(computed(() => props.loading), props.loadingDebounceTime)
 
 const focused = refWithControl(false, {
   onChanged(value) {
@@ -41,7 +44,7 @@ const focused = refWithControl(false, {
 })
 const noFocusAnimation = computed(() => props.variant === 'flat')
 
-const disabled = computed(() => props.disabled || props.loading)
+const disabled = computed(() => props.disabled || loading.value)
 
 const inputRef = ref<HTMLInputElement>()
 
@@ -49,10 +52,10 @@ const iconClasses = 'transition-colors $ui-fcc color-gray-500 dark:color-gray-30
 
 let focusedOnLoading = false
 watchEffect(() => {
-  if (props.loading && focused.value) {
+  if (loading.value && focused.value) {
     focusedOnLoading = true
   }
-  else if (!props.loading && focusedOnLoading) {
+  else if (!loading.value && focusedOnLoading) {
     focusedOnLoading = false
     nextTick(() => {
       focused.value = true

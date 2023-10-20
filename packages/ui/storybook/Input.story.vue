@@ -52,5 +52,11 @@ watchEffect(() => {
         left-icon="i-carbon-search" right-icon="i-carbon-password"
       />
     </Variant>
+    <Variant title="loading(debounced, 500ms)">
+      <Input
+        v-model="value" :loading="loading" :loading-debounce-time="500" :disabled="disable" placeholder="Flat Input" variant="accent"
+        left-icon="i-carbon-search" right-icon="i-carbon-password"
+      />
+    </Variant>
   </Story>
 </template>

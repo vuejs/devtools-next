@@ -3,8 +3,8 @@ import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-n
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode } from '@vue-devtools-next/schema'
-import { Pane, Splitpanes } from 'splitpanes'
 import { VueInput } from '@vue-devtools-next/ui'
+import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeApi = useDevToolsBridgeApi()
 const treeNode = ref<ComponentTreeNode[]>([])

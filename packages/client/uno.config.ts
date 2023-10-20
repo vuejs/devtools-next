@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfigs, presetAttributify } from 'unocss'
-import { unoConfig } from '../ui/theme/index'
+import { unoConfig } from '@vue-devtools-next/ui/theme'
 
 export default defineConfig(mergeConfigs([unoConfig, {
   rules: [

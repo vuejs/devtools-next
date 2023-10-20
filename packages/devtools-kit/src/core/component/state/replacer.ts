@@ -4,6 +4,10 @@ import { isVueInstance } from './is'
 import { sanitize } from './util'
 
 export function stringifyReplacer(key: string) {
+  // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
+  // @TODO: need to check if it will cause any other issues
+  if (key === 'compilerOptions')
+    return
   /* eslint-disable ts/no-invalid-this */
   // @ts-expect-error invalid this
   const val: unknown = this[key]

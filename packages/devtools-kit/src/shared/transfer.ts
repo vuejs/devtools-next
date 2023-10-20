@@ -16,6 +16,10 @@ function encode(data: Record<string, unknown>, replacer: ((this: any, key: strin
     for (i = 0, l = keys.length; i < l; i++) {
       key = keys[i]
       try {
+        // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
+        // @TODO: need to check if it will cause any other issues
+        if (key === 'compilerOptions')
+          return
         value = data[key]
         if (replacer)
           value = replacer.call(data, key, value)

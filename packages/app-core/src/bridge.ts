@@ -1,4 +1,4 @@
-import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, InspectorState } from '@vue-devtools-next/schema'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import { NOOP, target } from '@vue-devtools-next/shared'
 import type { Emitter, EventType, Handler } from 'mitt'
@@ -144,7 +144,7 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-tree', params }, ({ data }) => cb?.(data))
   }
 
-  static getInstanceState<S extends { data: { data: { state: ComponentState[] } } }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getInstanceState<S extends { data: { data: { state: InspectorState[] } } }, Q extends { instanceId: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'component-state', params }, ({ data }) => cb?.(data))
   }
 
@@ -152,7 +152,7 @@ export class BridgeApi {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'inspector-tree', params }, ({ data }) => cb?.(data))
   }
 
-  static getInspectorState<S extends { data: { data: { state: Record<string, ComponentState[]> } } }, Q extends { inspectorId?: string; filter?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
+  static getInspectorState<S extends { data: { data: { state: Record<string, InspectorState[]> } } }, Q extends { inspectorId?: string; filter?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'inspector-state', params }, ({ data }) => cb?.(data))
   }
 }

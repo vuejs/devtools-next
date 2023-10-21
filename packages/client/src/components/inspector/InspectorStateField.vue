@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import type { ComponentCustomState, ComponentState } from '@vue-devtools-next/schema'
+import type { InspectorCustomState, InspectorState } from '@vue-devtools-next/schema'
 import { sortByKey } from '@vue-devtools-next/shared'
-import { formatComponentStateValue, getComponentStateValueType } from 'vue-devtools-kit/shared'
+import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
 
 const props = withDefaults(defineProps<{
-  data: ComponentState
+  data: InspectorState
   depth?: number
   no: number
 }>(), {
   depth: 0,
 })
 
-const value = formatComponentStateValue(props.data.value)
-const type = getComponentStateValueType(props.data.value)
+const value = formatInspectorStateValue(props.data.value)
+const type = getInspectorStateValueType(props.data.value)
 const stateFormatClass = computed(() => {
   if (type === 'custom')
-    return `state-format-${(props.data.value as ComponentCustomState)._custom?.type}`
+    return `state-format-${(props.data.value as InspectorCustomState)._custom?.type}`
 
   else
     return ``
 })
 
-const { isExpanded, toggleCollapse } = useCollapse('component-state', `${props.no}-${props.depth}-${props.data.key}`)
+const { isExpanded, toggleCollapse } = useCollapse('inspector-state', `${props.no}-${props.depth}-${props.data.key}`)
 
 const normalizedValue = computed(() => {
-  const stateTypeName = (props.data as ComponentCustomState)._custom?.stateTypeName || props.data?.stateTypeName
+  const stateTypeName = (props.data as InspectorCustomState)._custom?.stateTypeName || props.data?.stateTypeName
   if (stateTypeName === 'Reactive') {
     return stateTypeName
   }
@@ -46,7 +46,7 @@ const rawValue = computed(() => {
   const isCustom = type === 'custom'
   let inherit = {}
   if (isCustom) {
-    const data = props.data.value as ComponentCustomState
+    const data = props.data.value as InspectorCustomState
     inherit = data._custom?.fields || {}
     value = data._custom?.value as string
   }
@@ -112,7 +112,7 @@ const hasChildren = computed(() => {
           </span>
         </div>
         <div v-if="isExpanded">
-          <ComponentStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
+          <InspectorStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
         </div>
       </div>
     </template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ComponentState } from '@vue-devtools-next/schema'
+import type { InspectorState } from '@vue-devtools-next/schema'
 
 const props = defineProps<{
-  data: ComponentState[]
+  data: InspectorState[]
   name: string
   id: string
 }>()
 
-const { isExpanded, toggleCollapse } = useCollapse('component-state', props.id)
+const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
 !isExpanded.value && toggleCollapse()
 </script>
@@ -19,5 +19,5 @@ const { isExpanded, toggleCollapse } = useCollapse('component-state', props.id)
       {{ name }}
     </span>
   </div>
-  <ComponentStateType v-if="isExpanded" :data="data" />
+  <InspectorStateType v-if="isExpanded" :data="data" />
 </template>

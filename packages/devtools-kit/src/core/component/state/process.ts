@@ -1,4 +1,4 @@
-import type { ComponentState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
 import { camelize } from '@vue-devtools-next/shared'
 import { returnError } from '../general/util'
 import { vueBuiltins } from './constants'
@@ -57,7 +57,7 @@ function resolveMergedOptions(
  *
  */
 function processProps(instance: VueAppInstance) {
-  const props: ComponentState[] = []
+  const props: InspectorState[] = []
   const propDefinitions = instance.type.props
 
   for (const key in instance.props) {
@@ -135,7 +135,7 @@ function processSetupState(instance: VueAppInstance) {
         }
       }
 
-      let result: Partial<ComponentState>
+      let result: Partial<InspectorState>
 
       // @TODO: need to re-design this?
       let isOtherType = typeof value === 'function'
@@ -167,7 +167,7 @@ function processSetupState(instance: VueAppInstance) {
         type,
         // @ts-expect-error ignore
         ...result,
-      } as ComponentState
+      } as InspectorState
     })
 }
 
@@ -176,7 +176,7 @@ function processSetupState(instance: VueAppInstance) {
  */
 function processComputed(instance: VueAppInstance, mergedType: Record<string, unknown>) {
   const type = mergedType
-  const computed: ComponentState[] = []
+  const computed: InspectorState[] = []
   const defs = type.computed || {}
   // use for...in here because if 'computed' is not defined
   // on component, computed properties will be placed in prototype
@@ -265,7 +265,7 @@ function processEventListeners(instance: VueAppInstance) {
   const emitsDefinition = instance.type.emits
   const declaredEmits = Array.isArray(emitsDefinition) ? emitsDefinition : Object.keys(emitsDefinition ?? {})
   const keys = Object.keys(instance.vnode.props ?? {})
-  const result: ComponentState[] = []
+  const result: InspectorState[] = []
   for (const key of keys) {
     const [prefix, ...eventNameParts] = key.split(/(?=[A-Z])/)
     if (prefix === 'on') {

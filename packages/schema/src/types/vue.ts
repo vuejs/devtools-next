@@ -153,7 +153,7 @@ export interface DevToolsState {
   pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
 }
 
-export interface ComponentCustomState {
+export interface InspectorCustomState {
   _custom?: {
     type?: string
     displayText?: string
@@ -166,9 +166,9 @@ export interface ComponentCustomState {
   }
 }
 
-export interface ComponentState {
+export interface InspectorState {
   key: string
-  value: string | number | Record<string, unknown> | ComponentCustomState | Array<unknown>
+  value: string | number | Record<string, unknown> | InspectorCustomState | Array<unknown>
   type: string
   stateTypeName?: string
   meta?: Record<string, boolean | string>

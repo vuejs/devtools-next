@@ -1,12 +1,12 @@
 import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
-import type { ComponentState, ComponentTreeNode } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, InspectorState } from '@vue-devtools-next/schema'
 import { ref } from 'vue'
 
 const bridgeApi = useDevToolsBridgeApi()
 
-const activeComponentState = ref<Record<string, ComponentState[]>>({})
+const activeComponentState = ref<Record<string, InspectorState[]>>({})
 
-function normalizeComponentState(data: { state?: ComponentState[] }) {
+function normalizeComponentState(data: { state?: InspectorState[] }) {
   if (!data.state)
     return {}
   const res = {}

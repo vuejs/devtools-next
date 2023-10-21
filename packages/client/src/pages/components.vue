@@ -19,7 +19,7 @@ const { selected: selectedComponentTree } = createSelectContext('component-tree'
 
 // create collapse context
 const { collapseMap: componentTreeCollapseMap } = createCollapseContext('component-tree')
-createCollapseContext('component-state')
+createCollapseContext('inspector-state')
 
 function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
@@ -83,7 +83,7 @@ watchDebounced(filterName, (value) => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <ComponentState v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()" :data="state" :name="`${key}`" />
+          <InspectorState v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()" :data="state" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

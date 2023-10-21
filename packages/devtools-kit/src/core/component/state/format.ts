@@ -2,7 +2,7 @@ import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, rawTypeRE, specialTypeRE }
 import { isPlainObject } from './is'
 import { escape, internalStateTokenToString } from './util'
 
-export function getComponentStateValueType(value, raw = true) {
+export function getInspectorStateValueType(value, raw = true) {
   const type = typeof value
   if (value == null || value === UNDEFINED) {
     return 'null'
@@ -21,7 +21,7 @@ export function getComponentStateValueType(value, raw = true) {
       return 'custom'
 
     else
-      return getComponentStateValueType(value._custom.value)
+      return getInspectorStateValueType(value._custom.value)
   }
   else if (typeof value === 'string') {
     const typeMatch = specialTypeRE.exec(value)
@@ -44,9 +44,9 @@ export function getComponentStateValueType(value, raw = true) {
   }
 }
 
-export function formatComponentStateValue(value, quotes = false) {
+export function formatInspectorStateValue(value, quotes = false) {
   let result
-  const type = getComponentStateValueType(value, false)
+  const type = getInspectorStateValueType(value, false)
   if (type !== 'custom' && value?._custom)
     value = value._custom.value
 

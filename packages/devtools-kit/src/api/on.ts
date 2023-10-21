@@ -1,4 +1,4 @@
-import type { ComponentState, ComponentTreeNode, DevToolsPluginInspectorState, DevToolsPluginInspectorTree, DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, DevToolsPluginInspectorState, DevToolsPluginInspectorTree, DevToolsState, InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 
@@ -24,7 +24,7 @@ interface DevToolsEvent {
       id: string
       name: string
       file: string | undefined
-      state: ComponentState[]
+      state: InspectorState[]
       instance: VueAppInstance | undefined
     }
   }) => void

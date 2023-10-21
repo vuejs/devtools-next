@@ -2,14 +2,14 @@
 import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { ComponentState } from '@vue-devtools-next/schema'
+import type { InspectorState } from '@vue-devtools-next/schema'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeApi = useDevToolsBridgeApi()
 
 const { selected } = createSelectContext('pinia-store-tree')
 const tree = ref<{ id: string;label: string }[]>([])
-const state = ref<Record<string, ComponentState[]>>({})
+const state = ref<Record<string, InspectorState[]>>({})
 
 function getPiniaState(nodeId: string) {
   bridgeApi.getInspectorState({ inspectorId: 'pinia', nodeId }, ({ data }) => {
@@ -21,7 +21,7 @@ function selectStore(id: string) {
   getPiniaState(id)
 }
 
-createCollapseContext('component-state')
+createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
   bridgeApi.getInspectorTree({ inspectorId: 'pinia', filter: '' }, ({ data }) => {
@@ -44,7 +44,7 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <ComponentState v-for="(item, key) in state" :id="key" :key="key + Date.now()" :data="item" :name="`${key}`" />
+          <InspectorState v-for="(item, key) in state" :id="key" :key="key + Date.now()" :data="item" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

@@ -1,4 +1,4 @@
-import type { ComponentState } from '@vue-devtools-next/schema'
+import type { InspectorState } from '@vue-devtools-next/schema'
 import { getComponentName, getInstanceName } from '../general/util'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'
@@ -95,7 +95,7 @@ function getCatchedGetters(store) {
   return getters
 }
 
-function reduceStateList(list: ComponentState[]) {
+function reduceStateList(list: InspectorState[]) {
   if (!list.length)
     return undefined
 

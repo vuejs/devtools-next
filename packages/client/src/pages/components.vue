@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/app-core'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode } from '@vue-devtools-next/schema'
 import { VueInput } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
-const bridgeApi = useDevToolsBridgeApi()
+const bridgeRpc = useDevToolsBridgeRpc()
 const treeNode = ref<ComponentTreeNode[]>([])
 const { activeComponentState } = useComponentState()
 
@@ -39,21 +39,13 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 
 function getComponentTree(filterText?: string) {
   return new Promise<void>((resolve) => {
-    bridgeApi.getInspectorTree<{ data: { data: ComponentTreeNode[] } }, { inspectorId: string; filter?: string }>({ inspectorId: 'components', filter: filterText }, ({ data }) => {
+    bridgeRpc.getInspectorTree<{ data: ComponentTreeNode[] }>({ inspectorId: 'components', filter: filterText }).then(({ data }) => {
       const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
       treeNode.value = data
       isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
       initSelectedComponent(data)
       resolve()
     })
-
-    // bridgeApi.getComponentTree({ filterText }, (data) => {
-    //   const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
-    //   treeNode.value = data
-    //   isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
-    //   initSelectedComponent(data)
-    //   resolve()
-    // })
   })
 }
 

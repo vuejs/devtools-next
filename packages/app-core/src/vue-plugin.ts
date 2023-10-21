@@ -1,7 +1,7 @@
 import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import type { BridgeInstanceType } from './bridge'
-import { BridgeApi, DevToolsRpc } from './bridge'
+import { DevToolsRpc } from './bridge'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -13,7 +13,11 @@ function initDevToolsState() {
   const vueVersion = ref('')
 
   function init() {
-    BridgeApi.getDevToolsState((payload) => {
+    DevToolsRpc.getDevToolsState().then(({ data }) => {
+      connected.value = data.connected
+      vueVersion.value = data.vueVersion || ''
+    })
+    DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
       vueVersion.value = payload.vueVersion || ''
     })
@@ -61,10 +65,6 @@ export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): P
 
 export function useDevToolsBridge() {
   return inject(VueDevToolsBridgeSymbol)!
-}
-
-export function useDevToolsBridgeApi() {
-  return BridgeApi
 }
 
 export function useDevToolsBridgeRpc() {

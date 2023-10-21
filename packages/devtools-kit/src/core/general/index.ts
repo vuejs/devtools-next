@@ -1,9 +1,10 @@
 import { target } from '@vue-devtools-next/shared'
-import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
+import { DevToolsHooks } from '@vue-devtools-next/schema'
+import { DevToolsPluginApi, collectRegisteredPlugin, registerPlugin } from '../../api'
 import { initComponentTree } from '../component/tree'
 import { registerComponentsDevTools } from '../plugins'
 import { createAppRecord } from './app'
-import { createDevToolsHook, hook, subscribeDevToolsHook } from './hook'
+import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from './hook'
 import { devtoolsContext, devtoolsState } from './state'
 
 // usage: inject to user application and call it before the vue app is created
@@ -36,7 +37,7 @@ export function initDevTools() {
       devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
       devtoolsState.connected = true
       // mark vue app as connected
-      apiHooks.callHook(DevToolsEvents.APP_CONNECTED)
+      devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
     }
     registerPlugin({
       app,
@@ -57,7 +58,7 @@ export function onDevToolsConnected(fn: () => void) {
       return
     }
 
-    devtoolsContext.api.on.vueAppConnected(() => {
+    hook.on.vueAppConnected(() => {
       fn()
       resolve()
     })

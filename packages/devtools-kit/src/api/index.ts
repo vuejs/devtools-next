@@ -1,4 +1,4 @@
-import type { AppRecord } from '@vue-devtools-next/schema'
+import type { AppRecord, DevToolsPluginInspectorPayload } from '@vue-devtools-next/schema'
 import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
 import { devtoolsContext } from '../core/general/state'

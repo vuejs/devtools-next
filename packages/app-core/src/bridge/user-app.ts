@@ -2,7 +2,15 @@ import { devtools } from 'vue-devtools-kit'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
-export function initBridgeRpc() {
+export function registerBridgeRpc() {
+  // devtools state getter
+  bridgeRpcCore.on(bridgeRpcEvents.state, () => {
+    return JSON.stringify({
+      connected: devtools.state.connected,
+      vueVersion: devtools.state?.activeAppRecord?.version || '',
+    })
+  })
+
   // inspector tree getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorTree, (payload) => {
     return devtools.context.api.getInspectorTree(payload)
@@ -13,14 +21,28 @@ export function initBridgeRpc() {
     return devtools.context.api.getInspectorState(payload)
   })
 
-  // inspector tree updated
-  devtools.context.api.on.sendInspectorTree((payload) => {
-    Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
-  })
+  Bridge.value.on(BridgeEvents.APP_CONNECTED, () => {
+    Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
+      vueVersion: devtools.state?.activeAppRecord?.version || '',
+      connected: true,
+    }))
 
-  // inspector state updated
-  devtools.context.api.on.sendInspectorState((payload) => {
-    Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
+    // devtools state updated
+    devtools.context.api.on.devtoolsStateUpdated((payload) => {
+      Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
+        vueVersion: payload?.activeAppRecord?.version || '',
+        connected: payload.connected,
+      }))
+    })
+    // inspector tree updated
+    devtools.context.api.on.sendInspectorTree((payload) => {
+      Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
+    })
+
+    // inspector state updated
+    devtools.context.api.on.sendInspectorState((payload) => {
+      Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
+    })
   })
 }
 

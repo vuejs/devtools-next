@@ -3,7 +3,6 @@ import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 
 export enum DevToolsEvents {
-  APP_CONNECTED = 'app:connected',
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
   COMPONENT_TREE_UPDATED = 'component-tree:updated',
   COMPONENT_STATE_UPDATED = 'component-state:updated',
@@ -16,7 +15,6 @@ export enum DevToolsEvents {
 
 interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
-  [DevToolsEvents.APP_CONNECTED]: () => void
   [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
   [DevToolsEvents.COMPONENT_STATE_UPDATED]: (id: string) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
@@ -42,9 +40,6 @@ export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = create
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
-  },
-  vueAppConnected(fn: DevToolsEvent[DevToolsEvents.APP_CONNECTED]) {
-    apiHooks.hook(DevToolsEvents.APP_CONNECTED, fn)
   },
   componentTreeUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_TREE_UPDATED]) {
     apiHooks.hook(DevToolsEvents.COMPONENT_TREE_UPDATED, fn)

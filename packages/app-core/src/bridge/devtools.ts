@@ -4,7 +4,7 @@ import { parse } from 'vue-devtools-kit/shared'
 import type { BridgeRpcEventPayload } from './core'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
-export function initBridgeRpc() {
+export function registerBridgeRpc() {
 
 }
 
@@ -23,7 +23,11 @@ export class BridgeRpc {
         cb(parse(payload))
       })
     },
-
+    devtoolsStateUpdated(cb) {
+      Bridge.value.on(BridgeEvents.DEVTOOLS_STATE_UPDATED, (payload) => {
+        cb(parse(payload))
+      })
+    },
   }
 
   static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string;label: string }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
@@ -32,5 +36,9 @@ export class BridgeRpc {
 
   static async getInspectorState<R extends { data: unknown } = { data: { state: Record<string, InspectorState[]> } }>(payload: BridgeRpcEventPayload['inspector-state']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorState, payload)
+  }
+
+  static async getDevToolsState() {
+    return bridgeRpcCore.emit<{ data: { connected: boolean;vueVersion: string } }>(bridgeRpcEvents.state)
   }
 }

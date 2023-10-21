@@ -77,6 +77,7 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 export const bridgeRpcEvents = {
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
+  state: 'state',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -90,21 +91,22 @@ export interface BridgeRpcEventPayload {
     inspectorId: string
     nodeId: string
   }
+  [bridgeRpcEvents.state]: null
 }
 
 export const bridgeRpcCore = {
   on<E extends BridgeRpcEventName>(
     eventName: E,
-    handler: (payload: BridgeRpcEventPayload[E]) => Promise<string> | string,
+    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<string> | string,
   ) {
-    Bridge.value.on(`${eventName}:req`, async (payload: BridgeRpcEventPayload[E]) => {
+    Bridge.value.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
       const res = await handler(payload)
       Bridge.value.emit(`${eventName}:res`, res)
     })
   },
   emit<S, E extends BridgeRpcEventName = BridgeRpcEventName>(
     eventName: E,
-    payload: BridgeRpcEventPayload[E],
+    payload?: BridgeRpcEventPayload[E],
   ) {
     Bridge.value.emit(`${eventName}:req`, payload)
     return new Promise<S>((resolve) => {

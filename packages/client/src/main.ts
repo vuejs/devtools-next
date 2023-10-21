@@ -1,5 +1,5 @@
 import '@unocss/reset/tailwind.css'
-import { Bridge, BridgeRpc, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/app-core'
+import { Bridge, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/app-core'
 import { BridgeEvents } from '@vue-devtools-next/schema'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
@@ -23,7 +23,6 @@ async function reload(app, shell) {
   Bridge.value.removeAllListeners()
   shell.connect((bridge) => {
     Bridge.value = bridge
-    BridgeRpc.onDataFromUserApp()
     registerBridgeRpc('devtools')
     new HandShakeServer(Bridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(Bridge.value)
@@ -48,7 +47,6 @@ async function connectApp(app, shell) {
 export async function initDevTools(shell) {
   const app = createApp(App)
   await connectApp(app, shell)
-  BridgeRpc.onDataFromUserApp()
   registerBridgeRpc('devtools')
   new HandShakeServer(Bridge.value).onnConnect().then(() => {
     const router = createRouter({

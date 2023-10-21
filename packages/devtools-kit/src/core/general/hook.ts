@@ -15,7 +15,7 @@ interface DevToolsEvent {
   [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
 }
 
-export const devtoolsHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = createHooks<DevToolsEvent>()
+export const devtoolsHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_HOOK ??= createHooks<DevToolsEvent>()
 
 const on = {
   vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]) {

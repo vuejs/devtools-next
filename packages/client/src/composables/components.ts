@@ -1,8 +1,8 @@
-import { useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/app-core'
 import type { ComponentTreeNode, InspectorState } from '@vue-devtools-next/schema'
 import { ref } from 'vue'
 
-const bridgeApi = useDevToolsBridgeApi()
+const bridgeRpc = useDevToolsBridgeRpc()
 
 const activeComponentState = ref<Record<string, InspectorState[]>>({})
 
@@ -37,8 +37,8 @@ export function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) 
 }
 
 export function getComponentState(id: string) {
-  bridgeApi.getInstanceState({ instanceId: id }, ({ data }) => {
-    activeComponentState.value = normalizeComponentState(data)
+  bridgeRpc.getInspectorState({ inspectorId: 'components', nodeId: id }).then(({ data }) => {
+    activeComponentState.value = normalizeComponentState(data.state)
   })
 }
 

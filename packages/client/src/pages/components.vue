@@ -39,13 +39,21 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 
 function getComponentTree(filterText?: string) {
   return new Promise<void>((resolve) => {
-    bridgeApi.getComponentTree({ filterText }, (data) => {
+    bridgeApi.getInspectorTree<{ data: { data: ComponentTreeNode[] } }, { inspectorId: string; filter?: string }>({ inspectorId: 'components', filter: filterText }, ({ data }) => {
       const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
       treeNode.value = data
       isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
       initSelectedComponent(data)
       resolve()
     })
+
+    // bridgeApi.getComponentTree({ filterText }, (data) => {
+    //   const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
+    //   treeNode.value = data
+    //   isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
+    //   initSelectedComponent(data)
+    //   resolve()
+    // })
   })
 }
 
@@ -61,6 +69,7 @@ function selectComponentTree(id: string) {
 
 const filterName = ref('')
 
+// @TODO: bugfix - the selected component highlighted working failed when the filter is applied
 watchDebounced(filterName, (value) => {
   value = value.trim().toLowerCase()
   toggleFiltered()

@@ -1,6 +1,7 @@
 import { target } from '@vue-devtools-next/shared'
 import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
 import { initComponentTree } from '../component/tree'
+import { registerComponentsDevTools } from '../plugins'
 import { createAppRecord } from './app'
 import { createDevToolsHook, hook, subscribeDevToolsHook } from './hook'
 import { devtoolsContext, devtoolsState } from './state'
@@ -12,8 +13,11 @@ export function initDevTools() {
 
   target.__VUE_DEVTOOLS_APP_RECORDS__ ??= []
 
+  // devtools plugin setup hook
+  hook.on.setupDevtoolsPlugin(collectRegisteredPlugin)
+
   // create app record
-  hook.on.vueAppInit((app, version) => {
+  hook.on.vueAppInit(async (app, version) => {
     const record = createAppRecord(app)
     const api = new DevToolsPluginApi()
     devtoolsState.appRecords = [
@@ -27,6 +31,7 @@ export function initDevTools() {
     ]
 
     if (devtoolsState.appRecords.length === 1) {
+      await registerComponentsDevTools(app)
       // set first app as default record
       devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
       devtoolsState.connected = true
@@ -38,9 +43,6 @@ export function initDevTools() {
       api,
     })
   })
-
-  // devtools plugin setup hook
-  hook.on.setupDevtoolsPlugin(collectRegisteredPlugin)
 
   initComponentTree()
 

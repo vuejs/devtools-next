@@ -35,19 +35,24 @@ export class DevToolsPluginApi {
   }
 
   addTimelineEvent() {}
-  getInspectorTree(payload: { inspectorId?: string; filter?: string } = {}) {
-    const { inspectorId, filter = '' } = payload
+  async getInspectorTree(payload: { inspectorId?: string; filter?: string; instanceId?: string } = {}) {
+    const { inspectorId, filter = '', instanceId = '' } = payload
     const _payload = {
       app: devtoolsContext.appRecord.app,
       inspectorId,
+      instanceId,
       filter,
       rootNodes: [],
     }
 
-    // @ts-expect-error hookable
-    apiHooks.callHookWith((callbacks) => {
-      callbacks.forEach(cb => cb(_payload))
-    }, DevToolsEvents.GET_INSPECTOR_TREE)
+    await new Promise<void>((resolve) => {
+      // @ts-expect-error hookable
+      apiHooks.callHookWith(async (callbacks) => {
+        await Promise.all(callbacks.map(cb => cb(_payload)))
+        resolve()
+      }, DevToolsEvents.GET_INSPECTOR_TREE)
+    })
+
     return stringify(_payload.rootNodes) as string
   }
 

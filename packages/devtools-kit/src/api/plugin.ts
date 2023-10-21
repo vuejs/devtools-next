@@ -1,6 +1,8 @@
+import { DevToolsHooks } from '@vue-devtools-next/schema'
 import type { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue-devtools-next/schema'
 import { getAppRecord } from '../core/component/general'
 import { devtoolsState } from '../core/general/state'
+import { devtoolsHooks } from '../core/general/hook'
 import type { DevToolsPluginApi } from './index'
 
 export function collectRegisteredPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
@@ -14,4 +16,8 @@ export async function registerPlugin(options: { app: VueAppInstance; api: DevToo
     const appRecord = await getAppRecord(plugin.app)
     setupFn(api)
   })
+}
+
+export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
+  return devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
 }

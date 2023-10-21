@@ -81,7 +81,7 @@ export async function dispatchDevToolsRequests<T extends DispatchDevtoolsRequest
     cb({ data: parse(componentState) })
   }
   else if (type === 'inspector-tree') {
-    const state = devtools.context.api.getInspectorTree(params)
+    const state = await devtools.context.api.getInspectorTree(params)
     cb({ data: parse(state) })
   }
   else if (type === 'inspector-state') {

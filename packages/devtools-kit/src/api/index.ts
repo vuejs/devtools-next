@@ -1,8 +1,9 @@
-import type { AppRecord, DevToolsPluginInspectorState } from '@vue-devtools-next/schema'
+import type { AppRecord } from '@vue-devtools-next/schema'
 import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
 import { devtoolsContext } from '../core/general/state'
 import { stringify } from '../shared'
+import { updateInspector } from '../core/general/inspector'
 import { DevToolsEvents, apiHooks, on } from './on'
 
 export { DevToolsEvents, apiHooks } from './on'
@@ -45,6 +46,10 @@ export class DevToolsPluginApi {
       rootNodes: [],
     }
 
+    updateInspector(inspectorId!, {
+      filter,
+    })
+
     await new Promise<void>((resolve) => {
       // @ts-expect-error hookable
       apiHooks.callHookWith(async (callbacks) => {
@@ -64,6 +69,9 @@ export class DevToolsPluginApi {
       nodeId,
     }
 
+    updateInspector(inspectorId!, {
+      nodeId,
+    })
     // @ts-expect-error hookable
     apiHooks.callHookWith((callbacks) => {
       callbacks.forEach(cb => cb(_payload))

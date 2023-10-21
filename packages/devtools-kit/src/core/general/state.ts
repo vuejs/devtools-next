@@ -15,6 +15,7 @@ global[StateKey] ??= {
 global[ContextKey] ??= {
   appRecord: null,
   api: null,
+  inspector: [],
 }
 
 export const devtoolsState = new Proxy(global[StateKey], {
@@ -29,6 +30,7 @@ export const devtoolsState = new Proxy(global[StateKey], {
     if (property === 'activeAppRecord') {
       global[ContextKey].appRecord = value
       global[ContextKey].api = value.api
+      global[ContextKey].inspector = value.inspector ?? []
     }
 
     apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)
@@ -47,4 +49,10 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
 }) as unknown as {
   appRecord: AppRecord
   api: DevToolsPluginApi
+  inspector: {
+    id: string
+    nodeId: string
+    filter: string
+    treeFilterPlaceholder: string
+  }[]
 }

@@ -1,11 +1,9 @@
-import type { ComponentTreeNode, DevToolsPluginInspectorPayload, DevToolsPluginInspectorTree, DevToolsState, InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { DevToolsPluginInspectorPayload, DevToolsPluginInspectorTree, DevToolsState, InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
-  COMPONENT_TREE_UPDATED = 'component-tree:updated',
-  COMPONENT_STATE_UPDATED = 'component-state:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
@@ -15,8 +13,6 @@ export enum DevToolsEvents {
 
 interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
-  [DevToolsEvents.COMPONENT_TREE_UPDATED]: (data: ComponentTreeNode[]) => void
-  [DevToolsEvents.COMPONENT_STATE_UPDATED]: (id: string) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined
     app: VueAppInstance | undefined
@@ -40,12 +36,6 @@ export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = create
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
-  },
-  componentTreeUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_TREE_UPDATED]) {
-    apiHooks.hook(DevToolsEvents.COMPONENT_TREE_UPDATED, fn)
-  },
-  componentStateUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_UPDATED]) {
-    apiHooks.hook(DevToolsEvents.COMPONENT_STATE_UPDATED, fn)
   },
   // compatible
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {

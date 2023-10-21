@@ -6,8 +6,8 @@ const bridgeRpc = useDevToolsBridgeRpc()
 
 const activeComponentState = ref<Record<string, InspectorState[]>>({})
 
-function normalizeComponentState(data: { state?: InspectorState[] }) {
-  if (!data.state)
+export function normalizeComponentState(data: { state?: InspectorState[] }) {
+  if (!data || !data?.state)
     return {}
   const res = {}
   data.state.forEach((item) => {

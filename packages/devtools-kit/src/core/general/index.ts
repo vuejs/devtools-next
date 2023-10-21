@@ -1,7 +1,6 @@
 import { target } from '@vue-devtools-next/shared'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
 import { DevToolsPluginApi, collectRegisteredPlugin, registerPlugin } from '../../api'
-import { initComponentTree } from '../component/tree'
 import { registerComponentsDevTools } from '../plugins'
 import { createAppRecord } from './app'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from './hook'
@@ -44,8 +43,6 @@ export function initDevTools() {
       api,
     })
   })
-
-  initComponentTree()
 
   subscribeDevToolsHook()
 }

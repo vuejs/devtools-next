@@ -1,6 +1,4 @@
-import type { AppRecord, DevToolsPluginInspectorPayload } from '@vue-devtools-next/schema'
-import { getInstanceState } from '../core/component/state'
-import { getComponentTree } from '../core/component/tree'
+import type { DevToolsPluginInspectorPayload } from '@vue-devtools-next/schema'
 import { devtoolsContext } from '../core/general/state'
 import { stringify } from '../shared'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
@@ -13,26 +11,6 @@ export class DevToolsPluginApi {
   public on: typeof on
   constructor() {
     this.on = on
-  }
-
-  getInstanceState(params: { instanceId: string }) {
-    const result = getInstanceState(params)
-    const componentInstance = result.instance
-    const app = result.instance?.appContext.app
-    const payload = {
-      componentInstance,
-      app,
-      instanceData: result,
-    }
-    // @ts-expect-error hookable
-    apiHooks.callHookWith((callbacks) => {
-      callbacks.forEach(cb => cb(payload))
-    }, DevToolsEvents.COMPONENT_STATE_INSPECT)
-    return stringify(result) as string
-  }
-
-  getComponentTree(payload: { appRecord?: AppRecord; instanceId?: string ;filterText?: string; maxDepth?: number; recursively?: boolean }) {
-    return getComponentTree(payload)
   }
 
   addTimelineEvent() {}
@@ -86,7 +64,7 @@ export class DevToolsPluginApi {
         inspectorId,
         instanceId: inspector.nodeId,
       })
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res)
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, res)
     }
   }
 

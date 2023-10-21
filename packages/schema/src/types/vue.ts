@@ -181,7 +181,7 @@ export interface InspectorState {
   }[]
 }
 
-export interface DevToolsPluginInspectorState {
+export interface DevToolsPluginInspectorPayload {
   id: string
   label: string
   icon?: string
@@ -200,7 +200,7 @@ export interface DevToolsPluginInspectorTree {
   rootNodes: ComponentTreeNode[]
 }
 
-export interface DevToolsPluginInspectorState {
+export interface DevToolsPluginInspectorPayload {
   app: VueAppInstance
   inspectorId: string
   nodeId: string

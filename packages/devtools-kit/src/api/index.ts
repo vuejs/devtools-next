@@ -79,11 +79,36 @@ export class DevToolsPluginApi {
     return stringify(_payload) as string
   }
 
-  sendInspectorTree() {}
-  sendInspectorState() {}
-  addInspector(state: DevToolsPluginInspectorState) {
-    // @TODO: register inspector and use to judge if pinia and router is used
-    // console.log('state', state)
+  async sendInspectorTree(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector) {
+      const res = await this.getInspectorTree({
+        inspectorId,
+        instanceId: inspector.nodeId,
+      })
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res)
+    }
+  }
+
+  async sendInspectorState(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector) {
+      const res = await this.getInspectorState({
+        inspectorId,
+        nodeId: inspector.nodeId,
+      })
+
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res)
+    }
+  }
+
+  addInspector(payload: DevToolsPluginInspectorPayload) {
+    addInspector({
+      id: payload.id,
+      nodeId: '',
+      filter: '',
+      treeFilterPlaceholder: payload.treeFilterPlaceholder ?? '',
+    })
   }
 
   addTimelineLayer() {}

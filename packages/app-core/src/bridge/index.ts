@@ -1,79 +1,16 @@
 import type { ComponentTreeNode, InspectorState } from '@vue-devtools-next/schema'
 import { BridgeEvents } from '@vue-devtools-next/schema'
-import { NOOP, target } from '@vue-devtools-next/shared'
-import type { Emitter, EventType, Handler } from 'mitt'
-import mitt from 'mitt'
-import type { DispatchDevToolsRequestsOptions, DispatchDevtoolsRequestPayload } from './dispatcher'
+import type { DispatchDevToolsRequestsOptions, DispatchDevtoolsRequestPayload } from '../dispatcher'
 
-export interface BridgeAdapterOptions {
-  tracker: (fn: Function) => void
-  trigger: (data: Record<string, any>) => void
-}
+import { Bridge } from './core'
+import { BridgeRpc as DevToolsRpc, initBridgeRpc as initDevToolsSideBridgeRpc } from './devtools'
+import { BridgeRpc as UserAppRpc, initBridgeRpc as initUserAppSideBridgeRpc } from './user-app'
 
-export type BridgeInstanceType = InstanceType<typeof Bridge>
-
-// @TODO: add unit tests
-export class Bridge<Events extends Record<EventType, any>, Key extends keyof Events> {
-  private emitter: Emitter<Events>
-  private adapter: BridgeAdapterOptions
-
-  constructor(adapter: BridgeAdapterOptions = {
-    tracker: NOOP,
-    trigger: NOOP,
-  }) {
-    this.emitter = mitt<Events>()
-    this.adapter = adapter
-    this.adapter.tracker((message) => {
-      // @TODO: message handler
-      this._emit(message.event, message.data)
-    })
-  }
-
-  static get value() {
-    return target.__VUE_DEVTOOLS_BRIDGE__
-  }
-
-  static set value(value) {
-    target.__VUE_DEVTOOLS_BRIDGE__ = value
-  }
-
-  private _on(eventName: Key, handler: Handler<Events[Key]>): void {
-    this.emitter.on(eventName, handler)
-  }
-
-  private off(eventName: Key, handler: Handler<Events[Key]>): void {
-    this.emitter.off(eventName, handler)
-  }
-
-  private _emit(eventName: Key, data?: any): void {
-    this.emitter.emit(eventName, data)
-  }
-
-  public on(eventName: Key, handler: Handler<Events[Key]>): () => void {
-    this._on(eventName, handler)
-    return () => this.off(eventName, handler)
-  }
-
-  public once(eventName: Key, handler: Handler<Events[Key]>): void {
-    const onceHandler = (...args) => {
-      // @ts-expect-error missing type
-      handler(...args)
-      this.off(eventName, onceHandler)
-    }
-    this._on(eventName, onceHandler)
-  }
-
-  public emit(eventName: Key, data?: any): void {
-    this.adapter.trigger({
-      event: eventName,
-      data,
-    })
-    this._emit(eventName, data)
-  }
-
-  public removeAllListeners(): void {
-    this.emitter.all.clear()
-  }
+export type { BridgeAdapterOptions, BridgeInstanceType } from './core'
+export {
+  Bridge,
+  DevToolsRpc,
+  UserAppRpc,
 }
 
 export class BridgeRpc {
@@ -125,9 +62,7 @@ export class BridgeRpc {
 
   static onDataFromUserApp() {
     Bridge.value.on(BridgeEvents.GET_DEVTOOLS_CLIENT_DATA_REQUEST, () => {
-      Bridge.value.emit(BridgeEvents.GET_DEVTOOLS_CLIENT_DATA_RESPONSE, {
-        data: 'hello',
-      })
+      Bridge.value.emit(BridgeEvents.GET_DEVTOOLS_CLIENT_DATA_RESPONSE)
     })
   }
 }
@@ -155,4 +90,24 @@ export class BridgeApi {
   static getInspectorState<S extends { data: { data: { state: Record<string, InspectorState[]> } } }, Q extends { inspectorId?: string; filter?: string }>(params?: Q, cb?: (payload: S['data']) => void) {
     return BridgeRpc.getDataFromUserApp<S, Q>({ type: 'inspector-state', params }, ({ data }) => cb?.(data))
   }
+}
+
+export function registerBridgeRpc(target: 'devtools' | 'user-app') {
+  if (target === 'devtools')
+    initDevToolsSideBridgeRpc()
+
+  else
+    initUserAppSideBridgeRpc()
+}
+
+type BridgeRpcType<T extends 'devtools' | 'user-app'> = {
+  'devtools': DevToolsRpc
+  'user-app': UserAppRpc
+}[T]
+export function getBridgeRpc<T extends 'devtools' | 'user-app'>(target: T): BridgeRpcType<T> {
+  if (target === 'devtools')
+    return DevToolsRpc
+
+  else
+    return UserAppRpc
 }

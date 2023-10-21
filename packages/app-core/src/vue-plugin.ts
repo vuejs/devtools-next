@@ -1,7 +1,7 @@
 import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import type { BridgeInstanceType } from './bridge'
-import { BridgeApi } from './bridge'
+import { BridgeApi, DevToolsRpc } from './bridge'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -65,6 +65,10 @@ export function useDevToolsBridge() {
 
 export function useDevToolsBridgeApi() {
   return BridgeApi
+}
+
+export function useDevToolsBridgeRpc() {
+  return DevToolsRpc
 }
 
 export function useDevToolsState() {

@@ -62,7 +62,6 @@ export class DevToolsPluginApi {
     if (inspector) {
       const res = await this.getInspectorTree({
         inspectorId,
-        instanceId: inspector.nodeId,
       })
       apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, res)
     }

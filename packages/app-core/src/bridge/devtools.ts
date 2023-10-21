@@ -10,12 +10,12 @@ export function registerBridgeRpc() {
 
 export class BridgeRpc {
   static on = {
-    inspectorTreeUpdated<T = { data: { id: string;label: string }[] } >(cb: (payload: T) => void) {
+    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string;label: string }[] } >(cb: (payload: T) => void) {
       Bridge.value.on(BridgeEvents.SEND_INSPECTOR_TREE, (payload) => {
         cb(parse(payload))
       })
     },
-    inspectorStateUpdated<T = { state: Record<string, InspectorState[]> }>(cb: (payload: T) => void) {
+    inspectorStateUpdated<T = { inspectorId: string; state: Record<string, InspectorState[]> }>(cb: (payload: T) => void) {
       Bridge.value.on(BridgeEvents.SEND_INSPECTOR_STATE, (payload) => {
         cb(parse(payload))
       })

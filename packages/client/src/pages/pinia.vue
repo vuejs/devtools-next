@@ -32,7 +32,10 @@ onDevToolsClientConnected(() => {
     }
   })
 
+  // @TODO: duplicated callback calls (different inspectorId)
   bridgeRpc.on.inspectorTreeUpdated(({ data }) => {
+    if (!data)
+      return
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
@@ -41,6 +44,9 @@ onDevToolsClientConnected(() => {
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {
+    if (!data || !data.state || data.inspectorId !== 'pinia')
+      return
+
     state.value = data.state
   })
 })

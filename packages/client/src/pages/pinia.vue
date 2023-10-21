@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onDevToolsClientConnected, useDevToolsBridgeApi } from '@vue-devtools-next/app-core'
+import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/app-core'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { InspectorState } from '@vue-devtools-next/schema'
 import { Pane, Splitpanes } from 'splitpanes'
 
-const bridgeApi = useDevToolsBridgeApi()
+const bridgeRpc = useDevToolsBridgeRpc()
 
 const { selected } = createSelectContext('inspector-tree')
 const tree = ref<{ id: string;label: string }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
 
 function getPiniaState(nodeId: string) {
-  bridgeApi.getInspectorState({ inspectorId: 'pinia', nodeId }, ({ data }) => {
+  bridgeRpc.getInspectorState({ inspectorId: 'pinia', nodeId }).then(({ data }) => {
     state.value = data.state
   })
 }
@@ -24,12 +24,24 @@ function selectStore(id: string) {
 createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
-  bridgeApi.getInspectorTree({ inspectorId: 'pinia', filter: '' }, ({ data }) => {
+  bridgeRpc.getInspectorTree({ inspectorId: 'pinia', filter: '' }).then(({ data }) => {
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
       getPiniaState(data[0].id)
     }
+  })
+
+  bridgeRpc.on.inspectorTreeUpdated(({ data }) => {
+    tree.value = data
+    if (!selected.value && data.length) {
+      selected.value = data[0].id
+      getPiniaState(data[0].id)
+    }
+  })
+
+  bridgeRpc.on.inspectorStateUpdated((data) => {
+    state.value = data.state
   })
 })
 </script>

@@ -10,7 +10,10 @@ export function initBridgeRpc() {
 
 export class BridgeRpc {
   static on = {
-    inspectorTreeUpdated(cb: (payload: { tree: Record<string, unknown[]> }) => void) {
+    inspectorTreeUpdated(cb: (payload: { data: {
+      id: string
+      label: string
+    }[] }) => void) {
       Bridge.value.on(BridgeEvents.SEND_INSPECTOR_TREE, (payload) => {
         cb(parse(payload))
       })

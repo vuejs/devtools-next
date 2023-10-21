@@ -3,7 +3,7 @@ import { getInstanceState } from '../core/component/state'
 import { getComponentTree } from '../core/component/tree'
 import { devtoolsContext } from '../core/general/state'
 import { stringify } from '../shared'
-import { updateInspector } from '../core/general/inspector'
+import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
 import { DevToolsEvents, apiHooks, on } from './on'
 
 export { DevToolsEvents, apiHooks } from './on'

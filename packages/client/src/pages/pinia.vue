@@ -7,7 +7,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeApi = useDevToolsBridgeApi()
 
-const { selected } = createSelectContext('pinia-store-tree')
+const { selected } = createSelectContext('inspector-tree')
 const tree = ref<{ id: string;label: string }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
 
@@ -39,7 +39,7 @@ onDevToolsClientConnected(() => {
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <PiniaTree v-for="(item) in tree" :key="item.id" :data="item" @select="selectStore" />
+          <InspectorTree v-for="(item) in tree" :key="item.id" :data="item" @select="selectStore" />
         </div>
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">

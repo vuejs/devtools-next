@@ -9,7 +9,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'select', id: string): void
 }>()
-const { isSelected, toggleSelected } = useSelect('pinia-store-tree', props.data.id, (id) => {
+const { isSelected, toggleSelected } = useSelect('inspector-tree', props.data.id, (id) => {
   emit('select', id)
 })
 </script>

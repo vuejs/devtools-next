@@ -128,6 +128,13 @@ export interface AppRecord {
   api?: unknown
 }
 
+export interface InspectorNodeTag {
+  label: string
+  textColor: number
+  backgroundColor: number
+  tooltip: string
+}
+
 export interface ComponentTreeNode {
   uid: number | string
   id: string
@@ -137,11 +144,7 @@ export interface ComponentTreeNode {
   isFragment: boolean
   children: ComponentTreeNode[]
   domOrder?: number[]
-  tags: {
-    label: string
-    textColor: number
-    backgroundColor: number
-  }[]
+  tags: InspectorNodeTag[]
   autoOpen: boolean
 }
 
@@ -194,10 +197,11 @@ export interface DevToolsPluginInspectorPayload {
 }
 
 export interface DevToolsPluginInspectorTree {
-  app: VueAppInstance
-  inspectorId: string
+  app?: VueAppInstance
+  inspectorId?: string
   filter?: string
-  rootNodes: ComponentTreeNode[]
+  instanceId?: string
+  rootNodes?: ComponentTreeNode[]
 }
 
 export interface DevToolsPluginInspectorPayload {

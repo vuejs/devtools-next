@@ -1,11 +1,8 @@
 <script setup lang="ts">
+import type { InspectorNodeTag } from '@vue-devtools-next/schema'
+
 defineProps<{
-  tag: {
-    label: string
-    textColor: number
-    backgroundColor: number
-    tooltip: string
-  }
+  tag: InspectorNodeTag
 }>()
 </script>
 

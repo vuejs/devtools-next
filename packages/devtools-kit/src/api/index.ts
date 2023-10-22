@@ -15,7 +15,7 @@ export class DevToolsPluginApi {
   }
 
   addTimelineEvent() {}
-  async getInspectorTree(payload: { inspectorId?: string; filter?: string; instanceId?: string } = {}) {
+  async getInspectorTree(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]>[0] = {}) {
     const { inspectorId, filter = '', instanceId = '' } = payload
     const _payload = {
       app: devtoolsContext.appRecord.app,

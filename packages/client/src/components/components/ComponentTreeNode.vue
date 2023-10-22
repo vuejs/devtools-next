@@ -1,25 +1,9 @@
 <script setup lang="ts">
+// eslint-disable-next-line ts/consistent-type-imports
+import type { ComponentTreeNode } from '@vue-devtools-next/schema'
+
 const props = withDefaults(defineProps<{
-  data: {
-    name: string
-    id: string
-    tags: {
-      label: string
-      textColor: number
-      backgroundColor: number
-      tooltip: string
-    }[]
-    children?: {
-      name: string
-      id: string
-      tags: {
-        label: string
-        textColor: number
-        backgroundColor: number
-        tooltip: string
-      }[]
-    }[]
-  }
+  data: ComponentTreeNode
   depth?: number
 }>(), {
   depth: 0,

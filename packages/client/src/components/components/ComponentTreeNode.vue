@@ -3,9 +3,21 @@ const props = withDefaults(defineProps<{
   data: {
     name: string
     id: string
+    tags: {
+      label: string
+      textColor: number
+      backgroundColor: number
+      tooltip: string
+    }[]
     children?: {
       name: string
       id: string
+      tags: {
+        label: string
+        textColor: number
+        backgroundColor: number
+        tooltip: string
+      }[]
     }[]
   }
   depth?: number
@@ -36,6 +48,7 @@ const { isSelected, toggleSelected } = useSelect('component-tree', props.data.id
     <span text-primary-400 group-hover:text-white class="[.active_&]:text-white">
       {{ data.name }}
     </span>
+    <InspectorNodeTag v-for="(item, index) in data.tags" :key="index" :tag="item" />
   </div>
   <template v-if="data.children?.length && isExpanded">
     <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" @select="(id) => emit('select', id)" />

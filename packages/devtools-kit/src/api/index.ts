@@ -2,6 +2,7 @@ import type { DevToolsPluginInspectorPayload } from '@vue-devtools-next/schema'
 import { devtoolsContext } from '../core/general/state'
 import { stringify } from '../shared'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
+import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
 export { DevToolsEvents, apiHooks } from './on'
@@ -86,6 +87,10 @@ export class DevToolsPluginApi {
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder ?? '',
     })
+  }
+
+  visitComponentTree(payload: Parameters<DevToolsEvent[DevToolsEvents.VISIT_COMPONENT_TREE]>[0]) {
+    apiHooks.callHook(DevToolsEvents.VISIT_COMPONENT_TREE, payload)
   }
 
   addTimelineLayer() {}

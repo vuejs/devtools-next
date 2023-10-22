@@ -1,6 +1,7 @@
 import type { ComponentTreeNode, VueAppInstance } from '@vue-devtools-next/schema'
 import type { SuspenseBoundary, VNode } from 'vue'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from '../general/util'
+import { devtoolsContext } from '../../general'
 import { getRootElementsFromComponentInstance } from './el'
 import type { ComponentFilter } from './filter'
 import { createComponentFilter } from './filter'
@@ -153,6 +154,12 @@ export class ComponentWalker {
       // update instanceMap
       this.mark(instance, true)
     }
+    devtoolsContext.api.visitComponentTree({
+      treeNode,
+      componentInstance: instance,
+      app: instance.appContext.app,
+      filter: this.componentFilter.filter,
+    })
     return treeNode
   }
 

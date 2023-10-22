@@ -1,4 +1,4 @@
-import type { DevToolsPluginInspectorPayload, DevToolsPluginInspectorTree, DevToolsState, InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, DevToolsPluginInspectorPayload, DevToolsPluginInspectorTree, DevToolsState, InspectorState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 
@@ -9,9 +9,10 @@ export enum DevToolsEvents {
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
   SEND_INSPECTOR_STATE = 'inspector-state:send',
+  VISIT_COMPONENT_TREE = 'component-tree:visit',
 }
 
-interface DevToolsEvent {
+export interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined
@@ -28,6 +29,12 @@ interface DevToolsEvent {
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: string) => void
   [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: DevToolsPluginInspectorPayload) => void
   [DevToolsEvents.SEND_INSPECTOR_STATE]: (payload: string) => void
+  [DevToolsEvents.VISIT_COMPONENT_TREE]: (payload: {
+    componentInstance: VueAppInstance | undefined
+    app: VueAppInstance | undefined
+    treeNode: ComponentTreeNode
+    filter: string
+  }) => void
 }
 
 // export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
@@ -41,7 +48,9 @@ export const on = {
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {
     apiHooks.hook(DevToolsEvents.COMPONENT_STATE_INSPECT, fn)
   },
-  visitComponentTree() {},
+  visitComponentTree(fn: DevToolsEvent[DevToolsEvents.VISIT_COMPONENT_TREE]) {
+    apiHooks.hook(DevToolsEvents.VISIT_COMPONENT_TREE, fn)
+  },
   getInspectorTree(fn: DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]) {
     apiHooks.hook(DevToolsEvents.GET_INSPECTOR_TREE, fn)
   },

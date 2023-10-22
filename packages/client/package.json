@@ -6,9 +6,9 @@
   "license": "MIT",
   "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
   "repository": {
+    "directory": "packages/client",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/client"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-next/issues"
@@ -24,9 +24,9 @@
   },
   "scripts": {
     "build": "nr build:lib & vite build",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "stub": "nr stub:lib & vite build --watch",
-    "stub:lib": "vite build --config vite.lib.config.ts --watch",
-    "build:lib": "vite build --config vite.lib.config.ts"
+    "stub:lib": "vite build --config vite.lib.config.ts --watch"
   },
   "peerDependencies": {
     "vite": "^3.1.0 || ^4.0.0-0"
@@ -38,22 +38,13 @@
     "@vue-devtools-next/ui": "workspace:*",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
-    "algoliasearch": "^4.20.0",
-    "json-editor-vue": "^0.10.19",
     "minimatch": "^9.0.3",
-    "nanoid": "^5.0.2",
-    "scroll-into-view-if-needed": "^3.1.0",
     "splitpanes": "^3.1.5",
-    "vanilla-jsoneditor": "^0.18.10",
     "vite-hot-client": "^0.2.2",
     "vue-devtools-kit": "workspace:^",
-    "vue-router": "^4.2.5",
-    "vuedraggable": "^4.1.0",
-    "xterm": "^5.3.0",
-    "xterm-addon-fit": "^0.8.0"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.20.0",
     "@iconify/json": "^2.2.131",
     "@types/node": "^20.8.7",
     "@types/splitpanes": "^2.2.4",
@@ -63,7 +54,6 @@
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "dayjs": "^1.11.10",
     "floating-vue": "2.0.0-beta.24",
-    "fuse.js": "^6.6.2",
     "ohash": "^1.1.3",
     "pinia": "^2.1.7",
     "sass": "^1.69.4",
@@ -72,10 +62,7 @@
     "unplugin": "^1.5.0",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
-    "vis-data": "^7.1.7",
-    "vis-network": "^9.1.8",
     "vite": "^4.5.0",
-    "vue": "^3.3.5",
-    "vue-virtual-scroller": "2.0.0-beta.8"
+    "vue": "^3.3.5"
   }
 }

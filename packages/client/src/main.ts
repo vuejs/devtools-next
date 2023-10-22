@@ -8,7 +8,8 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
-import Pinia from '~/pages/pinia.vue'
+import PiniaPage from '~/pages/pinia.vue'
+import RouterPage from '~/pages/router.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -16,7 +17,8 @@ import '~/assets/styles/main.css'
 const routes = [
   { path: '/overview', component: Overview },
   { path: '/components', component: Components },
-  { path: '/pinia', component: Pinia },
+  { path: '/pinia', component: PiniaPage },
+  { path: '/router', component: RouterPage },
 ]
 
 async function reload(app, shell) {

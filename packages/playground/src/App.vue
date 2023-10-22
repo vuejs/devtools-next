@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDark } from '@vueuse/core'
 import { computed, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from './stores'
 
 const app = useAppStore()
@@ -14,6 +14,7 @@ const p = reactive({
 })
 
 const router = useRouter()
+const route = useRoute()
 </script>
 
 <template>

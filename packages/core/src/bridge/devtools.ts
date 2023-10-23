@@ -1,4 +1,4 @@
-import type { InspectorState } from '@vue-devtools-next/schema'
+import type { InspectorState } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
 import type { BridgeRpcEventPayload } from './core'

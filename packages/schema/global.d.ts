@@ -1,6 +1,7 @@
 import type { BridgeInstanceType } from '../core/src/bridge/core'
 import type { DevToolsContext } from './src/types/context'
-import type { AppRecord, ComponentTreeNode, DevToolsState, DevtoolsHook } from './src/types/vue'
+import type { DevtoolsHook } from './src/types/hook'
+import type { AppRecord, DevToolsState } from './src/types/vue'
 
 /* eslint-disable vars-on-top, no-var */
 declare global {
@@ -8,7 +9,6 @@ declare global {
   var __VUE_DEVTOOLS_CLIENT_URL__: string
   var __VUE_DEVTOOLS_BRIDGE__: BridgeInstanceType
   var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
-  var __VUE_DEVTOOLS_COMPONENT_TREE_: ComponentTreeNode[]
   // app record info
   var __VUE_DEVTOOLS_APP_RECORDS__: AppRecord[]
   var __VUE_DEVTOOLS_ACTIVE_APP_RECORD__: AppRecord

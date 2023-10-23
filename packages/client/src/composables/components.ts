@@ -1,5 +1,5 @@
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
-import type { ComponentTreeNode, InspectorState } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
 import { ref } from 'vue'
 
 const bridgeRpc = useDevToolsBridgeRpc()

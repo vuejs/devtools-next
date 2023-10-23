@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InspectorNodeTag } from '@vue-devtools-next/schema'
+import type { InspectorNodeTag } from 'vue-devtools-kit'
 
 defineProps<{
   tag: InspectorNodeTag

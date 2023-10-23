@@ -1,4 +1,5 @@
-import type { ComponentTreeNode, VueAppInstance } from '@vue-devtools-next/schema'
+import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode } from 'vue-devtools-kit'
 import type { SuspenseBoundary, VNode } from 'vue'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from '../general/util'
 import { devtoolsContext } from '../../general'

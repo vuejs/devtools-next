@@ -2,7 +2,7 @@
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { InspectorState } from '@vue-devtools-next/schema'
+import type { InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()

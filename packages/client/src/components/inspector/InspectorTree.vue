@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line ts/consistent-type-imports
-import type { InspectorNodeTag } from '@vue-devtools-next/schema'
+import type { InspectorNodeTag } from 'vue-devtools-kit'
 
 const props = defineProps<{
   data: {

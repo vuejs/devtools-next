@@ -1,6 +1,6 @@
-import type { DevToolsPluginInspectorPayload } from '@vue-devtools-next/schema'
 import { devtoolsContext } from '../core/general/state'
 import { stringify } from '../shared'
+import type { AddInspectorApiPayload } from '../core/component/types'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
@@ -80,7 +80,7 @@ export class DevToolsPluginApi {
     }
   }
 
-  addInspector(payload: DevToolsPluginInspectorPayload) {
+  addInspector(payload: AddInspectorApiPayload) {
     addInspector({
       id: payload.id,
       nodeId: '',

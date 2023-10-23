@@ -8,7 +8,7 @@ const { connected } = useDevToolsState()
 
 watch(connected, (v) => {
   if (v)
-    router.replace('/router')
+    router.replace('/components')
 }, {
   immediate: true,
 })

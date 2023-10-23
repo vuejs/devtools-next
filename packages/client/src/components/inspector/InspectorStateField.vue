@@ -2,6 +2,7 @@
 import type { InspectorCustomState, InspectorState } from '@vue-devtools-next/schema'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
+import DataField from './InspectorDataField/DataField.vue'
 
 const props = withDefaults(defineProps<{
   data: InspectorState
@@ -62,8 +63,8 @@ const normalizedChildField = computed(() => {
   let { value, inherit } = rawValue.value
   if (Array.isArray(value)) {
     // @TODO: show more
-    const silced = value.slice(0, 20)
-    return silced.map((item, i) => ({
+    const sliced = value.slice(0, 20)
+    return sliced.map((item, i) => ({
       key: i,
       value: item,
       ...inherit,
@@ -88,10 +89,12 @@ const normalizedChildField = computed(() => {
 const hasChildren = computed(() => {
   return Object.keys(normalizedChildField.value).length > 0
 })
+
+const hovering = ref(false)
 </script>
 
 <template>
-  <div class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
+  <div class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }" @mouseenter="hovering = true" @mouseleave="hovering = false">
     <template v-if="!hasChildren">
       <div>
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
@@ -99,6 +102,7 @@ const hasChildren = computed(() => {
         <span :class="stateFormatClass">
           <span v-html="normalizedValue" />
         </span>
+        <DataField :hovering="hovering" :data="data" />
       </div>
     </template>
     <template v-else>

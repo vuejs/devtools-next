@@ -18,3 +18,5 @@ export function getInstanceState(params: { instanceId: string }) {
     instance,
   }
 }
+
+export type { EditStatePayload } from './edit'

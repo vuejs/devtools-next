@@ -25,7 +25,7 @@ export interface ButtonProps {
   loading?: boolean
   disabled?: boolean
   size?: 'normal' | 'mini'
-  flat: boolean
+  flat?: boolean
 }
 
 export type ButtonType = 'default' | 'primary' | 'accent' | 'danger' | 'warning' | 'info' | 'success'

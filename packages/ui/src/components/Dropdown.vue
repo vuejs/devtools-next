@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T">
 import type { Placement } from 'floating-vue'
 import { Dropdown } from 'floating-vue'
-import { computed, provide, useSlots } from 'vue'
+import { computed, provide } from 'vue'
 import type { ButtonProps } from './Button.vue'
 import VueButton from './Button.vue'
 
@@ -22,11 +22,19 @@ const props = withDefaults(defineProps<{
   disabled: false,
 })
 
+defineEmits<{
+  'update:visible': [value: boolean]
+}>()
+
 provide('$ui-dropdown-disabled', computed(() => props.disabled))
 </script>
 
 <template>
-  <Dropdown :disabled="disabled" class="inline-block w-auto" :triggers="[trigger]" :distance="distance + 6" :placement="placement">
+  <Dropdown
+    :disabled="disabled" class="inline-block w-auto"
+    :triggers="[trigger]" :distance="distance + 6" :placement="placement"
+    @update:shown="v => $emit('update:visible', v)"
+  >
     <VueButton
       v-bind="{
         ...buttonProps,

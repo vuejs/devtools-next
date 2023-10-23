@@ -49,6 +49,7 @@ export const unoConfig = {
     '$ui-borderless': '!border-transparent !shadow-none',
     '$ui-base-br': 'rounded-3px',
     '$ui-border-base': 'border-gray/20',
+    '$ui-text': 'text-black dark:text-white',
   },
   rules: [
     ['$ui-font-inherit', { 'font-family': 'inherit' }],

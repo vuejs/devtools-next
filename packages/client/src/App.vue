@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDevToolsState } from '@vue-devtools-next/app-core'
+import { useDevToolsState } from '@vue-devtools-next/core'
 
 // @TODO: fix browser extension cross-origin localStorage issue
 useColorMode()
@@ -8,7 +8,7 @@ const { connected } = useDevToolsState()
 
 watch(connected, (v) => {
   if (v)
-    router.replace('/router')
+    router.replace('/components')
 }, {
   immediate: true,
 })

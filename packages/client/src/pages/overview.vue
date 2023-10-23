@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue-devtools-next/shared'
-import { useDevToolsState } from '@vue-devtools-next/app-core'
+import { useDevToolsState } from '@vue-devtools-next/core'
 
 import { VueButton } from '@vue-devtools-next/ui'
 

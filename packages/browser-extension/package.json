@@ -19,7 +19,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vue-devtools-next/app-core": "workspace:^",
+    "@vue-devtools-next/core": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import type { BridgeInstanceType } from '../app-core/src/bridge'
+import type { BridgeInstanceType } from '../core/src/bridge'
 import type { DevToolsContext } from './src/types/context'
 import type { AppRecord, ComponentTreeNode, DevToolsState, DevtoolsHook } from './src/types/vue'
 

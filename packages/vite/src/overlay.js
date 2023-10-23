@@ -1,5 +1,5 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { setDevToolsClientUrl } from '@vue-devtools-next/app-core'
+import { setDevToolsClientUrl } from '@vue-devtools-next/core'
 import { devtools } from 'vue-devtools-kit'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'

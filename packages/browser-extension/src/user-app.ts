@@ -1,5 +1,5 @@
-import { Bridge } from '../../app-core/src/bridge'
-import { prepareInjection } from '../../app-core/src/injection'
+import { Bridge } from '../../core/src/bridge'
+import { prepareInjection } from '../../core/src/injection'
 
 window.addEventListener('message', handshake)
 

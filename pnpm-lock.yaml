@@ -26,9 +26,9 @@ importers:
       '@unocss/eslint-config':
         specifier: ^0.56.5
         version: 0.56.5(eslint@8.51.0)(typescript@5.2.2)
-      '@vue-devtools-next/app-core':
+      '@vue-devtools-next/core':
         specifier: workspace:^
-        version: link:packages/app-core
+        version: link:packages/core
       '@vue-devtools-next/schema':
         specifier: workspace:^
         version: link:packages/schema
@@ -78,30 +78,11 @@ importers:
         specifier: ^3.3.5
         version: 3.3.5(typescript@5.2.2)
 
-  packages/app-core:
-    dependencies:
-      '@vue-devtools-next/schema':
-        specifier: workspace:^
-        version: link:../schema
-      '@vue-devtools-next/shared':
-        specifier: workspace:^
-        version: link:../shared
-      mitt:
-        specifier: ^3.0.1
-        version: 3.0.1
-      vue-devtools-kit:
-        specifier: workspace:^
-        version: link:../devtools-kit
-    devDependencies:
-      vue:
-        specifier: ^3.3.5
-        version: 3.3.5(typescript@5.2.2)
-
   packages/browser-extension:
     dependencies:
-      '@vue-devtools-next/app-core':
+      '@vue-devtools-next/core':
         specifier: workspace:^
-        version: link:../app-core
+        version: link:../core
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -115,9 +96,9 @@ importers:
 
   packages/client:
     dependencies:
-      '@vue-devtools-next/app-core':
+      '@vue-devtools-next/core':
         specifier: workspace:^
-        version: link:../app-core
+        version: link:../core
       '@vue-devtools-next/schema':
         specifier: workspace:*
         version: link:../schema
@@ -207,6 +188,25 @@ importers:
         specifier: ^3.3.5
         version: 3.3.5(typescript@5.2.2)
 
+  packages/core:
+    dependencies:
+      '@vue-devtools-next/schema':
+        specifier: workspace:^
+        version: link:../schema
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
+      vue-devtools-kit:
+        specifier: workspace:^
+        version: link:../devtools-kit
+    devDependencies:
+      vue:
+        specifier: ^3.3.5
+        version: 3.3.5(typescript@5.2.2)
+
   packages/devtools-kit:
     dependencies:
       '@vue-devtools-next/schema':
@@ -231,9 +231,9 @@ importers:
 
   packages/overlay:
     dependencies:
-      '@vue-devtools-next/app-core':
+      '@vue-devtools-next/core':
         specifier: workspace:^
-        version: link:../app-core
+        version: link:../core
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -384,9 +384,9 @@ importers:
 
   packages/vite:
     dependencies:
-      '@vue-devtools-next/app-core':
+      '@vue-devtools-next/core':
         specifier: workspace:^
-        version: link:../app-core
+        version: link:../core
       '@webfansplz/vuedoc-parser':
         specifier: ^0.0.4
         version: 0.0.4(pug@3.0.2)
@@ -525,7 +525,7 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/template': 7.22.15
       '@babel/traverse': 7.22.15
-      '@babel/types': 7.22.15
+      '@babel/types': 7.23.0
       convert-source-map: 1.9.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -561,7 +561,7 @@ packages:
     resolution: {integrity: sha512-Zu9oWARBqeVOW0dZOjXc3JObrzuqothQ3y/n1kUtrjCoCPLkXUwMvOo/F/TCfoHMbWIFlWwpZtkZVb9ga4U2pA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.15
+      '@babel/types': 7.23.0
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
       jsesc: 2.5.2
@@ -665,7 +665,7 @@ packages:
     resolution: {integrity: sha512-0pYVBnDKZO2fnSPCrgM/6WMc7eS20Fbok+0r88fp+YtWVLZrp4CkafFGIp+W0VKw4a22sgebPT99y+FDNMdP4w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.15
+      '@babel/types': 7.23.0
 
   /@babel/helper-module-transforms@7.22.15(@babel/core@7.22.15):
     resolution: {integrity: sha512-l1UiX4UyHSFsYt17iQ3Se5pQQZZHa22zyIXURmvkmLCD4t/aU+dvNWHatKac/D9Vm9UES7nvIqHs4jZqKviUmQ==}
@@ -764,7 +764,7 @@ packages:
     dependencies:
       '@babel/template': 7.22.15
       '@babel/traverse': 7.22.20
-      '@babel/types': 7.22.15
+      '@babel/types': 7.23.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -793,6 +793,7 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.23.0
+    dev: false
 
   /@babel/parser@7.23.0:
     resolution: {integrity: sha512-vvPKKdMemU85V9WE/l5wZEmImpCtLqbnTvqDS2U1fJ96KrxoW7KrXhNsNCblQlg8Ck4b85yxdTyelsMUgFUXiw==}
@@ -921,7 +922,7 @@ packages:
     dependencies:
       '@babel/code-frame': 7.22.13
       '@babel/parser': 7.23.0
-      '@babel/types': 7.22.15
+      '@babel/types': 7.23.0
 
   /@babel/traverse@7.22.15:
     resolution: {integrity: sha512-DdHPwvJY0sEeN4xJU5uRLmZjgMMDIvMPniLuYzUVXj/GGzysPl0/fwt44JBkyUIzGJPV8QgHMcQdQ34XFuKTYQ==}
@@ -933,7 +934,7 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.22.15
+      '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
       debug: 4.3.4
       globals: 11.12.0
@@ -974,14 +975,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/types@7.22.15:
-    resolution: {integrity: sha512-X+NLXr0N8XXmN5ZsaQdm9U2SSC3UbIYq/doL++sueHOTisgZHoKaQtZxGuV2cUPQHMfjKEfg/g6oy7Hm6SKFtA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-string-parser': 7.22.5
-      '@babel/helper-validator-identifier': 7.22.20
-      to-fast-properties: 2.0.0
 
   /@babel/types@7.23.0:
     resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==}
@@ -8504,7 +8497,7 @@ packages:
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.1
       local-pkg: 0.4.3
-      magic-string: 0.30.3
+      magic-string: 0.30.5
       mlly: 1.4.1
       pathe: 1.1.1
       pkg-types: 1.0.3

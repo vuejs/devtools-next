@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/app-core",
+  "name": "@vue-devtools-next/core",
   "type": "module",
   "version": "0.0.1",
   "author": "webfansplz",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/app-core"
+    "directory": "packages/core"
   },
   "exports": {
     ".": {

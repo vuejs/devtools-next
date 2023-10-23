@@ -1,4 +1,4 @@
-import { Bridge } from '../../app-core/src/bridge'
+import { Bridge } from '../../core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
 
 const connectionInfo: {

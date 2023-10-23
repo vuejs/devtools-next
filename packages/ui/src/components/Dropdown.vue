@@ -1,15 +1,15 @@
 <script setup lang="ts" generic="T">
 import type { Placement } from 'floating-vue'
 import { Dropdown } from 'floating-vue'
-import { computed, provide } from 'vue'
-import type { ButtonType } from './Button.vue'
+import { computed, provide, useSlots } from 'vue'
+import type { ButtonProps } from './Button.vue'
 import VueButton from './Button.vue'
 
 const props = withDefaults(defineProps<{
-  label: string
+  label?: string
   autoHide?: boolean
   trigger?: 'click' | 'hover'
-  buttonType?: ButtonType
+  buttonProps?: ButtonProps
   buttonClass?: ''
   distance?: number
   placement?: Placement
@@ -23,12 +23,22 @@ const props = withDefaults(defineProps<{
 })
 
 provide('$ui-dropdown-disabled', computed(() => props.disabled))
+
+const slots = useSlots()
+console.log('<<<SLOTS>>>', slots)
 </script>
 
 <template>
   <Dropdown :disabled="disabled" class="inline-block w-auto" :triggers="[trigger]" :distance="distance + 6" :placement="placement">
-    <VueButton :type="buttonType" :class="buttonClass" :disabled="disabled">
-      {{ label }}
+    <VueButton
+      v-bind="{
+        ...buttonProps,
+        disabled,
+      }" :class="buttonClass"
+    >
+      <template v-if="label" #default>
+        {{ label }}
+      </template>
       <template #icon>
         <slot name="button-icon" />
       </template>

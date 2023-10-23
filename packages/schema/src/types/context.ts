@@ -9,4 +9,9 @@ export interface DevToolsContext {
     filter: string
     treeFilterPlaceholder: string
   }[]
+  timelineLayer: {
+    id: string
+    label: string
+    color: number
+  }[]
 }

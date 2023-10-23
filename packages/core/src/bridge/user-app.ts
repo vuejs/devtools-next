@@ -11,6 +11,11 @@ export function registerBridgeRpc() {
     })
   })
 
+  // devtools timeline layers getter
+  bridgeRpcCore.on(bridgeRpcEvents.timelineLayer, () => {
+    return JSON.stringify(devtools.context.timelineLayer)
+  })
+
   // inspector tree getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorTree, (payload) => {
     return devtools.context.api.getInspectorTree(payload)

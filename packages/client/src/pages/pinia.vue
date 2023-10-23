@@ -2,13 +2,13 @@
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { InspectorState } from 'vue-devtools-kit'
+import type { InspectorNodeTag, InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
 const { selected } = createSelectContext('inspector-tree')
-const tree = ref<{ id: string;label: string }[]>([])
+const tree = ref<{ id: string;label: string; tags: InspectorNodeTag[] }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
 
 function getPiniaState(nodeId: string) {

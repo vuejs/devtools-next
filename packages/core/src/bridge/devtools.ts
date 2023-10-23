@@ -1,4 +1,4 @@
-import type { InspectorState } from 'vue-devtools-kit'
+import type { InspectorNodeTag, InspectorState } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
 import type { BridgeRpcEventPayload } from './core'
@@ -27,7 +27,7 @@ export class BridgeRpc {
     },
   }
 
-  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string;label: string }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
+  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string; label: string; tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorTree, payload)
   }
 

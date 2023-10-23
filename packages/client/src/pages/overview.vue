@@ -2,8 +2,7 @@
 import { isMacOS } from '@vue-devtools-next/shared'
 import { useDevToolsState } from '@vue-devtools-next/app-core'
 
-// @TODO: chore ui style and import path
-import { VueButton } from '../../../ui/src/index'
+import { VueButton } from '@vue-devtools-next/ui'
 
 const { vueVersion } = useDevToolsState()
 </script>

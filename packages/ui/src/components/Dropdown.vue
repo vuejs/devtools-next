@@ -23,9 +23,6 @@ const props = withDefaults(defineProps<{
 })
 
 provide('$ui-dropdown-disabled', computed(() => props.disabled))
-
-const slots = useSlots()
-console.log('<<<SLOTS>>>', slots)
 </script>
 
 <template>

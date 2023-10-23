@@ -39,7 +39,7 @@ export class BridgeRpc {
     return bridgeRpcCore.emit<{ data: { connected: boolean;vueVersion: string } }>(bridgeRpcEvents.state)
   }
 
-  static async getTimelineLayers() {
+  static async getTimelineLayer() {
     return bridgeRpcCore.emit<{ data: { id: string;label: string; color: number }[] }>(bridgeRpcEvents.timelineLayer)
   }
 }

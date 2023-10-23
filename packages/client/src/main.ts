@@ -1,6 +1,5 @@
 import '@unocss/reset/tailwind.css'
-import { Bridge, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
-import { BridgeEvents } from '@vue-devtools-next/schema'
+import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createApp } from 'vue'

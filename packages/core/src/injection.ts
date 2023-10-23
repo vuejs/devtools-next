@@ -1,8 +1,7 @@
-import { BridgeEvents } from '@vue-devtools-next/schema'
 import { onDevToolsConnected } from 'vue-devtools-kit'
+import { Bridge, BridgeEvents, registerBridgeRpc } from './bridge'
 
-import { Bridge, registerBridgeRpc } from './bridge'
-import type { BridgeInstanceType } from './bridge'
+import type { BridgeInstanceType } from './bridge/core'
 import { HandShakeClient } from './handshake'
 
 export function prepareInjection(bridge: BridgeInstanceType) {

@@ -1,5 +1,5 @@
 import { devtools } from 'vue-devtools-kit'
-import { BridgeEvents } from '@vue-devtools-next/schema'
+import { BridgeEvents } from './types'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
 export function registerBridgeRpc() {

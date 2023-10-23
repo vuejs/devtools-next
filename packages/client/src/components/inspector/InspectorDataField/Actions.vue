@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
 import type { InspectorState } from '@vue-devtools-next/schema'
 
-defineProps<{
+const props = defineProps<{
   data: InspectorState
   hovering: boolean
 }>()
@@ -10,11 +10,27 @@ defineProps<{
 const { copy, isSupported } = useClipboard()
 
 const popupVisible = ref(false)
+
+const isBoolean = computed(() => typeof props.data.value === 'boolean')
 </script>
 
 <template>
-  <div v-if="hovering || popupVisible" class="inline">
+  <div class="inline pl5px">
+    <!-- Checkbox(Boolean value only) -->
+    <VueButton
+      v-if="isBoolean" :class="{
+        'opacity-0!': !hovering,
+      }" size="mini" flat
+    >
+      <template #icon>
+        <VueIcon :icon="data.value ? 'i-material-symbols-check-box-sharp' : 'i-material-symbols-check-box-outline-blank-sharp'" />
+      </template>
+    </VueButton>
+    <!-- Copy key/value -->
     <VueDropdown
+      :class="{
+        'opacity-0': !hovering && !popupVisible,
+      }"
       :button-props="{
         flat: true,
         size: 'mini',

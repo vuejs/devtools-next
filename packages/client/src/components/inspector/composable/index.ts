@@ -5,3 +5,7 @@ export function useFiledError() {
 export function useContextMenu() {
 
 }
+
+export function useEditState() {
+
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed, useAttrs, useSlots } from 'vue'
 import LoadingIndicator from './LoadingIndicator.vue'
 
 defineOptions({
@@ -11,6 +11,8 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   round: 'normal',
   loading: false,
   disabled: false,
+  size: 'normal',
+  flat: false,
 })
 
 const emit = defineEmits<{
@@ -22,6 +24,8 @@ export interface ButtonProps {
   round?: 'full' | 'normal' | false
   loading?: boolean
   disabled?: boolean
+  size?: 'normal' | 'mini'
+  flat: boolean
 }
 
 export type ButtonType = 'default' | 'primary' | 'accent' | 'danger' | 'warning' | 'info' | 'success'
@@ -48,46 +52,63 @@ function handleClick(e: MouseEvent) {
   emit('click', e)
 }
 
-const styles = {
-  default: `
-  bg-primary-100 text-black hover:bg-primary-100-lighter active:bg-primary-100-darker
-    dark:(bg-gray-800 hover:bg-gray-800-lighter active:bg-gray-800-darker text-white)
-  `,
-  primary: 'bg-primary-500 text-white hover:bg-primary-500-lighter active:bg-primary-500-darker',
-  accent: 'bg-accent-500 text-white dark:bg-accent-300 hover:bg-accent-500-lighter active:bg-accent-500-darker',
-  danger: 'bg-danger-500 text-white hover:bg-danger-500-lighter active:bg-danger-500-darker',
-  warning: 'bg-warning-500 text-white hover:bg-warning-500-lighter active:bg-warning-500-darker',
-  info: `
-  bg-primary-100 text-info-500 hover:bg-primary-100-lighter active:bg-primary-100-darker
-    dark:(bg-gray-800 hover:bg-gray-800-lighter active:bg-gray-800-darker)
-  `,
-  success: `
-  bg-primary-100 text-primary-500 hover:bg-primary-100-lighter active:bg-primary-100-darker
-    dark:(bg-gray-800 hover:bg-gray-800-lighter active:bg-gray-800-darker)
-  `,
-} satisfies Record<ButtonType, string>
+const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> = {
+  common: {
+    default: '$ui-text active:bg-primary-100-darker dark:active:bg-gray-800-darker',
+    primary: 'active:bg-primary-500-darker',
+    accent: 'active:bg-accent-500-darker',
+    danger: 'active:bg-danger-500-darker',
+    warning: 'active:bg-warning-500-darker',
+    info: 'active:bg-primary-100-darker dark:active:bg-gray-800-darker',
+    success: 'active:bg-primary-100-darker dark:active:bg-gray-800-darker',
+  },
+  normal: {
+    default: 'bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
+    primary: ' text-white bg-primary-500 hover:bg-primary-500-lighter',
+    accent: 'text-white bg-accent-500 hover:bg-accent-500-lighter dark:bg-accent-300',
+    danger: 'text-white bg-danger-500 hover:bg-danger-500-lighter',
+    warning: 'text-white bg-warning-500 hover:bg-warning-500-lighter',
+    info: 'text-info-500 bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
+    success: 'text-primary-500 bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
+  },
+  flat: {
+    default: 'hover:bg-primary-100',
+    primary: 'hover:(bg-primary-500 text-white)',
+    accent: 'hover:(bg-accent-500 text-white)',
+    danger: 'hover:(bg-danger-500 text-white)',
+    warning: 'hover:(bg-warning-500 text-white)',
+    info: 'hover:(bg-primary-100 text-info-500)',
+    success: 'hover:(bg-primary-100 text-primary-500)',
+  },
+}
+
+const slots = useSlots()
 </script>
 
 <template>
   <component
     :is="component" v-bind="$attrs"
     role="button" :aria-disabled="disabled"
-    class="$ui-base select-none inline-flex vertical-mid no-underline
-       text-14px h32px $ui-inline-fcc border-none
-       cursor-pointer py-0 px-14px gap5px"
+    class="$ui-base select-none inline-flex no-underline
+       $ui-inline-fcc border-none cursor-pointer py-0 gap5px"
     :class="[
-      styles[props.type],
+      [styles.common[props.type]],
       {
         'rounded-full': props.round === 'full',
         '$ui-base-br': props.round === 'normal',
         'opacity-50 cursor-not-allowed': disabled,
+        'bg-transparent': props.flat,
       },
+      [
+        size === 'mini' ? 'px4px text-12px h22px' : 'px-14px text-14px h32px',
+        flat ? styles.flat[props.type] : styles.normal[props.type],
+      ],
     ]"
     @click.capture="handleClick"
   >
     <LoadingIndicator v-if="loading" class="w-12px h-full mt2px" />
     <slot v-else name="icon" class="$ui-inline-fcc h-full w-12px" />
-    <div>
+    <div v-if="slots.default">
       <slot />
     </div>
     <slot name="icon-right" />

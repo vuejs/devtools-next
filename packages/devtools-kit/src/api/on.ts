@@ -1,8 +1,7 @@
 import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
-import type { ComponentTreeNode, InspectorStateApiPayload, InspectorTreeApiPayload } from 'vue-devtools-kit'
 import { createHooks } from 'hookable'
-import type { InspectorState } from '../core/component/types'
+import type { ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorTreeApiPayload } from '../core/component/types'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',

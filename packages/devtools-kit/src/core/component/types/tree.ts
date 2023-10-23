@@ -4,7 +4,7 @@ export interface InspectorNodeTag {
   label: string
   textColor: number
   backgroundColor: number
-  tooltip: string
+  tooltip?: string
 }
 
 export interface ComponentTreeNode {

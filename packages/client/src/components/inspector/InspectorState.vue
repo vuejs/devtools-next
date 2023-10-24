@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InspectorState } from 'vue-devtools-kit'
+import { useStateIdContext } from './composable'
 
 const props = defineProps<{
   data: InspectorState[]
@@ -10,6 +11,8 @@ const props = defineProps<{
 const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
 !isExpanded.value && toggleCollapse()
+
+useStateIdContext().set(props.id)
 </script>
 
 <template>

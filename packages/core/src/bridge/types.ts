@@ -8,4 +8,7 @@ export enum BridgeEvents {
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   // inspector state
   SEND_INSPECTOR_STATE = 'inspector-state:send',
+
+  // component edit
+  COMPONENT_EDIT_STATE = 'component:edit-state',
 }

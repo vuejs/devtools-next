@@ -1,5 +1,5 @@
 import { NOOP } from '@vue-devtools-next/shared'
-import type { EditStatePayload } from '../core/component/state'
+import type { EditStatePayload } from '..'
 
 type Recordable = Record<PropertyKey, unknown>
 

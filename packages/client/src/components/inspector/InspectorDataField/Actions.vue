@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
-import type { InspectorState } from '@vue-devtools-next/schema'
+import type { EditStatePayload, InspectorState } from 'vue-devtools-kit'
+import { useEditState, useStateIdContext } from '../composable'
 
 const props = defineProps<{
   data: InspectorState
   hovering: boolean
 }>()
 
+const componentId = useStateIdContext().get()!
+
 const { copy, isSupported } = useClipboard()
 
 const popupVisible = ref(false)
 
 const isBoolean = computed(() => typeof props.data.value === 'boolean')
+
+const { sendEdit: sendEditAPI } = useEditState(componentId)
+
+function sendEdit(payload: EditStatePayload) {
+  const { data } = props
+  sendEditAPI(data.key, payload)
+}
 </script>
 
 <template>
@@ -21,6 +31,10 @@ const isBoolean = computed(() => typeof props.data.value === 'boolean')
       v-if="isBoolean" :class="{
         'opacity-0!': !hovering,
       }" size="mini" flat
+      @click="sendEdit({
+        newKey: data.key,
+        value: !data.value,
+      })"
     >
       <template #icon>
         <VueIcon :icon="data.value ? 'i-material-symbols-check-box-sharp' : 'i-material-symbols-check-box-outline-blank-sharp'" />

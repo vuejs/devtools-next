@@ -54,7 +54,7 @@ function handleClick(e: MouseEvent) {
 
 const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> = {
   common: {
-    default: '$ui-text active:bg-primary-100-darker dark:active:bg-gray-800-darker',
+    default: 'active:bg-primary-100-darker dark:active:bg-gray-800-darker',
     primary: 'active:bg-primary-500-darker',
     accent: 'active:bg-accent-500-darker',
     danger: 'active:bg-danger-500-darker',
@@ -63,7 +63,7 @@ const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> =
     success: 'active:bg-primary-100-darker dark:active:bg-gray-800-darker',
   },
   normal: {
-    default: 'bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
+    default: 'bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:(bg-gray-800-lighter text-white))',
     primary: ' text-white bg-primary-500 hover:bg-primary-500-lighter',
     accent: 'text-white bg-accent-500 hover:bg-accent-500-lighter dark:bg-accent-300',
     danger: 'text-white bg-danger-500 hover:bg-danger-500-lighter',
@@ -72,7 +72,7 @@ const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> =
     success: 'text-primary-500 bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
   },
   flat: {
-    default: 'hover:bg-primary-100',
+    default: 'hover:(bg-primary-100 text-black) dark:text-white',
     primary: 'hover:(bg-primary-500 text-white)',
     accent: 'hover:(bg-accent-500 text-white)',
     danger: 'hover:(bg-danger-500 text-white)',

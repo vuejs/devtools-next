@@ -9,8 +9,7 @@ export enum BridgeEvents {
   // inspector state
   SEND_INSPECTOR_STATE = 'inspector-state:send',
 
-  // edit related things
-  COMPONENT_EDIT_STATE = 'component:edit-state',
-  PINIA_EDIT_STATE = 'pinia:edit-state',
-  ROUTE_EDIT_STATE = 'route:edit-state',
+  // edit related things (components/pinia/route, etc...) they are all fired the same event
+  // so that we can decouple the specific logic to the `devtools-kit` package.
+  EDIT_STATE = 'state:edit',
 }

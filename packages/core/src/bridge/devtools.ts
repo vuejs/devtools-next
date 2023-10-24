@@ -1,4 +1,4 @@
-import type { InspectorNodeTag, InspectorState } from 'vue-devtools-kit'
+import type { InspectorNodeTag, InspectorState, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
 import type { BridgeRpcEventPayload } from './core'
@@ -22,6 +22,11 @@ export class BridgeRpc {
     },
     devtoolsStateUpdated(cb) {
       Bridge.value.on(BridgeEvents.DEVTOOLS_STATE_UPDATED, (payload) => {
+        cb(parse(payload))
+      })
+    },
+    addTimelineEvent(cb: (payload: TimelineEvent) => void) {
+      Bridge.value.on(BridgeEvents.ADD_TIMELINE_EVENT, (payload) => {
         cb(parse(payload))
       })
     },

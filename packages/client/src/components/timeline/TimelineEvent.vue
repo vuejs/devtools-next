@@ -1,5 +1,14 @@
 <script setup lang="ts">
-const isSelected = ref(false)
+import type { TimelineEvent } from 'vue-devtools-kit'
+import { formatTime } from '~/utils'
+
+const props = defineProps<{
+  data: TimelineEvent['event']
+  id: string
+}>()
+const { isSelected, toggleSelected } = useSelect('timeline-event', props.id)
+if (!isSelected.value)
+  toggleSelected('0')
 </script>
 
 <template>
@@ -10,6 +19,7 @@ const isSelected = ref(false)
         'hover:bg-blue-100 dark:hover:bg-blue-900 text-bluegray-800 dark:text-bluegray-200': !isSelected,
         'bg-primary-500 text-white': isSelected,
       }"
+      @click="toggleSelected(id)"
     >
       <span class="flex-1 font-mono truncate space-x-1">
         <span
@@ -18,14 +28,12 @@ const isSelected = ref(false)
             'text-purple-600 dark:text-purple-400': !isSelected,
           }"
         >
-          <span>increase</span>
+          <span>{{ data.title || 'Event' }}</span>
         </span>
-        <span class="op-75">
-          start
-        </span>
+        <span v-if="data.subtitle" class="op-75" v-html="data.subtitle" />
       </span>
-      <span class="flex-none text-xs font-mono op-50">
-        18:00
+      <span v-if="data.time" class="flex-none text-xs font-mono op-50">
+        {{ formatTime(data.time / 1000) }}
       </span>
     </li>
   </ul>

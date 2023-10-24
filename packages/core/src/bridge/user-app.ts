@@ -1,4 +1,5 @@
 import { devtools } from 'vue-devtools-kit'
+import { stringify } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
@@ -47,6 +48,11 @@ export function registerBridgeRpc() {
     // inspector state updated
     devtools.context.api.on.sendInspectorState((payload) => {
       Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
+    })
+
+    // add timeline event
+    devtools.context.api.on.addTimelineEvent((payload) => {
+      Bridge.value.emit(BridgeEvents.ADD_TIMELINE_EVENT, stringify(payload))
     })
   })
 }

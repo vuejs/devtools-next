@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
+
+// eslint-disable-next-line ts/consistent-type-imports
+import type { InspectorState, TimelineEvent } from 'vue-devtools-kit'
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -8,17 +11,41 @@ const layers = ref<{
   id: string
   label: string
 }[]>([])
+const timelineEvent = ref<Record<string, TimelineEvent['event'][]>>({})
 const { selected } = createSelectContext('timeline-layer')
+const { selected: selectedEvent } = createSelectContext('timeline-event')
+createCollapseContext('inspector-state')
+const activeTimelineEvent = computed(() => timelineEvent.value[selected.value] ?? [])
+const selectedEventInfo = computed(() => activeTimelineEvent.value?.[+(selectedEvent.value ?? 0)]?.data ?? {})
+const normalizedEventInfo = computed(() => {
+  const info: InspectorState[] = []
+  for (const key in selectedEventInfo.value) {
+    info.push({
+      key,
+      type: key,
+      editable: false,
+      value: selectedEventInfo.value[key],
+    })
+  }
+  return info
+})
 
 onDevToolsClientConnected(() => {
   bridgeRpc.getTimelineLayer().then(({ data }) => {
     layers.value = data
+    layers.value.forEach((layer) => {
+      timelineEvent.value[layer.id] = []
+    })
     if (!selected.value)
       selected.value = data[0].id
   })
+  bridgeRpc.on.addTimelineEvent((payload) => {
+    if (!payload)
+      return
+    const { layerId, event } = payload
+    timelineEvent.value[layerId].push(event)
+  })
 })
-
-function selectLayer() {}
 </script>
 
 <template>
@@ -26,17 +53,17 @@ function selectLayer() {}
     <Splitpanes>
       <Pane border="r base" size="20">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <TimelineLayer v-for="(item) in layers" :key="item.id" :data="item" @select="selectLayer" />
+          <TimelineLayer v-for="(item) in layers" :key="item.id" :data="item" />
         </div>
       </Pane>
       <Pane border="r base" size="45">
         <div h-screen select-none overflow-scroll class="no-scrollbar">
-          <TimelineEvent />
+          <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" :data="item" />
         </div>
       </Pane>
       <Pane size="35">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          3
+          <InspectorState v-for="(item, key) in { 'event info': normalizedEventInfo }" :id="`${key}`" :key="key + Date.now()" :data="item" :name="`${key}`" />
         </div>
       </Pane>
     </Splitpanes>

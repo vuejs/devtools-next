@@ -2,6 +2,7 @@ import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorTreeApiPayload } from '../core/component/types'
+import type { TimelineEvent } from '../core/timeline'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
@@ -11,6 +12,7 @@ export enum DevToolsEvents {
   GET_INSPECTOR_STATE = 'inspector-state:get',
   SEND_INSPECTOR_STATE = 'inspector-state:send',
   VISIT_COMPONENT_TREE = 'component-tree:visit',
+  ADD_TIMELINE_EVENT = 'timeline:add-event',
 }
 
 export interface DevToolsEvent {
@@ -36,6 +38,7 @@ export interface DevToolsEvent {
     treeNode: ComponentTreeNode
     filter: string
   }) => void
+  [DevToolsEvents.ADD_TIMELINE_EVENT]: (payload: TimelineEvent) => void
 }
 
 // export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
@@ -64,6 +67,9 @@ export const on = {
   },
   sendInspectorState(fn: DevToolsEvent[DevToolsEvents.SEND_INSPECTOR_STATE]) {
     apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_STATE, fn)
+  },
+  addTimelineEvent(fn: DevToolsEvent[DevToolsEvents.ADD_TIMELINE_EVENT]) {
+    apiHooks.hook(DevToolsEvents.ADD_TIMELINE_EVENT, fn)
   },
   editInspectorState() {},
   editComponentState() {},

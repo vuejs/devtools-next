@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
-// eslint-disable-next-line ts/consistent-type-imports
-import type { InspectorNodeTag, InspectorState } from 'vue-devtools-kit'
+import { EditStateType, type InspectorNodeTag, type InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -62,7 +61,11 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <InspectorState v-for="(item, key) in state" :id="key" :key="key + Date.now()" :data="item" :name="`${key}`" />
+          <InspectorState
+            v-for="(item, key) in state" :id="key"
+            :key="key + Date.now()" :data="item" :name="`${key}`"
+            :edit-type="EditStateType.Pinia"
+          />
         </div>
       </Pane>
     </Splitpanes>

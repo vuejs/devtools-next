@@ -1,6 +1,7 @@
 import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected } from './core/general'
 
-export type * from './core/component/types'
+// Maybe it's an enum, so we can't just use export type * from '...'
+export * from './core/component/types'
 
 export const devtools = {
   state: devtoolsState,

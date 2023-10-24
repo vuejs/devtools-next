@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
-// eslint-disable-next-line ts/consistent-type-imports
-import type { ComponentTreeNode } from 'vue-devtools-kit'
+import { type ComponentTreeNode, EditStateType } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -93,7 +92,10 @@ watchDebounced(filterName, (value) => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <InspectorState v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()" :data="state" :name="`${key}`" />
+          <InspectorState
+            v-for="(state, key) in activeComponentState" :id="key"
+            :key="key + Date.now()" :data="state" :name="`${key}`" :edit-type="EditStateType.Component"
+          />
         </div>
       </Pane>
     </Splitpanes>

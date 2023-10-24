@@ -1,5 +1,5 @@
 import { Bridge, BridgeEvents } from '@vue-devtools-next/core'
-import type { EditStatePayload } from 'vue-devtools-kit'
+import type { EditStateEventPayload, EditStatePayloads, EditStateType } from 'vue-devtools-kit'
 import { useContext } from '~/utils/use'
 
 export function useFiledError() {
@@ -10,19 +10,15 @@ export function useContextMenu() {
 
 }
 
-export function useStateIdContext() {
-  return useContext<string>('stateId')
-}
+export const { get: getEditType, set: setEditType } = useContext<EditStateType>('edit-state-type')
 
-export function useEditState(instanceId: string) {
+export function useEditState<T extends EditStateType>(type: T) {
   return {
-    sendEdit(dotPath: string, payload: EditStatePayload, type?: string) {
+    sendEdit(payload: EditStatePayloads[T]) {
       Bridge.value.emit(BridgeEvents.COMPONENT_EDIT_STATE, {
-        dotPath,
-        instanceId,
-        payload,
         type,
-      })
+        payload,
+      } satisfies EditStateEventPayload<T>)
     },
   }
 }

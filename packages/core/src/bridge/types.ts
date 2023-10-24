@@ -9,6 +9,8 @@ export enum BridgeEvents {
   // inspector state
   SEND_INSPECTOR_STATE = 'inspector-state:send',
 
-  // component edit
+  // edit related things
   COMPONENT_EDIT_STATE = 'component:edit-state',
+  PINIA_EDIT_STATE = 'pinia:edit-state',
+  ROUTE_EDIT_STATE = 'route:edit-state',
 }

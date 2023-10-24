@@ -15,7 +15,7 @@ export const { get: getEditType, set: setEditType } = useContext<EditStateType>(
 export function useEditState<T extends EditStateType>(type: T) {
   return {
     sendEdit(payload: EditStatePayloads[T]) {
-      Bridge.value.emit(BridgeEvents.COMPONENT_EDIT_STATE, {
+      Bridge.value.emit(BridgeEvents.EDIT_STATE, {
         type,
         payload,
       } satisfies EditStateEventPayload<T>)

@@ -1,5 +1,5 @@
 import type { EditStateEventPayload, EditStateType } from 'vue-devtools-kit'
-import { devtools } from 'vue-devtools-kit'
+import { devtools, editState } from 'vue-devtools-kit'
 import { BridgeEvents } from './types'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
@@ -51,8 +51,8 @@ export function registerBridgeRpc() {
     })
   })
 
-  Bridge.value.on(BridgeEvents.COMPONENT_EDIT_STATE, (payload: EditStateEventPayload<EditStateType>) => {
-    console.log(payload, 'payload!!!!!!!!!!')
+  Bridge.value.on(BridgeEvents.EDIT_STATE, async (payload: EditStateEventPayload<EditStateType>) => {
+    await editState(payload)
   })
 }
 

@@ -6,7 +6,7 @@ const props = defineProps<{
   data: {
     label: string
     id: string
-    tags: InspectorNodeTag[]
+    tags?: InspectorNodeTag[]
   }
 }>()
 

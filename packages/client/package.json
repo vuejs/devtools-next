@@ -32,7 +32,7 @@
     "vite": "^3.1.0 || ^4.0.0-0"
   },
   "dependencies": {
-    "@vue-devtools-next/app-core": "workspace:^",
+    "@vue-devtools-next/core": "workspace:^",
     "@vue-devtools-next/schema": "workspace:*",
     "@vue-devtools-next/shared": "workspace:^",
     "@vue-devtools-next/ui": "workspace:*",
@@ -40,6 +40,7 @@
     "@vueuse/integrations": "^10.5.0",
     "minimatch": "^9.0.3",
     "splitpanes": "^3.1.5",
+    "tinycolor2": "^1.6.0",
     "vite-hot-client": "^0.2.2",
     "vue-devtools-kit": "workspace:^",
     "vue-router": "^4.2.5"
@@ -48,6 +49,7 @@
     "@iconify/json": "^2.2.131",
     "@types/node": "^20.8.7",
     "@types/splitpanes": "^2.2.4",
+    "@types/tinycolor2": "^1.4.5",
     "@unocss/core": "^0.56.5",
     "@unocss/reset": "^0.56.5",
     "@vitejs/plugin-vue": "^4.4.0",

@@ -1,4 +1,4 @@
-import type { InspectorState } from '@vue-devtools-next/schema'
+import type { InspectorState } from '../types'
 import { getComponentName, getInstanceName } from '../general/util'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'

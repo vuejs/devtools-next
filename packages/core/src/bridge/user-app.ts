@@ -1,5 +1,5 @@
 import { devtools } from 'vue-devtools-kit'
-import { BridgeEvents } from '@vue-devtools-next/schema'
+import { BridgeEvents } from './types'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
 export function registerBridgeRpc() {
@@ -9,6 +9,11 @@ export function registerBridgeRpc() {
       connected: devtools.state.connected,
       vueVersion: devtools.state?.activeAppRecord?.version || '',
     })
+  })
+
+  // devtools timeline layers getter
+  bridgeRpcCore.on(bridgeRpcEvents.timelineLayer, () => {
+    return JSON.stringify(devtools.context.timelineLayer)
   })
 
   // inspector tree getter

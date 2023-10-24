@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/app-core'
+import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { ComponentTreeNode } from '@vue-devtools-next/schema'
+import type { ComponentTreeNode } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 

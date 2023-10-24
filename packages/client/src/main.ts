@@ -1,6 +1,5 @@
 import '@unocss/reset/tailwind.css'
-import { Bridge, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/app-core'
-import { BridgeEvents } from '@vue-devtools-next/schema'
+import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createApp } from 'vue'
@@ -10,6 +9,7 @@ import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
 import RouterPage from '~/pages/router.vue'
+import Timeline from '~/pages/timeline.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -19,6 +19,8 @@ const routes = [
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },
   { path: '/router', component: RouterPage },
+  { path: '/router', component: RouterPage },
+  { path: '/timeline', component: Timeline },
 ]
 
 async function reload(app, shell) {

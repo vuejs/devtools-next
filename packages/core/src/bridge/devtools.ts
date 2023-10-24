@@ -1,6 +1,6 @@
-import { BridgeEvents } from '@vue-devtools-next/schema'
-import type { InspectorState } from '@vue-devtools-next/schema'
+import type { InspectorNodeTag, InspectorState } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
+import { BridgeEvents } from './types'
 import type { BridgeRpcEventPayload } from './core'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
@@ -10,7 +10,7 @@ export function registerBridgeRpc() {
 
 export class BridgeRpc {
   static on = {
-    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string;label: string }[] } >(cb: (payload: T) => void) {
+    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string; label: string; tags: InspectorNodeTag[] }[] } >(cb: (payload: T) => void) {
       Bridge.value.on(BridgeEvents.SEND_INSPECTOR_TREE, (payload) => {
         cb(parse(payload))
       })
@@ -27,7 +27,7 @@ export class BridgeRpc {
     },
   }
 
-  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string;label: string }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
+  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string; label: string; tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorTree, payload)
   }
 
@@ -37,5 +37,9 @@ export class BridgeRpc {
 
   static async getDevToolsState() {
     return bridgeRpcCore.emit<{ data: { connected: boolean;vueVersion: string } }>(bridgeRpcEvents.state)
+  }
+
+  static async getTimelineLayer() {
+    return bridgeRpcCore.emit<{ data: { id: string;label: string; color: number }[] }>(bridgeRpcEvents.timelineLayer)
   }
 }

@@ -78,6 +78,7 @@ export const bridgeRpcEvents = {
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
   state: 'state',
+  timelineLayer: 'timeline-layer',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -92,6 +93,7 @@ export interface BridgeRpcEventPayload {
     nodeId: string
   }
   [bridgeRpcEvents.state]: null
+  [bridgeRpcEvents.timelineLayer]: null
 }
 
 export const bridgeRpcCore = {

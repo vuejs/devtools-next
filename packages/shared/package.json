@@ -5,9 +5,9 @@
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
+    "directory": "packages/shared",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/shared"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "exports": {
     ".": {
@@ -23,8 +23,9 @@
   ],
   "scripts": {
     "build": "tsup",
-    "stub": "tsup --watch --onSuccess 'tsup --dts-only'",
-    "prepublishOnly": "pnpm build"
+    "prepare:type": "tsup --dts-only",
+    "prepublishOnly": "pnpm build",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "devDependencies": {
     "@types/node": "^20.8.7"

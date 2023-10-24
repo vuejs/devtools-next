@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState } from '@vue-devtools-next/schema'
+import type { InspectorCustomState, InspectorState } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
 import DataField from './InspectorDataField/DataField.vue'

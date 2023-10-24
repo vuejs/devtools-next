@@ -1,35 +1,5 @@
 import type { App, ComponentInternalInstance, ComponentOptions, ConcreteComponent, SuspenseBoundary, VNode } from 'vue'
 
-export enum DevToolsHooks {
-  // internal
-  APP_INIT = 'app:init',
-  APP_UNMOUNT = 'app:unmount',
-  COMPONENT_UPDATED = 'component:updated',
-  COMPONENT_ADDED = 'component:added',
-  COMPONENT_REMOVED = 'component:removed',
-  COMPONENT_EMIT = 'component:emit',
-  PERFORMANCE_START = 'perf:start',
-  PERFORMANCE_END = 'perf:end',
-  ADD_ROUTE = 'router:add-route',
-  REMOVE_ROUTE = 'router:remove-route',
-  RENDER_TRACKED = 'render:tracked',
-  RENDER_TRIGGERED = 'render:triggered',
-  APP_CONNECTED = 'app:connected',
-  SETUP_DEVTOOLS_PLUGIN = 'devtools-plugin:setup',
-}
-
-export interface DevtoolsHook {
-  enabled?: boolean
-  events: Map<DevToolsHooks, Function[]>
-  emit: (event: DevToolsHooks, ...payload: any[]) => void
-  on: (event: DevToolsHooks, handler: Function) => () => void
-  once: (event: DevToolsHooks, handler: Function) => void
-  off: (event: DevToolsHooks, handler: Function) => void
-  appRecords: AppRecord[]
-  apps: Record<number, { componentCount: number }>
-  cleanupBuffer?: (matchArg: unknown) => boolean
-}
-
 type CacheKey = string | number | symbol | ConcreteComponent
 type Cache = Map<CacheKey, VNode>
 
@@ -128,84 +98,10 @@ export interface AppRecord {
   api?: unknown
 }
 
-export interface InspectorNodeTag {
-  label: string
-  textColor: number
-  backgroundColor: number
-  tooltip: string
-}
-
-export interface ComponentTreeNode {
-  uid: number | string
-  id: string
-  name: string
-  renderKey: string | number
-  inactive: boolean
-  isFragment: boolean
-  children: ComponentTreeNode[]
-  domOrder?: number[]
-  tags: InspectorNodeTag[]
-  autoOpen: boolean
-}
-
 export interface DevToolsState {
   connected: boolean
   appRecords: AppRecord[]
   activeAppRecord: AppRecord | null
   selectedComponentId: string | null
   pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
-}
-
-export interface InspectorCustomState {
-  _custom?: {
-    type?: string
-    displayText?: string
-    tooltipText?: string
-    value?: string
-    stateTypeName?: string
-    fields?: {
-      abstract?: boolean
-    }
-  }
-}
-
-export interface InspectorState {
-  key: string
-  value: string | number | Record<string, unknown> | InspectorCustomState | Array<unknown>
-  type: string
-  stateTypeName?: string
-  meta?: Record<string, boolean | string>
-  raw?: string
-  editable?: boolean
-  children?: {
-    key: string
-    value: string | number
-    type: string
-  }[]
-}
-
-export interface DevToolsPluginInspectorPayload {
-  id: string
-  label: string
-  icon?: string
-  treeFilterPlaceholder?: string
-  actions?: {
-    icon: string
-    tooltip: string
-    action: (payload: unknown) => void
-  }[]
-}
-
-export interface DevToolsPluginInspectorTree {
-  app?: VueAppInstance
-  inspectorId?: string
-  filter?: string
-  instanceId?: string
-  rootNodes?: ComponentTreeNode[]
-}
-
-export interface DevToolsPluginInspectorPayload {
-  app: VueAppInstance
-  inspectorId: string
-  nodeId: string
 }

@@ -1,6 +1,6 @@
 import type { App, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import type { BridgeInstanceType } from './bridge'
+import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'
 
 export interface DevToolsPluginOptions {

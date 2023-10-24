@@ -16,6 +16,7 @@ global[ContextKey] ??= {
   appRecord: null,
   api: null,
   inspector: [],
+  timelineLayer: [],
 }
 
 export const devtoolsState = new Proxy(global[StateKey], {
@@ -54,5 +55,10 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
     nodeId: string
     filter: string
     treeFilterPlaceholder: string
+  }[]
+  timelineLayer: {
+    id: string
+    label: string
+    color: number
   }[]
 }

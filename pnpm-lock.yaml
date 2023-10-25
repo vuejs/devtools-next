@@ -114,15 +114,15 @@ importers:
       '@vueuse/integrations':
         specifier: ^10.5.0
         version: 10.5.0(vue@3.3.5)
+      colord:
+        specifier: ^2.9.3
+        version: 2.9.3
       minimatch:
         specifier: ^9.0.3
         version: 9.0.3
       splitpanes:
         specifier: ^3.1.5
         version: 3.1.5
-      tinycolor2:
-        specifier: ^1.6.0
-        version: 1.6.0
       vite-hot-client:
         specifier: ^0.2.2
         version: 0.2.2(vite@4.5.0)
@@ -142,9 +142,6 @@ importers:
       '@types/splitpanes':
         specifier: ^2.2.4
         version: 2.2.4
-      '@types/tinycolor2':
-        specifier: ^1.4.5
-        version: 1.4.5
       '@unocss/core':
         specifier: ^0.56.5
         version: 0.56.5
@@ -2228,10 +2225,6 @@ packages:
     resolution: {integrity: sha512-k1bLppuHIRMEZSSLLZDtzK9Nq2/sCGmSzdNMZzrMNvbeSkYkV+KD2wpMb4pAdZ4XDvqenK6TMTGVK4hFyT//kA==}
     dependencies:
       vue: 2.7.14
-    dev: true
-
-  /@types/tinycolor2@1.4.5:
-    resolution: {integrity: sha512-uLJijDHN5E6j5n1qefF9oaeplgszXglWXWTviMoFr/YxgvbyrkFil20yDT7ljhCiTQ/BfCYtxfJS81LdTro5DQ==}
     dev: true
 
   /@types/unist@2.0.8:
@@ -8209,10 +8202,6 @@ packages:
   /tinybench@2.5.1:
     resolution: {integrity: sha512-65NKvSuAVDP/n4CqH+a9w2kTlLReS9vhsAP06MWx+/89nMinJyB2icyl58RIcqCmIggpojIGeuJGhjU1aGMBSg==}
     dev: true
-
-  /tinycolor2@1.6.0:
-    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
-    dev: false
 
   /tinypool@0.7.0:
     resolution: {integrity: sha512-zSYNUlYSMhJ6Zdou4cJwo/p7w5nmAH17GRfU/ui3ctvjXFErXXkruT4MWW6poDeXgCaIBlGLrfU6TbTXxyGMww==}

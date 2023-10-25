@@ -142,9 +142,6 @@ importers:
       '@types/splitpanes':
         specifier: ^2.2.4
         version: 2.2.4
-      '@types/tinycolor2':
-        specifier: ^1.4.5
-        version: 1.4.5
       '@unocss/core':
         specifier: ^0.56.5
         version: 0.56.5
@@ -2228,10 +2225,6 @@ packages:
     resolution: {integrity: sha512-k1bLppuHIRMEZSSLLZDtzK9Nq2/sCGmSzdNMZzrMNvbeSkYkV+KD2wpMb4pAdZ4XDvqenK6TMTGVK4hFyT//kA==}
     dependencies:
       vue: 2.7.14
-    dev: true
-
-  /@types/tinycolor2@1.4.5:
-    resolution: {integrity: sha512-uLJijDHN5E6j5n1qefF9oaeplgszXglWXWTviMoFr/YxgvbyrkFil20yDT7ljhCiTQ/BfCYtxfJS81LdTro5DQ==}
     dev: true
 
   /@types/unist@2.0.8:

@@ -1,11 +1,11 @@
-import tinycolor from 'tinycolor2'
+import { colord } from 'colord'
 
 export function toHex(color: number) {
   return color.toString(16).padStart(6, '0')
 }
 
 export function dimColor(color: number, isDark: boolean, amount = 20) {
-  let c = tinycolor(toHex(color))
+  let c = colord(toHex(color))
   if (isDark)
     c = c.darken(amount)
 
@@ -16,7 +16,7 @@ export function dimColor(color: number, isDark: boolean, amount = 20) {
 }
 
 export function boostColor(color: number, isDark: boolean, amount = 10) {
-  let c = tinycolor(toHex(color))
+  let c = colord(toHex(color))
   if (isDark)
     c = c.lighten(amount)
 

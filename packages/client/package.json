@@ -38,9 +38,9 @@
     "@vue-devtools-next/ui": "workspace:*",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
+    "colord": "^2.9.3",
     "minimatch": "^9.0.3",
     "splitpanes": "^3.1.5",
-    "tinycolor2": "^1.6.0",
     "vite-hot-client": "^0.2.2",
     "vue-devtools-kit": "workspace:^",
     "vue-router": "^4.2.5"

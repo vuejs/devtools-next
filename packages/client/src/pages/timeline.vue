@@ -58,7 +58,12 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane border="r base" size="45">
         <div h-screen select-none overflow-scroll class="no-scrollbar">
-          <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" :data="item" />
+          <template v-if="activeTimelineEvent.length">
+            <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" :data="item" />
+          </template>
+          <EmptyPane v-else icon="i-ic-baseline-inbox">
+            No events
+          </EmptyPane>
         </div>
       </Pane>
       <Pane size="35">

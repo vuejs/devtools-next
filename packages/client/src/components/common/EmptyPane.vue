@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template>
   <div class="h-full flex flex-col items-center justify-center space-y-6 p-12 text-gray-400 dark:text-gray-600 text-center">
-    <VueIcon v-bind="props" class="text-3xl" />
+    <VueIcon v-bind="props" />
     <div><slot /></div>
   </div>
 </template>

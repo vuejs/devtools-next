@@ -4,6 +4,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import Home from './pages/Home.vue'
+import Hello from './pages/Hello.vue'
 import './style.css'
 
 const pinia = createPinia()
@@ -16,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     component: Home,
     name: 'home',
     alias: '/index',
+  },
+  {
+    path: '/hello',
+    component: Hello,
+    name: 'hello',
   },
 ]
 

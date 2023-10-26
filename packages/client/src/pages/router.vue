@@ -7,9 +7,10 @@ import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-const { selected } = createSelectContext('inspector-tree')
+const selected = ref('')
 const tree = ref<{ id: string;label: string }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
+createCollapseContext('inspector-state')
 
 function getRouterState(nodeId: string) {
   // @TODO: should to support multiple router instances ?
@@ -18,11 +19,9 @@ function getRouterState(nodeId: string) {
   })
 }
 
-function select(id: string) {
-  getRouterState(id)
-}
-
-createCollapseContext('inspector-state')
+watch(selected, () => {
+  getRouterState(selected.value)
+})
 
 onDevToolsClientConnected(() => {
   bridgeRpc.getInspectorTree({ inspectorId: 'router-inspector:0', filter: '' }).then(({ data }) => {
@@ -57,7 +56,7 @@ onDevToolsClientConnected(() => {
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <InspectorTree v-for="(item) in tree" :key="item.id" :data="item" @select="select" />
+          <InspectorTree v-for="(item) in tree" :key="item.id" v-model="selected" :data="item" />
         </div>
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">

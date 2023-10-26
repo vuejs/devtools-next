@@ -7,7 +7,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-const { selected } = createSelectContext('inspector-tree')
+const selected = ref('')
 const tree = ref<{ id: string;label: string; tags: InspectorNodeTag[] }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
 
@@ -17,9 +17,9 @@ function getPiniaState(nodeId: string) {
   })
 }
 
-function selectStore(id: string) {
-  getPiniaState(id)
-}
+watch(selected, () => {
+  getPiniaState(selected.value)
+})
 
 createCollapseContext('inspector-state')
 
@@ -57,7 +57,7 @@ onDevToolsClientConnected(() => {
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <InspectorTree v-for="(item) in tree" :key="item.id" :data="item" @select="selectStore" />
+          <InspectorTree v-for="(item) in tree" :key="item.id" v-model="selected" :data="item" />
         </div>
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">

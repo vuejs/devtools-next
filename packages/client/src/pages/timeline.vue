@@ -14,11 +14,11 @@ const layers = ref<{
   groups?: Record<number | string, { events: TimelineEvent['event'][]; duration: number }>
 }[]>([])
 const timelineEvent = ref<Record<string, TimelineEvent['event'][]>>({})
-const { selected } = createSelectContext('timeline-layer')
-const { selected: selectedEvent } = createSelectContext('timeline-event')
+const selectedLayer = ref('')
+const selectedEvent = ref('')
 createCollapseContext('inspector-state')
 
-const activeTimelineEvent = computed(() => timelineEvent.value[selected.value] ?? [])
+const activeTimelineEvent = computed(() => timelineEvent.value[selectedLayer.value] ?? [])
 const selectedEventInfo = computed(() => activeTimelineEvent.value?.[+(selectedEvent.value ?? 0)]?.data ?? {})
 const normalizedEventInfo = computed(() => {
   const info: InspectorState[] = []
@@ -33,7 +33,7 @@ const normalizedEventInfo = computed(() => {
   return info
 })
 const normalizedGroupInfo = computed(() => {
-  const groups = layers.value.find(layer => layer.id === selected.value)?.groups
+  const groups = layers.value.find(layer => layer.id === selectedLayer.value)?.groups
   const groupId = activeTimelineEvent.value?.[+(selectedEvent.value ?? 0)]?.groupId
   const groupInfo = groups?.[groupId]
   if (groupInfo) {
@@ -75,8 +75,8 @@ onDevToolsClientConnected(() => {
       timelineEvent.value[layer.id] = []
       layer.groups = {}
     })
-    if (!selected.value)
-      selected.value = data[0].id
+    if (!selectedLayer.value)
+      selectedLayer.value = data[0].id
   })
   bridgeRpc.on.addTimelineEvent((payload) => {
     if (!payload)
@@ -86,6 +86,11 @@ onDevToolsClientConnected(() => {
     normalizeGroupInfo(layerId, event)
   })
 })
+
+watch(() => activeTimelineEvent.value.length, (l) => {
+  if (l)
+    selectedEvent.value = '0'
+})
 </script>
 
 <template>
@@ -94,7 +99,7 @@ onDevToolsClientConnected(() => {
       <!-- layer -->
       <Pane border="r base" size="20">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <TimelineLayer v-for="(item) in layers" :key="item.id" :data="item" />
+          <TimelineLayer v-for="(item) in layers" :key="item.id" v-model="selectedLayer" :data="item" />
         </div>
       </Pane>
       <!-- event -->
@@ -102,7 +107,7 @@ onDevToolsClientConnected(() => {
         <div h-screen select-none overflow-scroll class="no-scrollbar">
           <template v-if="activeTimelineEvent.length">
             <!-- @TODO: recycle scroller wrapper -->
-            <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" :data="item" />
+            <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" v-model="selectedEvent" :data="item" />
           </template>
           <EmptyPane v-else icon="i-ic-baseline-inbox">
             No events

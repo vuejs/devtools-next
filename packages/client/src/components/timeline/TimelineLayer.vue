@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { toHex } from '~/utils'
 
 const props = defineProps<{
+  modelValue: string
   data: {
     label: string
     id: string
@@ -11,18 +12,17 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'select', id: string): void
+  (e: 'update:modelValue', value: string): void
 }>()
 
+function select() {
+  emit('update:modelValue', props.data.id)
+}
 const activeTextColor = computed(() => `#${toHex(props.data.color)}`)
-
-const { isSelected, toggleSelected } = useSelect('timeline-layer', props.data.id, (id) => {
-  emit('select', id)
-})
 </script>
 
 <template>
-  <div class="selectable-item" :style="isSelected ? { color: activeTextColor } : {}" @click="toggleSelected(data.id)">
+  <div class="selectable-item" :style="modelValue === data.id ? { color: activeTextColor } : {}" @click="select">
     <span overflow-hidden text-ellipsis ws-nowrap>
       {{ data.label }}
     </span>

@@ -3,12 +3,17 @@ import type { TimelineEvent } from 'vue-devtools-kit'
 import { formatTime } from '~/utils'
 
 const props = defineProps<{
+  modelValue: string
   data: TimelineEvent['event']
   id: string
 }>()
-const { isSelected, toggleSelected } = useSelect('timeline-event', props.id)
-if (!isSelected.value)
-  toggleSelected('0')
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
+const isSelected = computed(() => props.modelValue === props.id)
+function select() {
+  emit('update:modelValue', props.id)
+}
 </script>
 
 <template>
@@ -19,7 +24,7 @@ if (!isSelected.value)
         'hover:bg-blue-100 dark:hover:bg-blue-900 text-bluegray-800 dark:text-bluegray-200': !isSelected,
         'bg-primary-500 text-white': isSelected,
       }"
-      @click="toggleSelected(id)"
+      @click="select"
     >
       <span class="flex-1 font-mono truncate space-x-1">
         <span

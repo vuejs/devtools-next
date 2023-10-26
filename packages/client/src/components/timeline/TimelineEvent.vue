@@ -38,7 +38,7 @@ function select() {
         <span v-if="data.subtitle" class="op-75" v-html="data.subtitle" />
       </span>
       <span v-if="data.time" class="flex-none text-xs font-mono op-50">
-        {{ formatTime(data.time / 1000) }}
+        {{ formatTime(data.time) }}
       </span>
     </li>
   </ul>

@@ -2,13 +2,12 @@
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { ComponentTreeNode } from 'vue-devtools-kit'
+import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 const treeNode = ref<ComponentTreeNode[]>([])
-const { activeComponentState } = useComponentState()
 
 // UX related state
 const loaded = ref(false)
@@ -20,6 +19,14 @@ const { selected: selectedComponentTree } = createSelectContext('component-tree'
 // create collapse context
 const { collapseMap: componentTreeCollapseMap } = createCollapseContext('component-tree')
 createCollapseContext('inspector-state')
+
+function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
+  if (!treeNode.length)
+    return false
+  if (treeNode.find(item => item.id === id))
+    return true
+  return treeNode.some(item => checkComponentInTree(item.children || [], id))
+}
 
 function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
@@ -37,6 +44,18 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   }
 }
 
+/** ---------------- tree start ------------------- */
+
+function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
+  return {
+    [treeNode[0].id]: true,
+    ...treeNode?.[0].children?.reduce((acc, cur) => {
+      acc[cur.id] = true
+      return acc
+    }, {}),
+  }
+}
+
 function getComponentTree(filterText?: string) {
   return new Promise<void>((resolve) => {
     bridgeRpc.getInspectorTree<{ data: ComponentTreeNode[] }>({ inspectorId: 'components', filter: filterText }).then(({ data }) => {
@@ -49,7 +68,38 @@ function getComponentTree(filterText?: string) {
   })
 }
 
+function selectComponentTree(id: string) {
+  getComponentState(id)
+}
+
+/** ---------------- tree end ------------------- */
+
+/** ---------------- state start ------------------- */
+
+const activeComponentState = ref<Record<string, InspectorState[]>>({})
+
+function normalizeComponentState(data: { state?: InspectorState[] }) {
+  if (!data || !data?.state)
+    return {}
+  const res = {}
+  data.state.forEach((item) => {
+    if (!res[item.type])
+      res[item.type] = []
+    res[item.type].push(item)
+  })
+  return res
+}
+
+function getComponentState(id: string) {
+  bridgeRpc.getInspectorState({ inspectorId: 'components', nodeId: id }).then(({ data }) => {
+    activeComponentState.value = normalizeComponentState(data.state)
+  })
+}
+
+/** ---------------- state end ------------------- */
+
 onDevToolsClientConnected(() => {
+  // tree
   getComponentTree().then(() => {
     loaded.value = true
   })
@@ -59,20 +109,19 @@ onDevToolsClientConnected(() => {
     isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
     initSelectedComponent(data)
   })
+
+  // state
   bridgeRpc.on.inspectorStateUpdated((data) => {
     activeComponentState.value = normalizeComponentState(data.state)
   })
 })
 
-function selectComponentTree(id: string) {
-  getComponentState(id)
-}
-
 const filterName = ref('')
 
 // @TODO: bugfix - the selected component highlighted working failed when the filter is applied
-watchDebounced(filterName, (value) => {
-  value = value.trim().toLowerCase()
+watchDebounced(filterName, (v) => {
+  // @ts-expect-error - watchDebounced type error
+  const value = v.trim().toLowerCase() as string
   toggleFiltered()
   getComponentTree(value).then(() => {
     toggleFiltered()

@@ -1,5 +1,13 @@
 @import 'splitpanes/dist/splitpanes.css';
 
+html {
+  --at-apply: font-sans;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 html.dark {
   color-scheme: dark;
 }
@@ -7,6 +15,10 @@ html.dark {
 body {
   font-size: 16px;
   /* font-family: 'Roboto Mono, Menlo, Consolas, monospace'; */
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* Splitpanes */
@@ -49,6 +61,57 @@ body {
   top: -5px;
   bottom: -4px;
   width: 100%;
+}
+
+/* Overrides Floating Vue */
+.v-popper--theme-dropdown .v-popper__inner,
+.v-popper--theme-tooltip .v-popper__inner {
+  --at-apply: bg-base text-black dark:text-white rounded border border-base shadow;
+  box-shadow: 0 6px 30px #0000001a;
+}
+
+.v-popper--theme-tooltip .v-popper__arrow-inner,
+.v-popper--theme-dropdown .v-popper__arrow-inner {
+  visibility: visible;
+  --at-apply: border-white dark:border-hex-121212;
+}
+
+.v-popper--theme-tooltip .v-popper__arrow-outer,
+.v-popper--theme-dropdown .v-popper__arrow-outer {
+  --at-apply: border-base;
+}
+
+.v-popper--theme-tooltip.v-popper--shown,
+.v-popper--theme-tooltip.v-popper--shown * {
+  transition: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-border);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8881;
+  transition: background 0.2s ease;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8885;
 }
 
 .no-scrollbar {

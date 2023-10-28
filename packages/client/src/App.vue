@@ -8,7 +8,7 @@ const { connected } = useDevToolsState()
 
 watch(connected, (v) => {
   if (v)
-    router.replace('/timeline')
+    router.replace('/pages')
 }, {
   immediate: true,
 })
@@ -17,7 +17,7 @@ watch(connected, (v) => {
 <template>
   <main class="$ui-bg-base fixed inset-0 h-screen w-screen">
     <AppConnecting v-if="!connected" />
-    <div v-else>
+    <div v-else class="h-full of-auto">
       <RouterView />
     </div>
   </main>

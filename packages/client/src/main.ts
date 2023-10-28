@@ -16,7 +16,7 @@ import 'uno.css'
 import '~/assets/styles/main.css'
 
 async function getViteHotContext() {
-  if (import.meta.url.includes('chrome-extension://'))
+  if (import.meta.url?.includes('chrome-extension://'))
     return
 
   const viteCLient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)

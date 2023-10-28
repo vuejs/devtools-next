@@ -199,9 +199,15 @@ importers:
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
+      birpc:
+        specifier: ^0.2.14
+        version: 0.2.14
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
+      vite-hot-client:
+        specifier: ^0.2.2
+        version: 0.2.2(vite@4.5.0)
       vue-devtools-kit:
         specifier: workspace:^
         version: link:../devtools-kit

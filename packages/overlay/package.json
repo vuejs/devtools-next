@@ -6,9 +6,9 @@
   "license": "MIT",
   "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
   "repository": {
+    "directory": "packages/overlay",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/overlay"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-next/issues"
@@ -24,8 +24,8 @@
   },
   "scripts": {
     "build": "vite build",
-    "stub": "vite build --watch",
-    "play": "vite --config vite.play.config.ts --open"
+    "play": "vite --config vite.play.config.ts --open",
+    "stub": "vite build --watch"
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",

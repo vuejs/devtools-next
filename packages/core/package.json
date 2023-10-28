@@ -31,7 +31,9 @@
   "dependencies": {
     "@vue-devtools-next/schema": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
+    "birpc": "^0.2.14",
     "mitt": "^3.0.1",
+    "vite-hot-client": "^0.2.2",
     "vue-devtools-kit": "workspace:^"
   },
   "devDependencies": {

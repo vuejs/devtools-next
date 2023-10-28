@@ -1,11 +1,28 @@
 import type { InspectorNodeTag, InspectorState, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
+import type { ViteHotContext } from 'vite-hot-client'
+import { setupViteRPCClient } from '../vite-rpc'
 import { BridgeEvents } from './types'
 import type { BridgeRpcEventPayload } from './core'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
 
-export function registerBridgeRpc() {
+const viteRpc: {
+  enabled: boolean
+  api: ReturnType<typeof setupViteRPCClient> | null
+} = {
+  enabled: false,
+  api: null,
+}
 
+export interface BridgeRpcOptions {
+  viteRPCContext?: ViteHotContext | undefined
+}
+export function registerBridgeRpc(options: BridgeRpcOptions) {
+  const rpc = setupViteRPCClient(options.viteRPCContext)
+  if (rpc) {
+    viteRpc.enabled = true
+    viteRpc.api = rpc
+  }
 }
 
 export class BridgeRpc {

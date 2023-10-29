@@ -42,7 +42,7 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
   }
 
   init()
-  // @TODO: use another way to watch router
+  // @TODO: use another way to watch router (browser extension working failed)
   watch(() => appRecord.app?.config.globalProperties.$router, () => {
     init()
     apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[RouterKey])

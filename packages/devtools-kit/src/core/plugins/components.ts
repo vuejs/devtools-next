@@ -131,7 +131,6 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }) as string
       appRecord?.instanceMap.delete(id)
 
-      console.log('????')
       api.sendInspectorTree(INSPECTOR_ID)
     })
   })

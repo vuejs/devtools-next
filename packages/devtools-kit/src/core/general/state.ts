@@ -2,6 +2,7 @@ import type { AppRecord } from '@vue-devtools-next/schema'
 import { target as global } from '@vue-devtools-next/shared'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'
+import { normalizeRouterInfo } from '../router'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const ContextKey = '__VUE_DEVTOOLS_CONTEXT__'
@@ -29,9 +30,11 @@ export const devtoolsState = new Proxy(global[StateKey], {
     // sync to global to ensure the state is consistent
     global[StateKey][property] = value
     if (property === 'activeAppRecord') {
+      // update context
       global[ContextKey].appRecord = value
       global[ContextKey].api = value.api
       global[ContextKey].inspector = value.inspector ?? []
+      normalizeRouterInfo(value)
     }
 
     apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)

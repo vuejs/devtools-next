@@ -14,4 +14,5 @@ export interface DevToolsContext {
     label: string
     color: number
   }[]
+  routerInfo: unknown
 }

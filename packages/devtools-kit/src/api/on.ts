@@ -3,9 +3,11 @@ import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorTreeApiPayload } from '../core/component/types'
 import type { TimelineEvent } from '../core/timeline'
+import type { RouterInfo } from '../core/router'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
+  ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
@@ -17,6 +19,7 @@ export enum DevToolsEvents {
 
 export interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
+  [DevToolsEvents.ROUTER_INFO_UPDATED]: (routerInfo: RouterInfo) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined
     app: VueAppInstance | undefined
@@ -47,6 +50,9 @@ export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = create
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
+  },
+  routerInfoUpdated(fn: DevToolsEvent[DevToolsEvents.ROUTER_INFO_UPDATED]) {
+    apiHooks.hook(DevToolsEvents.ROUTER_INFO_UPDATED, fn)
   },
   // compatible
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {

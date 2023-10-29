@@ -1,37 +1,46 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
+import type { RouterInfo } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
+import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
 
+const bridgeRpc = useDevToolsBridgeRpc()
 const routeInput = ref('')
-const currentRoute = ref({})
+const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)
+const router = ref(null) as unknown as Ref<Router>
 const route = ref({
   matched: [],
 })
-const routeInputMatched = computed(() => [{
-  path: '/',
-  name: 'index',
-}])
-const routes = ref([
-  {
-    path: '/',
-    name: 'index',
-  },
-  {
-    path: '/home',
-    name: 'home',
-  },
-  {
-    path: '/hello',
-    name: 'hello',
-  },
-  {
-    path: '/detail/:id',
-    name: 'detail',
-  },
-])
+const routeInputMatched = computed(() => {
+  if (routeInput.value === currentRoute.value?.path)
+    return []
+  return router.value?.resolve({
+    path: routeInput.value || '/',
+  }).matched ?? []
+})
+
+const routes = ref<RouteRecordNormalized[]>([])
+
+function init(data: RouterInfo) {
+  routes.value = data.routes
+  currentRoute.value = data.currentRoute
+  router.value = data.router as Router
+  routeInput.value = currentRoute.value?.path ?? '/'
+}
+
 function navigate() {
-  console.log('navigate')
 }
 function navigateToRoute() {}
+
+onDevToolsClientConnected(() => {
+  bridgeRpc.getRouterInfo().then(({ data }) => {
+    init(data)
+  })
+  bridgeRpc.on.routerInfoUpdated((data) => {
+    init(data)
+  })
+})
 </script>
 
 <template>
@@ -50,11 +59,11 @@ function navigateToRoute() {}
       <VueInput
         v-model="routeInput"
         left-icon="i-carbon-direction-right-01 scale-y--100"
-        :class="currentRoute === routeInput ? '' : routeInputMatched.length ? 'text-green!' : 'text-orange!'"
+        :class="currentRoute?.path === routeInput ? '' : routeInputMatched.length ? 'text-green!' : 'text-orange!'"
         @keydown.enter="navigate"
       />
       <div>
-        <template v-if="currentRoute !== routeInput">
+        <template v-if="currentRoute?.path !== routeInput">
           <span>Press <b font-bold>Enter</b> to navigate</span>
           <span v-if="!routeInputMatched.length" text-orange op75> (no match)</span>
         </template>

@@ -2,7 +2,8 @@ import type { AppRecord } from '@vue-devtools-next/schema'
 import { target as global } from '@vue-devtools-next/shared'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'
-import { normalizeRouterInfo } from '../router'
+import type { RouterInfo } from '../router'
+import { devtoolsRouterInfo, normalizeRouterInfo } from '../router'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const ContextKey = '__VUE_DEVTOOLS_CONTEXT__'
@@ -18,6 +19,7 @@ global[ContextKey] ??= {
   api: null,
   inspector: [],
   timelineLayer: [],
+  routerInfo: {},
 }
 
 export const devtoolsState = new Proxy(global[StateKey], {
@@ -35,6 +37,7 @@ export const devtoolsState = new Proxy(global[StateKey], {
       global[ContextKey].api = value.api
       global[ContextKey].inspector = value.inspector ?? []
       normalizeRouterInfo(value)
+      global[ContextKey].routerInfo = devtoolsRouterInfo
     }
 
     apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)
@@ -64,4 +67,5 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
     label: string
     color: number
   }[]
+  routerInfo: RouterInfo
 }

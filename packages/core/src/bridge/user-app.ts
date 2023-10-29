@@ -27,6 +27,11 @@ export function registerBridgeRpc() {
     return devtools.context.api.getInspectorState(payload)
   })
 
+  // router info getter
+  bridgeRpcCore.on(bridgeRpcEvents.routerInfo, () => {
+    return JSON.stringify(devtools.context.routerInfo)
+  })
+
   Bridge.value.on(BridgeEvents.APP_CONNECTED, () => {
     Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
       vueVersion: devtools.state?.activeAppRecord?.version || '',
@@ -40,6 +45,12 @@ export function registerBridgeRpc() {
         connected: payload.connected,
       }))
     })
+
+    // router info updated
+    devtools.context.api.on.routerInfoUpdated((payload) => {
+      Bridge.value.emit(BridgeEvents.ROUTER_INFO_UPDATED, JSON.stringify(payload))
+    })
+
     // inspector tree updated
     devtools.context.api.on.sendInspectorTree((payload) => {
       Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)

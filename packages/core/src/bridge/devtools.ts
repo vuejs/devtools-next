@@ -1,4 +1,4 @@
-import type { InspectorNodeTag, InspectorState, TimelineEvent } from 'vue-devtools-kit'
+import type { InspectorNodeTag, InspectorState, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
@@ -42,6 +42,11 @@ export class BridgeRpc {
         cb(parse(payload))
       })
     },
+    routerInfoUpdated(cb: (payload: RouterInfo) => void) {
+      Bridge.value.on(BridgeEvents.ROUTER_INFO_UPDATED, (payload) => {
+        cb(parse(payload))
+      })
+    },
     addTimelineEvent(cb: (payload: TimelineEvent) => void) {
       Bridge.value.on(BridgeEvents.ADD_TIMELINE_EVENT, (payload) => {
         cb(parse(payload))
@@ -63,5 +68,9 @@ export class BridgeRpc {
 
   static async getTimelineLayer() {
     return bridgeRpcCore.emit<{ data: { id: string;label: string; color: number }[] }>(bridgeRpcEvents.timelineLayer)
+  }
+
+  static async getRouterInfo() {
+    return bridgeRpcCore.emit<{ data: RouterInfo }>(bridgeRpcEvents.routerInfo)
   }
 }

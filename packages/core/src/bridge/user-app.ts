@@ -32,6 +32,23 @@ export function registerBridgeRpc() {
     return JSON.stringify(devtools.context.routerInfo)
   })
 
+  // router getter
+  bridgeRpcCore.on(bridgeRpcEvents.router, (payload) => {
+    devtools.context.router?.push(JSON.parse(payload!)).catch(e => e)
+    return Promise.resolve(JSON.stringify({}))
+  })
+
+  // route matched
+  bridgeRpcCore.on(bridgeRpcEvents.routeMatched, (payload) => {
+    const c = console.warn
+    console.warn = () => {}
+    const matched = devtools.context.router?.resolve({
+      path: payload || '/',
+    }).matched ?? []
+    console.warn = c
+    return JSON.stringify(matched)
+  })
+
   Bridge.value.on(BridgeEvents.APP_CONNECTED, () => {
     Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
       vueVersion: devtools.state?.activeAppRecord?.version || '',

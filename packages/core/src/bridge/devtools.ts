@@ -73,4 +73,12 @@ export class BridgeRpc {
   static async getRouterInfo() {
     return bridgeRpcCore.emit<{ data: RouterInfo }>(bridgeRpcEvents.routerInfo)
   }
+
+  static async navigate(payload: Record<string, string>): Promise<void> {
+    return bridgeRpcCore.emit<void>(bridgeRpcEvents.router, JSON.stringify(payload))
+  }
+
+  static async getMatchedRoutes(path: string) {
+    return bridgeRpcCore.emit<{ data: { path: string }[] }>(bridgeRpcEvents.routeMatched, path)
+  }
 }

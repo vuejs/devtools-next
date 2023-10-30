@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { RouterInfo } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
-import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)
-const router = ref(null) as unknown as Ref<Router>
-const route = ref({
-  matched: [],
-})
+const matchedRoutes = ref<RouteRecordNormalized[]>([])
 const routeInputMatched = computed(() => {
   if (routeInput.value === currentRoute.value?.path)
     return []
-  return router.value?.resolve({
-    path: routeInput.value || '/',
-  }).matched ?? []
+  else
+    return matchedRoutes.value
 })
 
 const routes = ref<RouteRecordNormalized[]>([])
@@ -25,13 +20,20 @@ const routes = ref<RouteRecordNormalized[]>([])
 function init(data: RouterInfo) {
   routes.value = data.routes
   currentRoute.value = data.currentRoute
-  router.value = data.router as Router
+  // router.value = data.router as Router
   routeInput.value = currentRoute.value?.path ?? '/'
 }
 
 function navigate() {
+  if (routeInputMatched.value.length)
+    navigateToRoute(routeInput.value)
 }
-function navigateToRoute() {}
+
+function navigateToRoute(path: string) {
+  bridgeRpc.navigate({
+    path,
+  })
+}
 
 onDevToolsClientConnected(() => {
   bridgeRpc.getRouterInfo().then(({ data }) => {
@@ -39,6 +41,14 @@ onDevToolsClientConnected(() => {
   })
   bridgeRpc.on.routerInfoUpdated((data) => {
     init(data)
+  })
+})
+
+watchDebounced(routeInput, () => {
+  if (routeInput.value === currentRoute.value?.path)
+    return
+  bridgeRpc.getMatchedRoutes(routeInput.value).then((res) => {
+    matchedRoutes.value = res.data as RouteRecordNormalized[]
   })
 })
 </script>
@@ -72,7 +82,7 @@ onDevToolsClientConnected(() => {
         </template>
       </div>
     </div>
-    <SectionBlock
+    <!-- <SectionBlock
       icon="i-carbon-tree-view"
       text="Matched Routes"
       :padding="false"
@@ -84,7 +94,7 @@ onDevToolsClientConnected(() => {
         :matched-pending="routeInputMatched"
         @navigate="navigateToRoute"
       />
-    </SectionBlock>
+    </SectionBlock> -->
     <SectionBlock
       icon="i-carbon-tree-view-alt"
       text="All Routes"

@@ -3,6 +3,8 @@ export enum BridgeEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools-state:updated',
   // router info
   ROUTER_INFO_UPDATED = 'router-info:updated',
+  // router
+  ROUTER = 'router',
   APP_CONNECTED = 'user-app:connected',
   // devtools client
   CLIENT_READY = 'devtools:client-ready',

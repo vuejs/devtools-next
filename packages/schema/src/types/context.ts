@@ -15,4 +15,5 @@ export interface DevToolsContext {
     color: number
   }[]
   routerInfo: unknown
+  router: unknown
 }

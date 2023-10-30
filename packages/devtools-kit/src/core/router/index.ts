@@ -1,26 +1,31 @@
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
 import type { AppRecord } from '@vue-devtools-next/schema'
 import { target as global } from '@vue-devtools-next/shared'
-import { watch } from 'vue'
+import { debounce } from 'perfect-debounce'
 import { DevToolsEvents, apiHooks } from '../../api'
+import { hook } from '../general/hook'
 
-const RouterKey = '__VUE_DEVTOOLS_ROUTER_INFO__'
+const RouterInfoKey = '__VUE_DEVTOOLS_ROUTER_INFO__'
+export const RouterKey = '__VUE_DEVTOOLS_ROUTER__'
 
+export type { Router } from 'vue-router'
 export interface RouterInfo {
   currentRoute: RouteLocationNormalizedLoaded | null
   routes: RouteRecordNormalized[]
   router: Router | null
 }
 
-global[RouterKey] ??= {
+global[RouterInfoKey] ??= {
   currentRoute: null,
   routes: [],
   router: null,
 } as RouterInfo
 
-export const devtoolsRouterInfo: RouterInfo = new Proxy(global[RouterKey], {
+global[RouterKey] ??= null as unknown as Router
+
+export const devtoolsRouterInfo: RouterInfo = new Proxy(global[RouterInfoKey], {
   get(target, property) {
-    return global[RouterKey][property]
+    return global[RouterInfoKey][property]
   },
 })
 
@@ -32,19 +37,32 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
   function init() {
     const router = appRecord.app?.config.globalProperties.$router as Router
     const currentRoute = router?.currentRoute.value
-
-    const routes = getRoutes(router)
-    global[RouterKey] = {
+    const routes = getRoutes(router).map((item) => {
+      const { path, name, children } = item
+      return {
+        path,
+        name,
+        children,
+      }
+    })
+    if (currentRoute) {
+      currentRoute.matched.forEach((item) => {
+        item.components = {}
+        item.instances = {}
+      })
+    }
+    global[RouterInfoKey] = {
       currentRoute: JSON.parse(JSON.stringify(currentRoute)),
       routes: JSON.parse(JSON.stringify(routes)),
-      router: JSON.parse(JSON.stringify(router)),
     }
+    global[RouterKey] = router
   }
 
   init()
-  // @TODO: use another way to watch router (browser extension working failed)
-  watch(() => appRecord.app?.config.globalProperties.$router, () => {
+
+  // @TODO: use another way to watch router
+  hook.on.componentUpdated(debounce(() => {
     init()
-    apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[RouterKey])
-  }, { deep: true })
+    apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[RouterInfoKey])
+  }, 200))
 }

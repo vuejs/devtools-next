@@ -168,7 +168,7 @@ function processSetupState(instance: VueAppInstance) {
         type,
         // @ts-expect-error ignore
         ...result,
-      } as InspectorState
+      } satisfies InspectorState
     })
 }
 

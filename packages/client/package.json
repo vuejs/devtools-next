@@ -39,6 +39,7 @@
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
     "colord": "^2.9.3",
+    "fuse.js": "^7.0.0",
     "minimatch": "^9.0.3",
     "splitpanes": "^3.1.5",
     "vite-hot-client": "^0.2.2",

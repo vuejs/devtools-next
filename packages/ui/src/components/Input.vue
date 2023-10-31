@@ -72,7 +72,7 @@ watchEffect(() => {
 <template>
   <div
     class="relative w-auto min-w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
-           flex justify-between items-center gap-2px py-5px px12px color-gray-800 dark:color-gray-100 group"
+           flex justify-between items-center gap-2px py-3px px12px color-gray-800 dark:color-gray-100 group"
     :class="{
       'border-none bg-transparent group': variant === 'flat',
       'cursor-not-allowed opacity-50': disabled,

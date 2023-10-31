@@ -113,10 +113,13 @@ importers:
         version: 10.5.0(vue@3.3.5)
       '@vueuse/integrations':
         specifier: ^10.5.0
-        version: 10.5.0(vue@3.3.5)
+        version: 10.5.0(fuse.js@7.0.0)(vue@3.3.5)
       colord:
         specifier: ^2.9.3
         version: 2.9.3
+      fuse.js:
+        specifier: ^7.0.0
+        version: 7.0.0
       minimatch:
         specifier: ^9.0.3
         version: 9.0.3
@@ -202,9 +205,18 @@ importers:
       birpc:
         specifier: ^0.2.14
         version: 0.2.14
+      fast-glob:
+        specifier: ^3.3.1
+        version: 3.3.1
+      image-meta:
+        specifier: ^0.2.0
+        version: 0.2.0
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
+      pathe:
+        specifier: ^1.1.1
+        version: 1.1.1
       vite-hot-client:
         specifier: ^0.2.2
         version: 0.2.2(vite@4.5.0)
@@ -2990,7 +3002,7 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/integrations@10.5.0(vue@3.3.5):
+  /@vueuse/integrations@10.5.0(fuse.js@7.0.0)(vue@3.3.5):
     resolution: {integrity: sha512-fm5sXLCK0Ww3rRnzqnCQRmfjDURaI4xMsx+T+cec0ngQqHx/JgUtm8G0vRjwtonIeTBsH1Q8L3SucE+7K7upJQ==}
     peerDependencies:
       async-validator: '*'
@@ -3033,6 +3045,7 @@ packages:
     dependencies:
       '@vueuse/core': 10.5.0(vue@3.3.5)
       '@vueuse/shared': 10.5.0(vue@3.3.5)
+      fuse.js: 7.0.0
       vue-demi: 0.14.6(vue@3.3.5)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -5084,6 +5097,11 @@ packages:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: true
 
+  /fuse.js@7.0.0:
+    resolution: {integrity: sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==}
+    engines: {node: '>=10'}
+    dev: false
+
   /gauge@4.0.4:
     resolution: {integrity: sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
@@ -5510,7 +5528,6 @@ packages:
 
   /image-meta@0.2.0:
     resolution: {integrity: sha512-ZBGjl0ZMEMeOC3Ns0wUF/5UdUmr3qQhBSCniT0LxOgGGIRHiNFOkMtIHB7EOznRU47V2AxPgiVP+s+0/UCU0Hg==}
-    dev: true
 
   /immutable@4.3.4:
     resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}

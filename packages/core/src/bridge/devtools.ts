@@ -81,4 +81,9 @@ export class BridgeRpc {
   static async getMatchedRoutes(path: string) {
     return bridgeRpcCore.emit<{ data: { path: string }[] }>(bridgeRpcEvents.routeMatched, path)
   }
+
+  // assets
+  static getStaticAssets() {
+    return viteRpc!.api!.getStaticAssets()
+  }
 }

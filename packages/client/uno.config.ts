@@ -52,7 +52,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
   shortcuts: [{
     // general
     'bg-base': 'bg-white dark:bg-black',
-    'bg-active': 'bg-primary-100 dark:bg-gray-900',
+    'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
     'transition-base': 'transition-all duration-200',
 

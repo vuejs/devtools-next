@@ -58,6 +58,10 @@ export default defineConfig(mergeConfigs([unoConfig, {
 
     'x-divider': 'h-1px w-full bg-gray/15',
 
+    // glass
+    'glass-effect': 'backdrop-blur-6 bg-white/80 dark:bg-black/90',
+    'navbar-glass': 'sticky z-10 top-0 glass-effect',
+
     // panel grids
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',
     'panel-grids-center': 'panel-grids flex flex-col h-full gap-2 items-center justify-center',

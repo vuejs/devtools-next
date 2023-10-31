@@ -12,6 +12,7 @@ import PiniaPage from '~/pages/pinia.vue'
 import RouterPage from '~/pages/router.vue'
 import Timeline from '~/pages/timeline.vue'
 import Pages from '~/pages/pages.vue'
+import Assets from '~/pages/assets.vue'
 import 'uno.css'
 import '~/assets/styles/main.css'
 
@@ -31,6 +32,7 @@ const routes = [
   { path: '/router', component: RouterPage },
   { path: '/timeline', component: Timeline },
   { path: '/pages', component: Pages },
+  { path: '/assets', component: Assets },
 ]
 
 async function reload(app, shell) {

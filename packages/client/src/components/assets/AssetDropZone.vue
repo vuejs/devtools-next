@@ -72,11 +72,11 @@ async function uploadFiles() {
   for (const file of files.value) {
     const reader = new FileReader()
     reader.readAsDataURL(file)
-    const result = await new Promise((resolve) => {
+    const result = await new Promise<string>((resolve) => {
       reader.onload = () => resolve(reader.result as string)
-    }) as string
+    })
     // TODO: add validation
-    const content = result.split(';base64,').pop() as string
+    const content = result.split(';base64,').pop()!
     uploadFiles.push({
       path: file.name,
       encoding: 'base64',

@@ -120,7 +120,6 @@ const filterName = ref('')
 
 // @TODO: bugfix - the selected component highlighted working failed when the filter is applied
 watchDebounced(filterName, (v) => {
-  // @ts-expect-error - watchDebounced type error
   const value = v.trim().toLowerCase() as string
   toggleFiltered()
   getComponentTree(value).then(() => {

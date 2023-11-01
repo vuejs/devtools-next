@@ -33,7 +33,7 @@ function initDevToolsState() {
 }
 
 function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
-  const bridge = ref(_bridge) as Ref<DevToolsPluginOptions['bridge']>
+  const bridge = ref<DevToolsPluginOptions['bridge']>(_bridge)
 
   function restore(_bridge: DevToolsPluginOptions['bridge']) {
     bridge.value = _bridge

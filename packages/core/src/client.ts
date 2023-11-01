@@ -15,7 +15,7 @@ export function getDevToolsClientUrl() {
   })()
 }
 
-const fns = [] as (() => void)[]
+const fns: (() => void)[] = []
 
 export function onDevToolsClientConnected(fn: () => void) {
   fns.push(fn)

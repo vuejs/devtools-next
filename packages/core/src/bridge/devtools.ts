@@ -86,4 +86,12 @@ export class BridgeRpc {
   static getStaticAssets() {
     return viteRpc!.api!.getStaticAssets()
   }
+
+  static getImageMeta(filepath: string) {
+    return viteRpc!.api!.getImageMeta(filepath)
+  }
+
+  static getTextAssetContent(filepath: string, limit = 300) {
+    return viteRpc!.api!.getTextAssetContent(filepath, limit)
+  }
 }

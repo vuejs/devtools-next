@@ -33,4 +33,6 @@ export interface CodeSnippet {
 export interface ViteRPCFunctions {
   root(): string
   getStaticAssets(): Promise<AssetInfo[]>
+  getImageMeta(filepath: string): Promise<ImageMeta | undefined>
+  getTextAssetContent(filepath: string, limit?: number): Promise<string | undefined>
 }

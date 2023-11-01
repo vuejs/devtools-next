@@ -15,6 +15,7 @@ const sorted = computed(() => {
   return [...props.pages].sort((a, b) => a.path.localeCompare(b.path))
 })
 
+// @TODO: open in editor
 function openInEditor(name: string) {
 }
 </script>

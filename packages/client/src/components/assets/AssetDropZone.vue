@@ -130,12 +130,13 @@ useEventListener('drop', onDrop)
     fixed bottom-0 left-13 right-0 top-0 z-10 backdrop-blur-20 transition-all
     :class="visible ? 'opacity-100 visible' : 'opacity-0 invisible'"
   >
-    <IconTitle
+    <VueIcon
       v-tooltip.bottom-end="'Close'"
       icon="i-carbon-close"
       title="Close"
       absolute right-5 top-5 z-20 text-xl
       :border="false"
+      action
       @click="close"
     />
     <div v-if="!files?.length" h-full w-full flex items-center justify-center>

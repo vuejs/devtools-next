@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { AssetInfo } from '@vue-devtools-next/core'
+import { VueIcon } from '@vue-devtools-next/ui'
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Fuse from 'fuse.js'
 
 const DETAILS_MAX_ITEMS = 50
 const search = ref('')
 const navbar = ref<HTMLElement>()
-const dropzone = ref(false)
+// const dropzone = ref(false)
 const view = ref('grid')
 const assets = ref<AssetInfo[]>([])
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -77,7 +78,9 @@ onDevToolsClientConnected(() => {
     assets.value = res
   })
 })
-function toggleView() {}
+function toggleView() {
+  view.value = view.value === 'list' ? 'grid' : 'list'
+}
 </script>
 
 <template>
@@ -85,53 +88,54 @@ function toggleView() {}
     <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
       <template #actions>
         <div flex-none flex="~ gap2 items-center" text-lg>
-          <IconTitle
+          <!-- <VueIcon
             v-tooltip.bottom-end="'File Upload'"
             icon="i-carbon:cloud-upload"
-            title="File Upload" :border="false" flex="~ gap-0!"
+            title="File Upload" :border="false" flex="~ gap-0!" action
             @click="dropzone = !dropzone"
-          />
+          /> -->
           <VDropdown direction="end" n="sm primary">
             <IconTitle
               v-tooltip.bottom-end="'Filter'"
-              icon="i-carbon-filter" :border="false"
-              title="Filter" p2 text-lg relative
+              icon="i-carbon-filter hover:op50" :border="false"
+              title="Filter" p2 text-lg relative cursor-pointer
               @click="() => {}"
             >
-              <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px>
-                10
+              <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full text-white bg-primary-800 text-8px>
+                {{ extensions.length }}
               </span>
             </IconTitle>
             <template #popper>
               <div flex="~ col" w-30 of-auto>
-                hello world
-              <!-- <NCheckbox
-                v-for="item of extensions"
-                :key="item.name"
-                v-model="item.value"
-                flex="~ gap-2"
-                rounded
-                px2 py2
-              >
-                <span text-xs op75>
-                  {{ item.name }}
-                </span>
-              </NCheckbox> -->
+                <!-- @TODO: vue checkbox component -->
+                <!-- <VueCheckbox
+                  v-for="item of extensions"
+                  :key="item.name"
+                  v-model="item.value"
+                  flex="~ gap-2"
+                  rounded
+                  px2 py2
+                >
+                  <span text-xs op75>
+                    {{ item.name }}
+                  </span>
+                </VueCheckbox> -->
               </div>
             </template>
           </VDropdown>
-          <IconTitle
+          <VueIcon
             v-tooltip.bottom-end="'Toggle View'"
-            text-lg :border="false"
+            cursor-pointer text-lg :border="false"
             :icon="view === 'grid' ? 'i-carbon-list' : 'i-carbon-grid'"
             title="Toggle view"
+            action
             @click="toggleView"
           />
         </div>
       </template>
       <div op50>
-        <span v-if="search">3 matched · </span>
-        <span>10 assets in total</span>
+        <span v-if="search">{{ filtered.length }} matched · </span>
+        <span>{{ assets?.length }} assets in total</span>
       </div>
     </Navbar>
 
@@ -154,5 +158,20 @@ function toggleView() {}
         <AssetGridItem v-for="a of filtered" :key="a.path" :asset="a" @click="selected = a" />
       </div>
     </template>
+    <div v-else>
+      <AssetListItem
+        v-for="item, key of byTree" :key="key"
+        v-model="selected"
+        :item="item"
+      />
+    </div>
+    <Drawer
+      :model-value="!!selected"
+      auto-close w-120
+      :top="navbar"
+      @close="selected = undefined"
+    >
+      <AssetDetails v-if="selected" v-model="selected" />
+    </Drawer>
   </div>
 </template>

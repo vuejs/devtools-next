@@ -52,12 +52,12 @@
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
-    "@histoire/plugin-vue": "^0.17.1",
-    "@types/node": "^20.8.7",
-    "@unocss/reset": "^0.56.5",
+    "@histoire/plugin-vue": "^0.17.4",
+    "@types/node": "^20.8.10",
+    "@unocss/reset": "^0.57.1",
     "@vitejs/plugin-vue": "^4.4.0",
-    "histoire": "^0.17.2",
-    "unocss": "^0.56.5",
-    "vite-plugin-dts": "^3.6.0"
+    "histoire": "^0.17.4",
+    "unocss": "^0.57.1",
+    "vite-plugin-dts": "^3.6.3"
   }
 }

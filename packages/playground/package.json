@@ -9,7 +9,7 @@
   "dependencies": {
     "@vueuse/core": "^10.5.0",
     "pinia": "^2.1.7",
-    "vue": "^3.3.5",
+    "vue": "^3.3.7",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
@@ -17,7 +17,7 @@
     "serve": "^14.2.1",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
-    "vite-plugin-inspect": "^0.7.40",
+    "vite-plugin-inspect": "^0.7.41",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

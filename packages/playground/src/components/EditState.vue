@@ -6,5 +6,11 @@ const numericValue = ref(0)
 </script>
 
 <template>
-  <div />
+  <div>
+    <h3>Edit State</h3>
+    <ul>
+      <li>boolean value: {{ booleanValue }}</li>
+      <li>numeric value: {{ numericValue }}</li>
+    </ul>
+  </div>
 </template>

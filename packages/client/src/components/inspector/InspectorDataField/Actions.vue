@@ -31,7 +31,7 @@ const { sendEdit } = useEditState(type)
         instanceId: '',
         dataType: data.stateType,
         data: {
-          newKey: data.key,
+          newKey: null,
           value: !data.value,
         },
       })"

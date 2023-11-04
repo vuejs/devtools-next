@@ -1,7 +1,8 @@
-import { NOOP } from '@vue-devtools-next/shared'
+import type { MaybeRef, Ref } from 'vue'
+import { isRef } from 'vue'
 import type { EditStatePayloadData } from '../core/edit/types'
 
-type Recordable = Record<PropertyKey, unknown>
+type Recordable = Record<PropertyKey, any>
 
 type PropPath = string | string[]
 
@@ -12,7 +13,7 @@ export class StateEditor {
     object: Recordable,
     path: PropPath,
     value: unknown,
-    cb: (object: Recordable, field: string, value: unknown) => void = NOOP,
+    cb?: (object: Recordable, field: string, value: unknown) => void,
   ) {
     const sections = Array.isArray(path) ? path : path.split('.')
     while (sections.length > 1) {
@@ -22,10 +23,11 @@ export class StateEditor {
         object = this.refEditor.get(object)
     }
     const field = sections[0]
+    const item = object[field]
     if (cb)
       cb(object, field, value)
-    else if (this.refEditor.isRef(object[field]))
-      this.refEditor.set(object[field], value)
+    else if (this.refEditor.isRef(item))
+      this.refEditor.set(item, value)
     else
       object[field] = value
   }
@@ -63,28 +65,28 @@ export class StateEditor {
           object.splice(field as number, 1)
         else
           Reflect.deleteProperty(object, field)
-        if (!state.remove) {
-          const target = object[state.newKey || field]
-          if (this.refEditor.isRef(target))
-            this.refEditor.set(target, value)
-          else
-            object[state.newKey || field] = value
-        }
+      }
+      if (!state.remove) {
+        const target = object[state.newKey || field]
+        if (this.refEditor.isRef(target))
+          this.refEditor.set(target, value)
+        else
+          object[state.newKey || field] = value
       }
     }
   }
 }
 
-// @TODO: To be implemented, the upstream `vuejs/devtools` mark this as un implemented, so the priority is low.
 class RefStateEditor {
-  set(_ref: any, _value: any): void {
+  set(ref: Ref<any>, value: any): void {
+    ref.value = value
   }
 
   get(ref: any): any {
     return ref
   }
 
-  isRef(_ref: any): boolean {
-    return false
+  isRef(ref: MaybeRef<any>): ref is Ref<any> {
+    return isRef(ref)
   }
 }

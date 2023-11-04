@@ -92,14 +92,14 @@ const hasChildren = computed(() => {
 })
 
 // ---------------------------- edit ----------------------------
-const { editing, editingText, toggleEditing, sendEdit, nodeId } = useEditStateInput()
+const { editingType, editing, editingText, toggleEditing, sendEdit, nodeId } = useEditStateInput()
 
 watch(() => editing.value, (v) => {
   if (v) {
     // TODO: object, array...
-    if (typeof props.data.value !== 'string')
+    if (!['string', 'number'].includes(typeof props.data.value))
       return
-    editingText.value = props.data.value
+    editingText.value = props.data.value.toString()
   }
   else {
     editingText.value = ''
@@ -130,7 +130,7 @@ const hovering = ref(false)
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
         <template v-if="editing">
-          <EditInput v-model="editingText" @cancel="toggleEditing" @submit="editSubmit" />
+          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="editSubmit" />
         </template>
         <template v-else>
           <span :class="stateFormatClass">

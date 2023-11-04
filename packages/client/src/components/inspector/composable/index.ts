@@ -20,7 +20,8 @@ export function useEditState<T extends EditStateType>(type: T) {
 
 export function useEditStateInput() {
   const editingText = ref('')
-  const [editing, toggleEditing] = useToggle(false)
+  const editingType = ref<'number' | 'string'>('string')
+  const editing = ref(false)
 
   const { nodeId, type } = getEditData()!
   const { sendEdit } = useEditState(type)
@@ -28,7 +29,12 @@ export function useEditStateInput() {
   return {
     editingText,
     editing,
-    toggleEditing,
+    toggleEditing(t?: 'number' | 'string') {
+      if (t)
+        editingType.value = t
+      editing.value = !editing.value
+    },
+    editingType,
     nodeId,
     sendEdit,
   }

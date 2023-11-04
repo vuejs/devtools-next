@@ -7,7 +7,7 @@ import VueLoading from './LoadingIndicator.vue'
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
-  variant?: 'normal' | 'accent' | 'flat'
+  variant?: 'normal' | 'accent' | 'flat' | 'warning'
   disabled?: boolean
   password?: boolean
   leftIcon?: string
@@ -42,7 +42,7 @@ const focused = refWithControl(false, {
     emit('updateFocused', value)
   },
 })
-const noFocusAnimation = computed(() => props.variant === 'flat')
+const noFocusAnimation = computed(() => props.variant === 'flat' || props.variant === 'warning')
 
 const disabled = computed(() => props.disabled || loading.value)
 
@@ -76,14 +76,21 @@ watchEffect(() => {
 
 <template>
   <div
-    class="relative w-auto w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
+    class="relative w-auto w-200px overflow-hidden b-1 rounded-1
            flex justify-between items-center gap-2px py-3px px12px color-gray-800 dark:color-gray-100 group"
-    :class="{
-      'border-none bg-transparent group': variant === 'flat',
-      'cursor-not-allowed opacity-50': disabled,
-      'accent': variant === 'accent',
-      'focused': focused,
-    }"
+    :class="[
+      {
+        'border-none bg-transparent group': variant === 'flat',
+        'cursor-not-allowed opacity-50': disabled,
+        'accent': variant === 'accent',
+        'focused': focused,
+      },
+      [
+        variant === 'warning'
+          ? 'border-warning-500 dark:border-warning-300'
+          : 'border-primary-100 dark:border-gray-700',
+      ],
+    ]"
     @click="() => {
       focused = true
     }"

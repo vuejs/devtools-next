@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
-  'enableEditInput': []
+  'enableEditInput': [type: 'number' | 'string']
 }>()
 
 const { type, nodeId } = getEditData()!
@@ -52,6 +52,14 @@ function quickEdit(v: unknown) {
   <div class="inline pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="data.editable">
+      <!-- input edit, number/string -->
+      <template v-if="dataType === 'string' || dataType === 'number'">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="$emit('enableEditInput', dataType)">
+          <template #icon>
+            <VueIcon icon="i-material-symbols-edit-rounded" />
+          </template>
+        </VueButton>
+      </template>
       <!-- checkbox, button value only -->
       <VueButton
         v-if="dataType === 'boolean'" v-bind="iconButtonProps" :class="buttonClass"
@@ -71,13 +79,6 @@ function quickEdit(v: unknown) {
         <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((data.value as number) - 1)">
           <template #icon>
             <VueIcon icon="i-carbon-subtract" />
-          </template>
-        </VueButton>
-      </template>
-      <template v-else-if="dataType === 'string'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="$emit('enableEditInput')">
-          <template #icon>
-            <VueIcon icon="i-material-symbols-edit-rounded" />
           </template>
         </VueButton>
       </template>

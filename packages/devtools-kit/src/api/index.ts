@@ -1,7 +1,8 @@
 import { devtoolsContext } from '../core/general/state'
-import { stringify } from '../shared'
+import { now as nowFn, stringify } from '../shared'
 import type { AddInspectorApiPayload } from '../core/component/types'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
+import type { TimelineEvent } from '../core/timeline'
 import { addTimelineLayer } from '../core/timeline'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
@@ -15,7 +16,10 @@ export class DevToolsPluginApi {
     this.on = on
   }
 
-  addTimelineEvent() {}
+  addTimelineEvent(payload: TimelineEvent) {
+    apiHooks.callHook(DevToolsEvents.ADD_TIMELINE_EVENT, payload)
+  }
+
   async getInspectorTree(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]>[0] = {}) {
     const { inspectorId, filter = '', instanceId = '' } = payload
     const _payload = {
@@ -99,7 +103,10 @@ export class DevToolsPluginApi {
   }
 
   notifyComponentUpdate() {}
-  now() {}
+  now() {
+    return nowFn()
+  }
+
   getSettings() {
     return {
       logStoreChanges: null,

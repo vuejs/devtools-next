@@ -79,6 +79,9 @@ export const bridgeRpcEvents = {
   inspectorState: 'inspector-state',
   state: 'state',
   timelineLayer: 'timeline-layer',
+  routerInfo: 'router-info',
+  router: 'router',
+  routeMatched: 'route-matched',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -94,12 +97,15 @@ export interface BridgeRpcEventPayload {
   }
   [bridgeRpcEvents.state]: null
   [bridgeRpcEvents.timelineLayer]: null
+  [bridgeRpcEvents.routerInfo]: null
+  [bridgeRpcEvents.router]: string
+  [bridgeRpcEvents.routeMatched]: string
 }
 
 export const bridgeRpcCore = {
   on<E extends BridgeRpcEventName>(
     eventName: E,
-    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<string> | string,
+    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<string | void> | string,
   ) {
     Bridge.value.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
       const res = await handler(payload)

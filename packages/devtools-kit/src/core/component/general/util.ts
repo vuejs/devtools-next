@@ -95,7 +95,7 @@ export function getInstanceName(instance: VueAppInstance) {
  * @param {Vue} instance
  */
 export function getUniqueComponentId(instance: VueAppInstance) {
-  const appId = instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD_ID__ ?? 0
+  const appId = instance?.appContext?.app?.__VUE_DEVTOOLS_APP_RECORD_ID__ ?? 0
   const instanceId = instance === instance.root ? 'root' : instance.uid
   return `${appId}:${instanceId}`
 }
@@ -131,5 +131,6 @@ export function getComponentInstance(appRecord: AppRecord, instanceId: string | 
 
   const instance = appRecord.instanceMap.get(instanceId)
 
-  return instance
+  // @TODO: find a better way to handle it
+  return instance || appRecord.instanceMap.get(':root')
 }

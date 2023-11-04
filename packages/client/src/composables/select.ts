@@ -31,3 +31,16 @@ export function useSelect(groupId: string, id: string, onSelect?: (id: string) =
     toggleSelected,
   }
 }
+
+export function useSelectWithContext(groupId: string, id: string, onSelect?: (id: string) => void) {
+  const { selected } = useSelectContext(groupId)
+  const isSelected = computed(() => selected.value === id)
+  const toggleSelected = (id: string) => {
+    selected.value = id
+    onSelect?.(id)
+  }
+  return {
+    isSelected,
+    toggleSelected,
+  }
+}

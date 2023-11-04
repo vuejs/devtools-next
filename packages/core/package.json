@@ -14,6 +14,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -31,10 +36,15 @@
   "dependencies": {
     "@vue-devtools-next/schema": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
+    "birpc": "^0.2.14",
+    "fast-glob": "^3.3.1",
+    "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
+    "pathe": "^1.1.1",
+    "vite-hot-client": "^0.2.2",
     "vue-devtools-kit": "workspace:^"
   },
   "devDependencies": {
-    "vue": "^3.3.5"
+    "vue": "^3.3.7"
   }
 }

@@ -17,7 +17,7 @@ watch(connected, (v) => {
 <template>
   <main class="$ui-bg-base fixed inset-0 h-screen w-screen">
     <AppConnecting v-if="!connected" />
-    <div v-else>
+    <div v-else class="h-full of-auto">
       <RouterView />
     </div>
   </main>

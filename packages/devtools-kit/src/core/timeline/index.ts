@@ -1,6 +1,8 @@
 import type { DevToolsContext } from '@vue-devtools-next/schema'
 import { devtoolsContext } from '../general/state'
 
+export type * from './types'
+
 export function addTimelineLayer(payload: DevToolsContext['timelineLayer'][0]) {
   devtoolsContext.timelineLayer.push(payload)
 }

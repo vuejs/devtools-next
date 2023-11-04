@@ -13,7 +13,7 @@ const emit = defineEmits<{
   (e: 'select', id: string): void
 }>()
 const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
-const { isSelected, toggleSelected } = useSelect('component-tree', props.data.id, (id) => {
+const { isSelected, toggleSelected } = useSelectWithContext('component-tree', props.data.id, (id) => {
   emit('select', id)
 })
 </script>

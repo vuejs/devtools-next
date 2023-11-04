@@ -4,15 +4,25 @@ import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
+import { getViteClient } from 'vite-hot-client'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
 import RouterPage from '~/pages/router.vue'
 import Timeline from '~/pages/timeline.vue'
-
+import Pages from '~/pages/pages.vue'
+import Assets from '~/pages/assets.vue'
 import 'uno.css'
 import '~/assets/styles/main.css'
+
+async function getViteHotContext() {
+  if (import.meta.url?.includes('chrome-extension://'))
+    return
+
+  const viteCLient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
+  return viteCLient?.createHotContext('/____')
+}
 
 const routes = [
   { path: '/overview', component: Overview },
@@ -21,13 +31,17 @@ const routes = [
   { path: '/router', component: RouterPage },
   { path: '/router', component: RouterPage },
   { path: '/timeline', component: Timeline },
+  { path: '/pages', component: Pages },
+  { path: '/assets', component: Assets },
 ]
 
 async function reload(app, shell) {
   Bridge.value.removeAllListeners()
-  shell.connect((bridge) => {
+  shell.connect(async (bridge) => {
     Bridge.value = bridge
-    registerBridgeRpc('devtools')
+    registerBridgeRpc('devtools', {
+      viteRPCContext: await getViteHotContext(),
+    })
     new HandShakeServer(Bridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(Bridge.value)
       Bridge.value.emit(BridgeEvents.CLIENT_READY)
@@ -51,7 +65,9 @@ async function connectApp(app, shell) {
 export async function initDevTools(shell) {
   const app = createApp(App)
   await connectApp(app, shell)
-  registerBridgeRpc('devtools')
+  registerBridgeRpc('devtools', {
+    viteRPCContext: await getViteHotContext(),
+  })
   new HandShakeServer(Bridge.value).onnConnect().then(() => {
     const router = createRouter({
       history: createMemoryHistory(),

@@ -20,6 +20,8 @@ declare global {
   var __VUE_DEVTOOLS_GLOBAL_STATE__: DevToolsState
   // devtools context
   var __VUE_DEVTOOLS_CONTEXT__: DevToolsContext
+  // router
+  var __VUE_DEVTOOLS_ROUTER__: unknown
 }
 
 export { }

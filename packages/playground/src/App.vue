@@ -25,6 +25,11 @@ const route = useRoute()
     <RouterView />
     {{ doubleCount }}
     {{ isDark }}
+    <RouterLink to="/hello">
+      <div>
+        Go to hello
+      </div>
+    </RouterLink>
     <button @click="app.increment">
       Increment
     </button>

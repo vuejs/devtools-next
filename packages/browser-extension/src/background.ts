@@ -7,9 +7,9 @@ const ports: Record<string | number, PortDetail> = {}
 function initPort(portInfo: PortInfo): Record<'devtools' | 'userApp', chrome.runtime.Port> {
   const { tab, name, port } = portInfo
   ports[tab] ??= {
-    devtools: null,
-    userApp: null,
-  } as unknown as PortDetail
+    devtools: null!,
+    userApp: null!,
+  }
   ports[tab][name] = port
   return ports[tab]
 }
@@ -39,7 +39,7 @@ function devtoolsUserAppPipe(tabId: string | number) {
     userApp.onMessage.removeListener(onUserAppMessage)
     devtools?.disconnect()
     userApp?.disconnect()
-    ports[tabId] = null as unknown as PortDetail
+    ports[tabId] = null!
   }
 
   devtools.onDisconnect.addListener(shutdown)

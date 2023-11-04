@@ -3,6 +3,7 @@
 import type { InspectorNodeTag } from 'vue-devtools-kit'
 
 const props = defineProps<{
+  modelValue: string
   data: {
     label: string
     id: string
@@ -11,15 +12,16 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'select', id: string): void
+  (e: 'update:modelValue', value: string): void
 }>()
-const { isSelected, toggleSelected } = useSelect('inspector-tree', props.data.id, (id) => {
-  emit('select', id)
-})
+
+function select() {
+  emit('update:modelValue', props.data.id)
+}
 </script>
 
 <template>
-  <div class="selectable-item" :class="{ active: isSelected }" @click="toggleSelected(data.id)">
+  <div class="selectable-item" :class="{ active: modelValue === data.id }" @click="select">
     <span>
       {{ data.label }}
     </span>

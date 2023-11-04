@@ -2,19 +2,24 @@ import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorTreeApiPayload } from '../core/component/types'
+import type { TimelineEvent } from '../core/timeline'
+import type { RouterInfo } from '../core/router'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
+  ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
   SEND_INSPECTOR_STATE = 'inspector-state:send',
   VISIT_COMPONENT_TREE = 'component-tree:visit',
+  ADD_TIMELINE_EVENT = 'timeline:add-event',
 }
 
 export interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
+  [DevToolsEvents.ROUTER_INFO_UPDATED]: (routerInfo: RouterInfo) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined
     app: VueAppInstance | undefined
@@ -36,6 +41,7 @@ export interface DevToolsEvent {
     treeNode: ComponentTreeNode
     filter: string
   }) => void
+  [DevToolsEvents.ADD_TIMELINE_EVENT]: (payload: TimelineEvent) => void
 }
 
 // export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
@@ -44,6 +50,9 @@ export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = create
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
+  },
+  routerInfoUpdated(fn: DevToolsEvent[DevToolsEvents.ROUTER_INFO_UPDATED]) {
+    apiHooks.hook(DevToolsEvents.ROUTER_INFO_UPDATED, fn)
   },
   // compatible
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {
@@ -64,6 +73,9 @@ export const on = {
   },
   sendInspectorState(fn: DevToolsEvent[DevToolsEvents.SEND_INSPECTOR_STATE]) {
     apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_STATE, fn)
+  },
+  addTimelineEvent(fn: DevToolsEvent[DevToolsEvents.ADD_TIMELINE_EVENT]) {
+    apiHooks.hook(DevToolsEvents.ADD_TIMELINE_EVENT, fn)
   },
   editInspectorState() {},
   editComponentState() {},

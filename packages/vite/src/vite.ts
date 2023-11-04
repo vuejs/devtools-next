@@ -5,6 +5,8 @@ import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
 import VueInspector from 'vite-plugin-vue-inspector'
+import { setupViteRPCServer } from '@vue-devtools-next/core'
+import { setupAssetsRPC } from '@vue-devtools-next/core/server'
 import { DIR_CLIENT } from './dir'
 
 type DeepRequired<T> = {
@@ -58,6 +60,13 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       single: true,
       dev: true,
     }))
+    setupViteRPCServer(server.ws, {
+      root: () => config.root,
+      ...setupAssetsRPC({
+        root: config.root,
+        base,
+      }),
+    })
   }
   const plugin = <PluginOption>{
     name: 'vite-plugin-vue-devtools',
@@ -134,7 +143,6 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
 
   return [
     VueInspector({
-      lazyLoad: pluginOptions.appendTo ? 200 : false,
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
       openInEditorHost: pluginOptions.openInEditorHost,

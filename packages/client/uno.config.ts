@@ -1,4 +1,4 @@
-import { defineConfig, mergeConfigs, presetAttributify } from 'unocss'
+import { defineConfig, mergeConfigs, presetAttributify, presetWebFonts } from 'unocss'
 import { unoConfig } from '@vue-devtools-next/ui/theme'
 
 export default defineConfig(mergeConfigs([unoConfig, {
@@ -52,8 +52,18 @@ export default defineConfig(mergeConfigs([unoConfig, {
   shortcuts: [{
     // general
     'bg-base': 'bg-white dark:bg-black',
+    'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
     'transition-base': 'transition-all duration-200',
+
+    'x-divider': 'h-1px w-full bg-gray/15',
+
+    // glass
+    'glass-effect': 'backdrop-blur-6 bg-white/80 dark:bg-black/90',
+    'navbar-glass': 'sticky z-10 top-0 glass-effect',
+
+    // code
+    'code-block': 'dark:bg-[#121212] bg-white',
 
     // panel grids
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',
@@ -71,6 +81,12 @@ export default defineConfig(mergeConfigs([unoConfig, {
   }, [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border border-base bg-base items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`]],
   presets: [
     presetAttributify(),
+    presetWebFonts({
+      fonts: {
+        sans: 'DM Sans',
+        mono: 'DM Mono',
+      },
+    }),
   ],
   safelist: [
     'state-value-literal',

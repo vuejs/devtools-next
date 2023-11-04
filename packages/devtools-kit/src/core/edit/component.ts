@@ -1,11 +1,12 @@
 import type { PluginApi } from '@vue-devtools-next/schema'
 import type { StateEditor } from '../../shared/edit'
-import { getComponentInstance } from '../component/general'
+import { getComponentInstance, nodeIdToInstanceId } from '../component/general'
 import { devtoolsContext } from '../general'
 import type { EditStateComponentPayload } from './types'
 
 export async function editComponentState(payload: EditStateComponentPayload, stateEditor: StateEditor, api: PluginApi) {
-  const { instanceId, dotPath, data } = payload
+  const { dotPath, data } = payload
+  const instanceId = nodeIdToInstanceId(devtoolsContext.appRecord.id, data.nodeId)
   // assert data types, currently no...
   // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
   const instance = getComponentInstance(devtoolsContext.appRecord, instanceId)

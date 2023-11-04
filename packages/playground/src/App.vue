@@ -3,6 +3,7 @@ import { useDark } from '@vueuse/core'
 import { computed, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from './stores'
+import EditState from './components/EditState.vue'
 
 const app = useAppStore()
 const isDark = useDark()
@@ -22,6 +23,7 @@ const route = useRoute()
     <button @click="isDark = !isDark">
       toggle dark mode
     </button>
+    <EditState />
     <RouterView />
     {{ doubleCount }}
     {{ isDark }}

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
 import type { InspectorState } from 'vue-devtools-kit'
-import { getEditType, useEditState } from '../composable'
+import { getEditData, useEditState } from '../composable'
 
 const props = defineProps<{
   data: InspectorState
   hovering: boolean
 }>()
 
-const type = getEditType()!
+const { type, nodeId } = getEditData()!
 
 const { copy, isSupported } = useClipboard()
 
@@ -28,9 +28,9 @@ const { sendEdit } = useEditState(type)
       }" size="mini" flat
       @click="sendEdit({
         dotPath: data.key,
-        instanceId: '',
         dataType: data.stateType,
         data: {
+          nodeId,
           newKey: null,
           value: !data.value,
         },

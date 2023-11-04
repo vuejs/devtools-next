@@ -21,11 +21,11 @@ export interface EditStatePayloadData<T = unknown> {
   value: T
   newKey: string | null
   remove?: false
+  nodeId: string
 }
 
 // component edit
 export interface EditStateComponentPayload<T = unknown> {
-  instanceId: string
   dotPath: string
   dataType?: string
   data: EditStatePayloadData<T>

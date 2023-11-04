@@ -125,12 +125,12 @@ export function returnError(cb: () => unknown): number | string {
   }
 }
 
-export function normalizeInstanceId(appRecordId: AppRecord['id'], instanceId: string | undefined) {
-  return instanceId || `${appRecordId}:root`
+export function nodeIdToInstanceId(appRecordId: AppRecord['id'], nodeId: string) {
+  return `${appRecordId}${nodeId}`
 }
 
 export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
-  instanceId = normalizeInstanceId(appRecord.id, instanceId)
+  instanceId = instanceId || `${appRecord.id}:root`
 
   const instance = appRecord.instanceMap.get(instanceId)
 

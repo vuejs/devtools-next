@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { EditStateType, InspectorState } from 'vue-devtools-kit'
-import { setEditType } from './composable'
+import { setEditData } from './composable'
 
 const props = defineProps<{
   data: InspectorState[]
   name: string
   id: string
+  nodeId: string
   editType: EditStateType
 }>()
 
@@ -13,7 +14,10 @@ const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
 !isExpanded.value && toggleCollapse()
 
-setEditType(props.editType)
+setEditData({
+  type: props.editType,
+  nodeId: props.nodeId,
+})
 </script>
 
 <template>

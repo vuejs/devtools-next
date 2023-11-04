@@ -10,7 +10,10 @@ export function useContextMenu() {
 
 }
 
-export const { get: getEditType, set: setEditType } = useContext<EditStateType>('edit-state-type')
+export const { get: getEditData, set: setEditData } = useContext<{
+  type: EditStateType
+  nodeId: string
+}>('edit-state-data')
 
 export function useEditState<T extends EditStateType>(type: T) {
   return {

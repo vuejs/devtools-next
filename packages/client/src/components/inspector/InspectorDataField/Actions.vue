@@ -52,7 +52,7 @@ function quickEdit(v: unknown) {
   <div class="inline pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="data.editable">
-      <!-- Checkbox(Boolean value only) -->
+      <!-- checkbox, button value only -->
       <VueButton
         v-if="dataType === 'boolean'" v-bind="iconButtonProps" :class="buttonClass"
         @click="quickEdit(!data.value)"

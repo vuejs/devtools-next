@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 const booleanValue = ref(true)
 const numericValue = ref(0)
+
+const reactiveValue = reactive({
+  a: 1,
+})
 </script>
 
 <template>
@@ -11,6 +15,7 @@ const numericValue = ref(0)
     <ul>
       <li>boolean value: {{ booleanValue }}</li>
       <li>numeric value: {{ numericValue }}</li>
+      <li>reactive value: {{ JSON.stringify(reactiveValue) }}</li>
     </ul>
   </div>
 </template>

@@ -2,14 +2,6 @@ import { Bridge, BridgeEvents } from '@vue-devtools-next/core'
 import type { EditStateEventPayload, EditStatePayloads, EditStateType } from 'vue-devtools-kit'
 import { useContext } from '~/utils/use'
 
-export function useFiledError() {
-  const fieldErrors = {}
-}
-
-export function useContextMenu() {
-
-}
-
 export const { get: getEditData, set: setEditData } = useContext<{
   type: EditStateType
   nodeId: string
@@ -23,5 +15,21 @@ export function useEditState<T extends EditStateType>(type: T) {
         payload,
       } satisfies EditStateEventPayload<T>)
     },
+  }
+}
+
+export function useEditStateInput() {
+  const editingText = ref('')
+  const [editing, toggleEditing] = useToggle(false)
+
+  const { nodeId, type } = getEditData()!
+  const { sendEdit } = useEditState(type)
+
+  return {
+    editingText,
+    editing,
+    toggleEditing,
+    nodeId,
+    sendEdit,
   }
 }

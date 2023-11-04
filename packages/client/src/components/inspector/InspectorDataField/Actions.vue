@@ -9,6 +9,10 @@ const props = defineProps<{
   hovering: boolean
 }>()
 
+defineEmits<{
+  'enableEditInput': []
+}>()
+
 const { type, nodeId } = getEditData()!
 
 const { copy, isSupported } = useClipboard()
@@ -17,11 +21,7 @@ const popupVisible = ref(false)
 
 const dataType = computed(() => {
   const v = props.data.value
-  if (typeof v === 'boolean')
-    return 'boolean'
-  if (typeof v === 'number')
-    return 'number'
-  return false
+  return typeof v
 })
 
 const { sendEdit } = useEditState(type)
@@ -71,6 +71,13 @@ function quickEdit(v: unknown) {
         <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((data.value as number) - 1)">
           <template #icon>
             <VueIcon icon="i-carbon-subtract" />
+          </template>
+        </VueButton>
+      </template>
+      <template v-else-if="dataType === 'string'">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="$emit('enableEditInput')">
+          <template #icon>
+            <VueIcon icon="i-material-symbols-edit-rounded" />
           </template>
         </VueButton>
       </template>

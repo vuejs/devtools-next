@@ -2,7 +2,8 @@
 import type { InspectorCustomState, InspectorState } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
-import DataField from './InspectorDataField/DataField.vue'
+import { useEditStateInput } from './composable'
+import Actions from './InspectorDataField/Actions.vue'
 
 const props = withDefaults(defineProps<{
   data: InspectorState
@@ -90,6 +91,35 @@ const hasChildren = computed(() => {
   return Object.keys(normalizedChildField.value).length > 0
 })
 
+// ---------------------------- edit ----------------------------
+const { editing, editingText, toggleEditing, sendEdit, nodeId } = useEditStateInput()
+
+watch(() => editing.value, (v) => {
+  if (v) {
+    // TODO: object, array...
+    if (typeof props.data.value !== 'string')
+      return
+    editingText.value = props.data.value
+  }
+  else {
+    editingText.value = ''
+  }
+})
+
+function editSubmit() {
+  const data = props.data
+  sendEdit({
+    dotPath: data.key,
+    dataType: data.stateType,
+    data: {
+      nodeId,
+      newKey: null,
+      value: editingText.value,
+    },
+  })
+  toggleEditing()
+}
+
 const hovering = ref(false)
 </script>
 
@@ -99,10 +129,15 @@ const hovering = ref(false)
       <div>
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
-        <span :class="stateFormatClass">
-          <span v-html="normalizedValue" />
-        </span>
-        <DataField :hovering="hovering" :data="data" />
+        <template v-if="editing">
+          <EditInput v-model="editingText" @cancel="toggleEditing" @submit="editSubmit" />
+        </template>
+        <template v-else>
+          <span :class="stateFormatClass">
+            <span v-html="normalizedValue" />
+          </span>
+          <Actions :hovering="hovering" :data="data" @enable-edit-input="toggleEditing" />
+        </template>
       </div>
     </template>
     <template v-else>

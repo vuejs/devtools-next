@@ -7,6 +7,8 @@ const numericValue = ref(0)
 const reactiveValue = reactive({
   a: 1,
 })
+
+const stringValue = ref('abc')
 </script>
 
 <template>
@@ -16,6 +18,7 @@ const reactiveValue = reactive({
       <li>boolean value: {{ booleanValue }}</li>
       <li>numeric value: {{ numericValue }}</li>
       <li>reactive value: {{ JSON.stringify(reactiveValue) }}</li>
+      <li>string value: {{ stringValue }}</li>
     </ul>
   </div>
 </template>

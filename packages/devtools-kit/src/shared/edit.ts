@@ -1,5 +1,5 @@
 import { NOOP } from '@vue-devtools-next/shared'
-import type { EditStatePayload } from '..'
+import type { EditStatePayloadData } from '../core/component/types'
 
 type Recordable = Record<PropertyKey, unknown>
 
@@ -56,7 +56,7 @@ export class StateEditor {
     return object != null && Object.prototype.hasOwnProperty.call(object, sections[0])
   }
 
-  createDefaultSetCallback(state: EditStatePayload) {
+  createDefaultSetCallback(state: EditStatePayloadData) {
     return (object: Recordable, field: string | number, value: unknown) => {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))

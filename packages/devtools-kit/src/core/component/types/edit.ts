@@ -17,13 +17,15 @@ export interface EditStatePayloads<D = unknown> {
   [EditStateType.Route]: Record<string, null>
 }
 
+export interface EditStatePayloadData<T = unknown> {
+  value: T
+  newKey: string | null
+  remove?: false
+}
+
 // component edit
 export interface EditStateComponentPayload<T = unknown> {
   instanceId: string
   dotPath: string
-  data: {
-    value: T
-    newKey: string | null
-    remove?: false
-  }
+  data: EditStatePayloadData<T>
 }

@@ -1,9 +1,9 @@
-import { EditStateType } from '../types'
+import { EditStateType } from './types'
 import type {
   EditStateComponentPayload,
   EditStateEventPayload,
   EditStatePayloads,
-} from '../types'
+} from './types'
 
 function assertType<T extends EditStateType>(
   type: T,

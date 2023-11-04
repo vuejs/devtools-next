@@ -95,7 +95,6 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 
 function getComponentState(id: string) {
   bridgeRpc.getInspectorState({ inspectorId: 'components', nodeId: id }).then(({ data }) => {
-    console.log('data', data)
     activeComponentState.value = normalizeComponentState(data.state)
   })
 }

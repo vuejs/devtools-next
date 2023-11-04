@@ -29,6 +29,7 @@ const { sendEdit } = useEditState(type)
       @click="sendEdit({
         dotPath: data.key,
         instanceId: '',
+        dataType: data.stateType,
         data: {
           newKey: data.key,
           value: !data.value,

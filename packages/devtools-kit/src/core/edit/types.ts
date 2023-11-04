@@ -27,5 +27,6 @@ export interface EditStatePayloadData<T = unknown> {
 export interface EditStateComponentPayload<T = unknown> {
   instanceId: string
   dotPath: string
+  dataType?: string
   data: EditStatePayloadData<T>
 }

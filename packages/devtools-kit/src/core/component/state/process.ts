@@ -118,6 +118,16 @@ function processState(instance: VueAppInstance) {
     }))
 }
 
+function getStateTypeAndName(info: ReturnType<typeof getSetupStateType>) {
+  // the order is important !!!
+  const stateType = info.computed ? 'computed' : info.ref ? 'ref' : info.reactive ? 'reactive' : null
+  const stateTypeName = stateType ? `${stateType.charAt(0).toUpperCase()}${stateType.slice(1)}` : null
+  return {
+    stateType,
+    stateTypeName,
+  }
+}
+
 function processSetupState(instance: VueAppInstance) {
   const raw = instance.devtoolsRawSetupState || {}
   return Object.keys(instance.setupState)
@@ -146,15 +156,15 @@ function processSetupState(instance: VueAppInstance) {
       if (rawData) {
         const info = getSetupStateType(rawData)
 
-        const stateTypeName = info.computed ? 'Computed' : info.ref ? 'Ref' : info.reactive ? 'Reactive' : null
+        const { stateType, stateTypeName } = getStateTypeAndName(info)
         const isState = info.ref || info.computed || info.reactive
         const raw = rawData.effect?.raw?.toString() || rawData.effect?.fn?.toString()
 
-        if (stateTypeName)
+        if (stateType)
           isOtherType = false
 
         result = {
-          ...stateTypeName ? { stateTypeName } : {},
+          ...stateType ? { stateType, stateTypeName: stateTypeName! } : {},
           ...raw ? { raw } : {},
           editable: isState && !info.readonly,
         }

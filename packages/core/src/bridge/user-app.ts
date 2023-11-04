@@ -86,7 +86,7 @@ export function registerBridgeRpc() {
   })
 
   Bridge.value.on(BridgeEvents.EDIT_STATE, async (payload: EditStateEventPayload<EditStateType>) => {
-    await editState(payload)
+    await editState(payload, devtools.context.api)
   })
 }
 

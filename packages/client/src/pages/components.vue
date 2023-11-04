@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { EditStateType } from 'vue-devtools-kit'
 
-import {  EditStateType } from 'vue-devtools-kit'
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'

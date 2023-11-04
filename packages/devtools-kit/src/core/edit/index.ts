@@ -1,6 +1,8 @@
+import type { PluginApi } from '@vue-devtools-next/schema'
+import { StateEditor } from '../../shared/edit'
+import { editComponentState } from './component'
 import { EditStateType } from './types'
 import type {
-  EditStateComponentPayload,
   EditStateEventPayload,
   EditStatePayloads,
 } from './types'
@@ -8,17 +10,18 @@ import type {
 function assertType<T extends EditStateType>(
   type: T,
   checkType: EditStateType,
-  payload: EditStatePayloads[EditStateType],
-): payload is EditStatePayloads[T] {
+  _payload: EditStatePayloads[EditStateType],
+): _payload is EditStatePayloads[T] {
   return checkType === type
 }
 
-async function editComponentState(payload: EditStateComponentPayload) {
-  console.log('trigger component update', payload)
-}
+export const stateEditor = new StateEditor()
 
-export async function editState(payload: EditStateEventPayload<EditStateType>) {
+// TODO: currently (w/ Vue official devtools), we send all state to frontend after changes,
+//       we can optimize this by only sending the changed state, to make a better UX.
+// PRIORITY: LOW
+export async function editState(payload: EditStateEventPayload<EditStateType>, api: PluginApi) {
   const { type, payload: data } = payload
   if (assertType(EditStateType.Component, type, data))
-    await editComponentState(data)
+    editComponentState(data, stateEditor, api)
 }

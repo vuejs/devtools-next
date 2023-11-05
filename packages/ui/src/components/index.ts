@@ -12,11 +12,13 @@ import DropdownButton from './DropdownButton.vue'
 import Confirm from './Confirm.vue'
 import Select from './Select.vue'
 import Switch from './Switch.vue'
+import Checkbox from './Checkbox.vue'
 
 export {
   Badge as VueBadge,
   Button as VueButton,
   Card as VueCard,
+  Checkbox as VueCheckbox,
   Dialog as VueDialog,
   LoadingIndicator as VueLoadingIndicator,
   Icon as VueIcon,

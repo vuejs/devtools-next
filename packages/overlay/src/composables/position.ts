@@ -1,7 +1,7 @@
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
 import { useEventListener, useScreenSafeArea } from '@vueuse/core'
-import { clamp } from '../utils'
+import { clamp, pixelToNumber } from '../utils'
 import { useFrameState } from './state'
 
 function snapToPoints(value: number) {
@@ -34,10 +34,10 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
   const safeArea = useScreenSafeArea()
 
   watchEffect(() => {
-    panelMargins.left = +safeArea.left.value + 10
-    panelMargins.top = +safeArea.top.value + 10
-    panelMargins.right = +safeArea.right.value + 10
-    panelMargins.bottom = +safeArea.bottom.value + 10
+    panelMargins.left = pixelToNumber(safeArea.left.value) + 10
+    panelMargins.top = pixelToNumber(safeArea.top.value) + 10
+    panelMargins.right = pixelToNumber(safeArea.right.value) + 10
+    panelMargins.bottom = pixelToNumber(safeArea.bottom.value) + 10
   })
 
   const onPointerDown = (e: PointerEvent) => {

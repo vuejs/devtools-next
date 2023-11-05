@@ -22,13 +22,10 @@ const value = useVModel(props, 'modelValue', emit)
     transition-colors duration-200 ease-in-out
     "
     :class="[
-      variant === 'normal'
-        ? 'border-primary-500'
-        : 'border-accent-500',
       value
         ? variant === 'normal'
-          ? 'bg-primary-100 dark:bg-primary-200'
-          : 'bg-accent-100 dark:bg-accent-200'
+          ? 'bg-primary-500 border-primary-200 dark:border-primary-100'
+          : 'bg-accent-500 border-accent-200 dark:border-accent-100'
         : '',
     ]"
     @click="value = !value"
@@ -38,7 +35,7 @@ const value = useVModel(props, 'modelValue', emit)
         value ? 'opacity-100' : 'opacity-0',
       ]"
       class="w-35% h-60%
-      border-solid border-width-[0_2px_2px_0] border-black transition-opacity duration-200 ease-in-out
+      border-solid border-width-[0_2px_2px_0] border-white transition-opacity duration-200 ease-in-out
       transform-rotate-45 transform-translate-y--1px
     "
     />

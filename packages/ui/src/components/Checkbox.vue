@@ -18,8 +18,8 @@ const value = useVModel(props, 'modelValue', emit)
 <template>
   <div
     class="$ui-base relative cursor-pointer
-    w20px h20px w-full h-full border-2px rounded-5px
-    transition-colors duration-200 ease-in-out $ui-inline-fcc
+    w20px h20px border-2px rounded-5px $ui-inline-fcc
+    transition-colors duration-200 ease-in-out
     "
     :class="[
       variant === 'normal'

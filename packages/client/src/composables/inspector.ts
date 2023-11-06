@@ -1,11 +1,30 @@
 import { Bridge, BridgeEvents } from '@vue-devtools-next/core'
 import type { EditStateEventPayload, EditStatePayloads, EditStateType } from 'vue-devtools-kit'
-import { useContext } from '~/utils/use'
+import type { InjectionKey, Ref } from 'vue'
 
-export const { get: getEditData, set: setEditData } = useContext<{
+const StateEditorSymbolKey: InjectionKey<Ref<{
   type: EditStateType
   nodeId: string
-}>('edit-state-data')
+}>> = Symbol('StateEditorSymbol')
+
+export function createStateEditorContext(initial: {
+  type: EditStateType
+  nodeId: string
+}) {
+  const context = ref<{
+    type: EditStateType
+    nodeId: string
+  }>(initial)
+  provide(StateEditorSymbolKey, context)
+  return {
+    context,
+  }
+}
+
+export function useStateEditorContext() {
+  const context = inject(StateEditorSymbolKey)!
+  return context
+}
 
 export function useEditState<T extends EditStateType>(type: T) {
   return {
@@ -18,13 +37,13 @@ export function useEditState<T extends EditStateType>(type: T) {
   }
 }
 
-export function useEditStateInput() {
+export function useStateEditor() {
   const editingText = ref('')
   const editingType = ref<'number' | 'string'>('string')
   const editing = ref(false)
 
-  const { nodeId, type } = getEditData()!
-  const { sendEdit } = useEditState(type)
+  const state = useStateEditorContext()
+  const { sendEdit } = useEditState(state.value.type)
 
   return {
     editingText,
@@ -35,7 +54,7 @@ export function useEditStateInput() {
       editing.value = !editing.value
     },
     editingType,
-    nodeId,
+    nodeId: state.value.nodeId,
     sendEdit,
   }
 }

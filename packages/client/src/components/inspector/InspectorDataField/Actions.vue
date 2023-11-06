@@ -2,7 +2,6 @@
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
 import type { InspectorState } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
-import { getEditData, useEditState } from '../composable'
 
 const props = defineProps<{
   data: InspectorState
@@ -13,7 +12,7 @@ defineEmits<{
   'enableEditInput': [type: 'number' | 'string']
 }>()
 
-const { type, nodeId } = getEditData()!
+const state = useStateEditorContext()
 
 const { copy, isSupported } = useClipboard()
 
@@ -24,7 +23,7 @@ const dataType = computed(() => {
   return typeof v
 })
 
-const { sendEdit } = useEditState(type)
+const { sendEdit } = useEditState(state.value.type)
 
 const iconButtonProps = {
   flat: true,
@@ -40,7 +39,7 @@ function quickEdit(v: unknown) {
     dotPath: props.data.key,
     dataType: props.data.stateType,
     data: {
-      nodeId,
+      nodeId: state.value.nodeId,
       newKey: null,
       value: v,
     },

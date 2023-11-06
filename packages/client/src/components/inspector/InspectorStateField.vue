@@ -2,7 +2,6 @@
 import type { InspectorCustomState, InspectorState } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
-import { useEditStateInput } from './composable'
 import Actions from './InspectorDataField/Actions.vue'
 
 const props = withDefaults(defineProps<{
@@ -92,7 +91,7 @@ const hasChildren = computed(() => {
 })
 
 // ---------------------------- edit ----------------------------
-const { editingType, editing, editingText, toggleEditing, sendEdit, nodeId } = useEditStateInput()
+const { editingType, editing, editingText, toggleEditing, sendEdit, nodeId } = useStateEditor()
 
 watch(() => editing.value, (v) => {
   if (v) {

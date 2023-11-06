@@ -4,6 +4,7 @@ import type { AddInspectorApiPayload, InspectorStateEditorPayload } from '../cor
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
 import type { TimelineEvent } from '../core/timeline'
 import { addTimelineLayer } from '../core/timeline'
+import { StateEditor } from '../core/component/state/editor'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
@@ -64,9 +65,13 @@ export class DevToolsPluginApi {
   }
 
   async editInspectorState(payload: InspectorStateEditorPayload) {
+    const stateEditor = new StateEditor()
     apiHooks.callHook(DevToolsEvents.EDIT_INSPECTOR_STATE, {
       ...payload,
       app: devtoolsContext.appRecord.app,
+      set: (obj, path = payload.path, value = payload.state.value, cb) => {
+        stateEditor.set(obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
+      },
     })
   }
 

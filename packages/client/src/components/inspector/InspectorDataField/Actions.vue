@@ -37,7 +37,7 @@ const buttonClass = computed(() => ({
 
 function quickEdit(v: unknown) {
   bridgeRpc.editInspectorState({
-    path: props.data.key,
+    path: props.data.key.split('.'),
     inspectorId: state.value.inspectorId,
     type: props.data.stateType!,
     nodeId: state.value.nodeId,

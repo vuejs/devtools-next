@@ -1,4 +1,5 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
+import type { Recordable } from '../state/editor'
 
 export interface InspectorStateEditorPayload {
   app?: AppRecord['app']
@@ -11,5 +12,10 @@ export interface InspectorStateEditorPayload {
     newKey: string
     remove?: boolean
   }
-  set?: () => void
+  set?: (
+    obj: Recordable,
+    path: string,
+    value: unknown,
+    cb?: (object: Recordable, field: string, value: unknown) => void
+  ) => unknown
 }

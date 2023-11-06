@@ -5,9 +5,9 @@ import { devtoolsContext } from '../../general'
 
 import type { InspectorStateEditorPayload } from '../types'
 
-type Recordable = Record<PropertyKey, any>
+export type Recordable = Record<PropertyKey, any>
 
-type PropPath = string | string[]
+export type PropPath = string | string[]
 
 export class StateEditor {
   refEditor = new RefStateEditor()
@@ -103,8 +103,8 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
   if (!instance)
     return
 
-  const paths = path.split('.')
-  const targetPath = paths.slice()
+  const paths = path
+  const targetPath = path.slice()
 
   let target: Record<string, unknown> | undefined
 

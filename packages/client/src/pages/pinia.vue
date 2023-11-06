@@ -64,8 +64,9 @@ onDevToolsClientConnected(() => {
         <div p-2>
           <InspectorState
             v-for="(item, key) in state" :id="key"
-            :key="key + Date.now()" :data="item" :name="`${key}`"
+            :key="key + Date.now()"
             inspector-id="pinia"
+            :node-id="selected" :data="item" :name="`${key}`"
           />
         </div>
       </Pane>

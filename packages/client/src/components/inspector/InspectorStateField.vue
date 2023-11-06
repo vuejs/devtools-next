@@ -111,7 +111,7 @@ watch(() => editing.value, (v) => {
 function submit() {
   const data = props.data
   bridgeRpc.editInspectorState({
-    path: data.key,
+    path: data.key.split('.'),
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
     nodeId,

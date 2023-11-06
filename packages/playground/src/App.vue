@@ -27,7 +27,7 @@ const route = useRoute()
     {{ isDark }}
     <RouterLink to="/hello">
       <div>
-        Go to hello
+        Go to hello!
       </div>
     </RouterLink>
     <button @click="app.increment">

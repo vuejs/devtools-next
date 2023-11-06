@@ -120,11 +120,12 @@ function editSubmit() {
   toggleEditing()
 }
 
-const hovering = ref(false)
+const containerRef = ref()
+const { isHovering } = useHover(containerRef)
 </script>
 
 <template>
-  <div class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }" @mouseenter="hovering = true" @mouseleave="hovering = false">
+  <div ref="containerRef" class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
@@ -136,7 +137,7 @@ const hovering = ref(false)
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
           </span>
-          <Actions :hovering="hovering" :data="data" @enable-edit-input="toggleEditing" />
+          <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
         </template>
       </div>
     </template>

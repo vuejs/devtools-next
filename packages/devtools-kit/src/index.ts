@@ -1,8 +1,4 @@
 import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected } from './core/general'
-import { editState } from './core/edit'
-
-// Maybe it's an enum, so we can't just use export type * from '...'
-export * from './core/edit/types'
 
 export type * from './core/component/types'
 export type * from './core/timeline/types'
@@ -17,5 +13,4 @@ export const devtools = {
 
 export {
   onDevToolsConnected,
-  editState,
 }

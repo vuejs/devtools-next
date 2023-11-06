@@ -62,6 +62,10 @@ export class BridgeRpc {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorState, payload)
   }
 
+  static async editInspectorState<R extends { data: unknown } = { data: { state: Record<string, InspectorState[]> } }>(payload: BridgeRpcEventPayload['edit-inspector-state']) {
+    return bridgeRpcCore.emit<R>(bridgeRpcEvents.editState, payload)
+  }
+
   static async getDevToolsState() {
     return bridgeRpcCore.emit<{ data: { connected: boolean;vueVersion: string } }>(bridgeRpcEvents.state)
   }

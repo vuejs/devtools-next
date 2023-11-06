@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState } from 'vue-devtools-kit'
+import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Actions from './InspectorDataField/Actions.vue'
 
 const props = withDefaults(defineProps<{
@@ -12,6 +13,8 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
+const state = useStateEditorContext()
+const bridgeRpc = useDevToolsBridgeRpc()
 const value = formatInspectorStateValue(props.data.value)
 const type = getInspectorStateValueType(props.data.value)
 const stateFormatClass = computed(() => {
@@ -91,7 +94,7 @@ const hasChildren = computed(() => {
 })
 
 // ---------------------------- edit ----------------------------
-const { editingType, editing, editingText, toggleEditing, sendEdit, nodeId } = useStateEditor()
+const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEditor()
 
 watch(() => editing.value, (v) => {
   if (v) {
@@ -105,17 +108,18 @@ watch(() => editing.value, (v) => {
   }
 })
 
-function editSubmit() {
+function submit() {
   const data = props.data
-  sendEdit({
-    dotPath: data.key,
-    dataType: data.stateType,
-    data: {
-      nodeId,
-      newKey: null,
+  bridgeRpc.editInspectorState({
+    path: data.key,
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: null!,
       value: editingText.value,
     },
-  })
+  } satisfies InspectorStateEditorPayload)
   toggleEditing()
 }
 
@@ -130,7 +134,7 @@ const { isHovering } = useHover(containerRef)
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
         <template v-if="editing">
-          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="editSubmit" />
+          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
         </template>
         <template v-else>
           <span :class="stateFormatClass">

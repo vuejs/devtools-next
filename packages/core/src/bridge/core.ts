@@ -2,6 +2,7 @@ import { NOOP, target } from '@vue-devtools-next/shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
 import { parse } from 'vue-devtools-kit/shared'
+import type { InspectorStateEditorPayload } from 'vue-devtools-kit'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -82,6 +83,7 @@ export const bridgeRpcEvents = {
   routerInfo: 'router-info',
   router: 'router',
   routeMatched: 'route-matched',
+  editState: 'edit-inspector-state',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -100,6 +102,7 @@ export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.routerInfo]: null
   [bridgeRpcEvents.router]: string
   [bridgeRpcEvents.routeMatched]: string
+  [bridgeRpcEvents.editState]: InspectorStateEditorPayload
 }
 
 export const bridgeRpcCore = {

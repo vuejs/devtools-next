@@ -1,6 +1,6 @@
 import { devtoolsContext } from '../core/general/state'
 import { now as nowFn, stringify } from '../shared'
-import type { AddInspectorApiPayload } from '../core/component/types'
+import type { AddInspectorApiPayload, InspectorStateEditorPayload } from '../core/component/types'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
 import type { TimelineEvent } from '../core/timeline'
 import { addTimelineLayer } from '../core/timeline'
@@ -61,6 +61,13 @@ export class DevToolsPluginApi {
       callbacks.forEach(cb => cb(_payload))
     }, DevToolsEvents.GET_INSPECTOR_STATE)
     return stringify(_payload) as string
+  }
+
+  async editInspectorState(payload: InspectorStateEditorPayload) {
+    apiHooks.callHook(DevToolsEvents.EDIT_INSPECTOR_STATE, {
+      ...payload,
+      app: devtoolsContext.appRecord.app,
+    })
   }
 
   async sendInspectorTree(inspectorId: string) {

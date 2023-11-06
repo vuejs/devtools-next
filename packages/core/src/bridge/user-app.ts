@@ -1,5 +1,4 @@
-import type { EditStateEventPayload, EditStateType } from 'vue-devtools-kit'
-import { devtools, editState } from 'vue-devtools-kit'
+import { devtools } from 'vue-devtools-kit'
 import { stringify } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
 import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
@@ -26,6 +25,11 @@ export function registerBridgeRpc() {
   // inspector state getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorState, (payload) => {
     return devtools.context.api.getInspectorState(payload)
+  })
+
+  // inspector state editor
+  bridgeRpcCore.on(bridgeRpcEvents.editState, async (payload) => {
+    return devtools.context.api.editInspectorState(payload!)
   })
 
   // router info getter
@@ -83,10 +87,6 @@ export function registerBridgeRpc() {
     devtools.context.api.on.addTimelineEvent((payload) => {
       Bridge.value.emit(BridgeEvents.ADD_TIMELINE_EVENT, stringify(payload))
     })
-  })
-
-  Bridge.value.on(BridgeEvents.EDIT_STATE, async (payload: EditStateEventPayload<EditStateType>) => {
-    await editState(payload, devtools.context.api)
   })
 }
 

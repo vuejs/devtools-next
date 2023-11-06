@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { EditStateType, InspectorState } from 'vue-devtools-kit'
+import type { InspectorState } from 'vue-devtools-kit'
 
 const props = defineProps<{
   data: InspectorState[]
   name: string
   id: string
   nodeId: string
-  editType: EditStateType
+  inspectorId: string
 }>()
 
 const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
@@ -14,8 +14,8 @@ const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 !isExpanded.value && toggleCollapse()
 
 createStateEditorContext({
-  type: props.editType,
   nodeId: props.nodeId,
+  inspectorId: props.inspectorId,
 })
 </script>
 

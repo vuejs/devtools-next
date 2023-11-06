@@ -1,6 +1,9 @@
 import type { MaybeRef, Ref } from 'vue'
 import { isRef } from 'vue'
-import type { EditStatePayloadData } from '../core/edit/types'
+import { getComponentInstance, nodeIdToInstanceId } from '../general'
+import { devtoolsContext } from '../../general'
+
+import type { InspectorStateEditorPayload } from '../types'
 
 type Recordable = Record<PropertyKey, any>
 
@@ -58,7 +61,7 @@ export class StateEditor {
     return object != null && Object.prototype.hasOwnProperty.call(object, sections[0])
   }
 
-  createDefaultSetCallback(state: EditStatePayloadData) {
+  createDefaultSetCallback(state: InspectorStateEditorPayload['state']) {
     return (object: Recordable, field: string | number, value: unknown) => {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))
@@ -89,4 +92,37 @@ class RefStateEditor {
   isRef(ref: MaybeRef<any>): ref is Ref<any> {
     return isRef(ref)
   }
+}
+
+export async function editComponentState(payload: InspectorStateEditorPayload, stateEditor: StateEditor) {
+  const { path, nodeId, state } = payload
+  const instanceId = nodeIdToInstanceId(devtoolsContext.appRecord.id, nodeId)
+  // assert data types, currently no...
+  // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
+  const instance = getComponentInstance(devtoolsContext.appRecord, instanceId)
+  if (!instance)
+    return
+
+  const paths = path.split('.')
+  const targetPath = paths.slice()
+
+  let target: Record<string, unknown> | undefined
+
+  // TODO: props
+  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(paths[0])) {
+    // Setup
+    target = instance.devtoolsRawSetupState
+  }
+
+  if (target && targetPath)
+    stateEditor.set(target, targetPath, state.value, stateEditor.createDefaultSetCallback(state))
+}
+
+export const stateEditor = new StateEditor()
+
+// TODO: currently (w/ Vue official devtools), we send all state to frontend after changes,
+//       we can optimize this by only sending the changed state, to make a better UX.
+// PRIORITY: LOW
+export async function editState(payload: InspectorStateEditorPayload) {
+  editComponentState(payload, stateEditor)
 }

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
-import type { InspectorState } from 'vue-devtools-kit'
+import type { InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 const props = defineProps<{
   data: InspectorState
@@ -11,6 +12,8 @@ const props = defineProps<{
 defineEmits<{
   'enableEditInput': [type: 'number' | 'string']
 }>()
+
+const bridgeRpc = useDevToolsBridgeRpc()
 
 const state = useStateEditorContext()
 
@@ -23,8 +26,6 @@ const dataType = computed(() => {
   return typeof v
 })
 
-const { sendEdit } = useEditState(state.value.type)
-
 const iconButtonProps = {
   flat: true,
   size: 'mini',
@@ -35,15 +36,16 @@ const buttonClass = computed(() => ({
 }))
 
 function quickEdit(v: unknown) {
-  sendEdit({
-    dotPath: props.data.key,
-    dataType: props.data.stateType,
-    data: {
-      nodeId: state.value.nodeId,
-      newKey: null,
+  bridgeRpc.editInspectorState({
+    path: props.data.key,
+    inspectorId: state.value.inspectorId,
+    type: props.data.stateType!,
+    nodeId: state.value.nodeId,
+    state: {
+      newKey: null!,
       value: v,
     },
-  })
+  } satisfies InspectorStateEditorPayload)
 }
 </script>
 

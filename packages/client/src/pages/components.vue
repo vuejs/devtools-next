@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
-import { EditStateType } from 'vue-devtools-kit'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
@@ -146,7 +145,7 @@ watchDebounced(filterName, (v) => {
         <div p-2>
           <InspectorState
             v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"
-            :node-id="activeComponentId" :data="state" :name="`${key}`" :edit-type="EditStateType.Component"
+            :node-id="activeComponentId" :data="state" :name="`${key}`" inspector-id="components"
           />
         </div>
       </Pane>

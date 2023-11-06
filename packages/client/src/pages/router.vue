@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
-import { EditStateType, type InspectorState } from 'vue-devtools-kit'
+// eslint-disable-next-line ts/consistent-type-imports
+import type { InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -63,7 +64,7 @@ onDevToolsClientConnected(() => {
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key + Date.now()" :data="item" :name="`${key}`"
-            :edit-type="EditStateType.Route"
+            inspector-id="router"
           />
         </div>
       </Pane>

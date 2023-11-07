@@ -98,4 +98,9 @@ export class BridgeRpc {
   static getTextAssetContent(filepath: string, limit = 300) {
     return viteRpc!.api!.getTextAssetContent(filepath, limit)
   }
+
+  // graph
+  static getGraph() {
+    return viteRpc!.api!.getGraph()
+  }
 }

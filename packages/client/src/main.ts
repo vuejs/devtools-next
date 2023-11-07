@@ -13,6 +13,7 @@ import RouterPage from '~/pages/router.vue'
 import Timeline from '~/pages/timeline.vue'
 import Pages from '~/pages/pages.vue'
 import Assets from '~/pages/assets.vue'
+import Graph from '~/pages/graph.vue'
 import 'uno.css'
 import '~/assets/styles/main.css'
 
@@ -33,6 +34,7 @@ const routes = [
   { path: '/timeline', component: Timeline },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },
+  { path: '/graph', component: Graph },
 ]
 
 async function reload(app, shell) {

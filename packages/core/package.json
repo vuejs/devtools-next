@@ -42,6 +42,7 @@
     "mitt": "^3.0.1",
     "pathe": "^1.1.1",
     "vite-hot-client": "^0.2.2",
+    "vite-plugin-inspect": "^0.7.41",
     "vue-devtools-kit": "workspace:^"
   },
   "devDependencies": {

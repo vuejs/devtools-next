@@ -30,8 +30,17 @@ export interface CodeSnippet {
   docs?: string
 }
 
+// graph
+export interface ModuleInfo {
+  id: string
+  plugins: { name: string; transform?: number; resolveId?: number }[]
+  deps: string[]
+  virtual: boolean
+}
+
 export interface ViteRPCFunctions {
   root(): string
+  getGraph(): Promise<ModuleInfo[]>
   getStaticAssets(): Promise<AssetInfo[]>
   getImageMeta(filepath: string): Promise<ImageMeta | undefined>
   getTextAssetContent(filepath: string, limit?: number): Promise<string | undefined>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState } from 'vue-devtools-kit'
+import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import Actions from './InspectorDataField/Actions.vue'
 
 const props = withDefaults(defineProps<{
   data: InspectorState
@@ -11,6 +13,8 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
+const state = useStateEditorContext()
+const bridgeRpc = useDevToolsBridgeRpc()
 const value = formatInspectorStateValue(props.data.value)
 const type = getInspectorStateValueType(props.data.value)
 const stateFormatClass = computed(() => {
@@ -62,8 +66,8 @@ const normalizedChildField = computed(() => {
   let { value, inherit } = rawValue.value
   if (Array.isArray(value)) {
     // @TODO: show more
-    const silced = value.slice(0, 20)
-    return silced.map((item, i) => ({
+    const sliced = value.slice(0, 20)
+    return sliced.map((item, i) => ({
       key: i,
       value: item,
       ...inherit,
@@ -88,17 +92,56 @@ const normalizedChildField = computed(() => {
 const hasChildren = computed(() => {
   return Object.keys(normalizedChildField.value).length > 0
 })
+
+// ---------------------------- edit ----------------------------
+const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEditor()
+
+watch(() => editing.value, (v) => {
+  if (v) {
+    // TODO: object, array...
+    if (!['string', 'number'].includes(typeof props.data.value))
+      return
+    editingText.value = props.data.value.toString()
+  }
+  else {
+    editingText.value = ''
+  }
+})
+
+function submit() {
+  const data = props.data
+  bridgeRpc.editInspectorState({
+    path: data.key.split('.'),
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: null!,
+      value: editingText.value,
+    },
+  } satisfies InspectorStateEditorPayload)
+  toggleEditing()
+}
+
+const containerRef = ref()
+const { isHovering } = useHover(containerRef)
 </script>
 
 <template>
-  <div class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
+  <div ref="containerRef" class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
         <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
         <span mx-1>:</span>
-        <span :class="stateFormatClass">
-          <span v-html="normalizedValue" />
-        </span>
+        <template v-if="editing">
+          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
+        </template>
+        <template v-else>
+          <span :class="stateFormatClass">
+            <span v-html="normalizedValue" />
+          </span>
+          <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
+        </template>
       </div>
     </template>
     <template v-else>

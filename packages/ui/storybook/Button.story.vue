@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import type { ButtonType } from '../src/components/Button.vue'
 import Button from '../src/components/Button.vue'
@@ -11,6 +11,8 @@ const state = reactive<{
 }>({
   type: 'default',
 })
+
+const flat = ref(false)
 </script>
 
 <template>
@@ -29,34 +31,35 @@ const state = reactive<{
           success: 'Success',
         }"
       />
+      <HstCheckbox v-model="flat" title="Flat" />
     </template>
     <Variant title="Normal Button">
-      <Button :type="state.type" @click="logEvent('click event', $event)">
+      <Button :flat="flat" :type="state.type" @click="logEvent('click event', $event)">
         Button
       </Button>
     </Variant>
     <Variant title="A Button">
-      <Button href="https://vuejs.org" :type="state.type">
+      <Button :flat="flat" href="https://vuejs.org" :type="state.type">
         A Button
       </Button>
     </Variant>
     <Variant title="RouterLink Button">
-      <Button to="router-path" :type="state.type">
+      <Button :flat="flat" to="router-path" :type="state.type">
         RouterLink Button
       </Button>
     </Variant>
     <Variant title="Round Button">
-      <Button round="full" :type="state.type">
+      <Button :flat="flat" round="full" :type="state.type">
         Round Button
       </Button>
     </Variant>
     <Variant title="Loading Button">
-      <Button loading :type="state.type">
+      <Button :flat="flat" loading :type="state.type">
         Loading Button
       </Button>
     </Variant>
     <Variant title="With Icon">
-      <Button :type="state.type">
+      <Button :flat="flat" :type="state.type">
         <template #icon>
           <Icon class="i-carbon-moon" />
         </template>
@@ -64,9 +67,16 @@ const state = reactive<{
       </Button>
     </Variant>
     <Variant title="With Badge">
-      <Button :type="state.type">
+      <Button :flat="flat" :type="state.type">
         Badge Button
         <Badge>10</Badge>
+      </Button>
+    </Variant>
+    <Variant title="Mini Button">
+      <Button :flat="flat" :type="state.type" size="mini">
+        <template #icon>
+          <Icon icon="i-material-symbols-more-vert" />
+        </template>
       </Button>
     </Variant>
   </Story>

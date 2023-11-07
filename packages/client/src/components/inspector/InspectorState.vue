@@ -5,11 +5,18 @@ const props = defineProps<{
   data: InspectorState[]
   name: string
   id: string
+  nodeId: string
+  inspectorId: string
 }>()
 
 const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
 !isExpanded.value && toggleCollapse()
+
+createStateEditorContext({
+  nodeId: props.nodeId,
+  inspectorId: props.inspectorId,
+})
 </script>
 
 <template>

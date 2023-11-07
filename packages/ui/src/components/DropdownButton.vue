@@ -24,6 +24,9 @@ const disabled = inject<ComputedGetter<boolean> | undefined>('$ui-dropdown-disab
     :disabled="disabled"
     class="transition-colors justify-start w-full not-action:bg-transparent!"
   >
+    <template #icon>
+      <slot name="icon" />
+    </template>
     <slot />
   </VueButton>
 </template>

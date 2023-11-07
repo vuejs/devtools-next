@@ -27,6 +27,11 @@ export function registerBridgeRpc() {
     return devtools.context.api.getInspectorState(payload)
   })
 
+  // inspector state editor
+  bridgeRpcCore.on(bridgeRpcEvents.editState, async (payload) => {
+    return devtools.context.api.editInspectorState(payload!)
+  })
+
   // router info getter
   bridgeRpcCore.on(bridgeRpcEvents.routerInfo, () => {
     return JSON.stringify(devtools.context.routerInfo)

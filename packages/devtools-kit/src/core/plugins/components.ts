@@ -4,6 +4,7 @@ import { getAppRecord, getComponentId, getComponentInstance } from '../component
 import { devtoolsContext } from '../general/state'
 import { ComponentWalker } from '../component/tree/walker'
 import { getInstanceState } from '../component/state'
+import { editState } from '../component/state/editor'
 import { DevToolsEvents, apiHooks } from '../../api/on'
 import { hook } from '../general/hook'
 
@@ -53,6 +54,13 @@ export function registerComponentsDevTools(app: VueAppInstance) {
           callbacks.forEach(cb => cb(_payload))
         }, DevToolsEvents.COMPONENT_STATE_INSPECT)
         payload.state = result
+      }
+    })
+
+    api.on.editInspectorState(async (payload) => {
+      if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
+        editState(payload)
+        await api.sendInspectorState('components')
       }
     })
 

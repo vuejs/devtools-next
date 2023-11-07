@@ -61,7 +61,11 @@ onDevToolsClientConnected(() => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <InspectorState v-for="(item, key) in state" :id="key" :key="key + Date.now()" :data="item" :name="`${key}`" />
+          <InspectorState
+            v-for="(item, key) in state" :id="key"
+            :key="key + Date.now()" :data="item" :name="`${key}`"
+            inspector-id="router"
+          />
         </div>
       </Pane>
     </Splitpanes>

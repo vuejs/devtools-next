@@ -8,6 +8,9 @@ export function stringify<T extends object = Record<string, unknown>>(data: T) {
 }
 
 export function parse(data: string, revive = false) {
+  if (!data)
+    return {}
+
   return revive
     ? parseCircularAutoChunks(data, reviver)
     : parseCircularAutoChunks(data)

@@ -8,6 +8,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 const treeNode = ref<ComponentTreeNode[]>([])
+const activeComponentId = ref('')
 
 // UX related state
 const loaded = ref(false)
@@ -70,6 +71,7 @@ function getComponentTree(filterText?: string) {
 
 function selectComponentTree(id: string) {
   getComponentState(id)
+  activeComponentId.value = id
 }
 
 /** ---------------- tree end ------------------- */
@@ -120,7 +122,7 @@ const filterName = ref('')
 
 // @TODO: bugfix - the selected component highlighted working failed when the filter is applied
 watchDebounced(filterName, (v) => {
-  const value = v.trim().toLowerCase() as string
+  const value = v.trim().toLowerCase()
   toggleFiltered()
   getComponentTree(value).then(() => {
     toggleFiltered()
@@ -141,7 +143,10 @@ watchDebounced(filterName, (v) => {
       </Pane>
       <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
         <div p-2>
-          <InspectorState v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()" :data="state" :name="`${key}`" />
+          <InspectorState
+            v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"
+            :node-id="activeComponentId" :data="state" :name="`${key}`" inspector-id="components"
+          />
         </div>
       </Pane>
     </Splitpanes>

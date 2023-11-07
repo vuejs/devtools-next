@@ -17,6 +17,7 @@ export interface InspectorState {
   key: string
   value: string | number | Record<string, unknown> | InspectorCustomState | Array<unknown>
   type: string
+  stateType?: string
   stateTypeName?: string
   meta?: Record<string, boolean | string>
   raw?: string

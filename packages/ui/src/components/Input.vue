@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { refDebounced, refWithControl, useVModel } from '@vueuse/core'
-import { computed, nextTick, ref, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
 import VueIcon from './Icon.vue'
 import VueLoading from './LoadingIndicator.vue'
 
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
-  variant?: 'normal' | 'accent' | 'flat'
+  variant?: 'normal' | 'accent' | 'flat' | 'warning'
   disabled?: boolean
   password?: boolean
   leftIcon?: string
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<{
    * loading will auto enable disabled
    */
   loading: false,
-  autoFocus: true,
+  autoFocus: false,
   loadingDebounceTime: 0,
 })
 
@@ -42,7 +42,7 @@ const focused = refWithControl(false, {
     emit('updateFocused', value)
   },
 })
-const noFocusAnimation = computed(() => props.variant === 'flat')
+const noFocusAnimation = computed(() => props.variant === 'flat' || props.variant === 'warning')
 
 const disabled = computed(() => props.disabled || loading.value)
 
@@ -63,6 +63,11 @@ watchEffect(() => {
   }
 })
 
+onMounted(() => {
+  if (props.autoFocus)
+    focused.value = true
+})
+
 watchEffect(() => {
   if (focused.value)
     inputRef.value?.focus()
@@ -71,14 +76,21 @@ watchEffect(() => {
 
 <template>
   <div
-    class="relative w-auto min-w-200px overflow-hidden b-1 rounded-1 border-primary-100 dark:border-gray-700
+    class="relative w-auto w-200px overflow-hidden b-1 rounded-1
            flex justify-between items-center gap-2px py-3px px12px color-gray-800 dark:color-gray-100 group"
-    :class="{
-      'border-none bg-transparent group': variant === 'flat',
-      'cursor-not-allowed opacity-50': disabled,
-      'accent': variant === 'accent',
-      'focused': focused,
-    }"
+    :class="[
+      {
+        'border-none bg-transparent group': variant === 'flat',
+        'cursor-not-allowed opacity-50': disabled,
+        'accent': variant === 'accent',
+        'focused': focused,
+      },
+      [
+        variant === 'warning'
+          ? 'border-warning-500 dark:border-warning-300'
+          : 'border-primary-100 dark:border-gray-700',
+      ],
+    ]"
     @click="() => {
       focused = true
     }"
@@ -89,7 +101,7 @@ watchEffect(() => {
     <input
       ref="inputRef" v-model="value"
       class="$ui-base w-full outline-none bg-transparent color-inherit
-        placeholder-color-gray-500 dark:placeholder-gray-300" v-bind="$attrs" :type="props.password ? 'password' : 'text'"
+        placeholder-color-gray-500 dark:placeholder-gray-300" :type="props.password ? 'password' : 'text'"
       :placeholder="placeholder" :disabled="disabled"
       @blur="focused = false"
     >

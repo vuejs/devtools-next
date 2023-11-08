@@ -66,6 +66,9 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         root: config.root,
         base,
       }),
+      ...setupGraphRPC({
+        rpc: inspect.api.rpc,
+      }),
     })
   }
   const plugin = <PluginOption>{

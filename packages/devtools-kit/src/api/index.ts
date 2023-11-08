@@ -48,8 +48,6 @@ export class DevToolsPluginApi {
 
   getInspectorState(payload: { inspectorId?: string; nodeId?: string } = {}) {
     const { inspectorId, nodeId } = payload
-    if (!nodeId)
-      return
     const _payload = {
       app: devtoolsContext.appRecord.app,
       inspectorId,
@@ -89,13 +87,13 @@ export class DevToolsPluginApi {
 
   async sendInspectorState(inspectorId: string) {
     const inspector = getInspector(inspectorId)
-    if (inspector) {
+    if (inspector && inspector.nodeId) {
       const res = await this.getInspectorState({
         inspectorId,
         nodeId: inspector.nodeId,
       })
 
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res)
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res!)
     }
   }
 

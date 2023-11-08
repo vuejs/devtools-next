@@ -23,7 +23,7 @@ export function registerBridgeRpc() {
   })
 
   // inspector state getter
-  bridgeRpcCore.on(bridgeRpcEvents.inspectorState, (payload) => {
+  bridgeRpcCore.on(bridgeRpcEvents.inspectorState, async (payload) => {
     return devtools.context.api.getInspectorState(payload)
   })
 

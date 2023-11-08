@@ -142,6 +142,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
   }
 
   return [
+    inspect,
     VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
@@ -149,6 +150,5 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       appendTo: pluginOptions.appendTo || 'manually',
     }),
     plugin,
-    inspect,
   ]
 }

@@ -48,6 +48,8 @@ export class DevToolsPluginApi {
 
   getInspectorState(payload: { inspectorId?: string; nodeId?: string } = {}) {
     const { inspectorId, nodeId } = payload
+    if (!nodeId)
+      return
     const _payload = {
       app: devtoolsContext.appRecord.app,
       inspectorId,

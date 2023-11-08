@@ -9,13 +9,16 @@ const bridgeRpc = useDevToolsBridgeRpc()
 
 const selected = ref('')
 const tree = ref<{ id: string;label: string }[]>([])
-const state = ref<Record<string, InspectorState[]>>({})
+const state = ref<{
+  inspectorId?: string
+  state?: InspectorState[]
+}>({})
 createCollapseContext('inspector-state')
 
 function getRouterState(nodeId: string) {
   // @TODO: should to support multiple router instances ?
   bridgeRpc.getInspectorState({ inspectorId: 'router-inspector:0', nodeId }).then(({ data }) => {
-    state.value = data.state
+    state.value = data
   })
 }
 
@@ -32,13 +35,13 @@ onDevToolsClientConnected(() => {
     }
   })
 
-  bridgeRpc.on.inspectorTreeUpdated(({ data }) => {
-    if (!data)
+  bridgeRpc.on.inspectorTreeUpdated((data) => {
+    if (data.inspectorId !== 'router-inspector:0' || !data?.data?.length)
       return
-    tree.value = data
-    if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getRouterState(data[0].id)
+    tree.value = data.data
+    if (!selected.value && data.data.length) {
+      selected.value = data.data[0].id
+      getRouterState(data.data[0].id)
     }
   })
 
@@ -46,7 +49,7 @@ onDevToolsClientConnected(() => {
     if (!data || !data.state || data.inspectorId !== 'router-inspector:0')
       return
 
-    state.value = data.state
+    state.value = data
   })
 })
 </script>

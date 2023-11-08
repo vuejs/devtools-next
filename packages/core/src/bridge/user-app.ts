@@ -22,6 +22,11 @@ export function registerBridgeRpc() {
     return devtools.context.api.getInspectorTree(payload)
   })
 
+  // inspector tree id updater
+  bridgeRpcCore.on(bridgeRpcEvents.updateInspectorTreeId, async (payload) => {
+    devtools.context.activeInspectorTreeId = payload!
+  })
+
   // inspector state getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorState, async (payload) => {
     return devtools.context.api.getInspectorState(payload)

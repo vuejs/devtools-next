@@ -32,7 +32,7 @@ export class BridgeRpc {
         cb(parse(payload))
       })
     },
-    inspectorStateUpdated<T = { inspectorId: string; state: Record<string, InspectorState[]> }>(cb: (payload: T) => void) {
+    inspectorStateUpdated<T = { inspectorId: string; state: InspectorState[] }>(cb: (payload: T) => void) {
       Bridge.value.on(BridgeEvents.SEND_INSPECTOR_STATE, (payload) => {
         cb(parse(payload))
       })
@@ -54,15 +54,19 @@ export class BridgeRpc {
     },
   }
 
+  static updateInspectorTreeId(id: string) {
+    bridgeRpcCore.emit(bridgeRpcEvents.updateInspectorTreeId, id)
+  }
+
   static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string; label: string; tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorTree, payload)
   }
 
-  static async getInspectorState<R extends { data: unknown } = { data: { state: Record<string, InspectorState[]> } }>(payload: BridgeRpcEventPayload['inspector-state']) {
+  static async getInspectorState<R extends { data: unknown } = { data: { state: InspectorState[] } }>(payload: BridgeRpcEventPayload['inspector-state']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.inspectorState, payload)
   }
 
-  static async editInspectorState<R extends { data: unknown } = { data: { state: Record<string, InspectorState[]> } }>(payload: BridgeRpcEventPayload['edit-inspector-state']) {
+  static async editInspectorState<R extends { data: unknown } = { data: { state: InspectorState[] } }>(payload: BridgeRpcEventPayload['edit-inspector-state']) {
     return bridgeRpcCore.emit<R>(bridgeRpcEvents.editState, payload)
   }
 

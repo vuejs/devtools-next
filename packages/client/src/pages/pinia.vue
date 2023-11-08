@@ -9,11 +9,14 @@ const bridgeRpc = useDevToolsBridgeRpc()
 
 const selected = ref('')
 const tree = ref<{ id: string;label: string; tags: InspectorNodeTag[] }[]>([])
-const state = ref<Record<string, InspectorState[]>>({})
+const state = ref<{
+  inspectorId?: string
+  state?: InspectorState[]
+}>({})
 
 function getPiniaState(nodeId: string) {
   bridgeRpc.getInspectorState({ inspectorId: 'pinia', nodeId }).then(({ data }) => {
-    state.value = data.state
+    state.value = data
   })
 }
 
@@ -32,22 +35,21 @@ onDevToolsClientConnected(() => {
     }
   })
 
-  // @TODO: duplicated callback calls (different inspectorId)
-  bridgeRpc.on.inspectorTreeUpdated(({ data }) => {
-    if (!data)
+  bridgeRpc.on.inspectorTreeUpdated((data) => {
+    if (data?.inspectorId !== 'pinia' || !data?.data.length)
       return
-    tree.value = data
-    if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getPiniaState(data[0].id)
+    tree.value = data.data
+    if (!selected.value && data.data.length) {
+      selected.value = data.data[0].id
+      getPiniaState(data.data[0].id)
     }
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {
-    if (!data || !data.state || data.inspectorId !== 'pinia')
+    if (!data || !data.state.length)
       return
 
-    state.value = data.state
+    state.value = data
   })
 })
 </script>

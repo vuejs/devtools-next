@@ -1,5 +1,5 @@
 import { devtoolsContext } from '../core/general/state'
-import { now as nowFn, stringify } from '../shared'
+import { now as nowFn, parse, stringify } from '../shared'
 import type { AddInspectorApiPayload, InspectorStateEditorPayload } from '../core/component/types'
 import { addInspector, getInspector, updateInspector } from '../core/general/inspector'
 import type { TimelineEvent } from '../core/timeline'
@@ -61,7 +61,11 @@ export class DevToolsPluginApi {
     apiHooks.callHookWith((callbacks) => {
       callbacks.forEach(cb => cb(_payload))
     }, DevToolsEvents.GET_INSPECTOR_STATE)
-    return stringify(_payload) as string
+
+    // @ts-expect-error TODO: types
+    const state = _payload.state
+    delete state.instance
+    return stringify(state) as string
   }
 
   async editInspectorState(payload: InspectorStateEditorPayload) {
@@ -81,7 +85,10 @@ export class DevToolsPluginApi {
       const res = await this.getInspectorTree({
         inspectorId,
       })
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, res)
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, stringify({
+        inspectorId,
+        data: parse(res),
+      }) as string)
     }
   }
 

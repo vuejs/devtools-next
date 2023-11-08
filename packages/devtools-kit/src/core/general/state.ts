@@ -21,6 +21,7 @@ global[ContextKey] ??= {
   timelineLayer: [],
   routerInfo: {},
   router: null,
+  activeInspectorTreeId: '',
 }
 
 export const devtoolsState = new Proxy(global[StateKey], {
@@ -73,4 +74,5 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
   }[]
   routerInfo: RouterInfo
   router: Router
+  activeInspectorTreeId: string
 }

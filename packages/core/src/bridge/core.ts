@@ -78,6 +78,7 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 export const bridgeRpcEvents = {
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
+  updateInspectorTreeId: 'inspector-tree:update-id',
   state: 'state',
   timelineLayer: 'timeline-layer',
   routerInfo: 'router-info',
@@ -93,6 +94,7 @@ export interface BridgeRpcEventPayload {
     inspectorId?: string
     filter?: string
   }
+  [bridgeRpcEvents.updateInspectorTreeId]: string
   [bridgeRpcEvents.inspectorState]: {
     inspectorId: string
     nodeId: string

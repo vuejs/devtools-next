@@ -16,4 +16,5 @@ export interface DevToolsContext {
   }[]
   routerInfo: unknown
   router: unknown
+  activeInspectorTreeId: string
 }

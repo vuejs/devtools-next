@@ -74,6 +74,10 @@ function selectComponentTree(id: string) {
   activeComponentId.value = id
 }
 
+watch(selectedComponentTree, (id) => {
+  bridgeRpc.updateInspectorTreeId(id)
+})
+
 /** ---------------- tree end ------------------- */
 
 /** ---------------- state start ------------------- */
@@ -94,7 +98,7 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 
 function getComponentState(id: string) {
   bridgeRpc.getInspectorState({ inspectorId: 'components', nodeId: id }).then(({ data }) => {
-    activeComponentState.value = normalizeComponentState(data.state)
+    activeComponentState.value = normalizeComponentState(data)
   })
 }
 
@@ -105,16 +109,19 @@ onDevToolsClientConnected(() => {
   getComponentTree().then(() => {
     loaded.value = true
   })
-  bridgeRpc.on.inspectorTreeUpdated<ComponentTreeNode[]>((data) => {
+  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[]; inspectorId: string }>((data) => {
+    if (data.inspectorId !== 'components' || !data?.data?.length)
+      return
+
     const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
-    treeNode.value = data
-    isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
-    initSelectedComponent(data)
+    treeNode.value = data.data
+    isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data))
+    initSelectedComponent(data.data)
   })
 
   // state
   bridgeRpc.on.inspectorStateUpdated((data) => {
-    activeComponentState.value = normalizeComponentState(data.state)
+    activeComponentState.value = normalizeComponentState(data)
   })
 })
 

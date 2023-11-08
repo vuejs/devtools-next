@@ -6,7 +6,7 @@ import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
 import VueInspector from 'vite-plugin-vue-inspector'
 import { setupViteRPCServer } from '@vue-devtools-next/core'
-import { setupAssetsRPC } from '@vue-devtools-next/core/server'
+import { setupAssetsRPC, setupGraphRPC } from '@vue-devtools-next/core/server'
 import { DIR_CLIENT } from './dir'
 
 type DeepRequired<T> = {

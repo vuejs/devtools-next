@@ -14,6 +14,9 @@ const p = reactive({
   age: 18,
 })
 
+// setTimeout(()=>{
+//   app.$dispose()
+// },3000)
 const str = ref('111')
 
 const router = useRouter()
@@ -29,6 +32,7 @@ const route = useRoute()
     <RouterView />
     {{ doubleCount }}
     {{ isDark }}
+    {{ app.count }}
     <RouterLink to="/hello">
       <div>
         Go to hello!

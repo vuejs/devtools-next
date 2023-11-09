@@ -40,6 +40,7 @@ const on = {
 
 export function createDevToolsHook(): DevtoolsHook {
   return {
+    enabled: true,
     appRecords: [],
     apps: {},
     events: new Map(),

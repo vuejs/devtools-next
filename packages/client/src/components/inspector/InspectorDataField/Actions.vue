@@ -3,6 +3,7 @@ import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtool
 import type { InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import type { EditorInputValidType } from '../../../composables/inspector'
 
 const props = defineProps<{
   data: InspectorState
@@ -10,7 +11,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
-  'enableEditInput': [type: 'number' | 'string']
+  'enableEditInput': [type: EditorInputValidType]
 }>()
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -22,8 +23,7 @@ const { copy, isSupported } = useClipboard()
 const popupVisible = ref(false)
 
 const dataType = computed(() => {
-  const v = props.data.value
-  return typeof v
+  return typeof props.data.value
 })
 
 const iconButtonProps = {
@@ -53,9 +53,9 @@ function quickEdit(v: unknown) {
   <div class="inline pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="data.editable">
-      <!-- input edit, number/string -->
-      <template v-if="dataType === 'string' || dataType === 'number'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="$emit('enableEditInput', dataType)">
+      <!-- input edit, number/string/object -->
+      <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object'">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="$emit('enableEditInput', dataType)">
           <template #icon>
             <VueIcon icon="i-material-symbols-edit-rounded" />
           </template>
@@ -98,9 +98,7 @@ function quickEdit(v: unknown) {
     >
       <div class="py5px w160px">
         <VueDropdownButton
-          @click="() => {
-            copy(data.value.toString())
-          }"
+          @click="copy(data.value.toString())"
         >
           <template #icon>
             <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />

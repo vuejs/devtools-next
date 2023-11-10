@@ -17,19 +17,27 @@ const emit = defineEmits<{
 
 const value = useVModel(props, 'modelValue', emit)
 
-const isWarning = computed(() => props.type === 'number' && (value.value.trim().length === 0 || Number.isNaN(Number(value.value))))
+const isWarning = computed(() =>
+  // warning if is empty or is NaN if is a numeric value
+  value.value.trim().length === 0
+  || (
+    props.type === 'number'
+      ? Number.isNaN(Number(value.value))
+      : false
+  ),
+)
 </script>
 
 <template>
   <span class="flex-inline items-center gap4px">
-    <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="w120px h25px px4px" auto-focus />
+    <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="w120px h25px px4px" auto-focus @click.stop />
     <template v-if="!isWarning">
-      <VueButton size="mini" flat class="p2px!" @click="$emit('cancel')">
+      <VueButton size="mini" flat class="p2px!" @click.stop="$emit('cancel')">
         <template #icon>
           <VueIcon icon="i-material-symbols-cancel" />
         </template>
       </VueButton>
-      <VueButton size="mini" flat class="p2px!" @click="$emit('submit', value)">
+      <VueButton size="mini" flat class="p2px!" @click.stop="$emit('submit', value)">
         <template #icon>
           <VueIcon icon="i-material-symbols-save" />
         </template>

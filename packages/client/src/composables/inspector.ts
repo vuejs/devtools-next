@@ -19,9 +19,11 @@ export function useStateEditorContext() {
   return context
 }
 
+export type EditorInputValidType = 'number' | 'string' | 'object'
+
 export function useStateEditor() {
   const editingText = ref('')
-  const editingType = ref<'number' | 'string'>('string')
+  const editingType = ref<EditorInputValidType>('string')
   const editing = ref(false)
 
   const state = useStateEditorContext()
@@ -29,7 +31,7 @@ export function useStateEditor() {
   return {
     editingText,
     editing,
-    toggleEditing(t?: 'number' | 'string') {
+    toggleEditing(t?: EditorInputValidType) {
       if (t)
         editingType.value = t
       editing.value = !editing.value

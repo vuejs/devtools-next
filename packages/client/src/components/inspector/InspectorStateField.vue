@@ -98,10 +98,12 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 
 watch(() => editing.value, (v) => {
   if (v) {
-    // TODO: object, array...
-    if (!['string', 'number'].includes(typeof props.data.value))
+    const value = props.data.value
+    if (typeof value === 'object') {
+      editingText.value = JSON.stringify(value)
       return
-    editingText.value = props.data.value.toString()
+    }
+    editingText.value = value.toString()
   }
   else {
     editingText.value = ''
@@ -150,9 +152,13 @@ const { isHovering } = useHover(containerRef)
           <ExpandIcon :value="isExpanded" group-hover:text-white absolute left--6 />
           <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
           <span mx-1>:</span>
-          <span :class="stateFormatClass">
-            <span v-html="normalizedValue" />
-          </span>
+          <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
+          <template v-else>
+            <span :class="stateFormatClass">
+              <span v-html="normalizedValue" />
+            </span>
+            <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
+          </template>
         </div>
         <div v-if="isExpanded">
           <InspectorStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />

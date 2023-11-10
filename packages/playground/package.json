@@ -1,5 +1,6 @@
 {
   "name": "playground",
+  "type": "module",
   "private": true,
   "scripts": {
     "build:playground": "vite build",

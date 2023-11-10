@@ -3,11 +3,9 @@ import { isRef } from 'vue'
 import { getComponentInstance, nodeIdToInstanceId } from '../general'
 import { devtoolsContext } from '../../general'
 
-import type { InspectorStateEditorPayload } from '../types'
+import type { InspectorStateEditorPayload, PropPath } from '../types'
 
 export type Recordable = Record<PropertyKey, any>
-
-export type PropPath = string | string[]
 
 export class StateEditor {
   refEditor = new RefStateEditor()

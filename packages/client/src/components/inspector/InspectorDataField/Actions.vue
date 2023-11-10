@@ -44,6 +44,7 @@ function quickEdit(v: unknown) {
     state: {
       newKey: null!,
       value: v,
+      type: dataType.value,
     },
   } satisfies InspectorStateEditorPayload)
 }

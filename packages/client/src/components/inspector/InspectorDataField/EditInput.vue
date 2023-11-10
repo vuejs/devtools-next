@@ -17,12 +17,29 @@ const emit = defineEmits<{
 
 const value = useVModel(props, 'modelValue', emit)
 
+function tryToParseJSONString(v: unknown) {
+  try {
+    JSON.parse(v as string)
+    return true
+  }
+  catch {
+    return false
+  }
+}
+
 const isWarning = computed(() =>
   // warning if is empty or is NaN if is a numeric value
+  // or is not a valid Object if is an object
   value.value.trim().length === 0
   || (
     props.type === 'number'
       ? Number.isNaN(Number(value.value))
+      : false
+  )
+  // @TODO: maybe a better way to check? use JSON.parse is not a performance-friendly way
+  || (
+    props.type === 'object'
+      ? !tryToParseJSONString(value.value)
       : false
   ),
 )

@@ -68,7 +68,7 @@ const normalizedChildField = computed(() => {
     // @TODO: show more
     const sliced = value.slice(0, 20)
     return sliced.map((item, i) => ({
-      key: `${props.data.key}[${i}]`,
+      key: `${props.data.key}.${i}`,
       value: item,
       ...inherit,
       editable: props.data.editable,

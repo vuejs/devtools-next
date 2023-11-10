@@ -6,7 +6,10 @@ const numericValue = ref(0)
 
 const reactiveValue = reactive({
   a: 1,
+  prop1: 1,
 })
+
+const arrayValue = ref([1, 2, 3])
 
 const stringValue = ref('abc')
 </script>
@@ -18,6 +21,7 @@ const stringValue = ref('abc')
       <li>boolean value: {{ booleanValue }}</li>
       <li>numeric value: {{ numericValue }}</li>
       <li>reactive value: {{ JSON.stringify(reactiveValue) }}</li>
+      <li>array value: {{ JSON.stringify(arrayValue) }}</li>
       <li>string value: {{ stringValue }}</li>
     </ul>
   </div>

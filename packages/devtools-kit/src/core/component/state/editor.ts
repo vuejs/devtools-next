@@ -25,7 +25,7 @@ export class StateEditor {
         object = this.refEditor.get(object)
     }
     const field = sections[0]
-    const item = object[field]
+    const item = this.refEditor.get(object)[field]
     if (cb) {
       cb(object, field, value)
     }
@@ -108,8 +108,8 @@ class RefStateEditor {
     }
   }
 
-  get(ref: any): any {
-    return ref
+  get(ref: MaybeRef<any>): any {
+    return isRef(ref) ? ref.value : ref
   }
 
   isRef(ref: MaybeRef<any>): ref is Ref<any> {

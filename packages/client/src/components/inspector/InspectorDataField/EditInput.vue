@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { VueButton, VueIcon, VueInput } from '@vue-devtools-next/ui'
 
-// TODO: keyboard shortcut, esc to cancel, enter to submit
-//       and show tooltip on button when hovering
-
 const props = withDefaults(defineProps<{
   modelValue: string
   type: string // typeof value
@@ -19,6 +16,18 @@ const emit = defineEmits<{
   'submit': [dataType: string]
   'update:modelValue': [value: string]
 }>()
+
+// TODO: keyboard shortcut, esc to cancel, enter to submit
+//       and show tooltip on button when hovering
+
+const { escape, enter } = useMagicKeys()
+
+watchEffect(() => {
+  if (escape.value)
+    emit('cancel')
+  else if (enter.value)
+    emit('submit', props.type)
+})
 
 const value = useVModel(props, 'modelValue', emit)
 

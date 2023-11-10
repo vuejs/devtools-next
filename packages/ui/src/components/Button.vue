@@ -64,21 +64,21 @@ const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> =
   },
   normal: {
     default: 'bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:(bg-gray-800-lighter text-white))',
-    primary: ' text-white bg-primary-500 hover:bg-primary-500-lighter',
-    accent: 'text-white bg-accent-500 hover:bg-accent-500-lighter dark:bg-accent-300',
-    danger: 'text-white bg-danger-500 hover:bg-danger-500-lighter',
-    warning: 'text-white bg-warning-500 hover:bg-warning-500-lighter',
+    primary: ' text-white bg-primary-500 hover:bg-primary-500-lighter dark:hover:bg-primary-500-darker',
+    accent: 'text-white bg-accent-500 hover:bg-accent-500-lighter dark:bg-accent-500-darker dark:bg-accent-300',
+    danger: 'text-white bg-danger-500 hover:bg-danger-500-lighter dark:hover:bg-danger-500-darker',
+    warning: 'text-white bg-warning-500 hover:bg-warning-500-lighter dark:hover:bg-warning-500-darker',
     info: 'text-info-500 bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
     success: 'text-primary-500 bg-primary-100 hover:bg-primary-100-lighter dark:(bg-gray-800 hover:bg-gray-800-lighter)',
   },
   flat: {
-    default: 'hover:(bg-primary-100 text-black) dark:text-white',
+    default: 'hover:(bg-primary-100 text-black) dark:(!text-white hover:(bg-primary-800))',
     primary: 'hover:(bg-primary-500 text-white)',
     accent: 'hover:(bg-accent-500 text-white)',
     danger: 'hover:(bg-danger-500 text-white)',
     warning: 'hover:(bg-warning-500 text-white)',
-    info: 'hover:(bg-primary-100 text-info-500)',
-    success: 'hover:(bg-primary-100 text-primary-500)',
+    info: 'hover:(bg-primary-100 text-info-500) dark:(hover:(bg-gray-800 text-info-400))',
+    success: 'hover:(bg-primary-100 text-primary-500) dark:(hover:(bg-primary-800 text-primary-400))',
   },
 }
 

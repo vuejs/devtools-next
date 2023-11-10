@@ -1,5 +1,5 @@
 import type { MaybeRef, Ref } from 'vue'
-import { isRef } from 'vue'
+import { isReactive, isRef } from 'vue'
 import { getComponentInstance, nodeIdToInstanceId } from '../general'
 import { devtoolsContext } from '../../general'
 
@@ -80,7 +80,26 @@ export class StateEditor {
 
 class RefStateEditor {
   set(ref: Ref<any>, value: any): void {
-    ref.value = value
+    if (isRef(ref)) {
+      ref.value = value
+    }
+    else {
+      // if is reactive, then it must be object
+      // to prevent loss reactivity, we should assign key by key
+      const obj = JSON.parse(value)
+      const previousKeys = Object.keys(ref)
+      const currentKeys = Object.keys(obj)
+      // we should check the key diffs, if previous key is the longer
+      // then remove the needless keys
+      // @TODO: performance optimization
+      if (previousKeys.length > currentKeys.length) {
+        const diffKeys = previousKeys.filter(key => !currentKeys.includes(key))
+        diffKeys.forEach(key => Reflect.deleteProperty(ref, key))
+      }
+      currentKeys.forEach((key) => {
+        Reflect.set(ref, key, Reflect.get(obj, key))
+      })
+    }
   }
 
   get(ref: any): any {
@@ -88,12 +107,12 @@ class RefStateEditor {
   }
 
   isRef(ref: MaybeRef<any>): ref is Ref<any> {
-    return isRef(ref)
+    return isRef(ref) || isReactive(ref)
   }
 }
 
 export async function editComponentState(payload: InspectorStateEditorPayload, stateEditor: StateEditor) {
-  const { path, nodeId, state } = payload
+  const { path, nodeId, state, type } = payload
   const instanceId = nodeIdToInstanceId(devtoolsContext.appRecord.id, nodeId)
   // assert data types, currently no...
   // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
@@ -101,19 +120,22 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
   if (!instance)
     return
 
-  const paths = path
   const targetPath = path.slice()
 
   let target: Record<string, unknown> | undefined
 
   // TODO: props
-  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(paths[0])) {
+  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(path[0])) {
     // Setup
     target = instance.devtoolsRawSetupState
   }
 
-  if (target && targetPath)
+  if (target && targetPath) {
+    if (state.type === 'object' && type === 'reactive') {
+      // prevent loss of reactivity
+    }
     stateEditor.set(target, targetPath, state.value, stateEditor.createDefaultSetCallback(state))
+  }
 }
 
 export const stateEditor = new StateEditor()

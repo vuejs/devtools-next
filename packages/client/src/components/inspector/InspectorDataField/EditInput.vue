@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'cancel': []
-  'submit': [value: string]
+  'submit': [dataType: string]
   'update:modelValue': [value: string]
 }>()
 
@@ -37,7 +37,7 @@ const isWarning = computed(() =>
           <VueIcon icon="i-material-symbols-cancel" />
         </template>
       </VueButton>
-      <VueButton size="mini" flat class="p2px!" @click.stop="$emit('submit', value)">
+      <VueButton size="mini" flat class="p2px!" @click.stop="$emit('submit', type)">
         <template #icon>
           <VueIcon icon="i-material-symbols-save" />
         </template>

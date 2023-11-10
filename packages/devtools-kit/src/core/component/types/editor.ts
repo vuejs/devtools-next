@@ -7,12 +7,13 @@ export interface InspectorStateEditorPayload {
   app?: AppRecord['app']
   inspectorId: string
   nodeId: string
-  type: string
+  type: string // reactive, ref, computed......
   path: PropPath
   state: {
     value: unknown
     newKey: string
     remove?: boolean
+    type: string // typeof something...
   }
   set?: (
     obj: Recordable,

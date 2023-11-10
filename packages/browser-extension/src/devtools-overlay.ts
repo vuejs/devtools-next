@@ -37,6 +37,6 @@ function init() {
 window.addEventListener('message', (e) => {
   if (e.source === window && e.data.vueDetected) {
     chrome.runtime.sendMessage(e.data)
-    init()
+    e.data.devtoolsEnabled && init()
   }
 })

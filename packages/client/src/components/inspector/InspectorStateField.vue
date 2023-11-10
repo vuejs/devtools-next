@@ -151,7 +151,7 @@ const { isHovering } = useHover(containerRef)
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
           </span>
-          <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
+          <Actions :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" />
         </template>
       </div>
     </template>
@@ -166,7 +166,7 @@ const { isHovering } = useHover(containerRef)
             <span :class="stateFormatClass">
               <span v-html="normalizedValue" />
             </span>
-            <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
+            <Actions :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" />
           </template>
         </div>
         <div v-if="isExpanded">

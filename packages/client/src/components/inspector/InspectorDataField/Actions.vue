@@ -8,6 +8,7 @@ import type { EditorInputValidType } from '../../../composables/inspector'
 const props = defineProps<{
   data: InspectorState
   hovering: boolean
+  depth: number
 }>()
 
 defineEmits<{
@@ -35,7 +36,7 @@ const buttonClass = computed(() => ({
   'opacity-0': !props.hovering,
 }))
 
-function quickEdit(v: unknown) {
+function quickEdit(v: unknown, remove: boolean = false) {
   bridgeRpc.editInspectorState({
     path: props.data.key.split('.'),
     inspectorId: state.value.inspectorId,
@@ -45,6 +46,7 @@ function quickEdit(v: unknown) {
       newKey: null!,
       value: v,
       type: dataType.value,
+      remove,
     },
   } satisfies InspectorStateEditorPayload)
 }
@@ -85,6 +87,12 @@ function quickEdit(v: unknown) {
         </VueButton>
       </template>
     </template>
+    <!-- delete prop, only appear if depth > 0 -->
+    <VueButton v-if="depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(data.value, true)">
+      <template #icon>
+        <VueIcon icon="i-material-symbols-delete-rounded" />
+      </template>
+    </VueButton>
     <!-- Copy key/value -->
     <VueDropdown
       :class="{

@@ -20,6 +20,7 @@ export function useStateEditorContext() {
 }
 
 export type EditorInputValidType = 'number' | 'string' | 'object'
+export type EditorAddNewPropType = 'object' | 'array'
 
 export function useStateEditor() {
   const editingText = ref('')
@@ -38,5 +39,51 @@ export function useStateEditor() {
     },
     editingType,
     nodeId: state.value.nodeId,
+  }
+}
+
+function getNextAvailableKey(type: EditorAddNewPropType, data: any) {
+  if (type === 'array') {
+    const len = (data as any[]).length
+    return len
+  }
+  const prefix = 'newProp'
+  let i = 1
+  while (true) {
+    const key = `${prefix}${i}`
+    if (!data[key])
+      return key
+    i++
+  }
+}
+
+export function useStateEditorDrafting() {
+  const draftingNewProp = ref({
+    enable: false,
+    key: '',
+    value: 'undefined',
+  })
+
+  function addNewProp(type: EditorAddNewPropType, data: any) {
+    const key = getNextAvailableKey(type, data)
+    draftingNewProp.value = {
+      enable: true,
+      key: key.toString(),
+      value: 'undefined',
+    }
+  }
+
+  function resetDrafting() {
+    draftingNewProp.value = {
+      enable: false,
+      key: '',
+      value: 'undefined',
+    }
+  }
+
+  return {
+    addNewProp,
+    resetDrafting,
+    draftingNewProp,
   }
 }

@@ -3,16 +3,20 @@ import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtool
 import type { InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
-import type { EditorInputValidType } from '../../../composables/inspector'
+import type { EditorAddNewPropType, EditorInputValidType } from '../../../composables/inspector'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: InspectorState
   hovering: boolean
   depth: number
-}>()
+  showAddIfNeeded?: boolean
+}>(), {
+  showAddIfNeeded: true,
+})
 
 defineEmits<{
   'enableEditInput': [type: EditorInputValidType]
+  'addNewProp': [type: EditorAddNewPropType]
 }>()
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -61,6 +65,14 @@ function quickEdit(v: unknown, remove: boolean = false) {
         <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="$emit('enableEditInput', dataType)">
           <template #icon>
             <VueIcon icon="i-material-symbols-edit-rounded" />
+          </template>
+        </VueButton>
+        <VueButton
+          v-if="dataType === 'object' && showAddIfNeeded" v-bind="iconButtonProps" :class="buttonClass" @click.stop="
+            $emit('addNewProp', Array.isArray(data.value) ? 'array' : 'object')"
+        >
+          <template #icon>
+            <VueIcon icon="i-material-symbols-add-circle-rounded" />
           </template>
         </VueButton>
       </template>

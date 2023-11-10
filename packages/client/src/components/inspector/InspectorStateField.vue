@@ -4,6 +4,7 @@ import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Actions from './InspectorDataField/Actions.vue'
+import type { EditorAddNewPropType } from '~/composables/inspector'
 
 const props = withDefaults(defineProps<{
   data: InspectorState
@@ -72,6 +73,7 @@ const normalizedChildField = computed(() => {
       value: item,
       ...inherit,
       editable: props.data.editable,
+      creating: false,
     }))
   }
   else if (typeof value === 'object') {
@@ -80,6 +82,7 @@ const normalizedChildField = computed(() => {
       value: value[key],
       ...inherit,
       editable: props.data.editable,
+      creating: false,
     }))
     if (type !== 'custom')
       value = sortByKey(value)
@@ -136,6 +139,33 @@ function submit(dataType: string) {
   toggleEditing()
 }
 
+// ------ add new prop ------
+const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEditorDrafting()
+
+function addNewProp(type: EditorAddNewPropType) {
+  if (!isExpanded.value)
+    toggleCollapse()
+  addNewPropApi(type, props.data.value)
+}
+
+function submitDrafting() {
+  const data = props.data
+  const path = data.key.split('.')
+  path.push(draftingNewProp.value.key)
+  bridgeRpc.editInspectorState({
+    path,
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: draftingNewProp.value.key,
+      type: typeof draftingNewProp.value.value,
+      value: draftingNewProp.value.value,
+    },
+  } satisfies InspectorStateEditorPayload)
+  resetDrafting()
+}
+
 const containerRef = ref()
 const { isHovering } = useHover(containerRef)
 </script>
@@ -166,13 +196,20 @@ const { isHovering } = useHover(containerRef)
             <span :class="stateFormatClass">
               <span v-html="normalizedValue" />
             </span>
-            <Actions :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" />
+            <Actions :show-add-if-needed="!draftingNewProp.enable" :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" @add-new-prop="addNewProp" />
           </template>
         </div>
         <div v-if="isExpanded">
           <InspectorStateField
             v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no"
           />
+          <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
+            <span state-key whitespace-nowrap overflow-hidden text-ellipsis>
+              <EditInput v-model="draftingNewProp.key" type="string" :show-actions="false" />
+            </span>
+            <span mx-1>:</span>
+            <EditInput v-model="draftingNewProp.value" type="string" :auto-focus="false" @cancel="resetDrafting" @submit="submitDrafting" />
+          </div>
         </div>
       </div>
     </template>

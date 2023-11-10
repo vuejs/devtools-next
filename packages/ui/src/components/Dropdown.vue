@@ -34,12 +34,16 @@ provide('$ui-dropdown-disabled', computed(() => props.disabled))
     :disabled="disabled" class="inline-block w-auto"
     :triggers="[trigger]" :distance="distance + 6" :placement="placement"
     @update:shown="v => $emit('update:visible', v)"
+    @click="(e: MouseEvent) => {
+      e.stopPropagation()
+    }"
   >
     <VueButton
       v-bind="{
         ...buttonProps,
         disabled,
-      }" :class="buttonClass"
+      }"
+      :class="buttonClass"
     >
       <template v-if="label" #default>
         {{ label }}

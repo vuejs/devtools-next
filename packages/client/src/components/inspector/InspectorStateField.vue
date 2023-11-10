@@ -68,16 +68,18 @@ const normalizedChildField = computed(() => {
     // @TODO: show more
     const sliced = value.slice(0, 20)
     return sliced.map((item, i) => ({
-      key: i,
+      key: `${props.data.key}[${i}]`,
       value: item,
       ...inherit,
+      editable: props.data.editable,
     }))
   }
   else if (typeof value === 'object') {
     value = Object.keys(value).map(key => ({
-      key,
+      key: `${props.data.key}.${key}`,
       value: value[key],
       ...inherit,
+      editable: props.data.editable,
     }))
     if (type !== 'custom')
       value = sortByKey(value)
@@ -87,6 +89,14 @@ const normalizedChildField = computed(() => {
   }
 
   return value === props.data.value ? {} : value
+})
+
+const normalizedDisplayedKey = computed(() => {
+  const key = props.data.key
+  const lastDotIndex = key.lastIndexOf('.')
+  if (lastDotIndex === -1)
+    return key
+  return key.slice(lastDotIndex + 1)
 })
 
 const hasChildren = computed(() => {
@@ -134,11 +144,9 @@ const { isHovering } = useHover(containerRef)
   <div ref="containerRef" class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
-        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
+        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ normalizedDisplayedKey }}</span>
         <span mx-1>:</span>
-        <template v-if="editing">
-          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
-        </template>
+        <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
         <template v-else>
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
@@ -162,7 +170,9 @@ const { isHovering } = useHover(containerRef)
           </template>
         </div>
         <div v-if="isExpanded">
-          <InspectorStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
+          <InspectorStateField
+            v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no"
+          />
         </div>
       </div>
     </template>

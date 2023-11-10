@@ -17,6 +17,7 @@ export class StateEditor {
     cb?: (object: Recordable, field: string, value: unknown) => void,
   ) {
     const sections = Array.isArray(path) ? path : path.split('.')
+    const markRef = false
     while (sections.length > 1) {
       const section = sections.shift()!
       object = object[section] as Recordable
@@ -25,12 +26,17 @@ export class StateEditor {
     }
     const field = sections[0]
     const item = object[field]
-    if (cb)
+    if (cb) {
       cb(object, field, value)
-    else if (this.refEditor.isRef(item))
-      this.refEditor.set(item, value)
-    else
-      object[field] = value
+    }
+    else {
+      if (this.refEditor.isRef(item))
+        this.refEditor.set(item, value)
+      else if (markRef)
+        object[field] = value
+      else
+        object[field] = value
+    }
   }
 
   get(object: Recordable, path: PropPath) {

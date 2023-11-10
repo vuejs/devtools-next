@@ -98,7 +98,7 @@ function quickEdit(v: unknown) {
     >
       <div class="py5px w160px">
         <VueDropdownButton
-          @click="copy(data.value.toString())"
+          @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
         >
           <template #icon>
             <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />

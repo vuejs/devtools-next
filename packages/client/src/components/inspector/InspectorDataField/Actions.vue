@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 import type { InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
@@ -62,13 +62,20 @@ function quickEdit(v: unknown, remove: boolean = false) {
     <template v-if="data.editable">
       <!-- input edit, number/string/object -->
       <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="$emit('enableEditInput', dataType)">
+        <VueButton
+          v-tooltip="{
+            content: 'Edit value',
+          }" v-bind="iconButtonProps" :class="buttonClass" @click.stop="$emit('enableEditInput', dataType)"
+        >
           <template #icon>
             <VueIcon icon="i-material-symbols-edit-rounded" />
           </template>
         </VueButton>
         <VueButton
-          v-if="dataType === 'object' && showAddIfNeeded" v-bind="iconButtonProps" :class="buttonClass" @click.stop="
+          v-if="dataType === 'object' && showAddIfNeeded"
+          v-tooltip="{
+            content: 'Add new value',
+          }" v-bind="iconButtonProps" :class="buttonClass" @click.stop="
             $emit('addNewProp', Array.isArray(data.value) ? 'array' : 'object')"
         >
           <template #icon>

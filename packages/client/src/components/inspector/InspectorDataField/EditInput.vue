@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueIcon, VueInput } from '@vue-devtools-next/ui'
+import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 
 const props = withDefaults(defineProps<{
   modelValue: string
@@ -64,12 +64,20 @@ const isWarning = computed(() =>
     <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="w120px h25px px4px" :auto-focus="autoFocus" @click.stop />
     <template v-if="showActions">
       <template v-if="!isWarning">
-        <VueButton size="mini" flat class="p2px!" @click.stop="$emit('cancel')">
+        <VueButton
+          v-tooltip="{
+            content: 'Esc to cancel',
+          }" size="mini" flat class="p2px!" @click.stop="$emit('cancel')"
+        >
           <template #icon>
             <VueIcon icon="i-material-symbols-cancel" />
           </template>
         </VueButton>
-        <VueButton size="mini" flat class="p2px!" @click.stop="$emit('submit', type)">
+        <VueButton
+          v-tooltip="{
+            content: 'Enter to submit change',
+          }" size="mini" flat class="p2px!" @click.stop="$emit('submit', type)"
+        >
           <template #icon>
             <VueIcon icon="i-material-symbols-save" />
           </template>

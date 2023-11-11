@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon } from '@vue-devtools-next/ui'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 import type { InspectorState, InspectorStateEditorPayload } from 'vue-devtools-kit'
 import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import type { EditorAddNewPropType, EditorInputValidType } from '../../../composables/inspector'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: InspectorState
   hovering: boolean
-}>()
+  depth: number
+  showAddIfNeeded?: boolean
+}>(), {
+  showAddIfNeeded: true,
+})
 
 defineEmits<{
-  'enableEditInput': [type: 'number' | 'string']
+  'enableEditInput': [type: EditorInputValidType]
+  'addNewProp': [type: EditorAddNewPropType]
 }>()
 
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -22,8 +28,7 @@ const { copy, isSupported } = useClipboard()
 const popupVisible = ref(false)
 
 const dataType = computed(() => {
-  const v = props.data.value
-  return typeof v
+  return typeof props.data.value
 })
 
 const iconButtonProps = {
@@ -35,7 +40,7 @@ const buttonClass = computed(() => ({
   'opacity-0': !props.hovering,
 }))
 
-function quickEdit(v: unknown) {
+function quickEdit(v: unknown, remove: boolean = false) {
   bridgeRpc.editInspectorState({
     path: props.data.key.split('.'),
     inspectorId: state.value.inspectorId,
@@ -44,6 +49,8 @@ function quickEdit(v: unknown) {
     state: {
       newKey: null!,
       value: v,
+      type: dataType.value,
+      remove,
     },
   } satisfies InspectorStateEditorPayload)
 }
@@ -53,11 +60,26 @@ function quickEdit(v: unknown) {
   <div class="inline pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="data.editable">
-      <!-- input edit, number/string -->
-      <template v-if="dataType === 'string' || dataType === 'number'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="$emit('enableEditInput', dataType)">
+      <!-- input edit, number/string/object -->
+      <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object'">
+        <VueButton
+          v-tooltip="{
+            content: 'Edit value',
+          }" v-bind="iconButtonProps" :class="buttonClass" @click.stop="$emit('enableEditInput', dataType)"
+        >
           <template #icon>
             <VueIcon icon="i-material-symbols-edit-rounded" />
+          </template>
+        </VueButton>
+        <VueButton
+          v-if="dataType === 'object' && showAddIfNeeded"
+          v-tooltip="{
+            content: 'Add new value',
+          }" v-bind="iconButtonProps" :class="buttonClass" @click.stop="
+            $emit('addNewProp', Array.isArray(data.value) ? 'array' : 'object')"
+        >
+          <template #icon>
+            <VueIcon icon="i-material-symbols-add-circle-rounded" />
           </template>
         </VueButton>
       </template>
@@ -84,6 +106,12 @@ function quickEdit(v: unknown) {
         </VueButton>
       </template>
     </template>
+    <!-- delete prop, only appear if depth > 0 -->
+    <VueButton v-if="depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(data.value, true)">
+      <template #icon>
+        <VueIcon icon="i-material-symbols-delete-rounded" />
+      </template>
+    </VueButton>
     <!-- Copy key/value -->
     <VueDropdown
       :class="{
@@ -98,9 +126,7 @@ function quickEdit(v: unknown) {
     >
       <div class="py5px w160px">
         <VueDropdownButton
-          @click="() => {
-            copy(data.value.toString())
-          }"
+          @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
         >
           <template #icon>
             <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />

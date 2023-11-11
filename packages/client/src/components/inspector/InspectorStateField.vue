@@ -4,6 +4,7 @@ import { sortByKey } from '@vue-devtools-next/shared'
 import { formatInspectorStateValue, getInspectorStateValueType } from 'vue-devtools-kit/shared'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Actions from './InspectorDataField/Actions.vue'
+import type { EditorAddNewPropType } from '~/composables/inspector'
 
 const props = withDefaults(defineProps<{
   data: InspectorState
@@ -68,16 +69,20 @@ const normalizedChildField = computed(() => {
     // @TODO: show more
     const sliced = value.slice(0, 20)
     return sliced.map((item, i) => ({
-      key: i,
+      key: `${props.data.key}.${i}`,
       value: item,
       ...inherit,
+      editable: props.data.editable,
+      creating: false,
     }))
   }
   else if (typeof value === 'object') {
     value = Object.keys(value).map(key => ({
-      key,
+      key: `${props.data.key}.${key}`,
       value: value[key],
       ...inherit,
+      editable: props.data.editable,
+      creating: false,
     }))
     if (type !== 'custom')
       value = sortByKey(value)
@@ -89,6 +94,14 @@ const normalizedChildField = computed(() => {
   return value === props.data.value ? {} : value
 })
 
+const normalizedDisplayedKey = computed(() => {
+  const key = props.data.key
+  const lastDotIndex = key.lastIndexOf('.')
+  if (lastDotIndex === -1)
+    return key
+  return key.slice(lastDotIndex + 1)
+})
+
 const hasChildren = computed(() => {
   return Object.keys(normalizedChildField.value).length > 0
 })
@@ -98,17 +111,19 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 
 watch(() => editing.value, (v) => {
   if (v) {
-    // TODO: object, array...
-    if (!['string', 'number'].includes(typeof props.data.value))
+    const value = props.data.value
+    if (typeof value === 'object') {
+      editingText.value = JSON.stringify(value)
       return
-    editingText.value = props.data.value.toString()
+    }
+    editingText.value = value.toString()
   }
   else {
     editingText.value = ''
   }
 })
 
-function submit() {
+function submit(dataType: string) {
   const data = props.data
   bridgeRpc.editInspectorState({
     path: data.key.split('.'),
@@ -117,10 +132,38 @@ function submit() {
     nodeId,
     state: {
       newKey: null!,
+      type: dataType,
       value: editingText.value,
     },
   } satisfies InspectorStateEditorPayload)
   toggleEditing()
+}
+
+// ------ add new prop ------
+const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEditorDrafting()
+
+function addNewProp(type: EditorAddNewPropType) {
+  if (!isExpanded.value)
+    toggleCollapse()
+  addNewPropApi(type, props.data.value)
+}
+
+function submitDrafting() {
+  const data = props.data
+  const path = data.key.split('.')
+  path.push(draftingNewProp.value.key)
+  bridgeRpc.editInspectorState({
+    path,
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: draftingNewProp.value.key,
+      type: typeof draftingNewProp.value.value,
+      value: draftingNewProp.value.value,
+    },
+  } satisfies InspectorStateEditorPayload)
+  resetDrafting()
 }
 
 const containerRef = ref()
@@ -131,16 +174,14 @@ const { isHovering } = useHover(containerRef)
   <div ref="containerRef" class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
-        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
+        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ normalizedDisplayedKey }}</span>
         <span mx-1>:</span>
-        <template v-if="editing">
-          <EditInput v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
-        </template>
+        <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
         <template v-else>
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
           </span>
-          <Actions :hovering="isHovering" :data="data" @enable-edit-input="toggleEditing" />
+          <Actions :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" />
         </template>
       </div>
     </template>
@@ -150,12 +191,25 @@ const { isHovering } = useHover(containerRef)
           <ExpandIcon :value="isExpanded" group-hover:text-white absolute left--6 />
           <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
           <span mx-1>:</span>
-          <span :class="stateFormatClass">
-            <span v-html="normalizedValue" />
-          </span>
+          <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
+          <template v-else>
+            <span :class="stateFormatClass">
+              <span v-html="normalizedValue" />
+            </span>
+            <Actions :show-add-if-needed="!draftingNewProp.enable" :hovering="isHovering" :data="data" :depth="depth" @enable-edit-input="toggleEditing" @add-new-prop="addNewProp" />
+          </template>
         </div>
         <div v-if="isExpanded">
-          <InspectorStateField v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" />
+          <InspectorStateField
+            v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no"
+          />
+          <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
+            <span state-key whitespace-nowrap overflow-hidden text-ellipsis>
+              <EditInput v-model="draftingNewProp.key" type="string" :show-actions="false" />
+            </span>
+            <span mx-1>:</span>
+            <EditInput v-model="draftingNewProp.value" type="string" :auto-focus="false" @cancel="resetDrafting" @submit="submitDrafting" />
+          </div>
         </div>
       </div>
     </template>

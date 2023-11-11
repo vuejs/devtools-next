@@ -1,13 +1,11 @@
 import type { MaybeRef, Ref } from 'vue'
-import { isRef } from 'vue'
+import { isReactive, isRef } from 'vue'
 import { getComponentInstance, nodeIdToInstanceId } from '../general'
 import { devtoolsContext } from '../../general'
 
-import type { InspectorStateEditorPayload } from '../types'
+import type { InspectorStateEditorPayload, PropPath } from '../types'
 
 export type Recordable = Record<PropertyKey, any>
-
-export type PropPath = string | string[]
 
 export class StateEditor {
   refEditor = new RefStateEditor()
@@ -19,6 +17,7 @@ export class StateEditor {
     cb?: (object: Recordable, field: string, value: unknown) => void,
   ) {
     const sections = Array.isArray(path) ? path : path.split('.')
+    const markRef = false
     while (sections.length > 1) {
       const section = sections.shift()!
       object = object[section] as Recordable
@@ -26,13 +25,18 @@ export class StateEditor {
         object = this.refEditor.get(object)
     }
     const field = sections[0]
-    const item = object[field]
-    if (cb)
+    const item = this.refEditor.get(object)[field]
+    if (cb) {
       cb(object, field, value)
-    else if (this.refEditor.isRef(item))
-      this.refEditor.set(item, value)
-    else
-      object[field] = value
+    }
+    else {
+      if (this.refEditor.isRef(item))
+        this.refEditor.set(item, value)
+      else if (markRef)
+        object[field] = value
+      else
+        object[field] = value
+    }
   }
 
   get(object: Recordable, path: PropPath) {
@@ -82,20 +86,39 @@ export class StateEditor {
 
 class RefStateEditor {
   set(ref: Ref<any>, value: any): void {
-    ref.value = value
+    if (isRef(ref)) {
+      ref.value = value
+    }
+    else {
+      // if is reactive, then it must be object
+      // to prevent loss reactivity, we should assign key by key
+      const obj = JSON.parse(value)
+      const previousKeys = Object.keys(ref)
+      const currentKeys = Object.keys(obj)
+      // we should check the key diffs, if previous key is the longer
+      // then remove the needless keys
+      // @TODO: performance optimization
+      if (previousKeys.length > currentKeys.length) {
+        const diffKeys = previousKeys.filter(key => !currentKeys.includes(key))
+        diffKeys.forEach(key => Reflect.deleteProperty(ref, key))
+      }
+      currentKeys.forEach((key) => {
+        Reflect.set(ref, key, Reflect.get(obj, key))
+      })
+    }
   }
 
-  get(ref: any): any {
-    return ref
+  get(ref: MaybeRef<any>): any {
+    return isRef(ref) ? ref.value : ref
   }
 
   isRef(ref: MaybeRef<any>): ref is Ref<any> {
-    return isRef(ref)
+    return isRef(ref) || isReactive(ref)
   }
 }
 
 export async function editComponentState(payload: InspectorStateEditorPayload, stateEditor: StateEditor) {
-  const { path, nodeId, state } = payload
+  const { path, nodeId, state, type } = payload
   const instanceId = nodeIdToInstanceId(devtoolsContext.appRecord.id, nodeId)
   // assert data types, currently no...
   // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
@@ -103,19 +126,22 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
   if (!instance)
     return
 
-  const paths = path
   const targetPath = path.slice()
 
   let target: Record<string, unknown> | undefined
 
   // TODO: props
-  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(paths[0])) {
+  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(path[0])) {
     // Setup
     target = instance.devtoolsRawSetupState
   }
 
-  if (target && targetPath)
+  if (target && targetPath) {
+    if (state.type === 'object' && type === 'reactive') {
+      // prevent loss of reactivity
+    }
     stateEditor.set(target, targetPath, state.value, stateEditor.createDefaultSetCallback(state))
+  }
 }
 
 export const stateEditor = new StateEditor()

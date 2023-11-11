@@ -148,8 +148,8 @@ watchDebounced(filterName, (v) => {
           <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" />
         </div>
       </Pane>
-      <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
-        <div p-2>
+      <Pane flex flex-col>
+        <div p-2 grow h-0 overflow-auto class="no-scrollbar">
           <InspectorState
             v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"
             :node-id="activeComponentId" :data="state" :name="`${key}`" inspector-id="components"

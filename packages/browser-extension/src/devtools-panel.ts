@@ -60,6 +60,51 @@ initDevTools({
   reload(fn) {
     chrome.devtools.network.onNavigated.addListener(fn)
   },
+  connectViewModeBridge(cb) {
+    injectScript(chrome.runtime.getURL('dist/view-mode.js'), () => {
+      let port: chrome.runtime.Port
+
+      const listeners: Array<() => void> = []
+
+      // connect to background to setup proxy
+      function connect() {
+        try {
+          clearTimeout(connectionInfo.retryTimer!)
+          connectionInfo.count++
+          port = chrome.runtime.connect({
+            name: `${chrome.devtools.inspectedWindow.tabId}`,
+          })
+
+          connectionInfo.disconnected = false
+          port.onDisconnect.addListener(() => {
+            connectionInfo.disconnected = true
+            connectionInfo.retryTimer = setTimeout(connect, 1000)
+          })
+          if (connectionInfo.count > 1)
+            listeners.forEach(fn => port.onMessage.addListener(fn))
+        }
+        catch (e) {
+          connectionInfo.disconnected = true
+          connectionInfo.retryTimer = setTimeout(connect, 5000)
+        }
+      }
+      connect()
+
+      const bridge = new Bridge({
+        tracker(fn: any) {
+          port.onMessage.addListener(fn)
+          listeners.push(fn)
+        },
+        trigger(data) {
+          if (connectionInfo.disconnected)
+            return
+          port?.postMessage(data)
+        },
+      })
+
+      cb(bridge)
+    })
+  },
 })
 
 function injectScript(scriptName: string, cb: () => void) {

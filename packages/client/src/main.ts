@@ -6,6 +6,7 @@ import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { getViteClient } from 'vite-hot-client'
 import App from './App.vue'
+import ViewModeSwitch from '~/components/chrome/ViewModeSwitch.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
@@ -83,7 +84,29 @@ export async function initDevTools(shell) {
     }))
     app.mount('#app')
     Bridge.value.emit(BridgeEvents.CLIENT_READY)
+    Bridge.value.on('toggle-view-mode', (data) => {
+      if (data === 'overlay') {
+        Bridge.value.removeAllListeners()
+        app.unmount()
+        showViewModeInfo(shell)
+      }
+    })
   })
+}
+
+export async function showViewModeInfo(shell) {
+  const app = createApp(ViewModeSwitch)
+  shell.connectViewModeBridge(async (bridge) => {
+    Bridge.value = bridge
+    Bridge.value.on('toggle-view-mode', (data) => {
+      if (data === 'panel') {
+        Bridge.value.removeAllListeners()
+        app.unmount()
+        initDevTools(shell)
+      }
+    })
+  })
+  app.mount('#app')
 }
 
 window.addEventListener('message', (event) => {

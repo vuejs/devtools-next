@@ -7,13 +7,17 @@ export function onDevToolsClientConnected(fn: () => void) {
 
   const { connected } = useDevToolsState()
 
-  if (connected) {
+  if (connected.value) {
     fns.forEach(fn => fn())
     return
   }
 
   watchOnce(connected, (v) => {
     v && fns.forEach(fn => fn())
+  })
+
+  onUnmounted(() => {
+    fns.length = 0
   })
 
   return () => {

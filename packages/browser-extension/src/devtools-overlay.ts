@@ -41,6 +41,16 @@ function init() {
   head.appendChild(meta)
 }
 
+function toggleViewMode(mode: 'overlay' | 'panel') {
+  window.postMessage({
+    source: '__VUE_DEVTOOLS_OVERLAY__',
+    payload: {
+      event: 'toggle-view-mode',
+      data: mode,
+    },
+  }, '*')
+}
+
 window.addEventListener('message', async (e) => {
   if (e.source === window && e.data.vueDetected) {
     chrome.runtime.sendMessage(e.data)
@@ -50,21 +60,21 @@ window.addEventListener('message', async (e) => {
     if (data.devtoolsEnabled && viewMode === 'overlay')
       init()
   }
-  else if (e.source === window && e.data.event === 'toggle-view-mode') {
-    if (e.data.data === 'panel') {
-      // get link element
-      const link = document.querySelector('link[href^="chrome-extension://"][href*="/devtools-overlay.css"]')
-      // get script element
-      const script = document.querySelector('script[src^="chrome-extension://"][src*="/devtools-overlay.js"]')
-      link?.parentNode?.removeChild(link)
-
-      script?.parentNode?.removeChild(script)
-      const container = document.getElementById('__vue-devtools-container__')
-      if (container)
-        container.parentNode?.removeChild(container)
+  else if (e.data.source === '__VUE_DEVTOOLS_PROXY__' && e.data.payload.event === 'toggle-view-mode') {
+    if (e.data.payload.data === 'panel') {
+      toggleViewMode('panel')
     }
+
     else {
-      init()
+      const link = document.querySelector('link[href^="chrome-extension://"][href*="/devtools-overlay.css"]')
+      const script = document.querySelector('script[src^="chrome-extension://"][src*="/devtools-overlay.js"]')
+
+      // init
+      if (!link || !script)
+        init()
+      // restore
+      else
+        toggleViewMode('overlay')
     }
   }
 })

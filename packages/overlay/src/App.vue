@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
+import { target } from '@vue-devtools-next/shared'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -28,24 +29,42 @@ const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical
 const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
 
 const clientUrl = getDevToolsClientUrl()
+const overlayVisible = ref(true)
+
+let b: any = null
+
+target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
+  overlayVisible.value = visible
+  if (visible)
+    Bridge.value = b
+}
 
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
     const bridge = new Bridge({
       tracker(fn) {
+        if (!overlayVisible.value)
+          return
+
         window.addEventListener('message', (e) => {
           if (e.data.source === '__VUE_DEVTOOLS_CLIENT__')
             fn(e.data.data)
         })
       },
       trigger(data) {
+        if (!overlayVisible.value)
+          return
+
         iframe?.contentWindow?.postMessage({
           source: '__VUE_DEVTOOLS_USER_APP__',
           data,
         }, '*')
       },
+      viewMode: 'overlay',
     })
+
+    b = bridge
 
     prepareInjection(bridge)
 
@@ -64,6 +83,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 
 <template>
   <div
+    v-show="overlayVisible"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,

@@ -5,6 +5,7 @@ import { DevToolsRpc } from './bridge'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
+  viewMode: 'overlay' | 'panel'
 }
 
 function initDevToolsState() {
@@ -49,12 +50,17 @@ const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>; componentC
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {
-      const { bridge: _bridge } = pluginOptions
+      const { bridge: _bridge, viewMode: _viewMode } = pluginOptions
+      const viewMode = ref(_viewMode)
       const state = initDevToolsState()
       const bridgeContext = initDevToolsBridge(_bridge)
       state.init()
       app.provide(VueDevToolsBridgeSymbol, bridgeContext.bridge)
       app.provide(VueDevToolsStateSymbol, state)
+      app.provide('viewMode', viewMode)
+      bridgeContext.bridge.value.on('toggle-view-mode', (v) => {
+        viewMode.value = v
+      })
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__ = (_bridge: DevToolsPluginOptions['bridge']) => {
         bridgeContext.restore(_bridge)
         state.restore()

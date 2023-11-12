@@ -1,8 +1,11 @@
+import { target } from '@vue-devtools-next/shared'
 import { Bridge } from '../../core/src/bridge'
 import { prepareInjection } from '../../core/src/injection'
 
 window.addEventListener('message', handshake)
 
+let panelBridge: any = null
+let overlayBridge: any = null
 function handshake(e: MessageEvent) {
   if (e.data.source === '__VUE_DEVTOOLS_PROXY__' && e.data.payload.event === 'init') {
     window.removeEventListener('message', handshake)
@@ -23,7 +26,16 @@ function handshake(e: MessageEvent) {
           payload: data,
         }, '*')
       },
+      viewMode: target.__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__ ?? window.localStorage.getItem('__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__') ?? 'overlay',
     })
+    const viewMode = target.__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__ ?? window.localStorage.getItem('__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__') ?? 'overlay'
+    if (viewMode === 'panel')
+      panelBridge = bridge
+
+    else
+      overlayBridge = bridge
+
+    console.log('xxxx', viewMode)
     bridge.removeAllListeners()
 
     bridge.on('shutdown', () => {
@@ -36,5 +48,19 @@ function handshake(e: MessageEvent) {
     })
 
     prepareInjection(bridge)
+  }
+}
+
+window.addEventListener('message', toggleOverlay)
+
+function toggleOverlay(e) {
+  const data = e.data
+  const payload = data.payload
+  if (data.source === '__VUE_DEVTOOLS_OVERLAY__' && payload.event === 'toggle-view-mode') {
+    // @TODO: refactor
+    target.__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__ = payload.data
+    window.localStorage.setItem('__VUE_DEVTOOLS_EXTENSION_VIEW_MODE__', payload.data)
+    target?.__VUE_DEVTOOLS_TOGGLE_OVERLAY__?.(payload.data === 'overlay')
+    Bridge.value = payload.data === 'overlay' ? overlayBridge : panelBridge
   }
 }

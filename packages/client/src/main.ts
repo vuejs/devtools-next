@@ -6,7 +6,6 @@ import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { getViteClient } from 'vite-hot-client'
 import App from './App.vue'
-import ViewModeSwitch from '~/components/chrome/ViewModeSwitch.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
@@ -65,13 +64,14 @@ async function connectApp(app, shell) {
   })
 }
 
-export async function initDevTools(shell) {
+export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'panel' } = { viewMode: 'overlay' }) {
   const app = createApp(App)
   await connectApp(app, shell)
   registerBridgeRpc('devtools', {
     viteRPCContext: await getViteHotContext(),
   })
   new HandShakeServer(Bridge.value).onnConnect().then(() => {
+    const b = Bridge.value
     const router = createRouter({
       history: createMemoryHistory(),
       routes,
@@ -81,32 +81,16 @@ export async function initDevTools(shell) {
     app.use(FloatingVue)
     app.use(createDevToolsVuePlugin({
       bridge: Bridge.value,
+      viewMode: options.viewMode!,
     }))
     app.mount('#app')
     Bridge.value.emit(BridgeEvents.CLIENT_READY)
-    Bridge.value.on('toggle-view-mode', (data) => {
-      if (data === 'overlay') {
-        Bridge.value.removeAllListeners()
-        app.unmount()
-        showViewModeInfo(shell)
-      }
+    Bridge.value.on('toggle-view-mode', (viewMode) => {
+      console.log('hello?????', viewMode)
+      if (viewMode === 'panel')
+        Bridge.value = b
     })
   })
-}
-
-export async function showViewModeInfo(shell) {
-  const app = createApp(ViewModeSwitch)
-  shell.connectViewModeBridge(async (bridge) => {
-    Bridge.value = bridge
-    Bridge.value.on('toggle-view-mode', (data) => {
-      if (data === 'panel') {
-        Bridge.value.removeAllListeners()
-        app.unmount()
-        initDevTools(shell)
-      }
-    })
-  })
-  app.mount('#app')
 }
 
 window.addEventListener('message', (event) => {
@@ -128,6 +112,7 @@ window.addEventListener('message', (event) => {
               targetOrigin: '*',
             })
           },
+          viewMode: isInChromePanel ? 'panel' : 'overlay',
         })
         callback(bridge)
       },

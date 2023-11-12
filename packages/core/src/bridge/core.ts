@@ -7,6 +7,7 @@ import type { InspectorStateEditorPayload } from 'vue-devtools-kit'
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
   trigger: (data: Record<string, any>) => void
+  viewMode?: 'overlay' | 'panel'
 }
 
 export type BridgeInstanceType = InstanceType<typeof Bridge>
@@ -15,13 +16,16 @@ export type BridgeInstanceType = InstanceType<typeof Bridge>
 export class Bridge<Events extends Record<EventType, any>, Key extends keyof Events> {
   private emitter: Emitter<Events>
   private adapter: BridgeAdapterOptions
+  public viewMode: 'overlay' | 'panel'
 
   constructor(adapter: BridgeAdapterOptions = {
     tracker: NOOP,
     trigger: NOOP,
+    viewMode: 'overlay',
   }) {
     this.emitter = mitt<Events>()
     this.adapter = adapter
+    this.viewMode = adapter.viewMode!
     this.adapter.tracker((message) => {
       // @TODO: message handler
       this._emit(message.event, message.data)
@@ -121,7 +125,6 @@ export const bridgeRpcCore = {
     eventName: E,
     payload?: BridgeRpcEventPayload[E],
   ) {
-    Bridge.value.emit(`${eventName}:req`, payload)
     return new Promise<S>((resolve) => {
       Bridge.value.once(`${eventName}:res`, (payload: string) => {
         const res = {
@@ -129,6 +132,7 @@ export const bridgeRpcCore = {
         } as S
         resolve(res)
       })
+      Bridge.value.emit(`${eventName}:req`, payload)
     })
   },
 }

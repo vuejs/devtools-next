@@ -22,6 +22,8 @@ declare global {
   var __VUE_DEVTOOLS_CONTEXT__: DevToolsContext
   // router
   var __VUE_DEVTOOLS_ROUTER__: unknown
+  // toggle overlay
+  var __VUE_DEVTOOLS_TOGGLE_OVERLAY__: (visible: boolean) => void
 }
 
 export { }

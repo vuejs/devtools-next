@@ -7,16 +7,9 @@ export function initDevTools(shell) {
     return
   if (isInChromePanel) {
     target.chrome.storage.local.get(VIEW_MODE_STORAGE_KEY).then((storage) => {
-      const showViewModeSwitchPage = () => {
-        _initDevTools(shell, {
-          viewMode: 'overlay',
-        })
-      }
-      if (storage[VIEW_MODE_STORAGE_KEY] === 'panel')
-        _initDevTools(shell)
-
-      else
-        showViewModeSwitchPage()
+      _initDevTools(shell, {
+        viewMode: storage[VIEW_MODE_STORAGE_KEY] ?? 'overlay',
+      })
     })
   }
   else {

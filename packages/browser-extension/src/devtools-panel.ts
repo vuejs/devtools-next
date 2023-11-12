@@ -53,7 +53,6 @@ initDevTools({
 
           port?.postMessage(data)
         },
-        viewMode: 'panel',
       })
 
       cb(bridge)

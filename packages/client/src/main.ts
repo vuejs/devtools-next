@@ -71,7 +71,6 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
     viteRPCContext: await getViteHotContext(),
   })
   new HandShakeServer(Bridge.value).onnConnect().then(() => {
-    const b = Bridge.value
     const router = createRouter({
       history: createMemoryHistory(),
       routes,
@@ -85,11 +84,6 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
     }))
     app.mount('#app')
     Bridge.value.emit(BridgeEvents.CLIENT_READY)
-    Bridge.value.on('toggle-view-mode', (viewMode) => {
-      console.log('hello?????', viewMode)
-      if (viewMode === 'panel')
-        Bridge.value = b
-    })
   })
 }
 
@@ -112,7 +106,6 @@ window.addEventListener('message', (event) => {
               targetOrigin: '*',
             })
           },
-          viewMode: isInChromePanel ? 'panel' : 'overlay',
         })
         callback(bridge)
       },

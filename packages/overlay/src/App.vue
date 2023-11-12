@@ -31,12 +31,8 @@ const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
 const clientUrl = getDevToolsClientUrl()
 const overlayVisible = ref(true)
 
-let b: any = null
-
 target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
-  if (visible)
-    Bridge.value = b
 }
 
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
@@ -61,10 +57,7 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
           data,
         }, '*')
       },
-      viewMode: 'overlay',
     })
-
-    b = bridge
 
     prepareInjection(bridge)
 

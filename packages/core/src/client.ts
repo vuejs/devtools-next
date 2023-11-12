@@ -14,26 +14,3 @@ export function getDevToolsClientUrl() {
     return ''
   })()
 }
-
-const fns: (() => void)[] = []
-
-export function onDevToolsClientConnected(fn: () => void) {
-  fns.push(fn)
-
-  if (target.__VUE_DEVTOOLS_CLIENT_CONNECTED__)
-    fns.forEach(fn => fn())
-
-  Object.defineProperty(target, '__VUE_DEVTOOLS_CLIENT_CONNECTED__', {
-    set(value) {
-      if (value)
-        fns.forEach(fn => fn())
-    },
-    get() {
-    },
-    configurable: true,
-  })
-
-  return () => {
-    fns.splice(fns.indexOf(fn), 1)
-  }
-}

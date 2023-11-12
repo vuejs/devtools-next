@@ -1,6 +1,6 @@
 import { target } from '@vue-devtools-next/shared'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
-import { DevToolsPluginApi, collectRegisteredPlugin, registerPlugin } from '../../api'
+import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
 import { registerComponentsDevTools } from '../plugins'
 import { createAppRecord } from './app'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from './hook'
@@ -34,7 +34,7 @@ export function initDevTools() {
       await registerComponentsDevTools(app)
       // set first app as default record
       devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
-      devtoolsState.connected = true
+      // devtoolsState.connected = true
       // mark vue app as connected
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
     }
@@ -55,9 +55,11 @@ export function onDevToolsConnected(fn: () => void) {
       return
     }
 
-    hook.on.vueAppConnected(() => {
-      fn()
-      resolve()
+    apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
+      if (state.connected) {
+        fn()
+        resolve()
+      }
     })
   })
 }

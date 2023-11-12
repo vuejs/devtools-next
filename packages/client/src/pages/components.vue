@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'

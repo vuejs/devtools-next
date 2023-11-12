@@ -4,7 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { InspectorState, TimelineEvent } from 'vue-devtools-kit'
-import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 const layers = ref<{

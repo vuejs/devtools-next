@@ -1,4 +1,4 @@
-import { target } from '@vue-devtools-next/shared'
+import { devtools } from 'vue-devtools-kit'
 import type { BridgeInstanceType } from './bridge/core'
 
 export enum HandShakeEvents {
@@ -8,21 +8,10 @@ export enum HandShakeEvents {
 }
 
 class HandShake {
-  public connected = false
   public socket: BridgeInstanceType
 
   constructor(bridge: BridgeInstanceType) {
     this.socket = bridge
-
-    Object.defineProperty(this, 'connected', {
-      set(value) {
-        target.__VUE_DEVTOOLS_CLIENT_CONNECTED__ = value
-      },
-      get() {
-        return target.__VUE_DEVTOOLS_CLIENT_CONNECTED__
-      },
-      configurable: true,
-    })
   }
 }
 
@@ -38,9 +27,9 @@ export class HandShakeClient extends HandShake {
         this.socket.emit(HandShakeEvents.SYN)
       }, 300)
       this.socket.on(HandShakeEvents.SYN_ACK, () => {
-        clearTimeout(timer)
+        clearInterval(timer)
         this.socket.emit(HandShakeEvents.ACK)
-        this.connected = true
+        devtools.state.connected = true
         resolve()
       })
     })
@@ -60,8 +49,7 @@ export class HandShakeServer extends HandShake {
           this.socket.emit(HandShakeEvents.SYN_ACK)
         }, 300)
         this.socket.on(HandShakeEvents.ACK, () => {
-          clearTimeout(timer)
-          this.connected = true
+          clearInterval(timer)
           resolve()
         })
       })

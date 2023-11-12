@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AssetInfo } from '@vue-devtools-next/core'
 import { VueIcon } from '@vue-devtools-next/ui'
-import { onDevToolsClientConnected, useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Fuse from 'fuse.js'
 
 const DETAILS_MAX_ITEMS = 50

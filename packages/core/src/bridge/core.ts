@@ -29,11 +29,23 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
   }
 
   static get value() {
-    return target.__VUE_DEVTOOLS_BRIDGE__
+    // @TODO: refactor devtools client type
+    if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'overlay')
+      return target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__
+    else if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'panel')
+      return target.__VUE_DEVTOOLS_PANEL_BRIDGE__
+    else
+      return target.__VUE_DEVTOOLS_BRIDGE__
   }
 
   static set value(value) {
-    target.__VUE_DEVTOOLS_BRIDGE__ = value
+    // @TODO: refactor devtools client type
+    if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'overlay')
+      target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__ = value
+    else if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'panel')
+      target.__VUE_DEVTOOLS_PANEL_BRIDGE__ = value
+    else
+      target.__VUE_DEVTOOLS_BRIDGE__ = value
   }
 
   private _on(eventName: Key, handler: Handler<Events[Key]>): void {

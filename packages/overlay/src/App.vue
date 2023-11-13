@@ -35,6 +35,9 @@ target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
 }
 
+// @TODO: refactor devtools client type
+target.__VUE_DEVTOOLS_CLIENT_TYPE___ = 'overlay'
+
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')

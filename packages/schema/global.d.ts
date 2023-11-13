@@ -8,6 +8,8 @@ declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook
   var __VUE_DEVTOOLS_CLIENT_URL__: string
   var __VUE_DEVTOOLS_BRIDGE__: BridgeInstanceType
+  var __VUE_DEVTOOLS_OVERLAY_BRIDGE__: BridgeInstanceType
+  var __VUE_DEVTOOLS_PANEL_BRIDGE__: BridgeInstanceType
   var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
   // app record info
   var __VUE_DEVTOOLS_APP_RECORDS__: AppRecord[]

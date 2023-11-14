@@ -226,6 +226,9 @@ importers:
       pathe:
         specifier: ^1.1.1
         version: 1.1.1
+      vite-dev-rpc:
+        specifier: ^0.1.3
+        version: 0.1.3(vite@4.5.0)
       vite-hot-client:
         specifier: ^0.2.2
         version: 0.2.2(vite@4.5.0)
@@ -9059,6 +9062,16 @@ packages:
     dependencies:
       '@egjs/hammerjs': 2.0.17
       component-emitter: 1.3.0
+    dev: false
+
+  /vite-dev-rpc@0.1.3(vite@4.5.0):
+    resolution: {integrity: sha512-Q2YdH3ZuZtS9erQ/bm2DPFQJaPgqffULL1yVoUhPbmTih0XHCl41hdXS4tc1xiWHhUJJHSXN2Hax0uINbWASfA==}
+    peerDependencies:
+      vite: ^2.9.0 || ^3.0.0-0 || ^4.0.0-0
+    dependencies:
+      birpc: 0.2.14
+      vite: 4.5.0(@types/node@20.8.10)(sass@1.69.5)
+      vite-hot-client: 0.2.2(vite@4.5.0)
     dev: false
 
   /vite-hot-client@0.2.2(vite@4.5.0):

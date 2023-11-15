@@ -30,7 +30,6 @@ const routes = [
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },
   { path: '/router', component: RouterPage },
-  { path: '/router', component: RouterPage },
   { path: '/timeline', component: Timeline },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },

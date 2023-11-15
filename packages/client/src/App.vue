@@ -11,6 +11,9 @@ const { connected } = useDevToolsState()
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
 const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)
 const { toggle } = useToggleViewMode()
+
+const isUtilityView = false
+const sidebarExpanded = false
 watch(connected, (v) => {
   if (v)
     router.replace('/components')
@@ -23,7 +26,13 @@ watch(connected, (v) => {
   <main class="$ui-bg-base fixed inset-0 h-screen w-screen">
     <AppConnecting v-if="!connected" />
     <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
-    <div v-else class="h-full of-auto">
+    <div
+      v-else
+      class="h-full of-auto"
+      :class="isUtilityView ? 'flex' : sidebarExpanded ? 'grid grid-cols-[250px_1fr]' : 'grid grid-cols-[50px_1fr]'"
+      h-full h-screen of-hidden font-sans bg-base
+    >
+      <SideNav of-x-hidden of-y-auto />
       <RouterView />
     </div>
   </main>

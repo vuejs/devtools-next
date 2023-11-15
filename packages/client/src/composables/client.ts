@@ -5,6 +5,10 @@ const fns: (() => void)[] = []
 export function onDevToolsClientConnected(fn: () => void) {
   fns.push(fn)
 
+  tryOnScopeDispose(() => {
+    fns.splice(fns.indexOf(fn), 1)
+  })
+
   const { connected } = useDevToolsState()
 
   if (connected.value) {
@@ -14,10 +18,6 @@ export function onDevToolsClientConnected(fn: () => void) {
 
   watchOnce(connected, (v) => {
     v && fns.forEach(fn => fn())
-  })
-
-  onUnmounted(() => {
-    fns.length = 0
   })
 
   return () => {

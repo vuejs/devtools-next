@@ -14,6 +14,8 @@ import Timeline from '~/pages/timeline.vue'
 import Pages from '~/pages/pages.vue'
 import Assets from '~/pages/assets.vue'
 import Graph from '~/pages/graph.vue'
+import Index from '~/pages/index.vue'
+
 import 'uno.css'
 import '~/assets/styles/main.css'
 
@@ -26,6 +28,7 @@ async function getViteHotContext() {
 }
 
 const routes = [
+  { path: '/', component: Index },
   { path: '/overview', component: Overview },
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },

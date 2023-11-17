@@ -5,7 +5,7 @@ import { prepareInjection } from '../../core/src/injection'
 window.addEventListener('message', handshake)
 
 // @TODO: refactor devtools client type
-target.__VUE_DEVTOOLS_CLIENT_TYPE___ = 'panel'
+target.__VUE_DEVTOOLS_VIEW_MODE__ = 'panel'
 
 function handshake(e: MessageEvent) {
   if (e.data.source === '__VUE_DEVTOOLS_PROXY__' && e.data.payload.event === 'init') {
@@ -50,7 +50,7 @@ function toggleOverlay(e) {
   const payload = data.payload
   if (data.source === '__VUE_DEVTOOLS_OVERLAY__' && payload.event === 'toggle-view-mode') {
     // @TODO: refactor devtools client type
-    target.__VUE_DEVTOOLS_CLIENT_TYPE___ = payload.data
+    target.__VUE_DEVTOOLS_VIEW_MODE__ = payload.data
     // @TODO: refactor
     target?.__VUE_DEVTOOLS_TOGGLE_OVERLAY__?.(payload.data === 'overlay')
   }

@@ -30,9 +30,9 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 
   static get value() {
     // @TODO: refactor devtools client type
-    if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'overlay')
+    if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'overlay')
       return target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__
-    else if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'panel')
+    else if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'panel')
       return target.__VUE_DEVTOOLS_PANEL_BRIDGE__
     else
       return target.__VUE_DEVTOOLS_BRIDGE__
@@ -40,9 +40,9 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 
   static set value(value) {
     // @TODO: refactor devtools client type
-    if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'overlay')
+    if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'overlay')
       target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__ = value
-    else if (target.__VUE_DEVTOOLS_CLIENT_TYPE___ === 'panel')
+    else if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'panel')
       target.__VUE_DEVTOOLS_PANEL_BRIDGE__ = value
     else
       target.__VUE_DEVTOOLS_BRIDGE__ = value

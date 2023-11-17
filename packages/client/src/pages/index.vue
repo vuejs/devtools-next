@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { VueButton } from '@vue-devtools-next/ui'
 
-function visit() {}
+const router = useRouter()
+function visit() {
+  router.replace('/overview')
+}
 </script>
 
 <template>

@@ -50,6 +50,8 @@ onDevToolsClientConnected(() => {
       return
 
     state.value = data
+  }, {
+    inspectorId: 'router-inspector:0',
   })
 })
 </script>

@@ -100,7 +100,7 @@ export class DevToolsPluginApi {
         nodeId: inspector.nodeId,
       })
 
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, res!)
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, stringify({ ...parse(res), inspectorId }) as string)
     }
   }
 

@@ -122,6 +122,8 @@ onDevToolsClientConnected(() => {
   // state
   bridgeRpc.on.inspectorStateUpdated((data) => {
     activeComponentState.value = normalizeComponentState(data)
+  }, {
+    inspectorId: 'components',
   })
 })
 

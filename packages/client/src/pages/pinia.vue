@@ -50,6 +50,8 @@ onDevToolsClientConnected(() => {
       return
 
     state.value = data
+  }, {
+    inspectorId: 'pinia',
   })
 })
 </script>

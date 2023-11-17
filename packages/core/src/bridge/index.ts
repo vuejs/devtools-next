@@ -3,6 +3,7 @@ import { BridgeRpc as DevToolsRpc, registerBridgeRpc as registerDevToolsSideBrid
 import type { BridgeRpcOptions } from './devtools'
 import { BridgeRpc as UserAppRpc, registerBridgeRpc as registerUserAppSideBridgeRpc } from './user-app'
 
+export type { BridgeInstanceType } from './core'
 export { BridgeEvents } from './types'
 export {
   Bridge,
@@ -10,10 +11,10 @@ export {
   UserAppRpc,
 }
 
-export function registerBridgeRpc(target: 'devtools' | 'user-app', options: BridgeRpcOptions = {}) {
+export function registerBridgeRpc(target: 'devtools' | 'user-app', options: BridgeRpcOptions) {
   if (target === 'devtools')
     registerDevToolsSideBridgeRpc(options)
 
   else
-    registerUserAppSideBridgeRpc()
+    registerUserAppSideBridgeRpc(options.bridge)
 }

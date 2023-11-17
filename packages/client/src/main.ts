@@ -1,4 +1,5 @@
 import '@unocss/reset/tailwind.css'
+import type { BridgeInstanceType } from '@vue-devtools-next/core'
 import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
@@ -36,16 +37,24 @@ const routes = [
   { path: '/graph', component: Graph },
 ]
 
+// @TODO: find a better way to handle it
+const devtoolsBridge: {
+  value: BridgeInstanceType
+} = {
+  value: null!,
+}
+
 async function reload(app, shell) {
-  Bridge.value.removeAllListeners()
+  devtoolsBridge.value.removeAllListeners()
   shell.connect(async (bridge) => {
-    Bridge.value = bridge
+    devtoolsBridge.value = bridge
     registerBridgeRpc('devtools', {
       viteRPCContext: await getViteHotContext(),
+      bridge: devtoolsBridge.value,
     })
-    new HandShakeServer(Bridge.value).onnConnect().then(() => {
-      app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(Bridge.value)
-      Bridge.value.emit(BridgeEvents.CLIENT_READY)
+    new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
+      app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
+      devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
     })
   })
 }
@@ -53,8 +62,7 @@ async function reload(app, shell) {
 async function connectApp(app, shell) {
   return new Promise<void>((resolve) => {
     shell.connect((bridge) => {
-      // @TODO: find a better way to handle it
-      Bridge.value = bridge
+      devtoolsBridge.value = bridge
       resolve()
     })
     shell.reload(() => {
@@ -68,8 +76,9 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   await connectApp(app, shell)
   registerBridgeRpc('devtools', {
     viteRPCContext: await getViteHotContext(),
+    bridge: devtoolsBridge.value,
   })
-  new HandShakeServer(Bridge.value).onnConnect().then(() => {
+  new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
     const router = createRouter({
       history: createMemoryHistory(),
       routes,
@@ -78,11 +87,11 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
     app.use(router)
     app.use(FloatingVue)
     app.use(createDevToolsVuePlugin({
-      bridge: Bridge.value,
+      bridge: devtoolsBridge.value,
       viewMode: options.viewMode!,
     }))
     app.mount('#app')
-    Bridge.value.emit(BridgeEvents.CLIENT_READY)
+    devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
   })
 }
 

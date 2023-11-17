@@ -1,9 +1,11 @@
 import { devtools } from 'vue-devtools-kit'
 import { stringify } from 'vue-devtools-kit/shared'
 import { BridgeEvents } from './types'
-import { Bridge, bridgeRpcCore, bridgeRpcEvents } from './core'
+import type { BridgeInstanceType } from './core'
+import { BridgeRpcCore, bridgeRpcEvents } from './core'
 
-export function registerBridgeRpc() {
+export function registerBridgeRpc(bridge: BridgeInstanceType) {
+  const bridgeRpcCore = new BridgeRpcCore(bridge)
   // devtools state getter
   bridgeRpcCore.on(bridgeRpcEvents.state, () => {
     return JSON.stringify({
@@ -59,15 +61,15 @@ export function registerBridgeRpc() {
     return JSON.stringify(matched)
   })
 
-  Bridge.value.on(BridgeEvents.APP_CONNECTED, () => {
-    Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
+  bridge.on(BridgeEvents.APP_CONNECTED, () => {
+    bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       connected: true,
     }))
 
     // devtools state updated
     devtools.context.api.on.devtoolsStateUpdated((payload) => {
-      Bridge.value.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
+      bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
         vueVersion: payload?.activeAppRecord?.version || '',
         connected: payload.connected,
       }))
@@ -75,22 +77,22 @@ export function registerBridgeRpc() {
 
     // router info updated
     devtools.context.api.on.routerInfoUpdated((payload) => {
-      Bridge.value.emit(BridgeEvents.ROUTER_INFO_UPDATED, JSON.stringify(payload))
+      bridge.emit(BridgeEvents.ROUTER_INFO_UPDATED, JSON.stringify(payload))
     })
 
     // inspector tree updated
     devtools.context.api.on.sendInspectorTree((payload) => {
-      Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
+      bridge.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
     })
 
     // inspector state updated
     devtools.context.api.on.sendInspectorState((payload) => {
-      Bridge.value.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
+      bridge.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
     })
 
     // add timeline event
     devtools.context.api.on.addTimelineEvent((payload) => {
-      Bridge.value.emit(BridgeEvents.ADD_TIMELINE_EVENT, stringify(payload))
+      bridge.emit(BridgeEvents.ADD_TIMELINE_EVENT, stringify(payload))
     })
   })
 }

@@ -1,4 +1,4 @@
-import { NOOP, target } from '@vue-devtools-next/shared'
+import { NOOP } from '@vue-devtools-next/shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
 import { parse } from 'vue-devtools-kit/shared'
@@ -26,26 +26,6 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
       // @TODO: message handler
       this._emit(message.event, message.data)
     })
-  }
-
-  static get value() {
-    // @TODO: refactor devtools client type
-    if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'overlay')
-      return target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__
-    else if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'panel')
-      return target.__VUE_DEVTOOLS_PANEL_BRIDGE__
-    else
-      return target.__VUE_DEVTOOLS_BRIDGE__
-  }
-
-  static set value(value) {
-    // @TODO: refactor devtools client type
-    if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'overlay')
-      target.__VUE_DEVTOOLS_OVERLAY_BRIDGE__ = value
-    else if (target.__VUE_DEVTOOLS_VIEW_MODE__ === 'panel')
-      target.__VUE_DEVTOOLS_PANEL_BRIDGE__ = value
-    else
-      target.__VUE_DEVTOOLS_BRIDGE__ = value
   }
 
   private _on(eventName: Key, handler: Handler<Events[Key]>): void {
@@ -119,28 +99,34 @@ export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.editState]: InspectorStateEditorPayload
 }
 
-export const bridgeRpcCore = {
+export class BridgeRpcCore {
+  bridge: BridgeInstanceType
+  constructor(_bridge: BridgeInstanceType) {
+    this.bridge = _bridge
+  }
+
   on<E extends BridgeRpcEventName>(
     eventName: E,
     handler: (payload?: BridgeRpcEventPayload[E]) => Promise<string | void> | string,
   ) {
-    Bridge.value.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
+    this.bridge.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
       const res = await handler(payload)
-      Bridge.value.emit(`${eventName}:res`, res)
+      this.bridge.emit(`${eventName}:res`, res)
     })
-  },
+  }
+
   emit<S, E extends BridgeRpcEventName = BridgeRpcEventName>(
     eventName: E,
     payload?: BridgeRpcEventPayload[E],
   ) {
     return new Promise<S>((resolve) => {
-      Bridge.value.once(`${eventName}:res`, (payload: string) => {
+      this.bridge.once(`${eventName}:res`, (payload: string) => {
         const res = {
           data: parse(payload),
         } as S
         resolve(res)
       })
-      Bridge.value.emit(`${eventName}:req`, payload)
+      this.bridge.emit(`${eventName}:req`, payload)
     })
-  },
+  }
 }

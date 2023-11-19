@@ -1,1 +1,1 @@
-export type * from './tabs'
+export type * from './tab'

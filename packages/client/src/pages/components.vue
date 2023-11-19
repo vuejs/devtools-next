@@ -110,13 +110,15 @@ onDevToolsClientConnected(() => {
     loaded.value = true
   })
   bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[]; inspectorId: string }>((data) => {
-    if (data.inspectorId !== 'components' || !data?.data?.length)
+    if (!data?.data?.length)
       return
 
     const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
     treeNode.value = data.data
     isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data))
     initSelectedComponent(data.data)
+  }, {
+    inspectorId: 'components',
   })
 
   // state

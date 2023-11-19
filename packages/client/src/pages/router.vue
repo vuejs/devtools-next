@@ -36,13 +36,15 @@ onDevToolsClientConnected(() => {
   })
 
   bridgeRpc.on.inspectorTreeUpdated((data) => {
-    if (data.inspectorId !== 'router-inspector:0' || !data?.data?.length)
+    if (!data?.data?.length)
       return
     tree.value = data.data
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getRouterState(data.data[0].id)
     }
+  }, {
+    inspectorId: 'router-inspector:0',
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {

@@ -36,13 +36,15 @@ onDevToolsClientConnected(() => {
   })
 
   bridgeRpc.on.inspectorTreeUpdated((data) => {
-    if (data?.inspectorId !== 'pinia' || !data?.data.length)
+    if (!data?.data.length)
       return
     tree.value = data.data
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getPiniaState(data.data[0].id)
     }
+  }, {
+    inspectorId: 'pinia',
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {

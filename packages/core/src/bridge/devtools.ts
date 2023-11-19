@@ -40,10 +40,10 @@ export function registerBridgeRpc(options: BridgeRpcOptions) {
 
 export class BridgeRpc {
   static on = {
-    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string; label: string; tags: InspectorNodeTag[] }[] } >(cb: (payload: T) => void) {
+    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string; label: string; tags: InspectorNodeTag[] }[] } >(cb: (payload: T) => void, options: { inspectorId: string }) {
       devtoolsBridge.value.on(BridgeEvents.SEND_INSPECTOR_TREE, (payload) => {
-        // @TODO: trigger only when inspectorId is matched
-        cb(parse(payload))
+        const _payload = parse(payload)
+        options.inspectorId === _payload.inspectorId && cb(_payload)
       })
     },
     inspectorStateUpdated<T = { inspectorId: string; state: InspectorState[] }>(cb: (payload: T) => void, options: { inspectorId: string }) {

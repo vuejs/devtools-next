@@ -2,7 +2,10 @@
 import { VueButton } from '@vue-devtools-next/ui'
 
 const router = useRouter()
+const clientState = useDevToolsClientState()
+
 function visit() {
+  clientState.value.isFirstVisit = false
   router.replace('/overview')
 }
 </script>

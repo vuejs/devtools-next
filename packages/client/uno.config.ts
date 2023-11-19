@@ -85,6 +85,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
       fonts: {
         sans: 'DM Sans',
         mono: 'DM Mono',
+        stylish: 'Caveat',
       },
     }),
   ],

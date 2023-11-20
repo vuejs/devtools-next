@@ -1,5 +1,6 @@
 import type { ModuleBuiltinTab } from '~/types'
 
+// @unocss-include
 export const builtinTab: [string, ModuleBuiltinTab[]][] = [
   ['app', [
     {

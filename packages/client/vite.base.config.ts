@@ -32,6 +32,7 @@ export default {
       dirs: [
         './src/utils',
         './src/composables',
+        './src/constants',
       ],
       dts: join(__dirname, 'auto-imports.d.ts'),
       imports: [

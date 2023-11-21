@@ -18,7 +18,7 @@ const { legendsData, legendShow, toggleLegend } = useLegends()
 
     <!-- legends -->
     <div
-      absolute bottom-0 px4 py2 rounded-tr-lg w-260px grid gap-2 grid-cols-3 bg-gray="100/40"
+      absolute bottom-0 px4 py2 rounded-tr-lg w-260px grid gap-2 grid-cols-3 bg-gray="100/40" dark="bg-gray-100/10"
       transition-transform duration-300
       :class="[
         legendShow ? 'translate-y-0' : 'translate-y-full',

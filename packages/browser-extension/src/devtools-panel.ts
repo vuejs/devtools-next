@@ -1,66 +1,127 @@
 import { Bridge } from '../../core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
+import { VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const connectionInfo: {
   retryTimer: NodeJS.Timeout | null
   count: number
   disconnected: boolean
+  port: chrome.runtime.Port
+  listeners: Array<() => void>
 } = {
   retryTimer: null,
   count: 0,
   disconnected: false,
+  port: null!,
+  listeners: [],
 }
 
-initDevTools({
-  connect(cb) {
-    injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
-      let port: chrome.runtime.Port
+function connect() {
+  try {
+    clearTimeout(connectionInfo.retryTimer!)
+    connectionInfo.count++
+    connectionInfo.port = chrome.runtime.connect({
+      name: `${chrome.devtools.inspectedWindow.tabId}`,
+    })
 
-      const listeners: Array<() => void> = []
+    connectionInfo.disconnected = false
+    connectionInfo.port.onDisconnect.addListener(() => {
+      connectionInfo.disconnected = true
+      connectionInfo.retryTimer = setTimeout(connect, 1000)
+    })
+    if (connectionInfo.count > 1)
+      connectionInfo.listeners.forEach(fn => port.onMessage.addListener(fn))
+  }
+  catch (e) {
+    connectionInfo.disconnected = true
+    connectionInfo.retryTimer = setTimeout(connect, 5000)
+  }
+}
 
-      // connect to background to setup proxy
-      function connect() {
-        try {
-          clearTimeout(connectionInfo.retryTimer!)
-          connectionInfo.count++
-          port = chrome.runtime.connect({
-            name: `${chrome.devtools.inspectedWindow.tabId}`,
-          })
+chrome.storage.local.get(VITE_PLUGIN_DETECTED_STORAGE_KEY).then((storage) => {
+  const vitePluginDetected = storage[VITE_PLUGIN_DETECTED_STORAGE_KEY]
+  // for vite plugin
+  if (vitePluginDetected) {
+    function init(iframe: HTMLIFrameElement) {
+      injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
+        connect()
 
-          connectionInfo.disconnected = false
-          port.onDisconnect.addListener(() => {
-            connectionInfo.disconnected = true
-            connectionInfo.retryTimer = setTimeout(connect, 1000)
-          })
-          if (connectionInfo.count > 1)
-            listeners.forEach(fn => port.onMessage.addListener(fn))
-        }
-        catch (e) {
-          connectionInfo.disconnected = true
-          connectionInfo.retryTimer = setTimeout(connect, 5000)
-        }
-      }
-      connect()
-
-      const bridge = new Bridge({
-        tracker(fn: any) {
-          port.onMessage.addListener(fn)
-          listeners.push(fn)
-        },
-        trigger(data) {
+        // proxy user app messaging
+        function onPortMessage(data) {
           if (connectionInfo.disconnected)
             return
+          iframe?.contentWindow?.postMessage({
+            source: '__VUE_DEVTOOLS_USER_APP__',
+            data,
+          }, '*')
+        }
+        connectionInfo.port!.onMessage.addListener(onPortMessage)
 
-          port?.postMessage(data)
-        },
+        // proxy devtools client messaging
+        function onIframeMessage(e) {
+          if (connectionInfo.disconnected)
+            return
+          if (e.data.source === '__VUE_DEVTOOLS_CLIENT__')
+            connectionInfo.port?.postMessage(e.data.data)
+        }
+        window.addEventListener('message', onIframeMessage)
+
+        iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
+
+        function cleanup() {
+          connectionInfo.port!.onMessage.removeListener(onPortMessage)
+          window.removeEventListener('message', onIframeMessage)
+          chrome.devtools.network.onNavigated.removeListener(cleanup)
+          init(iframe)
+        }
+        chrome.devtools.network.onNavigated.addListener(cleanup)
       })
+    }
 
-      cb(bridge)
+    function createClient() {
+      const iframe = document.createElement('iframe')
+      // @TODO: get dynamic url
+      iframe.src = 'http://localhost:3000/__devtools__/'
+      iframe.style.border = 'none'
+      iframe.style.width = '100vw'
+      iframe.style.height = '100vh'
+      document.getElementById('app')!.appendChild(iframe)
+      iframe.onload = () => {
+        init(iframe)
+      }
+    }
+
+    createClient()
+  }
+  // for browser extension
+  else {
+    initDevTools({
+      connect(cb) {
+        injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
+          // connect to background to setup proxy
+          connect()
+
+          const bridge = new Bridge({
+            tracker(fn: any) {
+              connectionInfo.port.onMessage.addListener(fn)
+              connectionInfo.listeners.push(fn)
+            },
+            trigger(data) {
+              if (connectionInfo.disconnected)
+                return
+
+              connectionInfo.port?.postMessage(data)
+            },
+          })
+
+          cb(bridge)
+        })
+      },
+      reload(fn) {
+        chrome.devtools.network.onNavigated.addListener(fn)
+      },
     })
-  },
-  reload(fn) {
-    chrome.devtools.network.onNavigated.addListener(fn)
-  },
+  }
 })
 
 function injectScript(scriptName: string, cb: () => void) {
@@ -69,7 +130,7 @@ function injectScript(scriptName: string, cb: () => void) {
       var script = document.constructor.prototype.createElement.call(document, 'script');
       script.src = "${scriptName}";
       document.documentElement.appendChild(script);
-      // script.parentNode.removeChild(script);
+      script.parentNode.removeChild(script);
     })()
   `
   chrome.devtools.inspectedWindow.eval(src, (res, err) => {

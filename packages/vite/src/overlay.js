@@ -24,3 +24,6 @@ head.appendChild(link)
 
 // append to body
 body.appendChild(script)
+
+//
+window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true

@@ -8,6 +8,10 @@ import { devtoolsContext, devtoolsState } from './state'
 
 // usage: inject to user application and call it before the vue app is created
 export function initDevTools() {
+  // de-duplicate
+  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__)
+    return
+
   // override directly to prevent conflict with the old devtools
   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
 

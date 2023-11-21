@@ -25,7 +25,7 @@ const { legendsData, legendShow, toggleLegend } = useLegends()
       ]"
     >
       <div
-        absolute top--8 px4 py1 bg-primary-500 text-white rounded-tr-lg cursor-pointer class="group"
+        absolute top-0 translate-y="-100%" px4 py1 bg-primary-500 text-white rounded-tr-lg cursor-pointer class="group"
         @click="() => toggleLegend()"
       >
         Legend <div

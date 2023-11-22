@@ -1,3 +1,5 @@
+import type { Options } from 'vis-network'
+
 export const legends = {
   vue: {
     color: '#42b883',
@@ -28,6 +30,32 @@ export const legends = {
   },
 } satisfies Record<string, { color: string }>
 
+const isDark = useDark()
+export const graphOptions = computed<Options>(() => ({
+  autoResize: true,
+  nodes: {
+    shape: 'dot',
+    size: 16,
+    font: {
+      color: isDark.value ? '#fff' : '#000',
+      multi: 'html',
+    },
+  },
+  interaction: {
+    hover: true,
+  },
+  physics: {
+    maxVelocity: 146,
+    solver: 'forceAtlas2Based',
+    timestep: 0.35,
+    stabilization: {
+      enabled: true,
+      iterations: 200,
+    },
+  },
+  groups: legends,
+}))
+
 export function useLegends() {
   const [legendShow, toggleLegend] = useToggle(true)
 
@@ -37,3 +65,5 @@ export function useLegends() {
     toggleLegend,
   }
 }
+
+export const matchedKeys = ref<string[]>([])

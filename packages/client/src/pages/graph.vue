@@ -26,14 +26,14 @@ const { legendsData, legendShow, toggleLegend } = useLegends()
     >
       <div
         absolute top-0 translate-y="-100%" px4 py1 bg-primary-500 text-white rounded-tr-lg cursor-pointer class="group"
-        @click="() => toggleLegend()"
+        transition-opacity @click="() => toggleLegend()"
       >
         Legend <div
           :class="[
             legendShow
-              ? 'i-material-symbols-arrow-downward-alt group-hover:translate-y-10%'
-              : 'i-material-symbols:arrow-upward-alt-rounded group-hover:translate-y--10%',
-          ]" transition-transform
+              ? 'group-hover:translate-y-10% rotate-180'
+              : 'group-hover:translate-y--10%',
+          ]" transition-transform i-material-symbols:arrow-upward-alt-rounded
         />
       </div>
       <div v-for="item of Object.entries(legendsData)" :key="item[1][0]" flex gap-2 items-center>

@@ -29,7 +29,7 @@ export const legends = {
 } satisfies Record<string, { color: string }>
 
 export function useLegends() {
-  const [legendShow, toggleLegend] = useToggle(false)
+  const [legendShow, toggleLegend] = useToggle(true)
 
   return {
     legendsData: Object.entries(legends),

@@ -4,9 +4,10 @@ import { Network } from 'vis-network'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-onDevToolsClientConnected(() => {
+onDevToolsClientConnected(async () => {
+  const root = await bridgeRpc.root()
   bridgeRpc.getGraph().then((res) => {
-    parseGraphRawData(res)
+    parseGraphRawData(res, root)
   })
 })
 
@@ -37,6 +38,6 @@ onMounted(() => {
 
 <style>
 .vis-tooltip {
-  --at-apply: border-base p1 absolute b-1 bg-base rounded-lg shadow-lg;
+  --at-apply: border-base p1 absolute b-1 bg-base rounded-lg shadow-lg text-base;
 }
 </style>

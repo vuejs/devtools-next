@@ -34,6 +34,8 @@ export const legends = {
 
 const capitalizeKeys = ['vue', 'other']
 
+export const projectRoot = ref('')
+
 const isDark = useDark()
 export const graphOptions = computed<Options>(() => ({
   autoResize: true,
@@ -77,17 +79,24 @@ export function useLegends() {
 export const matchedKeys = ref<string[]>([])
 
 export interface GraphSettings {
-  node_modules: false
+  node_modules: boolean
+  virtual: boolean
+  lib: boolean
 }
 
-export const graphSettings = useLocalStorage<GraphSettings>('devtools-next-graph-settings', {
+export const graphSettings = useLocalStorage<GraphSettings>('vue-devtools-next-graph-settings', {
   node_modules: false,
+  virtual: false,
+  lib: false,
 })
 
 // ------------------ parse graph data ------------------
 export function checkIsValidModule(module: ModuleInfo) {
-  console.log('111')
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
+    return false
+  if (!graphSettings.value.virtual && module.virtual)
+    return false
+  if (!graphSettings.value.lib && !module.id.includes(projectRoot!.value) && !module.virtual)
     return false
   return true
 }
@@ -115,9 +124,10 @@ export const graphEdges = new DataSet<Edge>([])
 
 export const modulesMap = shallowRef<Map<string, { filePath: string }>>(new Map())
 
-export function parseGraphRawData(modules: ModuleInfo[]) {
+export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   if (!modules)
     return
+  projectRoot.value = root
   graphNodes.clear()
   graphEdges.clear()
 
@@ -125,7 +135,7 @@ export function parseGraphRawData(modules: ModuleInfo[]) {
   const totalNode: Node[] = []
 
   modules.forEach((mod) => {
-    const path = mod.id.replace(/\?.*$/, '').replace(/\#.*$/, '')
+    const path = mod.id.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(root, '')
     const pathSegments = path.split('/')
     const id = mod.id
     if (!modulesMap.value.has(id))
@@ -162,8 +172,12 @@ export function parseGraphRawData(modules: ModuleInfo[]) {
       })
     })
     graphNodesTotal.value.push(node)
-    totalNode.push(node.node)
-    totalEdges.push(...node.edges)
+
+    // first time, we also need check
+    if (checkIsValidModule(mod)) {
+      totalNode.push(node.node)
+      totalEdges.push(...node.edges)
+    }
   })
   // set initial data
   graphNodes.add(totalNode.slice())

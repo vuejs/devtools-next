@@ -32,7 +32,7 @@ onMounted(() => {
   <div relative flex="~ col" panel-grids>
     <GraphNavbar />
     <div ref="container" flex="1" />
-    <GraphLegends />
+    <GraphFileType />
   </div>
 </template>
 

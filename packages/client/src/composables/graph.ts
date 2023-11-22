@@ -2,8 +2,8 @@ import type { ModuleInfo } from '@vue-devtools-next/core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
 
-// #region legends
-export const legends = {
+// #region file types
+export const fileTypes = {
   vue: {
     color: '#42b883',
   },
@@ -35,17 +35,17 @@ export const legends = {
 
 const capitalizeKeys = ['vue', 'other']
 
-export function useLegends() {
-  const [legendShow, toggleLegend] = useToggle(true)
+export function useFileTypes() {
+  const [fileTypeShow, toggleFileType] = useToggle(true)
 
   return {
-    legendsData: Object.entries(legends).map(([key, value]) => ({
+    fileTypeData: Object.entries(fileTypes).map(([key, value]) => ({
       key,
       color: value.color,
       capitalize: capitalizeKeys.includes(key),
     })),
-    legendShow,
-    toggleLegend,
+    fileTypeShow,
+    toggleFileType,
   }
 }
 // #endregion
@@ -75,7 +75,7 @@ export const graphOptions = computed<Options>(() => ({
       iterations: 200,
     },
   },
-  groups: legends,
+  groups: fileTypes,
 }))
 // #endregion
 

@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div relative flex="~ col" panel-grids>
+  <div relative flex="~ col" panel-grids h-screen of-hidden>
     <GraphNavbar />
     <div ref="container" flex="1" />
     <GraphFileType />

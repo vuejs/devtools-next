@@ -54,7 +54,6 @@ export function useFileTypes() {
 const isDark = useDark()
 
 export const graphOptions = computed<Options>(() => ({
-  autoResize: true,
   nodes: {
     shape: 'dot',
     size: 16,

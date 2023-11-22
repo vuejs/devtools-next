@@ -100,6 +100,7 @@ watch(graphSettings, () => {
 // #region graph search
 interface SearcherNode {
   id: string
+  fullId: string
   node: Node
   edges: Edge[]
   deps: string[]
@@ -107,8 +108,8 @@ interface SearcherNode {
 
 export const graphSearchText = ref('')
 
-watchDebounced(graphSearchText, (text) => {
-  updateGraph(text)
+watchDebounced(graphSearchText, () => {
+  updateGraph()
 }, {
   debounce: 350,
 })
@@ -128,7 +129,6 @@ const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
 export const modulesMap = new Map<string, GraphNodesTotalData>()
-const moduleIds = new Set<string>()
 
 export function checkIsValidModule(module: ModuleInfo) {
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
@@ -142,7 +142,7 @@ export function checkIsValidModule(module: ModuleInfo) {
 
 const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
 
-function updateGraph(searchText?: string) {
+function updateGraph() {
   graphNodes.clear()
   graphEdges.clear()
 
@@ -158,6 +158,7 @@ function updateGraph(searchText?: string) {
       matchedSearchNodes.push({
         // only search the exactly name(last 3 segments), instead of full path
         id: mod.id.match(EXTRACT_LAST_THREE_MOD_ID_RE)?.[0] ?? mod.id,
+        fullId: mod.id,
         node,
         edges,
         deps: mod.deps,
@@ -168,11 +169,12 @@ function updateGraph(searchText?: string) {
 
   // use include, instead of fuse.js, for performance reasons
   // if someone need it, we can add it back
-  if (searchText?.trim().length) {
+  const searchText = graphSearchText.value
+  if (searchText.trim().length) {
     const result = matchedSearchNodes.filter(({ id }) => id.includes(searchText))
+    matchedEdges.length = 0
+    matchedNodes.length = 0
     if (result.length) {
-      matchedEdges.length = 0
-      matchedNodes.length = 0
       const { node, edges } = recursivelyGetNodeByDep(result)
       // need recursively get all nodes and it's dependencies
       matchedNodes.push(...node)
@@ -185,21 +187,22 @@ function updateGraph(searchText?: string) {
 }
 
 function recursivelyGetNodeByDep(node: SearcherNode[]) {
-  const allNodes = new Set<Node>()
-  const allEdges = new Set<Edge>()
+  const allNodes = new Map</* fullId */string, Node>()
+  const allEdges = new Map</* from-to */string, Edge>()
   node.forEach((n) => {
     n = deepClone(n)
     // to highlight current searched node
     if (!n.node.font)
       n.node.font = { color: '#F19B4A' }
     n.node.label = `<b>${n.node.label}</b>`
-    allNodes.add(n.node)
+    allNodes.set(n.fullId, n.node)
     n.deps.forEach((dep) => {
       const node = modulesMap.get(dep)
-      if (node) {
-        allNodes.add(node.node)
-        node.edges.push(getEdge(n.id, dep))
-        node.edges.forEach(edge => allEdges.add(edge))
+      // also check deps is valid
+      if (node && checkIsValidModule(node.mod)) {
+        allNodes.set(node.mod.id, node.node)
+        allEdges.set(`${n.fullId}-${node.mod.id}`, getEdge(node.mod.id, n.fullId))
+        node.edges.forEach(edge => allEdges.set(`${edge.from}-${edge.to}`, edge))
       }
     })
   })
@@ -262,7 +265,6 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
 
     // save cache, to speed up search
     modulesMap.set(id, node)
-    moduleIds.add(id)
 
     // first time, we also need check
     if (checkIsValidModule(mod)) {

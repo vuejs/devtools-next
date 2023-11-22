@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { onKeyStroke, useScrollLock, useVModel } from '@vueuse/core'
-import { watchEffect } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import Button from './Button.vue'
+import type { OverlayProps } from './Overlay.vue'
+import Overlay from './Overlay.vue'
 
 const props = withDefaults(
   defineProps<{
     modelValue?: boolean
-    dim?: boolean
-    blur?: boolean
     autoClose?: boolean
     title?: string
     width?: string
     height?: string
     closable?: boolean
-  }>(),
+    mountTo?: string | HTMLElement
+  } & OverlayProps>(),
   {
     title: 'Dialog',
     modelValue: false,
-    dim: true,
-    blur: true,
     autoClose: true,
     width: '500px',
     height: '300px',
     closable: true,
+    mountTo: 'body',
   },
 )
 
@@ -49,27 +49,21 @@ function close() {
 onKeyStroke('Escape', () => {
   close()
 })
+
+const isMount = ref(false)
+
+onMounted(() => isMount.value = true)
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport v-if="isMount || mountTo === 'body'" :to="mountTo">
     <Transition
       enter-from-class="opacity-0 [&_.modal]:scale-95 [&_.content,&_.footer]:translate-y--10px [&_.content,&_.footer]:opacity-0"
       enter-to-class="opacity-100 [&_.modal]:scale-100"
       leave-from-class="opacity-100 [&_.modal]:scale-100"
       leave-to-class="opacity-0 [&_.modal]:scale-95"
     >
-      <div
-        v-if="show" class="
-         $ui-z-max $ui-fcc w-100vw h-100vh absolute top-0 left-0
-         transition-duration-300 transition-opacity
-         $ui-bg-base absolute
-        "
-        :class="[
-          dim ? 'bg-opacity-50!' : 'bg-opacity-0!',
-          blur ? 'backdrop-blur-sm' : '',
-        ]"
-      >
+      <Overlay v-if="show" :dim="dim" :blur="blur">
         <div
           class="modal rounded-md relative bg-white dark:bg-gray-900 dark:color-gray-200 color-gray-800
         shadow-2xl transition-duration-300 transition-transform
@@ -107,7 +101,7 @@ onKeyStroke('Escape', () => {
             </slot>
           </div>
         </div>
-      </div>
+      </Overlay>
     </Transition>
   </Teleport>
 </template>

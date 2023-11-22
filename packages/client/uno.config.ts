@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfigs, presetAttributify, presetWebFonts } from 'unocss'
-import { unoConfig } from '@vue-devtools-next/ui/theme'
+import { themeDef, unoConfig } from '@vue-devtools-next/ui/theme'
 
 export default defineConfig(mergeConfigs([unoConfig, {
   rules: [
@@ -15,7 +15,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
       'background-size': '40px 40px',
     }],
     ['panel-grids-dark', {
-      'background-image': 'url("data:image/svg+xml,%0A%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'20\' height=\'20\' transform=\'scale(3)\'%3E%3Crect x=\'0\' y=\'0\' width=\'100%25\' height=\'100%25\' fill=\'hsl(0, 0%25, 8.5%25)\'/%3E%3Cpath d=\'M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z\' stroke-width=\'0.2\' stroke=\'hsl(0, 0%25, 11.0%25)\' fill=\'none\'/%3E%3C/svg%3E");',
+      'background-image': `url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' transform='scale(3)'%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='${encodeURIComponent(themeDef.colors.black)}'/%3E%3Cpath d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z' stroke-width='0.2' stroke='${encodeURIComponent('#141b24')}' fill='none'/%3E%3C/svg%3E");`,
       'background-size': '40px 40px',
     }],
   ],

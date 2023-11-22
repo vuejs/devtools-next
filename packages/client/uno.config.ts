@@ -54,6 +54,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'bg-base': 'bg-white dark:bg-black',
     'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
+    'navbar-base': 'bg-base border-b border-base h-12',
     'transition-base': 'transition-all duration-200',
 
     'x-divider': 'h-1px w-full bg-gray/15',

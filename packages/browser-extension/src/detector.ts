@@ -12,6 +12,8 @@ function detect(win: Window) {
       win.postMessage({
         devtoolsEnabled: window.__VUE_DEVTOOLS_GLOBAL_HOOK__ && window.__VUE_DEVTOOLS_GLOBAL_HOOK__.enabled,
         vueDetected: true,
+        vitePluginDetected: !!window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__,
+        vitePluginClientUrl: window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__,
       }, '*')
       return
     }

@@ -91,7 +91,27 @@ export const graphSettings = useLocalStorage<GraphSettings>('vue-devtools-next-g
   virtual: false,
   lib: false,
 })
+
+watch(graphSettings, () => {
+  updateGraph()
+}, { deep: true })
 // #endregion
+
+// #region graph search
+interface SearcherNode {
+  id: string
+  node: Node
+  edges: Edge[]
+  deps: string[]
+}
+
+export const graphSearchText = ref('')
+
+watchDebounced(graphSearchText, (text) => {
+  updateGraph(text)
+}, {
+  debounce: 350,
+})
 
 // #region graph data
 // NOTE: we can operate DataSet directly to change the graph,
@@ -107,7 +127,8 @@ export const projectRoot = ref('')
 const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
-export const modulesMap = shallowRef<Map<string, { filePath: string }>>(new Map())
+export const modulesMap = new Map<string, GraphNodesTotalData>()
+const moduleIds = new Set<string>()
 
 export function checkIsValidModule(module: ModuleInfo) {
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
@@ -119,28 +140,88 @@ export function checkIsValidModule(module: ModuleInfo) {
   return true
 }
 
-watch(graphSettings, () => {
+const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
+
+function updateGraph(searchText?: string) {
   graphNodes.clear()
   graphEdges.clear()
+
+  const matchedNodes: Node[] = []
+  const matchedSearchNodes: SearcherNode[] = []
+  const matchedEdges: Edge[] = []
+
   // reuse cache instead of parse every time
   const nodeData = graphNodesTotal.value.slice()
   nodeData.forEach(({ node, edges, mod }) => {
     if (checkIsValidModule(mod)) {
-      graphNodes.add(node)
-      graphEdges.add(edges.slice())
+      matchedNodes.push(node)
+      matchedSearchNodes.push({
+        // only search the exactly name(last 3 segments), instead of full path
+        id: mod.id.match(EXTRACT_LAST_THREE_MOD_ID_RE)?.[0] ?? mod.id,
+        node,
+        edges,
+        deps: mod.deps,
+      })
+      matchedEdges.push(...edges)
     }
   })
-}, { deep: true })
+
+  // use include, instead of fuse.js, for performance reasons
+  // if someone need it, we can add it back
+  if (searchText?.trim().length) {
+    const result = matchedSearchNodes.filter(({ id }) => id.includes(searchText))
+    if (result.length) {
+      matchedEdges.length = 0
+      matchedNodes.length = 0
+      const { node, edges } = recursivelyGetNodeByDep(result)
+      // need recursively get all nodes and it's dependencies
+      matchedNodes.push(...node)
+      matchedEdges.push(...edges)
+    }
+  }
+
+  graphNodes.add(matchedNodes)
+  graphEdges.add(matchedEdges)
+}
+
+function recursivelyGetNodeByDep(node: SearcherNode[]) {
+  const allNodes = new Set<Node>()
+  const allEdges = new Set<Edge>()
+  node.forEach((n) => {
+    n = deepClone(n)
+    // to highlight current searched node
+    if (!n.node.font)
+      n.node.font = { color: '#F19B4A' }
+    n.node.label = `<b>${n.node.label}</b>`
+    allNodes.add(n.node)
+    n.deps.forEach((dep) => {
+      const node = modulesMap.get(dep)
+      if (node) {
+        allNodes.add(node.node)
+        node.edges.push(getEdge(n.id, dep))
+        node.edges.forEach(edge => allEdges.add(edge))
+      }
+    })
+  })
+  return {
+    node: Array.from(allNodes.values()),
+    edges: Array.from(allEdges.values()),
+  }
+}
+
 // #endregion
 
 // #region parse graph raw data
-const isMatched = (id: string) => matchedKeys.value.includes(id)
-
-function getFontStyle(id: string) {
+function getEdge(modId: string, dep: string) {
   return {
-    color: isMatched(id)
-      ? '#F19B4A'
-      : undefined,
+    from: modId,
+    to: dep,
+    arrows: {
+      to: {
+        enabled: true,
+        scaleFactor: 0.8,
+      },
+    },
   }
 }
 
@@ -158,19 +239,14 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
     const path = mod.id.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(root, '')
     const pathSegments = path.split('/')
     const id = mod.id
-    if (!modulesMap.value.has(id))
-      modulesMap.value.set(id, { filePath: path })
-    else
-      modulesMap.value.get(id)!.filePath = path
     const node: GraphNodesTotalData = {
       mod,
       node: {
         id,
-        label: isMatched(id) ? `<b>${pathSegments.at(-1)}</b>` : pathSegments.at(-1),
+        label: pathSegments.at(-1),
         group: path.match(/\.(\w+)$/)?.[1] || 'unknown',
         size: 15 + Math.min(mod.deps.length / 2, 8),
         title: path,
-        font: getFontStyle(id),
         shape: mod.id.includes('/node_modules/')
           ? 'hexagon'
           : mod.virtual
@@ -180,18 +256,13 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
       edges: [],
     }
     mod.deps.forEach((dep) => {
-      node.edges.push({
-        from: mod.id,
-        to: dep,
-        arrows: {
-          to: {
-            enabled: true,
-            scaleFactor: 0.8,
-          },
-        },
-      })
+      node.edges.push(getEdge(mod.id, dep))
     })
     graphNodesTotal.value.push(node)
+
+    // save cache, to speed up search
+    modulesMap.set(id, node)
+    moduleIds.add(id)
 
     // first time, we also need check
     if (checkIsValidModule(mod)) {

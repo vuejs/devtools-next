@@ -113,6 +113,7 @@ watchDebounced(graphSearchText, () => {
 }, {
   debounce: 350,
 })
+// #endregion
 
 // #region graph data
 // NOTE: we can operate DataSet directly to change the graph,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
+import { onKeyStroke, useVModel } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 import type { OverlayProps } from './Overlay.vue'
 import Overlay from './Overlay.vue'
@@ -45,6 +45,11 @@ const placementClasses: Record<typeof props['placement'], {
     transition: '[&_.drawer]:translate-y-100%',
   },
 }
+
+onKeyStroke('Escape', () => {
+  if (props.closable)
+    show.value = false
+})
 
 const classes = computed(() => placementClasses[props.placement])
 

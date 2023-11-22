@@ -13,6 +13,8 @@ import Confirm from './Confirm.vue'
 import Select from './Select.vue'
 import Switch from './Switch.vue'
 import Checkbox from './Checkbox.vue'
+import Drawer from './Drawer.vue'
+import Overlay from './Overlay.vue'
 
 export {
   Badge as VueBadge,
@@ -20,11 +22,13 @@ export {
   Card as VueCard,
   Checkbox as VueCheckbox,
   Dialog as VueDialog,
+  Drawer as VueDrawer,
   LoadingIndicator as VueLoadingIndicator,
   Icon as VueIcon,
   DarkToggle as VueDarkToggle,
   Input as VueInput,
   FormField as VueFormField,
+  Overlay as VueOverlay,
   Dropdown as VueDropdown,
   DropdownButton as VueDropdownButton,
   Confirm as VueConfirm,

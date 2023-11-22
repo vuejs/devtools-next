@@ -2,6 +2,7 @@ import type { ModuleInfo } from '@vue-devtools-next/core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
 
+// #region legends
 export const legends = {
   vue: {
     color: '#42b883',
@@ -34,9 +35,24 @@ export const legends = {
 
 const capitalizeKeys = ['vue', 'other']
 
-export const projectRoot = ref('')
+export function useLegends() {
+  const [legendShow, toggleLegend] = useToggle(true)
 
+  return {
+    legendsData: Object.entries(legends).map(([key, value]) => ({
+      key,
+      color: value.color,
+      capitalize: capitalizeKeys.includes(key),
+    })),
+    legendShow,
+    toggleLegend,
+  }
+}
+// #endregion
+
+// #region graph options
 const isDark = useDark()
+
 export const graphOptions = computed<Options>(() => ({
   autoResize: true,
   nodes: {
@@ -61,23 +77,9 @@ export const graphOptions = computed<Options>(() => ({
   },
   groups: legends,
 }))
+// #endregion
 
-export function useLegends() {
-  const [legendShow, toggleLegend] = useToggle(true)
-
-  return {
-    legendsData: Object.entries(legends).map(([key, value]) => ({
-      key,
-      color: value.color,
-      capitalize: capitalizeKeys.includes(key),
-    })),
-    legendShow,
-    toggleLegend,
-  }
-}
-
-export const matchedKeys = ref<string[]>([])
-
+// #region graph settings
 export interface GraphSettings {
   node_modules: boolean
   virtual: boolean
@@ -89,8 +91,24 @@ export const graphSettings = useLocalStorage<GraphSettings>('vue-devtools-next-g
   virtual: false,
   lib: false,
 })
+// #endregion
 
-// ------------------ parse graph data ------------------
+// #region graph data
+// NOTE: we can operate DataSet directly to change the graph,
+// for performance reasons, just don't parse the whole raw data, instead, we update dataset
+
+interface GraphNodesTotalData {
+  mod: ModuleInfo
+  node: Node
+  edges: Edge[]
+}
+
+export const projectRoot = ref('')
+const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
+export const graphNodes = new DataSet<Node>([])
+export const graphEdges = new DataSet<Edge>([])
+export const modulesMap = shallowRef<Map<string, { filePath: string }>>(new Map())
+
 export function checkIsValidModule(module: ModuleInfo) {
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
     return false
@@ -101,6 +119,21 @@ export function checkIsValidModule(module: ModuleInfo) {
   return true
 }
 
+watch(graphSettings, () => {
+  graphNodes.clear()
+  graphEdges.clear()
+  // reuse cache instead of parse every time
+  const nodeData = graphNodesTotal.value.slice()
+  nodeData.forEach(({ node, edges, mod }) => {
+    if (checkIsValidModule(mod)) {
+      graphNodes.add(node)
+      graphEdges.add(edges.slice())
+    }
+  })
+}, { deep: true })
+// #endregion
+
+// #region parse graph raw data
 const isMatched = (id: string) => matchedKeys.value.includes(id)
 
 function getFontStyle(id: string) {
@@ -110,19 +143,6 @@ function getFontStyle(id: string) {
       : undefined,
   }
 }
-
-// NOTE: we can operate DataSet directly to change the graph,
-// for performance reasons, just don't parse the whole raw data, instead, we update dataset
-interface GraphNodesTotalData {
-  mod: ModuleInfo
-  node: Node
-  edges: Edge[]
-}
-const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
-export const graphNodes = new DataSet<Node>([])
-export const graphEdges = new DataSet<Edge>([])
-
-export const modulesMap = shallowRef<Map<string, { filePath: string }>>(new Map())
 
 export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   if (!modules)
@@ -183,16 +203,4 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   graphNodes.add(totalNode.slice())
   graphEdges.add(totalEdges.slice())
 }
-
-watch(graphSettings, () => {
-  graphNodes.clear()
-  graphEdges.clear()
-  // reuse cache instead of parse every time
-  const nodeData = graphNodesTotal.value.slice()
-  nodeData.forEach(({ node, edges, mod }) => {
-    if (checkIsValidModule(mod)) {
-      graphNodes.add(node)
-      graphEdges.add(edges.slice())
-    }
-  })
-}, { deep: true })
+// #endregion

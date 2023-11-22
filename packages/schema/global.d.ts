@@ -30,6 +30,8 @@ declare global {
   var __VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__: boolean
   // is browser extension detected
   var __VUE_DEVTOOLS_BROWSER_EXTENSION_DETECTED__: boolean
+  // vite client url
+  var __VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__: string
 }
 
 export { }

@@ -1,6 +1,6 @@
 import { Bridge } from '../../core/src/bridge'
 import { initDevTools } from '../client/devtools-panel'
-import { VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
+import { VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const connectionInfo: {
   retryTimer: NodeJS.Timeout | null
@@ -38,8 +38,9 @@ function connect() {
   }
 }
 
-chrome.storage.local.get(VITE_PLUGIN_DETECTED_STORAGE_KEY).then((storage) => {
+chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_URL_STORAGE_KEY]).then((storage) => {
   const vitePluginDetected = storage[VITE_PLUGIN_DETECTED_STORAGE_KEY]
+  const vitePluginClientUrl = storage[VITE_PLUGIN_CLIENT_URL_STORAGE_KEY]
   // for vite plugin
   if (vitePluginDetected) {
     function init(iframe: HTMLIFrameElement) {
@@ -80,8 +81,7 @@ chrome.storage.local.get(VITE_PLUGIN_DETECTED_STORAGE_KEY).then((storage) => {
 
     function createClient() {
       const iframe = document.createElement('iframe')
-      // @TODO: get dynamic url
-      iframe.src = 'http://localhost:3000/__devtools__/'
+      iframe.src = vitePluginClientUrl
       iframe.style.border = 'none'
       iframe.style.width = '100vw'
       iframe.style.height = '100vh'

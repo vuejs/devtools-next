@@ -35,6 +35,7 @@ export default {
         './src/constants',
       ],
       dts: join(__dirname, 'auto-imports.d.ts'),
+      vueTemplate: true,
       imports: [
         'vue',
         'vue-router',

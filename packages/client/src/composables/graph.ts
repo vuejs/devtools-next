@@ -94,6 +94,7 @@ export const graphSettings: RemovableRef<GraphSettings> = useLocalStorage<GraphS
 
 watch(graphSettings, () => {
   updateGraph()
+  closeDrawer()
 }, { deep: true })
 // #endregion
 
@@ -313,19 +314,55 @@ export interface DrawerData {
   deps: { path: string; displayPath: string }[]
 }
 
-export function getDrawerData(nodeId: string): DrawerData | undefined {
+export const graphDrawerData = ref<DrawerData>()
+const selectedNode = ref<string>()
+export const [graphDrawerShow, toggleGraphDrawer] = useToggle(false)
+
+function closeDrawer() {
+  toggleGraphDrawer(false)
+}
+
+export function updateGraphDrawerData(nodeId?: string): DrawerData | undefined {
+  if (nodeId)
+    selectedNode.value = nodeId
+  nodeId = selectedNode.value!
   const node = modulesMap.get(nodeId)
   if (!node)
     return
-  return {
+
+  const deps = node.mod.deps.reduce<DrawerData['deps']>((prev, dep) => {
+    const moduleData = modulesMap.get(dep)
+    if (!moduleData)
+      return prev
+    if (checkIsValidModule(moduleData.mod)) {
+      prev.push({
+        path: dep,
+        displayPath: removeRootPath(removeVerbosePath(dep)),
+      })
+    }
+    return prev
+  }, [])
+
+  const refsData = moduleReferences.get(node.mod.id) || []
+  const refs = refsData.reduce<DrawerData['deps']>((prev, ref) => {
+    const moduleData = modulesMap.get(ref.path)
+    if (!moduleData)
+      return prev
+    if (checkIsValidModule(moduleData.mod)) {
+      prev.push({
+        path: ref.path,
+        displayPath: ref.displayPath,
+      })
+    }
+    return prev
+  }, [])
+
+  graphDrawerData.value = {
     name: node.info.displayName,
     path: node.info.displayPath,
     fullPath: node.mod.id,
-    deps: node.mod.deps.map(dep => ({
-      path: dep,
-      displayPath: removeRootPath(dep),
-    })),
-    refs: moduleReferences.get(node.mod.id) || [],
+    deps,
+    refs,
   }
 }
 // #endregion

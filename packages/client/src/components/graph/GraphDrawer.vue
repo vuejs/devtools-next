@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { VueButton, VueDrawer } from '@vue-devtools-next/ui'
-import type { DrawerData } from '~/composables/graph'
 
-const props = defineProps<{
-  modelValue: boolean
+defineProps<{
   to: string
-  drawerData: DrawerData
 }>()
 
-const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
-
-const show = useVModel(props, 'modelValue', emit, { passive: true })
+const data = graphDrawerData
+const show = graphDrawerShow
 
 const { copy, isSupported, copied } = useClipboard()
 
@@ -27,30 +21,30 @@ const keys = [
     <div class="w-300px" h-full of-auto>
       <div border-b border-base h-80px text-md p3 flex="~ col gap2">
         <span text-lg flex="~ gap2 items-center">
-          {{ drawerData.name }}
+          {{ data?.name }}
           <span v-if="copied" text-primary-500 i-material-symbols-check-small />
           <span
-            v-else
-            i-carbon-copy text-sm cursor-pointer :class="{
+            v-else-if="data"
+            i-carbon-copy text-sm op-50 hover="op-100" cursor-pointer :class="{
               'text-gray-200': !isSupported,
-            }" @click="copy(drawerData.name)"
+            }" @click="copy(data.name)"
           />
         </span>
-        <span text-gray-500>
-          {{ drawerData.path }}
-        </span>
+        <button text-gray-500 truncate hover="underline" text-left>
+          {{ data?.path }}
+        </button>
       </div>
       <div
         v-for="([key, keyDisplay]) in keys" :key="key"
         border-b max-h-60 of-auto border-base p3 text-sm
       >
         <div pb2 text-gray-500>
-          <span text-primary-500>{{ drawerData[key].length }}</span>
+          <span text-primary-500>{{ data?.[key].length }}</span>
           {{ keyDisplay }}
         </div>
         <div flex="~ col gap2 items-start">
           <button
-            v-for="item in drawerData[key]" :key="item.path" text-gray-800 dark="text-gray-200"
+            v-for="item in data?.[key]" :key="item.path" text-gray-800 dark="text-gray-200"
             ws-nowrap of-hidden truncate pr-3 hover="underline"
           >
             {{ item.displayPath }}

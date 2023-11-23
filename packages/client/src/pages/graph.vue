@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import { Network } from 'vis-network'
-import type { DrawerData } from '~/composables/graph'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
@@ -13,8 +12,6 @@ onDevToolsClientConnected(async () => {
 })
 
 const container = ref<HTMLDivElement>()
-const [drawerShow, toggleDrawer] = useToggle(false)
-const drawerData = ref<DrawerData>()
 
 function mountNetwork() {
   const node = container.value!
@@ -26,13 +23,12 @@ function mountNetwork() {
   }, { immediate: true })
 
   network.on('selectNode', (options) => {
-    drawerData.value = getDrawerData(options.nodes[0])
-    if (drawerData.value)
-      toggleDrawer(true)
+    updateGraphDrawerData(options.nodes[0])
+    toggleGraphDrawer(true)
   })
 
   network.on('deselectNode', () => {
-    toggleDrawer(false)
+    toggleGraphDrawer(false)
   })
 }
 
@@ -46,6 +42,6 @@ onMounted(() => {
     <GraphNavbar />
     <div ref="container" flex="1" />
     <GraphFileType />
-    <GraphDrawer v-model="drawerShow" to=".graph-body" :drawer-data="drawerData!" />
+    <GraphDrawer to=".graph-body" />
   </div>
 </template>

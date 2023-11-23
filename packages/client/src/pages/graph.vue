@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import { Network } from 'vis-network'
+import type { DrawerData } from '~/composables/graph'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
@@ -13,6 +14,7 @@ onDevToolsClientConnected(async () => {
 
 const container = ref<HTMLDivElement>()
 const [drawerShow, toggleDrawer] = useToggle(false)
+const drawerData = ref<DrawerData>()
 
 function mountNetwork() {
   const node = container.value!
@@ -23,8 +25,10 @@ function mountNetwork() {
     network.setOptions(options)
   }, { immediate: true })
 
-  network.on('selectNode', () => {
-    toggleDrawer(true)
+  network.on('selectNode', (options) => {
+    drawerData.value = getDrawerData(options.nodes[0])
+    if (drawerData.value)
+      toggleDrawer(true)
   })
 
   network.on('deselectNode', () => {
@@ -38,18 +42,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div relative flex="~ col" panel-grids h-screen of-hidden>
+  <div relative flex="~ col" panel-grids h-screen of-hidden class="graph-body">
     <GraphNavbar />
-    <div class="graph-body" relative h-screen of-hidden flex="~ col 1">
-      <div ref="container" flex="1" />
-      <GraphFileType />
-      <GraphDrawer v-model="drawerShow" to=".graph-body" />
-    </div>
+    <div ref="container" flex="1" />
+    <GraphFileType />
+    <GraphDrawer v-model="drawerShow" to=".graph-body" :drawer-data="drawerData!" />
   </div>
 </template>
-
-<style>
-.vis-tooltip {
-  --at-apply: border-base p1 absolute b-1 bg-base rounded-lg shadow-lg text-base;
-}
-</style>

@@ -121,6 +121,10 @@ watchDebounced(graphSearchText, () => {
 
 interface GraphNodesTotalData {
   mod: ModuleInfo
+  info: {
+    displayName: string
+    displayPath: string
+  }
   node: Node
   edges: Edge[]
 }
@@ -130,6 +134,7 @@ const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
 export const modulesMap = new Map<string, GraphNodesTotalData>()
+const moduleReferences = new Map<string, { path: string; displayPath: string }[]>()
 
 export function checkIsValidModule(module: ModuleInfo) {
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
@@ -229,6 +234,14 @@ function getEdge(modId: string, dep: string) {
   }
 }
 
+function removeVerbosePath(path: string) {
+  return path.replace(/\?.*$/, '').replace(/\#.*$/, '')
+}
+
+export function removeRootPath(path: string) {
+  return path.replace(projectRoot.value, '')
+}
+
 export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   if (!modules)
     return
@@ -240,17 +253,21 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   const totalNode: Node[] = []
 
   modules.forEach((mod) => {
-    const path = mod.id.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(root, '')
+    const path = removeVerbosePath(mod.id)
     const pathSegments = path.split('/')
-    const id = mod.id
+    const displayName = pathSegments.at(-1) ?? ''
+    const displayPath = removeRootPath(path)
     const node: GraphNodesTotalData = {
       mod,
+      info: {
+        displayName,
+        displayPath,
+      },
       node: {
-        id,
-        label: pathSegments.at(-1),
+        id: mod.id,
+        label: displayName,
         group: path.match(/\.(\w+)$/)?.[1] || 'unknown',
         size: 15 + Math.min(mod.deps.length / 2, 8),
-        title: path,
         shape: mod.id.includes('/node_modules/')
           ? 'hexagon'
           : mod.virtual
@@ -260,12 +277,20 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
       edges: [],
     }
     mod.deps.forEach((dep) => {
+      dep = removeVerbosePath(dep)
+      // save references
+      if (!moduleReferences.has(dep))
+        moduleReferences.set(dep, [])
+      moduleReferences.get(dep)!.push({
+        path: mod.id,
+        displayPath: removeRootPath(mod.id),
+      })
       node.edges.push(getEdge(mod.id, dep))
     })
     graphNodesTotal.value.push(node)
 
     // save cache, to speed up search
-    modulesMap.set(id, node)
+    modulesMap.set(mod.id, node)
 
     // first time, we also need check
     if (checkIsValidModule(mod)) {
@@ -276,5 +301,31 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   // set initial data
   graphNodes.add(totalNode.slice())
   graphEdges.add(totalEdges.slice())
+}
+// #endregion
+
+// #region drawer
+export interface DrawerData {
+  name: string
+  path: string
+  fullPath: string
+  refs: { path: string; displayPath: string }[]
+  deps: { path: string; displayPath: string }[]
+}
+
+export function getDrawerData(nodeId: string): DrawerData | undefined {
+  const node = modulesMap.get(nodeId)
+  if (!node)
+    return
+  return {
+    name: node.info.displayName,
+    path: node.info.displayPath,
+    fullPath: node.mod.id,
+    deps: node.mod.deps.map(dep => ({
+      path: dep,
+      displayPath: removeRootPath(dep),
+    })),
+    refs: moduleReferences.get(node.mod.id) || [],
+  }
 }
 // #endregion

@@ -50,6 +50,7 @@ export const unoConfig = {
     '$ui-base-br': 'rounded-3px',
     '$ui-border-base': 'border-gray/20',
     '$ui-text': 'text-black dark:text-white',
+    '$ui-glass-effect': 'backdrop-blur-6 bg-white/80 dark:bg-black/90',
   },
   rules: [
     ['$ui-font-inherit', { 'font-family': 'inherit' }],

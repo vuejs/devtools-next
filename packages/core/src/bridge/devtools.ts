@@ -120,6 +120,10 @@ export class BridgeRpc {
     return devtoolsBridge.viteRpc!.api!.getTextAssetContent(filepath, limit)
   }
 
+  static root() {
+    return devtoolsBridge.viteRpc.api.root()
+  }
+
   // graph
   static getGraph() {
     return devtoolsBridge.viteRpc!.api!.getGraph()

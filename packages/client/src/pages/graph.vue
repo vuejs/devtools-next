@@ -1,17 +1,53 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { Network } from 'vis-network'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-onDevToolsClientConnected(() => {
+onDevToolsClientConnected(async () => {
+  const root = await bridgeRpc.root()
   bridgeRpc.getGraph().then((res) => {
-    console.log('res', res)
+    parseGraphRawData(res, root)
   })
+})
+
+const container = ref<HTMLDivElement>()
+const networkRef = shallowRef<Network>()
+
+function mountNetwork() {
+  const node = container.value!
+
+  const network = networkRef.value = new Network(node, { nodes: graphNodes, edges: graphEdges }, graphOptions.value)
+
+  watch(graphOptions, (options) => {
+    network.setOptions(options)
+  }, { immediate: true })
+
+  network.on('selectNode', (options) => {
+    updateGraphDrawerData(options.nodes[0])
+    toggleGraphDrawer(true)
+  })
+
+  network.on('deselectNode', () => {
+    toggleGraphDrawer(false)
+  })
+}
+
+onMounted(() => {
+  mountNetwork()
+})
+
+onUnmounted(() => {
+  cleanupGraphRelatedStates()
+  networkRef.value?.destroy()
 })
 </script>
 
 <template>
-  <div>
-    Graph
+  <div relative flex="~ col" panel-grids h-screen of-hidden class="graph-body">
+    <GraphNavbar />
+    <div ref="container" flex="1" />
+    <GraphFileType />
+    <GraphDrawer to=".graph-body" />
   </div>
 </template>

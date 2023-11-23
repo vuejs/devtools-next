@@ -39,7 +39,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   cleanupGraphRelatedStates()
-  networkRef?.value?.destroy()
+  networkRef.value?.destroy()
 })
 </script>
 

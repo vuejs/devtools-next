@@ -7,6 +7,7 @@ defineProps<{
 
 const data = graphDrawerData
 const show = graphDrawerShow
+const filterId = graphFilterNodeId
 
 const { copy, isSupported, copied } = useClipboard()
 
@@ -52,7 +53,7 @@ const keys = [
         </div>
       </div>
       <div p3>
-        <VueButton type="primary">
+        <VueButton type="primary" @click="filterId = data!.fullPath">
           Filter to this module
         </VueButton>
       </div>

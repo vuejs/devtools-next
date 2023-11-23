@@ -131,6 +131,7 @@ interface GraphNodesTotalData {
 
 export const projectRoot = ref('')
 const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
+const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
 export const modulesMap = new Map<string, GraphNodesTotalData>()
@@ -158,7 +159,8 @@ function updateGraph() {
   const matchedEdges: Edge[] = []
 
   // reuse cache instead of parse every time
-  const nodeData = graphNodesTotal.value.slice()
+  const filterDataset = getGraphFilterDataset()
+  const nodeData = filterDataset ? filterDataset.slice() : graphNodesTotal.value.slice()
   nodeData.forEach(({ node, edges, mod }) => {
     if (checkIsValidModule(mod)) {
       matchedNodes.push(node)
@@ -289,6 +291,7 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
       node.edges.push(getEdge(mod.id, dep))
     })
     graphNodesTotal.value.push(node)
+    graphNodesTotalMap.set(mod.id, node)
 
     // save cache, to speed up search
     modulesMap.set(mod.id, node)
@@ -364,5 +367,38 @@ export function updateGraphDrawerData(nodeId?: string): DrawerData | undefined {
     deps,
     refs,
   }
+}
+// #endregion
+
+// #region graph filter
+export const graphFilterNodeId = ref('')
+
+watch(graphFilterNodeId, () => {
+  updateGraph()
+})
+
+export function getGraphFilterDataset() {
+  const nodeId = graphFilterNodeId.value
+  graphFilterNodeId.value = nodeId
+  if (!nodeId)
+    return null
+  const node = modulesMap.get(nodeId)
+  if (!node)
+    return null
+  const dataset = recursivelyGetGraphNodeData(nodeId)
+  return dataset
+}
+
+function recursivelyGetGraphNodeData(nodeId: string): GraphNodesTotalData[] {
+  const node = modulesMap.get(nodeId)
+  if (!node)
+    return []
+  const result = [node]
+  node.mod.deps.forEach((dep) => {
+    const node = modulesMap.get(dep)
+    if (node)
+      result.push(...recursivelyGetGraphNodeData(node.mod.id))
+  })
+  return result
 }
 // #endregion

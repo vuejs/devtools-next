@@ -10,6 +10,8 @@ const selectableItems = [
   ['virtual', 'virtual module'],
   ['lib', 'lib module'],
 ] as const
+
+const filterId = graphFilterNodeId
 </script>
 
 <template>
@@ -21,5 +23,10 @@ const selectableItems = [
       <VueCheckbox v-model="settings[item[0]]" />
       <span :class="{ 'text-gray-400 dark:text-gray-600': !settings[item[0]] }">Show {{ item[1] ?? item[0] }}</span>
     </div>
+    <div flex-auto />
+    <button v-if="filterId" rounded-full bg-gray:20 py1 pl3 pr2 text-xs op50 hover:op100 @click="filterId = ''">
+      Clear filter
+      <div i-carbon-close mb2px />
+    </button>
   </div>
 </template>

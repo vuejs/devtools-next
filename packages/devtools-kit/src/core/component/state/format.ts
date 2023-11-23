@@ -9,10 +9,10 @@ export function getInspectorStateValueType(value, raw = true) {
   }
   else if (
     type === 'boolean'
-    || type === 'number'
-    || value === INFINITY
-    || value === NEGATIVE_INFINITY
-    || value === NAN
+      || type === 'number'
+      || value === INFINITY
+      || value === NEGATIVE_INFINITY
+      || value === NAN
   ) {
     return 'literal'
   }

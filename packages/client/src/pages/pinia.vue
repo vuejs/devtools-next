@@ -8,7 +8,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 const bridgeRpc = useDevToolsBridgeRpc()
 
 const selected = ref('')
-const tree = ref<{ id: string;label: string; tags: InspectorNodeTag[] }[]>([])
+const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]

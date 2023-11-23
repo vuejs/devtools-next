@@ -11,7 +11,7 @@ const layers = ref<{
   color: number
   id: string
   label: string
-  groups?: Record<number | string, { events: TimelineEvent['event'][]; duration: number }>
+  groups?: Record<number | string, { events: TimelineEvent['event'][], duration: number }>
 }[]>([])
 const timelineEvent = ref<Record<string, TimelineEvent['event'][]>>({})
 const selectedLayer = ref('')

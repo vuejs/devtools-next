@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
-const isResizing = ref<false | { top?: boolean; left?: boolean; right?: boolean; bottom?: boolean }>(false)
+const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
 
 watchEffect(() => {
   if (!container.value)

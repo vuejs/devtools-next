@@ -13,8 +13,8 @@ export function isPrimitive(data: unknown) {
   const type = typeof data
   return (
     type === 'string'
-    || type === 'number'
-    || type === 'boolean'
+      || type === 'number'
+      || type === 'boolean'
   )
 }
 

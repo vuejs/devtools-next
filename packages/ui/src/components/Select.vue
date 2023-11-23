@@ -6,7 +6,7 @@ import VueButton from './Button.vue'
 
 const props = withDefaults(defineProps<{
   modelValue: K
-  options: { label: V; value: K }[]
+  options: { label: V, value: K }[]
   placeholder?: string
   autoClose?: boolean
   disabled?: boolean

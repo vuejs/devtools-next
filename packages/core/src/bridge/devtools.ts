@@ -40,13 +40,13 @@ export function registerBridgeRpc(options: BridgeRpcOptions) {
 
 export class BridgeRpc {
   static on = {
-    inspectorTreeUpdated<T = { inspectorId: string; data: { id: string; label: string; tags: InspectorNodeTag[] }[] } >(cb: (payload: T) => void, options: { inspectorId: string }) {
+    inspectorTreeUpdated<T = { inspectorId: string, data: { id: string, label: string, tags: InspectorNodeTag[] }[] } >(cb: (payload: T) => void, options: { inspectorId: string }) {
       devtoolsBridge.value.on(BridgeEvents.SEND_INSPECTOR_TREE, (payload) => {
         const _payload = parse(payload)
         options.inspectorId === _payload.inspectorId && cb(_payload)
       })
     },
-    inspectorStateUpdated<T = { inspectorId: string; state: InspectorState[] }>(cb: (payload: T) => void, options: { inspectorId: string }) {
+    inspectorStateUpdated<T = { inspectorId: string, state: InspectorState[] }>(cb: (payload: T) => void, options: { inspectorId: string }) {
       devtoolsBridge.value.on(BridgeEvents.SEND_INSPECTOR_STATE, (payload) => {
         const _payload = parse(payload)
         options.inspectorId === _payload.inspectorId && cb({
@@ -75,7 +75,7 @@ export class BridgeRpc {
     devtoolsBridge.rpc.emit(bridgeRpcEvents.updateInspectorTreeId, id)
   }
 
-  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string; label: string; tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
+  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string, label: string, tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
     return devtoolsBridge.rpc.emit<R>(bridgeRpcEvents.inspectorTree, payload)
   }
 
@@ -88,11 +88,11 @@ export class BridgeRpc {
   }
 
   static async getDevToolsState() {
-    return devtoolsBridge.rpc.emit<{ data: { connected: boolean;vueVersion: string } }>(bridgeRpcEvents.state)
+    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string } }>(bridgeRpcEvents.state)
   }
 
   static async getTimelineLayer() {
-    return devtoolsBridge.rpc.emit<{ data: { id: string;label: string; color: number }[] }>(bridgeRpcEvents.timelineLayer)
+    return devtoolsBridge.rpc.emit<{ data: { id: string, label: string, color: number }[] }>(bridgeRpcEvents.timelineLayer)
   }
 
   static async getRouterInfo() {

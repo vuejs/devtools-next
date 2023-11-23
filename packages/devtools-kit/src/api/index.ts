@@ -46,7 +46,7 @@ export class DevToolsPluginApi {
     return stringify(_payload.rootNodes) as string
   }
 
-  getInspectorState(payload: { inspectorId?: string; nodeId?: string } = {}) {
+  getInspectorState(payload: { inspectorId?: string, nodeId?: string } = {}) {
     const { inspectorId, nodeId } = payload
     const _payload = {
       app: devtoolsContext.appRecord.app,
@@ -117,7 +117,7 @@ export class DevToolsPluginApi {
     apiHooks.callHook(DevToolsEvents.VISIT_COMPONENT_TREE, payload)
   }
 
-  addTimelineLayer(payload: { id: string; label: string; color: number }) {
+  addTimelineLayer(payload: { id: string, label: string, color: number }) {
     addTimelineLayer(payload)
   }
 

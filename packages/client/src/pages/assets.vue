@@ -12,7 +12,7 @@ const view = ref('grid')
 const assets = ref<AssetInfo[]>([])
 const bridgeRpc = useDevToolsBridgeRpc()
 const extensions = reactiveComputed(() => {
-  const results: { name: string; value: boolean }[] = []
+  const results: { name: string, value: boolean }[] = []
   for (const asset of assets.value || []) {
     const ext = asset.path.split('.').pop()
     if (ext && !results.find(e => e.name === ext))

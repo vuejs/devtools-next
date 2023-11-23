@@ -45,6 +45,7 @@
     "build": "pnpm -r --filter='./packages/**' run build",
     "build:browser-extension": "nr -C packages/browser-extension build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build",
     "release": "bumpp -r",
     "dep:up": "taze -I major",

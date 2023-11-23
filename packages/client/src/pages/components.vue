@@ -109,7 +109,7 @@ onDevToolsClientConnected(() => {
   getComponentTree().then(() => {
     loaded.value = true
   })
-  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[]; inspectorId: string }>((data) => {
+  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[], inspectorId: string }>((data) => {
     if (!data?.data?.length)
       return
 

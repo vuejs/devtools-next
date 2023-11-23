@@ -31,7 +31,7 @@ export function getAppRecord(instance: VueAppInstance) {
     return instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD__
 }
 
-export async function getComponentId(options: { app: VueAppInstance; uid: number; instance: VueAppInstance }) {
+export async function getComponentId(options: { app: VueAppInstance, uid: number, instance: VueAppInstance }) {
   const { app, uid, instance } = options
   try {
     if (instance.__VUE_DEVTOOLS_UID__)

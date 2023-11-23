@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
 
 type TabCategory =
-| 'pinned'
-| 'app'
-| 'modules'
-| 'advanced'
+  | 'pinned'
+  | 'app'
+  | 'modules'
+  | 'advanced'
 
 export interface ModuleBuiltinTab {
   name: string

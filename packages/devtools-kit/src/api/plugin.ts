@@ -9,7 +9,7 @@ export function collectRegisteredPlugin(pluginDescriptor: PluginDescriptor, setu
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
 }
 
-export async function registerPlugin(options: { app: VueAppInstance; api: DevToolsPluginApi }) {
+export async function registerPlugin(options: { app: VueAppInstance, api: DevToolsPluginApi }) {
   const { app, api } = options
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {

@@ -44,8 +44,8 @@ export function getPropType(type: Array<string | null | Function | number> | str
 export function sanitize(data: unknown) {
   if (
     !isPrimitive(data)
-   && !Array.isArray(data)
-   && !isPlainObject(data)
+    && !Array.isArray(data)
+    && !isPlainObject(data)
   ) {
     // handle types that will probably cause issues in
     // the structured clone

@@ -135,7 +135,7 @@ const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
 export const modulesMap = new Map<string, GraphNodesTotalData>()
-const moduleReferences = new Map<string, { path: string; displayPath: string }[]>()
+const moduleReferences = new Map<string, { path: string, displayPath: string }[]>()
 
 export function cleanupGraphRelatedStates() {
   graphNodesTotal.value = []
@@ -322,8 +322,8 @@ export interface DrawerData {
   name: string
   path: string
   fullPath: string
-  refs: { path: string; displayPath: string }[]
-  deps: { path: string; displayPath: string }[]
+  refs: { path: string, displayPath: string }[]
+  deps: { path: string, displayPath: string }[]
 }
 
 export const graphDrawerData = ref<DrawerData>()

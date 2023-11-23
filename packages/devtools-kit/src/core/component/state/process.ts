@@ -20,9 +20,9 @@ function mergeOptions(
 
   extendsOptions && mergeOptions(to, extendsOptions, instance)
   mixins
-    && mixins.forEach(m =>
-      mergeOptions(to, m, instance),
-    )
+  && mixins.forEach(m =>
+    mergeOptions(to, m, instance),
+  )
 
   for (const key of ['computed', 'inject']) {
     if (Object.prototype.hasOwnProperty.call(from, key)) {

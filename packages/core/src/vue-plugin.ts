@@ -46,7 +46,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>; componentCount: Ref<number>; vueVersion: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

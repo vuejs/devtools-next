@@ -19,7 +19,7 @@ const selectableItems = [
     </div>
     <div v-for="item in selectableItems" :key="item[0]" flex="~ gap-2 items-center">
       <VueCheckbox v-model="settings[item[0]]" />
-      <span :class="{ 'text-gray-200': !settings[item[0]] }">Show {{ item[1] ?? item[0] }}</span>
+      <span :class="{ 'text-gray-200 dark:text-gray-600': !settings[item[0]] }">Show {{ item[1] ?? item[0] }}</span>
     </div>
   </div>
 </template>

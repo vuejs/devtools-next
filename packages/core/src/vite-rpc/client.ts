@@ -3,7 +3,7 @@ import { createRPCClient } from 'vite-dev-rpc'
 import type { BirpcReturn } from 'birpc'
 import type { ViteRPCFunctions } from './types'
 
-export function setupViteRPCClient(ctx: ViteHotContext | undefined): BirpcReturn<ViteRPCFunctions> {
+export function setupViteRPCClient(ctx: ViteHotContext | undefined): BirpcReturn<ViteRPCFunctions, unknown> {
   if (!ctx)
     return null!
   const rpcClient = createRPCClient<ViteRPCFunctions>('vite-plugin-vue-devtools', ctx, {})

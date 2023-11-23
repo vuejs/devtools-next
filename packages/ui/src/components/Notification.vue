@@ -40,7 +40,7 @@ provideNotificationFn((data) => {
 
 <template>
   <div
-    class="fixed left-0 right-0 z-999 text-center"
+    class="fixed left-0 right-0 $ui-z-max-override text-center"
     :class="[
       { 'pointer-events-none overflow-hidden': !show },
       { 'top-0': position.startsWith('top') },

@@ -40,7 +40,8 @@ export const unoConfig = {
     '$ui-if-sc': 'inline-flex justify-start items-center',
     '$ui-fec': 'flex justify-end items-center',
     '$ui-inline-fcc': 'inline-flex justify-center items-center',
-    '$ui-z-max': 'z-2147483647',
+    '$ui-z-max': 'z-2147483646',
+    '$ui-z-max-override': 'z-2147483647',
 
     // general
     '$ui-bg-base': 'bg-white dark:bg-black',

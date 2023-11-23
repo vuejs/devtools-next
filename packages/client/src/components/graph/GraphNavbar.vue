@@ -8,7 +8,7 @@ const settings = graphSettings
 const selectableItems = [
   ['node_modules'],
   ['virtual', 'virtual module'],
-  ['lib', 'lib module'],
+  ['lib', 'library module'],
 ] as const
 
 const filterId = graphFilterNodeId

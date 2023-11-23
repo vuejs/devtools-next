@@ -3,7 +3,7 @@ import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
 import type { RemovableRef } from '@vueuse/core'
 
-// #region file types
+// #section file types
 export const fileTypes = {
   vue: {
     color: '#42b883',
@@ -49,9 +49,9 @@ export function useFileTypes() {
     toggleFileType,
   }
 }
-// #endregion
+// #section end
 
-// #region graph options
+// #section graph options
 const isDark = useDark()
 
 export const graphOptions = computed<Options>(() => ({
@@ -77,9 +77,9 @@ export const graphOptions = computed<Options>(() => ({
   },
   groups: fileTypes,
 }))
-// #endregion
+// #section end
 
-// #region graph settings
+// #section graph settings
 export interface GraphSettings {
   node_modules: boolean
   virtual: boolean
@@ -95,9 +95,9 @@ export const graphSettings: RemovableRef<GraphSettings> = useLocalStorage<GraphS
 watch(graphSettings, () => {
   updateGraph()
 }, { deep: true })
-// #endregion
+// #section end
 
-// #region graph search
+// #section graph search
 interface SearcherNode {
   id: string
   fullId: string
@@ -113,9 +113,9 @@ watchDebounced(graphSearchText, () => {
 }, {
   debounce: 350,
 })
-// #endregion
+// #section end
 
-// #region graph data
+// #section graph data
 // NOTE: we can operate DataSet directly to change the graph,
 // for performance reasons, just don't parse the whole raw data, instead, we update dataset
 
@@ -230,9 +230,9 @@ function recursivelyGetNodeByDep(node: SearcherNode[]) {
   }
 }
 
-// #endregion
+// #section end
 
-// #region parse graph raw data
+// #section parse graph raw data
 function getEdge(modId: string, dep: string) {
   return {
     from: modId,
@@ -315,9 +315,9 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   graphNodes.add(totalNode.slice())
   graphEdges.add(totalEdges.slice())
 }
-// #endregion
+// #section end
 
-// #region drawer
+// #section drawer
 export interface DrawerData {
   name: string
   path: string
@@ -373,9 +373,9 @@ export function updateGraphDrawerData(nodeId: string): DrawerData | undefined {
     refs,
   }
 }
-// #endregion
+// #section end
 
-// #region graph filter
+// #section graph filter
 export const graphFilterNodeId = ref('')
 
 watch(graphFilterNodeId, () => {
@@ -406,4 +406,4 @@ function recursivelyGetGraphNodeData(nodeId: string): GraphNodesTotalData[] {
   })
   return result
 }
-// #endregion
+// #section end

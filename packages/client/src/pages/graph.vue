@@ -12,6 +12,7 @@ onDevToolsClientConnected(async () => {
 })
 
 const container = ref<HTMLDivElement>()
+const [drawerShow, toggleDrawer] = useToggle(false)
 
 function mountNetwork() {
   const node = container.value!
@@ -21,6 +22,14 @@ function mountNetwork() {
   watch(graphOptions, (options) => {
     network.setOptions(options)
   }, { immediate: true })
+
+  network.on('selectNode', () => {
+    toggleDrawer(true)
+  })
+
+  network.on('deselectNode', () => {
+    toggleDrawer(false)
+  })
 }
 
 onMounted(() => {
@@ -31,8 +40,11 @@ onMounted(() => {
 <template>
   <div relative flex="~ col" panel-grids h-screen of-hidden>
     <GraphNavbar />
-    <div ref="container" flex="1" />
-    <GraphFileType />
+    <div class="graph-body" relative h-screen of-hidden flex="~ col 1">
+      <div ref="container" flex="1" />
+      <GraphFileType />
+      <GraphDrawer v-model="drawerShow" to=".graph-body" />
+    </div>
   </div>
 </template>
 

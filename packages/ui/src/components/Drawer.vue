@@ -11,11 +11,13 @@ const props = withDefaults(defineProps<{
   closeOutside?: boolean
   closable?: boolean
   contentClass?: string
+  permanent?: boolean
 } & OverlayProps>(), {
   mountTo: 'body',
   placement: 'right',
   closeOutside: true,
   closable: true,
+  permanent: false,
 })
 
 const emits = defineEmits<{
@@ -64,10 +66,16 @@ onMounted(() => isMount.value = true)
       :enter-from-class="`${classes.transition}`"
       :leave-to-class="`${classes.transition}`"
     >
-      <Overlay v-if="show" :dim="dim" :blur="blur" @click="closeOutside && closable && (show = false)">
+      <Overlay
+        v-if="show"
+        :class="{
+          'pointer-events-none': permanent,
+        }"
+        :dim="dim" :blur="blur" @click="closeOutside && closable && (show = false)"
+      >
         <div
           :class="[classes.class, contentClass ?? '']"
-          class="drawer transition-transform transition-duration-300 absolute min-w-100px $ui-border-base $ui-bg-base p2"
+          class="drawer pointer-events-auto transition-transform transition-duration-300 absolute min-w-100px $ui-border-base $ui-bg-base p2"
           @click.stop
         >
           <div v-if="closable" class="i-carbon-close text-lg right-1.5 top-1.5 absolute $ui-text cursor-pointer" @click="show = false" />

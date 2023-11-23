@@ -15,6 +15,10 @@ const keys = [
   ['refs', 'references'],
   ['deps', 'dependencies'],
 ] as const
+
+function openInEditor(path: string) {
+  // @TODO: open in editor
+}
 </script>
 
 <template>
@@ -31,7 +35,7 @@ const keys = [
             }" @click="copy(data.name)"
           />
         </span>
-        <button text-gray-500 truncate hover="underline" text-left>
+        <button text-gray-500 truncate hover="underline" text-left @click="openInEditor(data!.path)">
           {{ data?.path }}
         </button>
       </div>
@@ -46,7 +50,7 @@ const keys = [
         <div flex="~ col gap2 items-start">
           <button
             v-for="item in data?.[key]" :key="item.path" text-gray-800 dark="text-gray-200"
-            ws-nowrap of-hidden truncate pr-3 hover="underline"
+            ws-nowrap of-hidden truncate pr-3 hover="underline" @click="openInEditor(item.path)"
           >
             {{ item.displayPath }}
           </button>

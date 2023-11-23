@@ -94,7 +94,6 @@ export const graphSettings: RemovableRef<GraphSettings> = useLocalStorage<GraphS
 
 watch(graphSettings, () => {
   updateGraph()
-  closeDrawer()
 }, { deep: true })
 // #endregion
 
@@ -152,6 +151,7 @@ const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
 function updateGraph() {
   graphNodes.clear()
   graphEdges.clear()
+  closeDrawer()
 
   const matchedNodes: Node[] = []
   const matchedSearchNodes: SearcherNode[] = []

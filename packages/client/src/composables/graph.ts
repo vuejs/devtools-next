@@ -318,17 +318,13 @@ export interface DrawerData {
 }
 
 export const graphDrawerData = ref<DrawerData>()
-const selectedNode = ref<string>()
 export const [graphDrawerShow, toggleGraphDrawer] = useToggle(false)
 
 function closeDrawer() {
   toggleGraphDrawer(false)
 }
 
-export function updateGraphDrawerData(nodeId?: string): DrawerData | undefined {
-  if (nodeId)
-    selectedNode.value = nodeId
-  nodeId = selectedNode.value!
+export function updateGraphDrawerData(nodeId: string): DrawerData | undefined {
   const node = modulesMap.get(nodeId)
   if (!node)
     return

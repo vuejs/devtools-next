@@ -45,17 +45,14 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
         children,
       }
     })
-    if (currentRoute) {
-      currentRoute.matched.forEach((item) => {
-        item.components = {}
-        item.instances = {}
-      })
-    }
+    const c = console.warn
+    console.warn = () => {}
     global[RouterInfoKey] = {
       currentRoute: JSON.parse(JSON.stringify(currentRoute)),
       routes: JSON.parse(JSON.stringify(routes)),
     }
     global[RouterKey] = router
+    console.warn = c
   }
 
   init()

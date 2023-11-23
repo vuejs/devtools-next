@@ -1,4 +1,4 @@
-import { VIEW_MODE_STORAGE_KEY } from './../../shared/src/constants'
+import { VIEW_MODE_STORAGE_KEY, VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const body = document.getElementsByTagName('body')[0]
 
@@ -53,6 +53,9 @@ function toggleViewMode(mode: 'overlay' | 'panel') {
 
 window.addEventListener('message', async (e) => {
   if (e.source === window && e.data.vueDetected) {
+    await chrome.storage.local.set({ [VITE_PLUGIN_DETECTED_STORAGE_KEY]: e.data.vitePluginDetected, [VITE_PLUGIN_CLIENT_URL_STORAGE_KEY]: e.data.vitePluginClientUrl })
+    if (e.data.vitePluginDetected)
+      return
     chrome.runtime.sendMessage(e.data)
     const storage = await chrome.storage.local.get(VIEW_MODE_STORAGE_KEY)
     const viewMode = storage[VIEW_MODE_STORAGE_KEY] ?? 'overlay'

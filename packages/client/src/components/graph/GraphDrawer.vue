@@ -24,7 +24,7 @@ function openInEditor(path: string) {
 <template>
   <VueDrawer v-model="show" :close-outside="false" :mount-to="to" permanent content-blur content-class="top-50px">
     <div class="w-300px" h-full of-auto>
-      <div border-b border-base h-80px text-md p3 flex="~ col gap2">
+      <div border-b border-base h-80px text-md p3 flex="~ col gap1">
         <span text-lg flex="~ gap2 items-center">
           {{ data?.name }}
           <span v-if="copied" text-primary-500 i-material-symbols-check-small />

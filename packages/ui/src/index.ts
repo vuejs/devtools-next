@@ -7,6 +7,7 @@ import 'uno.css'
 import { VTooltip } from 'floating-vue'
 
 export * from './components'
+export * from './composables'
 
 export {
   VTooltip,

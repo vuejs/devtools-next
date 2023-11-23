@@ -13,16 +13,16 @@ const position = ref<VueNotificationPosition>('top-center')
 
 const icons: Record<NotificationType, string> = {
   success: 'i-carbon-checkmark',
-  info: 'i-carbon-information',
+  info: 'i-material-symbols-light-info',
   warning: 'i-carbon-warning',
   error: 'i-carbon-close',
 }
 
 const typeClasses: Record<NotificationType, string> = {
-  success: 'text-primary-500 border-primary-200',
-  info: 'text-blue-4 border-blue-2',
-  warning: 'text-amber-4 border-amber-2',
-  error: 'text-red-4 border-red-2',
+  success: 'text-primary-500 border-primary-200 dark:text-primary-200 dark:border-primary-500',
+  info: 'text-blue-4 border-blue-2 dark:text-blue-2 dark:border-blue-4',
+  warning: 'text-amber-4 border-amber-2 dark:border-amber-4',
+  error: 'text-red-4 border-red-2 dark:border-red-4',
 }
 
 provideNotificationFn((data) => {
@@ -49,7 +49,7 @@ provideNotificationFn((data) => {
   >
     <div class="flex" :style="{ justifyContent: position.includes('right') ? 'right' : position.includes('left') ? 'left' : 'center' }">
       <div
-        class="$ui-bg-base m3 flex-inline items-center gap2 b-1 border-base rounded px4 py1 transition-all duration-300"
+        class="$ui-bg-base m3 flex-inline items-center gap2 b-1 b-1 rounded px4 py1 transition-all duration-300"
         :style="show ? {} : { transform: `translateY(${position.startsWith('top') ? '-' : ''}300%)` }"
         :class="[show ? 'shadow' : 'shadow-none', classes]"
       >

@@ -14,8 +14,7 @@ const bridgeRpc = useDevToolsBridgeRpc()
 
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
-// @TODO: open in editor
-function openInEditor(path: string) {}
+const _openInEditor = openInEditor
 
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
@@ -135,10 +134,10 @@ const supportsPreview = computed(() => {
                 v-tooltip="'Open in Editor'"
                 flex-none
                 title="Open in Editor"
-                icon="carbon-launch"
+                icon="i-carbon-launch"
                 action
                 :border="false"
-                @click="openInEditor(asset.filePath)"
+                @click="_openInEditor(asset.filePath)"
               />
             </div>
           </td>

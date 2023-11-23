@@ -15,9 +15,7 @@ const sorted = computed(() => {
   return [...props.pages].sort((a, b) => a.path.localeCompare(b.path))
 })
 
-// @TODO: open in editor
-function openInEditor(name: string) {
-}
+const _openInEditor = openInEditor
 </script>
 
 <template>
@@ -65,7 +63,7 @@ function openInEditor(name: string) {
                   v-if="item.file || item.meta?.file"
                   text-sm op40 hover="op100 text-primary-400"
                   title="Open in editor"
-                  @click="openInEditor((item.file || item.meta?.file) as string)"
+                  @click="_openInEditor((item.file || item.meta?.file) as string)"
                 >
                   <div i-carbon-script-reference />
                 </button>

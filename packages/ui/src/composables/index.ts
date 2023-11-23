@@ -1,8 +1,2 @@
-export {
-  showVueNotification,
-} from './notification'
-
-export type {
-  VueNotificationPosition,
-  VueNotificationOptions,
-} from './notification'
+export * from './notification'
+export type * from './notification'

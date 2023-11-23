@@ -1,6 +1,9 @@
-let showNotification: typeof showVueNotification
+import { h, render } from 'vue'
+import Notification from '../components/Notification.vue'
 
-export type VueNotificationPosition =
+// @unocss-include
+
+export type VueNotificationPlacement =
   | 'top-left' | 'top-center' | 'top-right'
   | 'bottom-left' | 'bottom-center' | 'bottom-right'
 
@@ -9,13 +12,24 @@ export interface VueNotificationOptions {
   type?: 'success' | 'error' | 'info' | 'warning'
   classes?: string
   duration?: number
-  position?: VueNotificationPosition
+  placement?: VueNotificationPlacement
+  onClose?: () => void
 }
 
-export function showVueNotification(data: VueNotificationOptions) {
-  showNotification?.(data)
-}
+export function showVueNotification(options: VueNotificationOptions) {
+  const container = document.createElement('div')
+  container.classList.add('$ui-z-max-override', 'fixed')
+  document.body.appendChild(container)
+  const originalOnClose = options.onClose
+  function hide() {
+    render(null, container)
+  }
 
-export function provideNotificationFn(fn: typeof showVueNotification) {
-  showNotification = fn
+  options.onClose = () => {
+    hide()
+    originalOnClose?.()
+    document.body.removeChild(container)
+  }
+  const vNode = h(Notification, options)
+  render(vNode, container)
 }

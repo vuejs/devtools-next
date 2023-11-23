@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { type VueNotificationPosition, provideNotificationFn } from '../composables/notification'
-import type { VueNotificationOptions } from '../composables'
+import { computed, onMounted, ref } from 'vue'
+import type { VueNotificationOptions } from '../composables/notification'
 
 type NotificationType = NonNullable<VueNotificationOptions['type']>
 
-const show = ref(false)
-const icon = ref<string>()
-const text = ref<string>()
-const classes = ref<string>()
-const position = ref<VueNotificationPosition>('top-center')
+const props = withDefaults(defineProps<VueNotificationOptions>(), {
+  placement: 'top-center',
+  type: 'info',
+  duration: 3000,
+})
 
 const icons: Record<NotificationType, string> = {
   success: 'i-carbon-checkmark',
@@ -25,37 +24,48 @@ const typeClasses: Record<NotificationType, string> = {
   error: 'text-red-4 border-red-2 dark:border-red-4',
 }
 
-provideNotificationFn((data) => {
-  text.value = data.message
-  const type = data.type ?? 'info'
-  icon.value = icons[type]
-  classes.value = `${typeClasses[type]} ${data.classes ?? ''}`
+const show = ref(false)
+
+onMounted(() => {
   show.value = true
-  position.value = data.position ?? 'top-center'
   setTimeout(() => {
     show.value = false
-  }, data.duration ?? 1500)
+  }, props.duration)
 })
+
+const transitionClass = computed(() => props.placement.startsWith('top') ? 'translate-y--300%' : 'translate-y-300%')
 </script>
 
 <template>
   <div
     class="fixed left-0 right-0 $ui-z-max-override text-center"
     :class="[
-      { 'pointer-events-none overflow-hidden': !show },
-      { 'top-0': position.startsWith('top') },
-      { 'bottom-0': position.startsWith('bottom') },
+      { 'top-0': placement.startsWith('top') },
+      { 'bottom-0': placement.startsWith('bottom') },
     ]"
   >
-    <div class="flex" :style="{ justifyContent: position.includes('right') ? 'right' : position.includes('left') ? 'left' : 'center' }">
+    <Transition
+      :enter-from-class="transitionClass"
+      :leave-to-class="transitionClass"
+      @after-leave="() => {
+        if (!show) {
+          onClose?.()
+        }
+      }"
+    >
       <div
-        class="$ui-bg-base m3 flex-inline items-center gap2 b-1 b-1 rounded px4 py1 transition-all duration-300"
-        :style="show ? {} : { transform: `translateY(${position.startsWith('top') ? '-' : ''}300%)` }"
-        :class="[show ? 'shadow' : 'shadow-none', classes]"
+        v-if="show"
+        class="flex transition-all duration-300"
+        :style="{ justifyContent: placement.includes('right') ? 'right' : placement.includes('left') ? 'left' : 'center' }"
       >
-        <div v-if="icon" :class="icon" />
-        <div>{{ text }}</div>
+        <div
+          class="$ui-bg-base m3 flex-inline items-center gap2 b-1 b-1 rounded px4 py1 transition-all duration-300 shadow"
+          :class="[classes, typeClasses[type]]"
+        >
+          <div :class="icons[type]" />
+          <div>{{ message }}</div>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { showVueNotification } from '../src'
-import Notification from '../src/components/Notification.vue'
+import { showVueNotification } from '../src/composables/notification'
 
 const type = ref<'success' | 'info' | 'warning' | 'error'>('info')
+const placement = ref<'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'>('bottom-right')
 
 function show() {
   showVueNotification({
     message: 'hello world',
     type: type.value,
-    duration: 10000,
+    placement: placement.value,
   })
 }
 </script>
@@ -30,7 +30,20 @@ function show() {
           success: 'Success',
         }"
       />
+
+      <HstSelect
+        v-model="placement"
+        title="Placement"
+        :options="{
+          'top-left': 'Top Left',
+          'top-center': 'Top Center',
+          'top-right': 'Top Right',
+          'bottom-left': 'Bottom Left',
+          'bottom-center': 'Bottom Center',
+          'bottom-right': 'Bottom Right',
+        }"
+      />
     </template>
-    <Notification />
+    <!-- <Notification /> -->
   </Story>
 </template>

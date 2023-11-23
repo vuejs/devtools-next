@@ -137,6 +137,15 @@ export const graphEdges = new DataSet<Edge>([])
 export const modulesMap = new Map<string, GraphNodesTotalData>()
 const moduleReferences = new Map<string, { path: string; displayPath: string }[]>()
 
+export function cleanupGraphRelatedStates() {
+  graphNodesTotal.value = []
+  graphNodesTotalMap.clear()
+  graphNodes.clear()
+  graphEdges.clear()
+  modulesMap.clear()
+  moduleReferences.clear()
+}
+
 export function checkIsValidModule(module: ModuleInfo) {
   if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
     return false

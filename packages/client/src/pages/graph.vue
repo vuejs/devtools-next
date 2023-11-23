@@ -12,11 +12,12 @@ onDevToolsClientConnected(async () => {
 })
 
 const container = ref<HTMLDivElement>()
+const networkRef = shallowRef<Network>()
 
 function mountNetwork() {
   const node = container.value!
 
-  const network = new Network(node, { nodes: graphNodes, edges: graphEdges }, graphOptions.value)
+  const network = networkRef.value = new Network(node, { nodes: graphNodes, edges: graphEdges }, graphOptions.value)
 
   watch(graphOptions, (options) => {
     network.setOptions(options)
@@ -34,6 +35,11 @@ function mountNetwork() {
 
 onMounted(() => {
   mountNetwork()
+})
+
+onUnmounted(() => {
+  cleanupGraphRelatedStates()
+  networkRef?.value?.destroy()
 })
 </script>
 

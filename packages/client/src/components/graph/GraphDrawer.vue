@@ -8,6 +8,7 @@ defineProps<{
 const data = graphDrawerData
 const show = graphDrawerShow
 const filterId = graphFilterNodeId
+const _openInEditor = openInEditor
 
 const { copy, isSupported, copied } = useClipboard()
 
@@ -15,10 +16,6 @@ const keys = [
   ['refs', 'references'],
   ['deps', 'dependencies'],
 ] as const
-
-function openInEditor(path: string) {
-  // @TODO: open in editor
-}
 </script>
 
 <template>
@@ -35,7 +32,7 @@ function openInEditor(path: string) {
             }" @click="copy(data.name)"
           />
         </span>
-        <button text-gray-500 truncate hover="underline" text-left @click="openInEditor(data!.path)">
+        <button text-gray-500 truncate hover="underline" text-left @click="_openInEditor(data!.path)">
           {{ data?.path }}
         </button>
       </div>
@@ -50,7 +47,7 @@ function openInEditor(path: string) {
         <div flex="~ col gap2 items-start">
           <button
             v-for="item in data?.[key]" :key="item.path" text-gray-800 dark="text-gray-200"
-            ws-nowrap of-hidden truncate pr-3 hover="underline" @click="openInEditor(item.path)"
+            ws-nowrap of-hidden truncate pr-3 hover="underline" @click="_openInEditor(item.path)"
           >
             {{ item.displayPath }}
           </button>

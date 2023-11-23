@@ -50,6 +50,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return Promise.resolve(JSON.stringify({}))
   })
 
+  // open in editor
+  bridgeRpcCore.on(bridgeRpcEvents.openInEditor, async (payload) => {
+    return devtools.context.api.openInEditor(JSON.parse(payload!))
+  })
+
   // route matched
   bridgeRpcCore.on(bridgeRpcEvents.routeMatched, (payload) => {
     const c = console.warn

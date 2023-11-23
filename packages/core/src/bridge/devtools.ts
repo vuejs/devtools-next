@@ -1,4 +1,4 @@
-import type { InspectorNodeTag, InspectorState, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
+import type { InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
@@ -105,6 +105,10 @@ export class BridgeRpc {
 
   static async getMatchedRoutes(path: string) {
     return devtoolsBridge.rpc.emit<{ data: { path: string }[] }>(bridgeRpcEvents.routeMatched, path)
+  }
+
+  static async openInEditor(payload: OpenInEditorOptions) {
+    return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.openInEditor, JSON.stringify(payload))
   }
 
   // assets

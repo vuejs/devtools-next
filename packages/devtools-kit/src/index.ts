@@ -3,6 +3,7 @@ import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected
 export type * from './core/component/types'
 export type * from './core/timeline/types'
 export type * from './core/router'
+export type * from './core/open-in-editor'
 
 export const devtools = {
   state: devtoolsState,

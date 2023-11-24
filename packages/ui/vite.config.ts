@@ -30,7 +30,7 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      external: ['vue', 'unocss'],
+      external: ['vue', 'unocss', 'floating-vue'],
       output: {
         globals: {
           vue: 'Vue',

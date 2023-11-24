@@ -124,26 +124,28 @@ function quickEdit(v: unknown, remove: boolean = false) {
       :disabled="!isSupported"
       @update:visible="v => popupVisible = v"
     >
-      <div class="py5px w160px">
-        <VueDropdownButton
-          @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
-        >
-          <template #icon>
-            <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />
-            Copy Value
-          </template>
-        </VueDropdownButton>
-        <VueDropdownButton
-          @click="() => {
-            copy(data.key)
-          }"
-        >
-          <template #icon>
-            <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />
-            Copy Path
-          </template>
-        </VueDropdownButton>
-      </div>
+      <template #popper>
+        <div class="py5px w160px">
+          <VueDropdownButton
+            @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
+          >
+            <template #icon>
+              <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />
+              Copy Value
+            </template>
+          </VueDropdownButton>
+          <VueDropdownButton
+            @click="() => {
+              copy(data.key)
+            }"
+          >
+            <template #icon>
+              <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />
+              Copy Path
+            </template>
+          </VueDropdownButton>
+        </div>
+      </template>
       <template #button-icon>
         <VueIcon icon="i-material-symbols:more-vert" />
       </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VueDropdown } from '@vue-devtools-next/ui'
+
 const showDocking = ref(false)
 const showMoreTabs = ref(false)
 const panel = ref()
@@ -19,14 +21,7 @@ const displayedTabs = builtinTab
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
     >
-      <VDropdown
-        placement="left-start"
-        :distance="12"
-        :skidding="5"
-        :triggers="['click']"
-        :shown="showDocking"
-        :auto-hide="true"
-      >
+      <VueDropdown placement="left-start" :distance="6" :skidding="5" trigger="click" :shown="showDocking">
         <button
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"
@@ -49,7 +44,7 @@ const displayedTabs = builtinTab
         <template #popper>
           DockingPanel
         </template>
-      </VDropdown>
+      </VueDropdown>
     </div>
 
     <div

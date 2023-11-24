@@ -27,11 +27,13 @@ const disabled = ref(false)
     </template>
     <Variant title="Dropdown buttons">
       <Dropdown label="Dropdown" :disabled="disabled" :distance="5" :placement="placement">
-        <div class="py5px w200px">
-          <DropdownButton>
-            Edit
-          </DropdownButton>
-        </div>
+        <template #popper>
+          <div class="py5px w200px">
+            <DropdownButton>
+              Edit
+            </DropdownButton>
+          </div>
+        </template>
       </Dropdown>
     </Variant>
     <Variant title="Dropdown with input">
@@ -39,14 +41,16 @@ const disabled = ref(false)
         <template #button-icon-right>
           <VueIcon icon="i-carbon-search" />
         </template>
-        <div class="p10px">
-          <VueInput v-model="input" left-icon="i-carbon-search" placeholder="Search things..." />
-          <div class="mt5px">
-            <DropdownButton v-for="content of 3" :key="content">
-              Result {{ content }}
-            </DropdownButton>
+        <template #popper>
+          <div class="p10px">
+            <VueInput v-model="input" left-icon="i-carbon-search" placeholder="Search things..." />
+            <div class="mt5px">
+              <DropdownButton v-for="content of 3" :key="content">
+                Result {{ content }}
+              </DropdownButton>
+            </div>
           </div>
-        </div>
+        </template>
       </Dropdown>
     </Variant>
   </Story>

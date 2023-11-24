@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onKeyStroke, useVModel } from '@vueuse/core'
+import { onKeyStroke, useElementSize, useVModel } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 import type { OverlayProps } from './Overlay.vue'
 import Overlay from './Overlay.vue'
@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<{
   contentClass?: string
   permanent?: boolean
   contentBlur?: boolean
+  top?: string | HTMLElement
 } & OverlayProps>(), {
   mountTo: 'body',
   placement: 'right',
@@ -22,26 +23,29 @@ const props = withDefaults(defineProps<{
   contentBlur: false,
 })
 
-const emits = defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [modelValue: boolean]
+  'close': []
 }>()
 
-const show = useVModel(props, 'modelValue', emits)
+const { height } = useElementSize(() => typeof props.top === 'string' ? document.querySelector<HTMLElement>(props.top)! : props.top, undefined, { box: 'border-box' })
+
+const show = useVModel(props, 'modelValue', emit)
 
 const placementClasses: Record<typeof props['placement'], {
   class: string
   transition: string
 }> = {
   left: {
-    class: 'top-0 left-0 h-full b-r',
+    class: 'left-0 h-full b-r',
     transition: '[&_.drawer]:translate-x--100%',
   },
   right: {
-    class: 'top-0 right-0 h-full b-l',
+    class: 'right-0 h-full b-l',
     transition: '[&_.drawer]:translate-x-full',
   },
   top: {
-    class: 'top-0 w-full b-b',
+    class: 'w-full b-b',
     transition: '[&_.drawer]:translate-y--100%',
   },
   bottom: {
@@ -77,10 +81,14 @@ onMounted(() => isMount.value = true)
       >
         <div
           :class="[classes.class, contentClass ?? '', contentBlur ? '$ui-glass-effect' : '$ui-bg-base']"
-          class="drawer pointer-events-auto transition-transform transition-duration-300 absolute min-w-100px $ui-border-base"
+          :style="{
+            top: placement === 'bottom' ? 'auto' : `${height}px`,
+            height: ['top', 'bottom'].includes(placement) ? 'auto' : `calc(100% - ${height}px)`,
+          }"
+          class="drawer pointer-events-auto transition-transform transition-duration-300 absolute min-w-100px $ui-border-base of-auto"
           @click.stop
         >
-          <div v-if="closable" class="i-carbon-close text-lg right-1.5 top-1.5 absolute $ui-text cursor-pointer" @click="show = false" />
+          <div v-if="closable" class="i-carbon-close $ui-z-max text-lg right-1.5 top-1.5 absolute $ui-text cursor-pointer p1" @click="show = false" />
           <slot />
         </div>
       </Overlay>

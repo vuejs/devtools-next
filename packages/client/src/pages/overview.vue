@@ -2,7 +2,7 @@
 import { isMacOS } from '@vue-devtools-next/shared'
 import { useDevToolsState } from '@vue-devtools-next/core'
 
-import { VueButton } from '@vue-devtools-next/ui'
+import { VueBadge, VueButton } from '@vue-devtools-next/ui'
 
 const { vueVersion } = useDevToolsState()
 </script>
@@ -17,7 +17,7 @@ const { vueVersion } = useDevToolsState()
         <div flex="~" mt--10 items-center justify-center>
           <DevToolsLogo h-18 />
           <button mr--16 mt--6>
-            <Badge
+            <VueBadge
               bg-green-400:10 text-green-400
               title="preview"
               v-text="'preview'"

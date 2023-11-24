@@ -28,20 +28,22 @@ const value = computed({
 
 <template>
   <VueDropdown :label="placeholder" :disabled="disabled">
-    <div class="m1 flex flex-col min-w-140px w-auto">
-      <VueButton
-        v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
-        class="flex-[auto_1_1] not-action:[&:not(.active)]:bg-transparent!"
-        :class="{
-          active: item.value === value,
-        }"
-        @click="() => {
-          value = item.value
-        }"
-      >
-        {{ item.label }}
-      </VueButton>
-    </div>
+    <template #popper>
+      <div class="m1 flex flex-col min-w-140px w-auto">
+        <VueButton
+          v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
+          class="flex-[auto_1_1] not-action:[&:not(.active)]:bg-transparent!"
+          :class="{
+            active: item.value === value,
+          }"
+          @click="() => {
+            value = item.value
+          }"
+        >
+          {{ item.label }}
+        </VueButton>
+      </div>
+    </template>
     <template #button-icon-right>
       <div class="i-mdi-chevron-down" />
     </template>

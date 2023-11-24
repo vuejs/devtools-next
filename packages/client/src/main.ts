@@ -1,8 +1,9 @@
 import '@unocss/reset/tailwind.css'
+import 'floating-vue/dist/style.css'
+
 import type { BridgeInstanceType } from '@vue-devtools-next/core'
 import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
-import FloatingVue from 'floating-vue'
-import 'floating-vue/dist/style.css'
+
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { getViteClient } from 'vite-hot-client'
@@ -88,7 +89,6 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
     })
 
     app.use(router)
-    app.use(FloatingVue)
     app.use(createDevToolsVuePlugin({
       bridge: devtoolsBridge.value,
       viewMode: options.viewMode!,

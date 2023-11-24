@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RouteRecordNormalized } from 'vue-router'
-import { VueButton, VueInput } from '@vue-devtools-next/ui'
+import { VueButton, VueDropdown, VueInput } from '@vue-devtools-next/ui'
 
 const props = defineProps<{
   route: RouteRecordNormalized
@@ -33,7 +33,7 @@ function navigate() {
   <button v-if="!hasWildcard" @click="navigate">
     <code>{{ route.path }}</code>
   </button>
-  <VDropdown v-else>
+  <VueDropdown v-else>
     <code block cursor-pointer>
       <span
         v-for="part, idx of parts" :key="idx"
@@ -67,5 +67,5 @@ function navigate() {
         </form>
       </div>
     </template>
-  </VDropdown>
+  </VueDropdown>
 </template>

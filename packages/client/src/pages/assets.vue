@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AssetInfo } from '@vue-devtools-next/core'
-import { VueIcon } from '@vue-devtools-next/ui'
+import { VueCheckbox, VueDropdown, VueIcon } from '@vue-devtools-next/ui'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Fuse from 'fuse.js'
 
@@ -94,12 +94,12 @@ function toggleView() {
             title="File Upload" :border="false" flex="~ gap-0!" action
             @click="dropzone = !dropzone"
           /> -->
-          <VDropdown direction="end" n="sm primary">
+          <VueDropdown direction="end" n="sm primary">
             <IconTitle
               v-tooltip.bottom-end="'Filter'"
               icon="i-carbon-filter hover:op50" :border="false"
               title="Filter" p2 text-lg relative cursor-pointer
-              @click="() => {}"
+              @click="() => { }"
             >
               <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full text-white bg-primary-800 text-8px>
                 {{ extensions.length }}
@@ -107,22 +107,16 @@ function toggleView() {
             </IconTitle>
             <template #popper>
               <div flex="~ col" w-30 of-auto>
-                <!-- @TODO: vue checkbox component -->
-                <!-- <VueCheckbox
-                  v-for="item of extensions"
-                  :key="item.name"
-                  v-model="item.value"
-                  flex="~ gap-2"
-                  rounded
-                  px2 py2
+                <div
+                  v-for="item of extensions" :key="item.name"
+                  w-full flex="~ gap-2 items-center" rounded px2 py2
                 >
-                  <span text-xs op75>
-                    {{ item.name }}
-                  </span>
-                </VueCheckbox> -->
+                  <VueCheckbox v-model="item.value" />
+                  <span text-xs op75>{{ item.name }}</span>
+                </div>
               </div>
             </template>
-          </VDropdown>
+          </VueDropdown>
           <VueIcon
             v-tooltip.bottom-end="'Toggle View'"
             cursor-pointer text-lg :border="false"

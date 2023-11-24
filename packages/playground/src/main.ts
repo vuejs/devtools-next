@@ -23,6 +23,11 @@ const routes: RouteRecordRaw[] = [
     component: Hello,
     name: 'hello',
   },
+  {
+    path: '/hey/:id',
+    component: Hello,
+    name: 'hello',
+  },
 ]
 
 const router = createRouter({

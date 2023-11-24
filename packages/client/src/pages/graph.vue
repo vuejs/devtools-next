@@ -41,13 +41,15 @@ onUnmounted(() => {
   cleanupGraphRelatedStates()
   networkRef.value?.destroy()
 })
+
+const navbarRef = ref<HTMLElement>()
 </script>
 
 <template>
   <div relative flex="~ col" panel-grids h-screen of-hidden class="graph-body">
-    <GraphNavbar />
+    <GraphNavbar ref="navbarRef" />
     <div ref="container" flex="1" />
     <GraphFileType />
-    <GraphDrawer to=".graph-body" />
+    <GraphDrawer :top="navbarRef" />
   </div>
 </template>

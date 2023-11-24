@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AssetInfo } from '@vue-devtools-next/core'
-import { VueCheckbox, VueDropdown, VueIcon } from '@vue-devtools-next/ui'
+import { VueCheckbox, VueDrawer, VueDropdown, VueIcon } from '@vue-devtools-next/ui'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Fuse from 'fuse.js'
 
@@ -159,13 +159,15 @@ function toggleView() {
         :item="item"
       />
     </div>
-    <Drawer
+    <VueDrawer
       :model-value="!!selected"
-      auto-close w-120
       :top="navbar"
-      @close="selected = undefined"
+      permanent
+      content-class="w120 text-sm" @update:model-value="(v) => {
+        if (!v) selected = undefined
+      }"
     >
       <AssetDetails v-if="selected" v-model="selected" />
-    </Drawer>
+    </VueDrawer>
   </div>
 </template>

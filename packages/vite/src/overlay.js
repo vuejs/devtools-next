@@ -1,5 +1,6 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
 import { Bridge, prepareInjection, setDevToolsClientUrl } from '@vue-devtools-next/core'
+import { BROADCAST_CHANNEL_NAME } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
@@ -30,12 +31,12 @@ body.appendChild(script)
 window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
 
-const channel = new BroadcastChannel('vite-plugin-vue-devtools')
+// @TODO: we might should move this to a separate file?
+const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
 
 const bridge = new Bridge({
   tracker(fn) {
     channel.onmessage = (event) => {
-      console.log('event.data.source', event.data)
       if (event.data.source === '__VUE_DEVTOOLS_CLIENT__')
         fn(event.data.data)
     }
@@ -51,5 +52,9 @@ const bridge = new Bridge({
 prepareInjection(bridge)
 
 bridge.on('ready', () => {
-  channel.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__')
+  bridge.emit('__VUE_DEVTOOLS_CREATE_CLIENT__')
+  // force sync to make sure that connect the devtools client
+  setTimeout(() => {
+    bridge.emit('syn')
+  }, 200)
 })

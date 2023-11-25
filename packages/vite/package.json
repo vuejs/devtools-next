@@ -7,9 +7,9 @@
   "license": "MIT",
   "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
   "repository": {
+    "directory": "packages/vite",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/vite"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-next/issues"
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/shared": "workspace:^",
     "@webfansplz/vuedoc-parser": "^0.0.4",
     "birpc": "^0.2.14",
     "execa": "^8.0.1",

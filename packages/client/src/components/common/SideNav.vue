@@ -10,7 +10,7 @@ const sidebarExpanded = ref(false)
 const sidebarScrollable = ref(false)
 
 // @TODO: dynamic tabs
-const displayedTabs = builtinTab
+const displayedTabs = categorizedTabs
 </script>
 
 <template>
@@ -53,9 +53,10 @@ const displayedTabs = builtinTab
     >
       <template v-for="[name, tabs], idx of displayedTabs" :key="name">
         <template v-if="tabs.length">
-          <div v-if="idx" my1 h-1px w-full border="b base" />
+          <!-- if is not the first nonempty list, render the top divider -->
+          <div v-if="idx && displayedTabs[0][1].length" my1 h-1px w-full border="b base" />
           <SideNavItem
-            v-for="tab of tabs"
+            v-for="tab of tabs.filter(item => !item.hidden)"
             :key="tab.name"
             :tab="tab"
             :minimized="!sidebarExpanded"

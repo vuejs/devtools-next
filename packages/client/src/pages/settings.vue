@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { VueCard, VueSwitch } from '@vue-devtools-next/ui'
 
-// TODO: plugin tabs
-const categories = builtinTab
+const categories = categorizedTabs
 
-const hiddenTabCategories = ref<string[]>([''])
-const hiddenTabs = ref<string[]>([])
-const pinnedTabs = ref<string[]>([])
+const { hiddenTabCategories, hiddenTabs, pinnedTabs } = toRefs(devtoolsClientState.value.tabSettings)
 
 function toggleTab(name: string, v: boolean) {
   if (v)
@@ -64,7 +61,7 @@ function pinMove(name: string, delta: number) {
           >
             <VueSwitch
               :model-value="!hiddenTabCategories.includes(name)"
-              class="flex row-reverse py1 pl2 pr1"
+              class="flex row-reverse py1 pl2 pr1 hover:bg-active"
               @update:model-value="(v: boolean) => toggleTabCategory(name, v)"
             >
               <div flex="~ gap-2" flex-auto items-center justify-start>
@@ -76,7 +73,7 @@ function pinMove(name: string, delta: number) {
 
             <template v-for="tab of tabs" :key="tab.name">
               <VueSwitch
-                class="flex row-reverse py1 pl2 pr1 n-primary"
+                class="flex row-reverse py1 pl2 pr1 n-primary hover:bg-active"
                 :model-value="!hiddenTabs.includes(tab.name)"
                 :class="hiddenTabs.includes(tab.name) ? 'op35' : ''"
                 @update:model-value="(v: boolean) => toggleTab(tab.name, v)"
@@ -87,7 +84,7 @@ function pinMove(name: string, delta: number) {
                   <div flex-auto />
                   <template v-if="pinnedTabs.includes(tab.name)">
                     <button
-                      class="px1 py1 text-sm hover:bg-active flex items-center"
+                      class="px1 py1 text-sm hover:(bg-active op100) flex items-center op65"
                       @click.stop="() => {
                         if (pinnedTabs.indexOf(tab.name) === 0) return
                         pinMove(tab.name, -1)
@@ -96,7 +93,7 @@ function pinMove(name: string, delta: number) {
                       <div class="i-carbon-caret-up" />
                     </button>
                     <button
-                      class="px1 py1 text-sm hover:bg-active flex items-center"
+                      class="px1 py1 text-sm hover:(bg-active op100) flex items-center op65"
                       @click.stop="() => {
                         if (pinnedTabs.indexOf(tab.name) === pinnedTabs.length - 1) return
                         pinMove(tab.name, 1)
@@ -105,7 +102,7 @@ function pinMove(name: string, delta: number) {
                       <div class="i-carbon-caret-down" />
                     </button>
                   </template>
-                  <button class="px1 py1 text-sm hover:bg-active flex items-center" @click.stop="togglePinTab(tab.name)">
+                  <button class="px1 py1 text-sm hover:(bg-active op100) flex items-center op65" @click.stop="togglePinTab(tab.name)">
                     <div :class="pinnedTabs.includes(tab.name) ? ' i-carbon-pin-filled rotate--45' : ' i-carbon-pin op45'" />
                   </button>
                 </div>

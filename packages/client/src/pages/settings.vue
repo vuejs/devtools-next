@@ -135,6 +135,15 @@ function pinMove(name: string, delta: number) {
             </span>
           </NCheckbox> -->
         </VueCard>
+        <h3 mt2 text-lg>
+          Debug
+        </h3>
+        <div flex="~ gap-2">
+          <VueButton>
+            <div i-carbon-breaking-change />
+            Reset Local Settings & State
+          </VueButton>
+        </div>
       </div>
     </div>
   </div>

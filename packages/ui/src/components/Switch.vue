@@ -28,7 +28,7 @@ const toggleValue = useToggle(value)
       }"
       class="$ui-base w32px h16px rounded-8px transition-colors
             relative bg-primary-100 dark:bg-gray-700 group
-            [&.selected]:bg-primary-500
+            [&.selected]:bg-primary-500!
       "
     >
       <div

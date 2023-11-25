@@ -2,7 +2,7 @@
 import { VueButton } from '@vue-devtools-next/ui'
 
 const router = useRouter()
-const clientState = useDevToolsClientState()
+const clientState = devtoolsClientState
 
 function visit() {
   clientState.value.isFirstVisit = false

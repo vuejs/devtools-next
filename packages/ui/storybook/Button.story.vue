@@ -13,6 +13,7 @@ const state = reactive<{
 })
 
 const flat = ref(false)
+const outlined = ref(false)
 </script>
 
 <template>
@@ -32,34 +33,35 @@ const flat = ref(false)
         }"
       />
       <HstCheckbox v-model="flat" title="Flat" />
+      <HstCheckbox v-model="outlined" title="Outlined" />
     </template>
     <Variant title="Normal Button">
-      <Button :flat="flat" :type="state.type" @click="logEvent('click event', $event)">
+      <Button :flat="flat" :outlined="outlined" :type="state.type" @click="logEvent('click event', $event)">
         Button
       </Button>
     </Variant>
     <Variant title="A Button">
-      <Button :flat="flat" href="https://vuejs.org" :type="state.type">
+      <Button :flat="flat" :outlined="outlined" href="https://vuejs.org" :type="state.type">
         A Button
       </Button>
     </Variant>
     <Variant title="RouterLink Button">
-      <Button :flat="flat" to="router-path" :type="state.type">
+      <Button :flat="flat" :outlined="outlined" to="router-path" :type="state.type">
         RouterLink Button
       </Button>
     </Variant>
     <Variant title="Round Button">
-      <Button :flat="flat" round="full" :type="state.type">
+      <Button :flat="flat" :outlined="outlined" round="full" :type="state.type">
         Round Button
       </Button>
     </Variant>
     <Variant title="Loading Button">
-      <Button :flat="flat" loading :type="state.type">
+      <Button :flat="flat" :outlined="outlined" loading :type="state.type">
         Loading Button
       </Button>
     </Variant>
     <Variant title="With Icon">
-      <Button :flat="flat" :type="state.type">
+      <Button :flat="flat" :outlined="outlined" :type="state.type">
         <template #icon>
           <Icon class="i-carbon-moon" />
         </template>
@@ -67,17 +69,24 @@ const flat = ref(false)
       </Button>
     </Variant>
     <Variant title="With Badge">
-      <Button :flat="flat" :type="state.type">
+      <Button :flat="flat" :outlined="outlined" :type="state.type">
         Badge Button
         <Badge>10</Badge>
       </Button>
     </Variant>
     <Variant title="Mini Button">
-      <Button :flat="flat" :type="state.type" size="mini">
+      <Button :flat="flat" :outlined="outlined" :type="state.type" size="mini">
         <template #icon>
           <Icon icon="i-material-symbols-more-vert" />
         </template>
       </Button>
+    </Variant>
+    <Variant title="Padding">
+      <div class="p5">
+        <Button :flat="flat" :outlined="outlined" :type="state.type">
+          123
+        </Button>
+      </div>
     </Variant>
   </Story>
 </template>

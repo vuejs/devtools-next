@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   disabled: false,
   size: 'normal',
   flat: false,
+  outlined: false,
 })
 
 const emit = defineEmits<{
@@ -26,6 +27,7 @@ export interface ButtonProps {
   disabled?: boolean
   size?: 'normal' | 'mini'
   flat?: boolean
+  outlined?: boolean
 }
 
 export type ButtonType = 'default' | 'primary' | 'accent' | 'danger' | 'warning' | 'info' | 'success'
@@ -52,7 +54,7 @@ function handleClick(e: MouseEvent) {
   emit('click', e)
 }
 
-const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> = {
+const styles: Record<'common' | 'normal' | 'flat' | 'outlined', Record<ButtonType, string>> = {
   common: {
     default: 'active:bg-primary-100-darker dark:active:bg-gray-800-darker',
     primary: 'active:bg-primary-500-darker',
@@ -80,9 +82,26 @@ const styles: Record<'common' | 'normal' | 'flat', Record<ButtonType, string>> =
     info: 'hover:(bg-primary-100 text-info-500) dark:(hover:(bg-gray-800 text-info-400))',
     success: 'hover:(bg-primary-100 text-primary-500) dark:(hover:(bg-primary-800 text-primary-400))',
   },
+  outlined: {
+    default: 'hover:(border-primary-100 text-primary-300 active:(ring-primary-100:5 bg-primary-100:5))',
+    primary: 'hover:(border-primary-500 text-primary-500) active:(ring-primary-500:5 bg-primary-500:5)',
+    accent: 'hover:(border-accent-500 text-accent-500) active:(ring-accent-500:5 bg-accent-500:5)',
+    danger: 'hover:(border-danger-500 text-danger-500) active:(ring-danger-500:5 bg-danger-500:5)',
+    warning: 'hover:(border-warning-500 text-warning-500) active:(ring-warning-500:5 bg-warning-500:5)',
+    info: 'hover:(border-info-500 text-info-500) active:(ring-info-500:5 bg-info-500:5)',
+    success: 'hover:(border-primary-500 text-primary-500) active:(ring-primary-500:5 bg-primary-500:5)',
+  },
 }
 
 const slots = useSlots()
+
+const variantClasses = computed(() => {
+  if (props.flat)
+    return styles.flat[props.type]
+  if (props.outlined)
+    return styles.outlined[props.type]
+  return styles.normal[props.type]
+})
 </script>
 
 <template>
@@ -90,18 +109,19 @@ const slots = useSlots()
     :is="component" v-bind="$attrs"
     role="button" :aria-disabled="disabled"
     class="$ui-base select-none inline-flex no-underline
-       $ui-inline-fcc border-none cursor-pointer py-0 gap5px"
+       $ui-inline-fcc cursor-pointer py-0 gap5px $ui-transition"
     :class="[
       [styles.common[props.type]],
       {
         'rounded-full': props.round === 'full',
         '$ui-base-br': props.round === 'normal',
         'opacity-50 cursor-not-allowed': disabled,
-        'bg-transparent': props.flat,
+        'bg-transparent': props.flat || props.outlined,
       },
       [
+        outlined ? 'b-1 $ui-border-base active:ring-3 shadow-sm' : 'border-none',
         size === 'mini' ? 'px4px text-12px h22px' : 'px-14px text-14px h32px',
-        flat ? styles.flat[props.type] : styles.normal[props.type],
+        variantClasses,
       ],
     ]"
     @click.capture="handleClick"

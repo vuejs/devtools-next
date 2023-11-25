@@ -17,6 +17,7 @@ import Pages from '~/pages/pages.vue'
 import Assets from '~/pages/assets.vue'
 import Graph from '~/pages/graph.vue'
 import Index from '~/pages/index.vue'
+import Settings from '~/pages/settings.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -39,6 +40,7 @@ const routes = [
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },
+  { path: '/settings', component: Settings },
 ]
 
 // @TODO: find a better way to handle it

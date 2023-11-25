@@ -16,6 +16,7 @@ import Checkbox from './Checkbox.vue'
 import Drawer from './Drawer.vue'
 import Overlay from './Overlay.vue'
 import Notification from './Notification.vue'
+import Tooltip from './Tooltip.vue'
 
 export {
   Badge as VueBadge,
@@ -36,4 +37,5 @@ export {
   Select as VueSelect,
   Switch as VueSwitch,
   Notification as VueNotification,
+  Tooltip as VueTooltip,
 }

@@ -1,7 +1,6 @@
 import type { ModuleInfo } from '@vue-devtools-next/core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
-import type { RemovableRef } from '@vueuse/core'
 
 // #region file types
 export const fileTypes = {
@@ -86,10 +85,11 @@ export interface GraphSettings {
   lib: boolean
 }
 
-export const graphSettings: RemovableRef<GraphSettings> = useLocalStorage<GraphSettings>('vue-devtools-next-graph-settings', {
-  node_modules: false,
-  virtual: false,
-  lib: false,
+export const graphSettings = computed({
+  get: () => devtoolsClientState.value.graphSettings,
+  set: (value: GraphSettings) => {
+    devtoolsClientState.value.graphSettings = value
+  },
 })
 
 watch(graphSettings, () => {

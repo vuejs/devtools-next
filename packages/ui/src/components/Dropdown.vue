@@ -1,23 +1,15 @@
 <script setup lang="ts" generic="T">
-import type { Placement } from 'floating-vue'
 import { Dropdown } from 'floating-vue'
 import { computed, provide } from 'vue'
+import type { FloatingVueCommonProps } from '../types'
 import type { ButtonProps } from './Button.vue'
 import VueButton from './Button.vue'
 
 const props = withDefaults(defineProps<{
   label?: string
-  autoHide?: boolean
-  trigger?: 'click' | 'hover'
   buttonProps?: ButtonProps
   buttonClass?: ''
-  distance?: number
-  skidding?: number
-  placement?: Placement
-  disabled?: boolean
-  shown?: boolean
-}>(), {
-  autoHide: true,
+} & FloatingVueCommonProps>(), {
   trigger: 'click',
   buttonClass: '',
   distance: 0,

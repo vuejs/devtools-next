@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import type { Placement } from 'floating-vue'
 import { Tooltip } from 'floating-vue'
+import type { FloatingVueCommonProps } from '../types'
 
-defineProps<{
-  placement?: Placement
-  disabled?: boolean
-}>()
+defineProps<FloatingVueCommonProps>()
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueCard, VueSwitch } from '@vue-devtools-next/ui'
+import { VueButton, VueCard, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
 
 const categories = categorizedTabs
 
@@ -54,10 +54,10 @@ function pinMove(name: string, delta: number) {
         <h3 text-lg>
           Tabs
         </h3>
-        <template v-for="[name, tabs] of categories" :key="name">
+        <template v-for="[{ name, hidden }, tabs] of categories" :key="name">
           <VueCard
             v-if="tabs.length" p3 flex="~ col gap-1"
-            :class="hiddenTabCategories.includes(name) ? 'op50 grayscale' : ''"
+            :class="hidden ? 'op50 grayscale' : ''"
           >
             <VueSwitch
               :model-value="!hiddenTabCategories.includes(name)"
@@ -75,7 +75,7 @@ function pinMove(name: string, delta: number) {
               <VueSwitch
                 class="flex row-reverse py1 pl2 pr1 n-primary hover:bg-active"
                 :model-value="!hiddenTabs.includes(tab.name)"
-                :class="hiddenTabs.includes(tab.name) ? 'op35' : ''"
+                :class="tab.hidden ? 'op35' : ''"
                 @update:model-value="(v: boolean) => toggleTab(tab.name, v)"
               >
                 <div flex="~ gap-2" text-sm flex-auto items-center justify-start pr-4>
@@ -110,6 +110,31 @@ function pinMove(name: string, delta: number) {
             </template>
           </VueCard>
         </template>
+      </div>
+      <div flex="~ col gap-2">
+        <h3 text-lg>
+          Appearance
+        </h3>
+        <VueCard p4 flex="~ col gap-2">
+          <div>
+            <VueDarkToggle v-slot="{ isDark, toggle }">
+              <VueButton @click="toggle">
+                <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark ? 'Dark' : 'Light' }}
+              </VueButton>
+            </VueDarkToggle>
+          </div>
+          <div mx--2 my1 h-1px border="b base" op75 />
+          <!-- <NCheckbox v-model="sidebarExpanded" n-primary>
+            <span>
+              Expand Sidebar
+            </span>
+          </NCheckbox>
+          <NCheckbox v-model="sidebarScrollable" :disabled="sidebarExpanded" n-primary>
+            <span>
+              Scrollable Sidebar
+            </span>
+          </NCheckbox> -->
+        </VueCard>
       </div>
     </div>
   </div>

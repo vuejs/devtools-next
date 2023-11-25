@@ -51,17 +51,15 @@ const displayedTabs = categorizedTabs
       flex="~ auto col gap-0.5 items-center" w-full p1 class="no-scrollbar"
       :class="sidebarExpanded ? '' : 'of-x-hidden of-y-auto'"
     >
-      <template v-for="[name, tabs], idx of displayedTabs" :key="name">
-        <template v-if="tabs.length">
-          <!-- if is not the first nonempty list, render the top divider -->
-          <div v-if="idx && displayedTabs[0][1].length" my1 h-1px w-full border="b base" />
-          <SideNavItem
-            v-for="tab of tabs.filter(item => !item.hidden)"
-            :key="tab.name"
-            :tab="tab"
-            :minimized="!sidebarExpanded"
-          />
-        </template>
+      <template v-for="[name, tabs], idx of displayedTabs.filter(([{ hidden }, items]) => items.length && !hidden)" :key="name">
+        <!-- if is not the first nonempty list, render the top divider -->
+        <div v-if="idx" my1 h-1px w-full border="b base" />
+        <SideNavItem
+          v-for="tab of tabs.filter(item => !item.hidden)"
+          :key="tab.name"
+          :tab="tab"
+          :minimized="!sidebarExpanded"
+        />
       </template>
       <div flex-auto />
     </div>

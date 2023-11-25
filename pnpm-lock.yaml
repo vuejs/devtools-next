@@ -429,6 +429,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:../core
+      '@vue-devtools-next/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@webfansplz/vuedoc-parser':
         specifier: ^0.0.4
         version: 0.0.4(pug@3.0.2)

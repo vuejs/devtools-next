@@ -2,6 +2,7 @@ import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue-devtools-next/core'
+import { BROADCAST_CHANNEL_NAME, isInIframe } from '@vue-devtools-next/shared'
 import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
 
 import { createApp } from 'vue'
@@ -126,3 +127,38 @@ window.addEventListener('message', (event) => {
     event.source?.postMessage('__VUE_DEVTOOLS_CLIENT_READY__')
   }
 })
+
+// @TODO: we might should move this to a separate file?
+if (!isInIframe) {
+  const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
+  channel.onmessage = (event) => {
+    if (event.data?.data?.event === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
+      initDevTools({
+        connect: (callback) => {
+          const bridge = new Bridge({
+            tracker(fn) {
+              channel.onmessage = (event) => {
+                if (event.data.source === '__VUE_DEVTOOLS_USER_APP__')
+                  fn(event.data.data)
+              }
+            },
+            trigger(data) {
+              channel.postMessage({
+                source: '__VUE_DEVTOOLS_CLIENT__',
+                data,
+              })
+            },
+          })
+          callback(bridge)
+        },
+      })
+    }
+  }
+
+  channel.postMessage({
+    source: '__VUE_DEVTOOLS_CLIENT__',
+    data: {
+      event: 'ready',
+    },
+  })
+}

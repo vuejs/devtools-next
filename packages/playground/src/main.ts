@@ -2,9 +2,12 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
-import App from './App.vue'
+
+// import App from './App.vue'
+import App from './App.preview.vue'
 import Home from './pages/Home.vue'
 import Hello from './pages/Hello.vue'
+import Hey from './pages/Hey.vue'
 import './style.css'
 
 const pinia = createPinia()
@@ -25,8 +28,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/hey/:id',
-    component: Hello,
-    name: 'hello',
+    component: Hey,
+    name: 'hey',
   },
 ]
 

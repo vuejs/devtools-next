@@ -86,20 +86,26 @@ function pinMove(name: string, delta: number) {
                   <span>{{ tab.title }}</span>
                   <div flex-auto />
                   <template v-if="pinnedTabs.includes(tab.name)">
-                    <NButton
-                      icon="i-carbon-caret-up"
-                      :disabled="pinnedTabs.indexOf(tab.name) === 0"
-                      :border="false"
-                      @click="pinMove(tab.name, -1)"
-                    />
-                    <NButton
-                      icon="i-carbon-caret-down"
-                      :disabled="pinnedTabs.indexOf(tab.name) === pinnedTabs.length - 1"
-                      :border="false"
-                      @click="pinMove(tab.name, 1)"
-                    />
+                    <button
+                      class="px1 py1 text-sm hover:bg-active flex items-center"
+                      @click.stop="() => {
+                        if (pinnedTabs.indexOf(tab.name) === 0) return
+                        pinMove(tab.name, -1)
+                      }"
+                    >
+                      <div class="i-carbon-caret-up" />
+                    </button>
+                    <button
+                      class="px1 py1 text-sm hover:bg-active flex items-center"
+                      @click.stop="() => {
+                        if (pinnedTabs.indexOf(tab.name) === pinnedTabs.length - 1) return
+                        pinMove(tab.name, 1)
+                      }"
+                    >
+                      <div class="i-carbon-caret-down" />
+                    </button>
                   </template>
-                  <button class="px1 py1 text-sm hover:bg-active flex items-center" @click.stop>
+                  <button class="px1 py1 text-sm hover:bg-active flex items-center" @click.stop="togglePinTab(tab.name)">
                     <div :class="pinnedTabs.includes(tab.name) ? ' i-carbon-pin-filled rotate--45' : ' i-carbon-pin op45'" />
                   </button>
                 </div>

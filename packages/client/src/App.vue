@@ -8,7 +8,7 @@ useColorMode()
 const router = useRouter()
 const route = useRoute()
 const { connected } = useDevToolsState()
-const clientState = useDevToolsClientState()
+const clientState = devtoolsClientState
 
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
 const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)

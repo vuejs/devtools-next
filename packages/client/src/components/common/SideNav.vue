@@ -9,7 +9,6 @@ const buttonMoreTabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = ref(false)
 
-// @TODO: dynamic tabs
 const displayedTabs = categorizedTabs
 </script>
 

@@ -7,6 +7,7 @@ export const devtoolsClientState: RemovableRef<{
   route: string
   graphSettings: GraphSettings
   tabSettings: TabSettings
+  expandSidebar: boolean
 }> = useLocalStorage('__VUE_DEVTOOLS_CLIENT_STATE__', {
   isFirstVisit: true,
   route: '/',
@@ -20,4 +21,9 @@ export const devtoolsClientState: RemovableRef<{
     hiddenTabs: [],
     pinnedTabs: [],
   },
+  expandSidebar: false,
 }, { mergeDefaults: true })
+
+export function clearDevtoolsClientState() {
+  devtoolsClientState.value = undefined
+}

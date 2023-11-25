@@ -83,13 +83,13 @@ const styles: Record<'common' | 'normal' | 'flat' | 'outlined', Record<ButtonTyp
     success: 'hover:(bg-primary-100 text-primary-500) dark:(hover:(bg-primary-800 text-primary-400))',
   },
   outlined: {
-    default: 'hover:(border-primary-100 text-primary-300)',
-    primary: 'hover:(border-primary-500 text-primary-500)',
-    accent: 'hover:(border-accent-500 text-accent-500)',
-    danger: 'hover:(border-danger-500 text-danger-500)',
-    warning: 'hover:(border-warning-500 text-warning-500)',
-    info: 'hover:(border-info-500 text-info-500)',
-    success: 'hover:(border-primary-500 text-primary-500)',
+    default: 'hover:(border-primary-100 text-primary-300 active:(ring-primary-100:5 bg-primary-100:5))',
+    primary: 'hover:(border-primary-500 text-primary-500) active:(ring-primary-500:5 bg-primary-500:5)',
+    accent: 'hover:(border-accent-500 text-accent-500) active:(ring-accent-500:5 bg-accent-500:5)',
+    danger: 'hover:(border-danger-500 text-danger-500) active:(ring-danger-500:5 bg-danger-500:5)',
+    warning: 'hover:(border-warning-500 text-warning-500) active:(ring-warning-500:5 bg-warning-500:5)',
+    info: 'hover:(border-info-500 text-info-500) active:(ring-info-500:5 bg-info-500:5)',
+    success: 'hover:(border-primary-500 text-primary-500) active:(ring-primary-500:5 bg-primary-500:5)',
   },
 }
 
@@ -119,7 +119,7 @@ const variantClasses = computed(() => {
         'bg-transparent': props.flat || props.outlined,
       },
       [
-        outlined ? 'b-1 $ui-border-base' : 'border-none',
+        outlined ? 'b-1 $ui-border-base active:ring-3 shadow-sm' : 'border-none',
         size === 'mini' ? 'px4px text-12px h22px' : 'px-14px text-14px h32px',
         variantClasses,
       ],

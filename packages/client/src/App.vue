@@ -15,7 +15,7 @@ const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isI
 const { toggle } = useToggleViewMode()
 
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
-const sidebarExpanded = false
+const sidebarExpanded = computed(() => clientState.value.expandSidebar)
 
 watch(connected, (v) => {
   if (v) {

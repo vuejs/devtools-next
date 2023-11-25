@@ -48,7 +48,7 @@ function onClick() {
           title="Settings"
           :show-title="false"
         />
-        <span v-if="!minimized" overflow-hidden text-ellipsis ws-nowrap>
+        <span v-if="!minimized" text-md overflow-hidden text-ellipsis ws-nowrap>
           {{ tab.title }}
         </span>
       </div>

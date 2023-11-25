@@ -81,6 +81,13 @@ const outlined = ref(false)
         </template>
       </Button>
     </Variant>
+    <Variant title="Padding">
+      <div class="p5">
+        <Button :flat="flat" :outlined="outlined" :type="state.type">
+          123
+        </Button>
+      </div>
+    </Variant>
   </Story>
 </template>
 

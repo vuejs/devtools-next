@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
+import { VueButton, VueCard, VueCheckbox, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
 
 const categories = categorizedTabs
 
 const { hiddenTabCategories, hiddenTabs, pinnedTabs } = toRefs(devtoolsClientState.value.tabSettings)
+const expandSidebar = computed({
+  get: () => devtoolsClientState.value.expandSidebar,
+  set: v => (devtoolsClientState.value.expandSidebar = v),
+})
 
 function toggleTab(name: string, v: boolean) {
   if (v)
@@ -39,6 +43,14 @@ function pinMove(name: string, delta: number) {
   newPinnedTabs.splice(index, 1)
   newPinnedTabs.splice(newIndex, 0, name)
   pinnedTabs.value = newPinnedTabs
+}
+
+async function clearOptions() {
+  // eslint-disable-next-line no-alert
+  if (confirm('Are you sure you to reset all local settings & state? Devtools will reload.')) {
+    clearDevtoolsClientState()
+    window.location.reload()
+  }
 }
 </script>
 
@@ -118,28 +130,22 @@ function pinMove(name: string, delta: number) {
         <VueCard p4 flex="~ col gap-2">
           <div>
             <VueDarkToggle v-slot="{ isDark, toggle }">
-              <VueButton @click="toggle">
+              <VueButton outlined type="primary" @click="toggle">
                 <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark ? 'Dark' : 'Light' }}
               </VueButton>
             </VueDarkToggle>
           </div>
           <div mx--2 my1 h-1px border="b base" op75 />
-          <!-- <NCheckbox v-model="sidebarExpanded" n-primary>
-            <span>
-              Expand Sidebar
-            </span>
-          </NCheckbox>
-          <NCheckbox v-model="sidebarScrollable" :disabled="sidebarExpanded" n-primary>
-            <span>
-              Scrollable Sidebar
-            </span>
-          </NCheckbox> -->
+          <div class="flex items-center gap2 text-sm">
+            <VueCheckbox v-model="expandSidebar" />
+            <span op75>Expand Sidebar</span>
+          </div>
         </VueCard>
         <h3 mt2 text-lg>
           Debug
         </h3>
         <div flex="~ gap-2">
-          <VueButton>
+          <VueButton outlined type="warning" @click="clearOptions">
             <div i-carbon-breaking-change />
             Reset Local Settings & State
           </VueButton>

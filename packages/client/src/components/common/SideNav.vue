@@ -6,7 +6,7 @@ const showMoreTabs = ref(false)
 const panel = ref()
 const buttonDocking = ref<HTMLButtonElement>()
 const buttonMoreTabs = ref<HTMLButtonElement>()
-const sidebarExpanded = ref(false)
+const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = ref(false)
 
 // @TODO: dynamic tabs
@@ -21,7 +21,7 @@ const displayedTabs = categorizedTabs
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
     >
-      <VueDropdown placement="left-start" :distance="6" :skidding="5" trigger="click" :shown="showDocking">
+      <VueDropdown placement="left-start" :distance="6" :skidding="5" trigger="click" :shown="showDocking" class="w-full">
         <button
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"
@@ -34,7 +34,7 @@ const displayedTabs = categorizedTabs
         >
           <div i-logos-vue h-6 w-6 />
           <template v-if="sidebarExpanded">
-            <span text="lg white" font-600>
+            <span text-lg text-base font-600>
               DevTools
             </span>
             <div flex-auto />

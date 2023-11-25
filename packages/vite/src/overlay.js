@@ -1,5 +1,5 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { setDevToolsClientUrl } from '@vue-devtools-next/core'
+import { Bridge, prepareInjection, setDevToolsClientUrl } from '@vue-devtools-next/core'
 import { devtools } from 'vue-devtools-kit'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
@@ -29,3 +29,27 @@ body.appendChild(script)
 // Used in the browser extension
 window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
+
+const channel = new BroadcastChannel('vite-plugin-vue-devtools')
+
+const bridge = new Bridge({
+  tracker(fn) {
+    channel.onmessage = (event) => {
+      console.log('event.data.source', event.data)
+      if (event.data.source === '__VUE_DEVTOOLS_CLIENT__')
+        fn(event.data.data)
+    }
+  },
+  trigger(data) {
+    channel.postMessage({
+      source: '__VUE_DEVTOOLS_USER_APP__',
+      data,
+    })
+  },
+})
+
+prepareInjection(bridge)
+
+bridge.on('ready', () => {
+  channel.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__')
+})

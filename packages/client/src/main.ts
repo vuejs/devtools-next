@@ -124,3 +124,37 @@ window.addEventListener('message', (event) => {
     event.source?.postMessage('__VUE_DEVTOOLS_CLIENT_READY__')
   }
 })
+
+const channel = new BroadcastChannel('vite-plugin-vue-devtools')
+
+channel.onmessage = (event) => {
+  if (event.data === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
+    initDevTools({
+      connect: (callback) => {
+        const bridge = new Bridge({
+          tracker(fn) {
+            channel.onmessage = (event) => {
+              if (event.data.source === '__VUE_DEVTOOLS_USER_APP__')
+                fn(event.data.data)
+            }
+          },
+          trigger(data) {
+            channel.postMessage({
+              source: '__VUE_DEVTOOLS_CLIENT__',
+              data,
+            })
+          },
+        })
+        callback(bridge)
+      },
+    })
+    channel?.postMessage('__VUE_DEVTOOLS_CLIENT_READY__')
+  }
+}
+
+channel.postMessage({
+  source: '__VUE_DEVTOOLS_CLIENT__',
+  data: {
+    event: 'ready',
+  },
+})

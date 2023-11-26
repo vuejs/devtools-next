@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
 import { target } from '@vue-devtools-next/shared'
+import { devtools } from 'vue-devtools-kit'
 import { useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -68,6 +69,20 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
   })
 }
 
+const vueInspector = ref()
+
+devtools.context.api.getVueInspector().then((inspector) => {
+  vueInspector.value = inspector
+})
+
+const vueInspectorEnabled = computed(() => {
+  return !!vueInspector.value
+})
+
+function enableVueInspector() {
+  vueInspector.value.enable()
+}
+
 const { iframe, getIframe } = useIframe(clientUrl, async () => {
   const iframe = getIframe()
   await waitForClientInjection(iframe)
@@ -104,10 +119,12 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       <div
         class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"
         title="Toggle Component Inspector"
+        :class="{ active: vueInspectorEnabled }"
+        @click="enableVueInspector"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg" style="height: 1.1em; width: 1.1em; opacity:0.5;"
-          :style="true ? 'opacity:1;color:#00dc82;' : ''" viewBox="0 0 24 24"
+          :style="vueInspectorEnabled ? 'opacity:1;color:#00dc82;' : ''" viewBox="0 0 24 24"
         >
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <circle cx="12" cy="12" r=".5" fill="currentColor" />
@@ -160,6 +177,10 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       svg {
         width: 14px;
         height: 14px;
+      }
+
+      &.active {
+        cursor: pointer;
       }
     }
 

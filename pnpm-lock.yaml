@@ -285,6 +285,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.6.1
         version: 10.6.1(vue@3.3.8)
+      vue-devtools-kit:
+        specifier: workspace:*
+        version: link:../devtools-kit
     devDependencies:
       '@iconify/json':
         specifier: ^2.2.145

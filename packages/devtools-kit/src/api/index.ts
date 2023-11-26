@@ -7,6 +7,7 @@ import { addTimelineLayer } from '../core/timeline'
 import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
+import { getVueInspector } from '../core/vue-inspector'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
@@ -117,6 +118,11 @@ export class DevToolsPluginApi {
 
   openInEditor(payload: OpenInEditorOptions) {
     openInEditor(payload)
+  }
+
+  // Vite only
+  getVueInspector() {
+    return getVueInspector()
   }
 
   visitComponentTree(payload: Parameters<DevToolsEvent[DevToolsEvents.VISIT_COMPONENT_TREE]>[0]) {

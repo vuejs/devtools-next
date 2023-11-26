@@ -4,6 +4,7 @@ export type * from './core/component/types'
 export type * from './core/timeline/types'
 export type * from './core/router'
 export type * from './core/open-in-editor'
+export type * from './core/vue-inspector'
 
 export const devtools = {
   state: devtoolsState,

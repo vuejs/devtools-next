@@ -68,6 +68,7 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 }
 
 export const bridgeRpcEvents = {
+  componentBoundingRect: 'component-bounding-rect',
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
   updateInspectorTreeId: 'inspector-tree:update-id',
@@ -83,6 +84,10 @@ export const bridgeRpcEvents = {
 export type BridgeRpcEvents = typeof bridgeRpcEvents
 export type BridgeRpcEventName = BridgeRpcEvents[keyof BridgeRpcEvents]
 export interface BridgeRpcEventPayload {
+  [bridgeRpcEvents.componentBoundingRect]: {
+    inspectorId: string
+    instanceId: string
+  }
   [bridgeRpcEvents.inspectorTree]: {
     inspectorId?: string
     filter?: string

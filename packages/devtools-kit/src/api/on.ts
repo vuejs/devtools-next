@@ -1,7 +1,7 @@
 import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
-import type { ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
+import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
 import type { TimelineEvent } from '../core/timeline'
 import type { RouterInfo } from '../core/router'
 
@@ -9,6 +9,7 @@ export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
   ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
+  GET_COMPONENT_BOUNDING_RECT = 'component-bounding-rect:get',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
@@ -32,6 +33,7 @@ export interface DevToolsEvent {
       instance: VueAppInstance | undefined
     }
   }) => void
+  [DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]: (payload: ComponentBoundingRectApiPayload) => void
   [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => void
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: string) => void
   [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => void
@@ -55,6 +57,9 @@ export const on = {
   },
   routerInfoUpdated(fn: DevToolsEvent[DevToolsEvents.ROUTER_INFO_UPDATED]) {
     apiHooks.hook(DevToolsEvents.ROUTER_INFO_UPDATED, fn)
+  },
+  getComponentBoundingRect(fn: DevToolsEvent[DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]) {
+    apiHooks.hook(DevToolsEvents.GET_COMPONENT_BOUNDING_RECT, fn)
   },
   // compatible
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {

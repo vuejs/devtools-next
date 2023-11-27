@@ -19,6 +19,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return JSON.stringify(devtools.context.timelineLayer)
   })
 
+  // component bounding rect getter
+  bridgeRpcCore.on(bridgeRpcEvents.componentBoundingRect, async (payload) => {
+    return devtools.context.api.getComponentBoundingRect(payload!)
+  })
+
   // inspector tree getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorTree, (payload) => {
     return devtools.context.api.getInspectorTree(payload)

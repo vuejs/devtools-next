@@ -75,7 +75,11 @@ export class BridgeRpc {
     devtoolsBridge.rpc.emit(bridgeRpcEvents.updateInspectorTreeId, id)
   }
 
-  static async getInspectorTree<R extends { data: unknown[] } = { data: { id: string, label: string, tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
+  static async getComponentBoundingRect<R extends { data: unknown } = { data: { top: number, left: number, width: number, height: number } }>(payload: BridgeRpcEventPayload['component-bounding-rect']) {
+    return devtoolsBridge.rpc.emit<R>(bridgeRpcEvents.componentBoundingRect, payload)
+  }
+
+  static getInspectorTree<R extends { data: unknown[] } = { data: { id: string, label: string, tags: InspectorNodeTag[] }[] }>(payload: BridgeRpcEventPayload['inspector-tree']) {
     return devtoolsBridge.rpc.emit<R>(bridgeRpcEvents.inspectorTree, payload)
   }
 

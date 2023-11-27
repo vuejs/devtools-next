@@ -24,6 +24,26 @@ export class DevToolsPluginApi {
     apiHooks.callHook(DevToolsEvents.ADD_TIMELINE_EVENT, payload)
   }
 
+  getComponentBoundingRect(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]>[0]) {
+    const { inspectorId, instanceId = '' } = payload
+    const _payload = {
+      app: devtoolsContext.appRecord.app,
+      inspectorId,
+      instanceId,
+      rect: {
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+      },
+    }
+    // @ts-expect-error hookable
+    apiHooks.callHookWith((callbacks) => {
+      callbacks.map(cb => cb(_payload))
+    }, DevToolsEvents.GET_COMPONENT_BOUNDING_RECT)
+    return stringify(_payload.rect) as string
+  }
+
   async getInspectorTree(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]>[0] = {}) {
     const { inspectorId, filter = '', instanceId = '' } = payload
     const _payload = {

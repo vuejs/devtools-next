@@ -5,6 +5,7 @@ import { devtoolsContext } from '../general/state'
 import { ComponentWalker } from '../component/tree/walker'
 import { getInstanceState } from '../component/state'
 import { editState } from '../component/state/editor'
+import { getComponentBoundingRect } from '../component/state/bounding-rect'
 import { DevToolsEvents, apiHooks } from '../../api/on'
 import { hook } from '../general/hook'
 
@@ -20,6 +21,25 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       id: INSPECTOR_ID,
       label: 'Components',
       treeFilterPlaceholder: 'Search components',
+    })
+
+    api.on.getComponentBoundingRect((payload) => {
+      if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
+        const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
+        if (instance) {
+          payload.rect = getComponentBoundingRect(instance)
+          if (payload.rect instanceof DOMRect) {
+            payload.rect = {
+              top: payload.rect.top,
+              left: payload.rect.left,
+              right: payload.rect.right,
+              bottom: payload.rect.bottom,
+              width: payload.rect.width,
+              height: payload.rect.height,
+            }
+          }
+        }
+      }
     })
 
     api.on.getInspectorTree(async (payload) => {

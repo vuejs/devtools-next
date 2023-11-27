@@ -2,7 +2,7 @@
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
-import type { ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
+import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
 import { VueInput } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -45,6 +45,17 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   }
 }
 
+/** ---------------- bounding react start ------------------- */
+function getComponentBoundingRect(id: string) {
+  return new Promise<void>((resolve) => {
+    bridgeRpc.getComponentBoundingRect<{ data: ComponentBoundingRect }>({ inspectorId: 'components', instanceId: id }).then(({ data }) => {
+      console.log('data', data)
+      resolve()
+    })
+  })
+}
+/** ---------------- bounding react end ------------------- */
+
 /** ---------------- tree start ------------------- */
 
 function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
@@ -72,6 +83,7 @@ function getComponentTree(filterText?: string) {
 function selectComponentTree(id: string) {
   getComponentState(id)
   activeComponentId.value = id
+  // getComponentBoundingRect(id)
 }
 
 watch(selectedComponentTree, (id) => {

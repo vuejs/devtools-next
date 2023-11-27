@@ -130,11 +130,11 @@ interface GraphNodesTotalData {
 }
 
 export const projectRoot = ref('')
-const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
-const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
-export const modulesMap = new Map<string, GraphNodesTotalData>()
+const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
+const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
+const modulesMap = new Map<string, GraphNodesTotalData>()
 const moduleReferences = new Map<string, { path: string, displayPath: string, mod: ModuleInfo }[]>()
 
 export function cleanupGraphRelatedStates() {

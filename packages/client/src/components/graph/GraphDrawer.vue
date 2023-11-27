@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueDrawer } from '@vue-devtools-next/ui'
+import { VueButton, VueDrawer, showVueNotification } from '@vue-devtools-next/ui'
 
 defineProps<{
   top?: HTMLElement
@@ -10,7 +10,19 @@ const show = graphDrawerShow
 const filterId = graphFilterNodeId
 const _openInEditor = openInEditor
 
-const { copy, isSupported, copied } = useClipboard()
+const copiedDuring = 1500
+const { copy: copyApi, isSupported, copied } = useClipboard({
+  copiedDuring,
+})
+
+function copy(data: string) {
+  copyApi(data)
+  showVueNotification({
+    message: 'Copied to clipboard',
+    type: 'success',
+    duration: copiedDuring,
+  })
+}
 
 const keys = [
   ['refs', 'references'],

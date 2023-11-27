@@ -130,12 +130,12 @@ interface GraphNodesTotalData {
 }
 
 export const projectRoot = ref('')
-const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
-const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
 export const graphNodes = new DataSet<Node>([])
 export const graphEdges = new DataSet<Edge>([])
-export const modulesMap = new Map<string, GraphNodesTotalData>()
-const moduleReferences = new Map<string, { path: string, displayPath: string }[]>()
+const graphNodesTotal = shallowRef<GraphNodesTotalData[]>([])
+const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
+const modulesMap = new Map<string, GraphNodesTotalData>()
+const moduleReferences = new Map<string, { path: string, displayPath: string, mod: ModuleInfo }[]>()
 
 export function cleanupGraphRelatedStates() {
   graphNodesTotal.value = []
@@ -146,14 +146,22 @@ export function cleanupGraphRelatedStates() {
   moduleReferences.clear()
 }
 
-export function checkIsValidModule(module: ModuleInfo) {
-  if (!graphSettings.value.node_modules && module.id.includes('node_modules'))
+function checkIsValidModule(module: ModuleInfo) {
+  // node_module will also marked as a virtual module, so virtual module need filter non-`nodeModules` modules
+  const isNodeModule = module.id.includes('node_modules')
+  if (!graphSettings.value.node_modules && isNodeModule)
     return false
-  if (!graphSettings.value.virtual && module.virtual)
+  if (!graphSettings.value.virtual && module.virtual && !isNodeModule)
     return false
   if (!graphSettings.value.lib && !module.id.includes(projectRoot!.value) && !module.virtual)
     return false
   return true
+}
+
+// check valid module need also check it's reference is valid
+function checkReferenceIsValid(modId: string) {
+  const refer = moduleReferences.get(modId)
+  return refer ? refer.some(ref => checkIsValidModule(ref.mod)) : true
 }
 
 const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
@@ -171,7 +179,7 @@ function updateGraph() {
   const filterDataset = getGraphFilterDataset()
   const nodeData = filterDataset ? filterDataset.slice() : graphNodesTotal.value.slice()
   nodeData.forEach(({ node, edges, mod }) => {
-    if (checkIsValidModule(mod)) {
+    if (checkIsValidModule(mod) && checkReferenceIsValid(mod.id)) {
       matchedNodes.push(node)
       matchedSearchNodes.push({
         // only search the exactly name(last 3 segments), instead of full path
@@ -185,7 +193,7 @@ function updateGraph() {
     }
   })
 
-  // use include, instead of fuse.js, for performance reasons
+  // TODO: [fuzzy search graph node] use include, instead of fuse.js, for performance reasons
   // if someone need it, we can add it back
   const searchText = graphSearchText.value
   if (searchText.trim().length) {
@@ -250,6 +258,11 @@ function removeVerbosePath(path: string) {
   return path.replace(/\?.*$/, '').replace(/\#.*$/, '')
 }
 
+function checkIsVueStyle(path: string) {
+  // TODO: [check vue style file in graph] need consider edge case, let's leave it before someone report the issue
+  return path.includes('vue&type=style')
+}
+
 export function removeRootPath(path: string) {
   return path.replace(projectRoot.value, '')
 }
@@ -265,6 +278,9 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   const totalNode: Node[] = []
 
   modules.forEach((mod) => {
+    // skip vue style file, a Vue file will have 2 modules, one is script, one is style, we don't need style
+    if (checkIsVueStyle(mod.id))
+      return
     const path = removeVerbosePath(mod.id)
     const pathSegments = path.split('/')
     const displayName = pathSegments.at(-1) ?? ''
@@ -288,17 +304,25 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
       },
       edges: [],
     }
+
+    // remove vue style reference, e.g, a.vue -> a.vue?type=style
+    // don't use `mod.deps.filter`, will save filter overhead(for performance)
+    const filteredDeps: string[] = []
     mod.deps.forEach((dep) => {
-      dep = removeVerbosePath(dep)
+      if (checkIsVueStyle(dep))
+        return
+      filteredDeps.push(dep)
       // save references
       if (!moduleReferences.has(dep))
         moduleReferences.set(dep, [])
       moduleReferences.get(dep)!.push({
         path: mod.id,
-        displayPath: removeRootPath(mod.id),
+        displayPath: removeRootPath(removeVerbosePath(mod.id)),
+        mod,
       })
       node.edges.push(getEdge(mod.id, dep))
     })
+    mod.deps = filteredDeps
     graphNodesTotal.value.push(node)
     graphNodesTotalMap.set(mod.id, node)
 
@@ -306,7 +330,7 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
     modulesMap.set(mod.id, node)
 
     // first time, we also need check
-    if (checkIsValidModule(mod)) {
+    if (checkIsValidModule(mod) && checkReferenceIsValid(mod.id)) {
       totalNode.push(node.node)
       totalEdges.push(...node.edges)
     }

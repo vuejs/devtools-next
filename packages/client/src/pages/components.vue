@@ -45,7 +45,7 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   }
 }
 
-/** ---------------- bounding react start ------------------- */
+// #region bounding react start
 function getComponentBoundingRect(id: string) {
   return new Promise<void>((resolve) => {
     bridgeRpc.getComponentBoundingRect<{ data: ComponentBoundingRect }>({ inspectorId: 'components', instanceId: id }).then(({ data }) => {
@@ -54,9 +54,9 @@ function getComponentBoundingRect(id: string) {
     })
   })
 }
-/** ---------------- bounding react end ------------------- */
+// #endregion
 
-/** ---------------- tree start ------------------- */
+// #region tree start
 
 function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
   return {
@@ -90,9 +90,9 @@ watch(selectedComponentTree, (id) => {
   bridgeRpc.updateInspectorTreeId(id)
 })
 
-/** ---------------- tree end ------------------- */
+// #endregion
 
-/** ---------------- state start ------------------- */
+// #region state start
 
 const activeComponentState = ref<Record<string, InspectorState[]>>({})
 
@@ -114,7 +114,7 @@ function getComponentState(id: string) {
   })
 }
 
-/** ---------------- state end ------------------- */
+// #endregion
 
 onDevToolsClientConnected(() => {
   // tree

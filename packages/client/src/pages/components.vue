@@ -47,10 +47,9 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 
 // #region bounding react start
 function getComponentBoundingRect(id: string) {
-  return new Promise<void>((resolve) => {
+  return new Promise<ComponentBoundingRect>((resolve) => {
     bridgeRpc.getComponentBoundingRect<{ data: ComponentBoundingRect }>({ inspectorId: 'components', instanceId: id }).then(({ data }) => {
-      console.log('data', data)
-      resolve()
+      resolve(data)
     })
   })
 }
@@ -80,10 +79,19 @@ function getComponentTree(filterText?: string) {
   })
 }
 
+function toggleComponentInspector(id: string, visible: boolean) {
+  getComponentBoundingRect(id).then((rect) => {
+    bridgeRpc.toggleComponentInspector({
+      id,
+      visible,
+      bounds: rect,
+    })
+  })
+}
+
 function selectComponentTree(id: string) {
   getComponentState(id)
   activeComponentId.value = id
-  // getComponentBoundingRect(id)
 }
 
 watch(selectedComponentTree, (id) => {
@@ -161,7 +169,7 @@ watchDebounced(filterName, (v) => {
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." />
         </div>
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" />
+          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" @mouseover="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
         </div>
       </Pane>
       <Pane flex flex-col>

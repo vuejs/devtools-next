@@ -11,6 +11,8 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (e: 'select', id: string): void
+  (e: 'mouseover', id: string, visible: boolean): void
+  (e: 'mouseleave', id: string, visible: boolean): void
 }>()
 
 const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
@@ -25,6 +27,8 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
     :class="{ active: isSelected }"
     @click.stop="toggleSelected(data.id)"
+    @mouseover="emit('mouseover', data.id, true)"
+    @mouseleave="emit('mouseleave', data.id, false)"
   >
     <!-- expand-icon -->
     <ExpandIcon v-if="data.children?.length" :value="isExpanded" group-hover:text-white class="[.active_&]:text-white" @click.prevent.stop="toggleCollapse" />
@@ -36,6 +40,6 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
     <InspectorNodeTag v-for="(item, index) in data.tags" :key="index" :tag="item" />
   </div>
   <template v-if="data.children?.length && isExpanded">
-    <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" @select="(id) => emit('select', id)" />
+    <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" @select="(id) => emit('select', id)" @mouseover="(id) => emit('mouseover', id, true)" @mouseleave="(id) => emit('mouseleave', id, false)" />
   </template>
 </template>

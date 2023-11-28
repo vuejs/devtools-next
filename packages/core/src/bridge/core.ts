@@ -2,7 +2,7 @@ import { NOOP } from '@vue-devtools-next/shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
 import { parse } from 'vue-devtools-kit/shared'
-import type { InspectorStateEditorPayload } from 'vue-devtools-kit'
+import type { InspectorStateEditorPayload, ToggleComponentInspectorOptions } from 'vue-devtools-kit'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -68,6 +68,7 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 }
 
 export const bridgeRpcEvents = {
+  toggleComponentInspector: 'toggle-component-inspector',
   componentBoundingRect: 'component-bounding-rect',
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
@@ -84,6 +85,7 @@ export const bridgeRpcEvents = {
 export type BridgeRpcEvents = typeof bridgeRpcEvents
 export type BridgeRpcEventName = BridgeRpcEvents[keyof BridgeRpcEvents]
 export interface BridgeRpcEventPayload {
+  [bridgeRpcEvents.toggleComponentInspector]: ToggleComponentInspectorOptions
   [bridgeRpcEvents.componentBoundingRect]: {
     inspectorId: string
     instanceId: string

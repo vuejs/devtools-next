@@ -75,6 +75,10 @@ export class BridgeRpc {
     devtoolsBridge.rpc.emit(bridgeRpcEvents.updateInspectorTreeId, id)
   }
 
+  static toggleComponentInspector(payload: BridgeRpcEventPayload['toggle-component-inspector']) {
+    devtoolsBridge.rpc.emit(bridgeRpcEvents.toggleComponentInspector, payload)
+  }
+
   static async getComponentBoundingRect<R extends { data: unknown } = { data: { top: number, left: number, width: number, height: number } }>(payload: BridgeRpcEventPayload['component-bounding-rect']) {
     return devtoolsBridge.rpc.emit<R>(bridgeRpcEvents.componentBoundingRect, payload)
   }

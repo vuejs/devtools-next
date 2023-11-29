@@ -8,7 +8,7 @@ import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { getVueInspector } from '../core/vue-inspector'
-import { toggleComponentInspector } from '../core/client/component-inspector'
+import { toggleComponentInspector } from '../core/component-inspector'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 

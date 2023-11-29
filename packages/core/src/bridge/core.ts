@@ -69,6 +69,7 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 
 export const bridgeRpcEvents = {
   toggleComponentInspector: 'toggle-component-inspector',
+  inspectComponentInspector: 'inspect-component-inspector',
   componentBoundingRect: 'component-bounding-rect',
   inspectorTree: 'inspector-tree',
   inspectorState: 'inspector-state',
@@ -86,6 +87,7 @@ export type BridgeRpcEvents = typeof bridgeRpcEvents
 export type BridgeRpcEventName = BridgeRpcEvents[keyof BridgeRpcEvents]
 export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.toggleComponentInspector]: ToggleComponentInspectorOptions
+  [bridgeRpcEvents.inspectComponentInspector]: string
   [bridgeRpcEvents.componentBoundingRect]: {
     inspectorId: string
     instanceId: string

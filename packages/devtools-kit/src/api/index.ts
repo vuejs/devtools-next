@@ -8,7 +8,7 @@ import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { getVueInspector } from '../core/vue-inspector'
-import { toggleComponentInspector } from '../core/component-inspector'
+import { inspectComponentInspector, toggleComponentInspector } from '../core/component-inspector'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
@@ -27,6 +27,10 @@ export class DevToolsPluginApi {
 
   toggleComponentInspector(payload: Parameters<DevToolsEvent[DevToolsEvents.CREATE_COMPONENT_INSPECTOR]>[0]) {
     return toggleComponentInspector(payload)
+  }
+
+  inspectComponentInspector() {
+    return inspectComponentInspector()
   }
 
   getComponentBoundingRect(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]>[0]) {

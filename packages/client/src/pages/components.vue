@@ -18,7 +18,7 @@ const [filtered, toggleFiltered] = useToggle(true)
 const { selected: selectedComponentTree } = createSelectContext('component-tree')
 
 // create collapse context
-const { collapseMap: componentTreeCollapseMap } = createCollapseContext('component-tree')
+const { collapseMap: componentTreeCollapseMap, linkedList: componentTreeLinkedList } = createCollapseContext('component-tree')
 createCollapseContext('inspector-state')
 
 function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
@@ -79,6 +79,7 @@ function getComponentTree(filterText?: string) {
   })
 }
 
+// #region component inspector start
 function toggleComponentInspector(id: string, visible: boolean) {
   getComponentBoundingRect(id).then((rect) => {
     bridgeRpc.toggleComponentInspector({
@@ -88,6 +89,19 @@ function toggleComponentInspector(id: string, visible: boolean) {
     })
   })
 }
+
+function inspectComponentInspector() {
+  bridgeRpc.inspectComponentInspector().then(({ data }) => {
+    selectedComponentTree.value = data.id
+    selectComponentTree(data.id)
+    const linkedList = componentTreeLinkedList.value[data.id]
+    linkedList.forEach((id) => {
+      componentTreeCollapseMap.value[id] = true
+    })
+  })
+}
+
+// #endregion
 
 function selectComponentTree(id: string) {
   getComponentState(id)
@@ -133,9 +147,8 @@ onDevToolsClientConnected(() => {
     if (!data?.data?.length)
       return
 
-    const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
     treeNode.value = data.data
-    isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data))
+    componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data)
     initSelectedComponent(data.data)
   }, {
     inspectorId: 'components',
@@ -165,11 +178,21 @@ watchDebounced(filterName, (v) => {
   <div h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
-        <div w-full px10px py12px>
-          <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." />
+        <div w-full px10px py12px flex gap2>
+          <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
+          <button px-1 @click="inspectComponentInspector">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              style="height: 1.1em; width: 1.1em; opacity:0.5;"
+              :style="true ? 'opacity:1;color:#00dc82' : ''"
+              viewBox="0 0 24 24"
+            >
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r=".5" fill="currentColor" /><path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" /></g>
+            </svg>
+          </button>
         </div>
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <ComponentTreeNode v-for="(item, index) in treeNode" :key="index" :data="item" @select="selectComponentTree" @mouseover="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
+          <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" @select="selectComponentTree" @mouseover="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
         </div>
       </Pane>
       <Pane flex flex-col>

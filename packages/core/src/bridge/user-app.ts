@@ -25,6 +25,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return Promise.resolve(JSON.stringify({}))
   })
 
+  // inspect component inspector
+  bridgeRpcCore.on(bridgeRpcEvents.inspectComponentInspector, () => {
+    return devtools.context.api.inspectComponentInspector()
+  })
+
   // component bounding rect getter
   bridgeRpcCore.on(bridgeRpcEvents.componentBoundingRect, async (payload) => {
     return devtools.context.api.getComponentBoundingRect(payload!)

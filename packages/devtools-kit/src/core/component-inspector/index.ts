@@ -1,6 +1,7 @@
+import type { VueAppInstance } from '@vue-devtools-next/schema'
 import { getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
-import { getInstanceName } from '../component/general/util'
+import { getComponentId, getInstanceName } from '../component/general/util'
 import type { ToggleComponentInspectorOptions } from './types'
 
 const CONTAINER_ELEMENT_ID = '__vue-devtools-component-inspector__'
@@ -135,4 +136,56 @@ export function toggleComponentInspector(options: ToggleComponentInspectorOption
     if (el)
       el.style.display = 'none'
   }
+}
+
+let inspectInstance: VueAppInstance = null!
+function inspectFn(e: MouseEvent) {
+  const target = e.target as { __vueParentComponent?: VueAppInstance }
+  if (target) {
+    const instance = target.__vueParentComponent
+    if (instance) {
+      inspectInstance = instance
+      const el = instance.vnode.el as HTMLElement | undefined
+      if (el && el.nodeType === Node.ELEMENT_NODE) {
+        const bounds = el.getBoundingClientRect()
+        const name = getInstanceName(instance)
+        const container = getCotainerElement()
+        container ? update({ bounds, name }) : create({ bounds, name })
+      }
+    }
+  }
+}
+
+function selectComponentFn(e: MouseEvent, cb) {
+  e.preventDefault()
+  e.stopPropagation()
+  if (inspectInstance) {
+    const app = devtoolsContext.appRecord?.app as unknown as VueAppInstance
+    getComponentId({
+      app,
+      uid: app.uid,
+      instance: inspectInstance,
+    }).then((id) => {
+      cb(id)
+    })
+  }
+}
+
+export function inspectComponentInspector() {
+  window.addEventListener('mouseover', inspectFn)
+  return new Promise<string>((resolve) => {
+    function onSelect(e: MouseEvent) {
+      e.preventDefault()
+      e.stopPropagation()
+      selectComponentFn(e, (id: string) => {
+        window.removeEventListener('click', onSelect)
+        window.removeEventListener('mouseover', inspectFn)
+        const el = getCotainerElement()
+        if (el)
+          el.style.display = 'none'
+        resolve(JSON.stringify({ id }))
+      })
+    }
+    window.addEventListener('click', onSelect)
+  })
 }

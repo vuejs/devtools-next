@@ -5,8 +5,10 @@ import type { ComponentTreeNode } from 'vue-devtools-kit'
 const props = withDefaults(defineProps<{
   data: ComponentTreeNode
   depth?: number
+  linkedList?: string[]
 }>(), {
   depth: 0,
+  linkedList: () => [],
 })
 
 const emit = defineEmits<{
@@ -15,7 +17,7 @@ const emit = defineEmits<{
   (e: 'mouseleave', id: string, visible: boolean): void
 }>()
 
-const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id)
+const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.id, [...props.linkedList!, props.data.id])
 const { isSelected, toggleSelected } = useSelectWithContext('component-tree', props.data.id, (id) => {
   emit('select', id)
 })
@@ -40,6 +42,6 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
     <InspectorNodeTag v-for="(item, index) in data.tags" :key="index" :tag="item" />
   </div>
   <template v-if="data.children?.length && isExpanded">
-    <ComponentTreeNode v-for="(item, index) in data.children" :key="index" :data="item" :depth="depth + 1" @select="(id) => emit('select', id)" @mouseover="(id) => emit('mouseover', id, true)" @mouseleave="(id) => emit('mouseleave', id, false)" />
+    <ComponentTreeNode v-for="item in data.children" :key="item.id" :data="item" :depth="depth + 1" :linked-list="[...linkedList, data.id]" @select="(id) => emit('select', id)" @mouseover="(id) => emit('mouseover', id, true)" @mouseleave="(id) => emit('mouseleave', id, false)" />
   </template>
 </template>

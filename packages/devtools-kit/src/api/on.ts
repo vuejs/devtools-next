@@ -2,7 +2,7 @@ import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
-import type { ToggleComponentInspectorOptions } from '../core/client/types'
+import type { ToggleComponentInspectorOptions } from '../core/component-inspector/types'
 import type { TimelineEvent } from '../core/timeline'
 import type { RouterInfo } from '../core/router'
 

@@ -227,8 +227,8 @@ watchDebounced(filterName, (v) => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div px2 py3 flex justify-between w-full>
-          <span v-if="selectedComponentTreeNode">{{ selectedComponentTreeNode?.name }}</span>
+        <div px2 py3 flex justify-between overflow-auto class="no-scrollbar">
+          <span v-if="selectedComponentTreeNode?.name">{{ selectedComponentTreeNode.name }}</span>
           <div flex="~ gap2">
             <VueIcon
               v-tooltip="'Scroll to Component'"
@@ -241,7 +241,7 @@ watchDebounced(filterName, (v) => {
             />
 
             <VueIcon
-              v-if="selectedComponentFilePath"
+              v-show="selectedComponentFilePath"
               v-tooltip="'Open in Editor'"
               flex-none
               title="Open in Editor"

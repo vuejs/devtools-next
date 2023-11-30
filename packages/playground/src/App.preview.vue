@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import STC from './components/ScrollToComponent.vue'
 import { useAppStore } from './stores'
 
 const age = ref(10)
@@ -26,13 +27,13 @@ const app = useAppStore()
         Hello
       </router-link>
     </p>
+    <STC />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .container {
   width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

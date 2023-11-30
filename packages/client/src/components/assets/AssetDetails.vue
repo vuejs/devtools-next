@@ -2,7 +2,7 @@
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet } from '@vue-devtools-next/core'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
-import { VueButton, VueIcon } from '@vue-devtools-next/ui'
+import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 
 const props = defineProps<{
   modelValue: AssetInfo

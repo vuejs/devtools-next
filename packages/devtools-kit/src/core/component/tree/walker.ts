@@ -106,6 +106,7 @@ export class ComponentWalker {
             },
           ],
       autoOpen: this.recursively,
+      file: instance.type.__file || '',
     }
 
     // capture children

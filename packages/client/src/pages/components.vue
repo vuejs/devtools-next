@@ -3,12 +3,14 @@ import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
-import { VueInput } from '@vue-devtools-next/ui'
+import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 const treeNode = ref<ComponentTreeNode[]>([])
 const activeComponentId = ref('')
+
+const _openInEditor = openInEditor
 
 // UX related state
 const loaded = ref(false)
@@ -20,6 +22,23 @@ const { selected: selectedComponentTree } = createSelectContext('component-tree'
 // create collapse context
 const { collapseMap: componentTreeCollapseMap, linkedList: componentTreeLinkedList } = createCollapseContext('component-tree')
 createCollapseContext('inspector-state')
+
+// selected component tree node
+const selectedComponentTreeNode = computed<ComponentTreeNode>(() => {
+  const res: ComponentTreeNode[] = []
+  const find = (treeNode: ComponentTreeNode[]) => {
+    treeNode.forEach((item) => {
+      if (item.id === selectedComponentTree.value)
+        res.push(item)
+      if (item.children?.length)
+        find(item.children)
+    })
+  }
+  find(treeNode.value)
+  return res[0]
+})
+// selected component file path
+const selectedComponentFilePath = computed(() => selectedComponentTreeNode.value?.file ?? '')
 
 function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
   if (!treeNode.length)
@@ -80,13 +99,25 @@ function getComponentTree(filterText?: string) {
 }
 
 // #region component inspector start
-function toggleComponentInspector(id: string, visible: boolean) {
+const isPending = ref(false)
+async function toggleComponentInspector(id: string, visible: boolean) {
+  if (isPending.value)
+    await until(isPending).toBe(false)
+  isPending.value = true
+
   getComponentBoundingRect(id).then((rect) => {
     bridgeRpc.toggleComponentInspector({
       id,
       visible,
       bounds: rect,
     })
+    isPending.value = false
+  })
+}
+
+function scrollToComponent(id: string) {
+  bridgeRpc.scrollToComponent({
+    id,
   })
 }
 
@@ -178,7 +209,7 @@ watchDebounced(filterName, (v) => {
   <div h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
-        <div w-full px10px py12px flex gap2>
+        <div w-full px2 py2 flex gap2>
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
           <button px-1 @click="inspectComponentInspector">
             <svg
@@ -192,10 +223,36 @@ watchDebounced(filterName, (v) => {
           </button>
         </div>
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" @select="selectComponentTree" @mouseover="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
+          <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" @select="selectComponentTree" @mouseenter="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
         </div>
       </Pane>
       <Pane flex flex-col>
+        <div px2 py3 flex justify-between w-full>
+          <span v-if="selectedComponentTreeNode">{{ selectedComponentTreeNode?.name }}</span>
+          <div flex="~ gap2">
+            <VueIcon
+              v-tooltip="'Scroll to Component'"
+              flex-none
+              title="Scroll to Component"
+              icon="i-iconoir:mouse-scroll-wheel"
+              action
+              :border="false"
+              @click="scrollToComponent(selectedComponentTree)"
+            />
+
+            <VueIcon
+              v-if="selectedComponentFilePath"
+              v-tooltip="'Open in Editor'"
+              flex-none
+              title="Open in Editor"
+              icon="i-carbon-launch"
+              action
+              :border="false"
+              @click="_openInEditor(selectedComponentFilePath)"
+            />
+          </div>
+        </div>
+        <p class="x-divider" />
         <div p-2 grow h-0 overflow-auto class="no-scrollbar">
           <InspectorState
             v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"

@@ -2,7 +2,9 @@ import type { VueAppInstance } from '@vue-devtools-next/schema'
 import { getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
 import { getComponentId, getInstanceName } from '../component/general/util'
-import type { ToggleComponentInspectorOptions } from './types'
+import { getRootElementsFromComponentInstance } from '../component/tree/el'
+import { getComponentBoundingRect } from '../component/state/bounding-rect'
+import type { ScrollToComponentOptions, ToggleComponentInspectorOptions } from './types'
 
 const CONTAINER_ELEMENT_ID = '__vue-devtools-component-inspector__'
 const CARD_ELEMENT_ID = '__vue-devtools-component-inspector__card__'
@@ -61,20 +63,21 @@ function getNameElement() {
 
 function getStyles(bounds: ToggleComponentInspectorOptions['bounds']) {
   return {
-    left: `${bounds.left}px`,
-    top: `${bounds.top}px`,
-    width: `${bounds.width}px`,
-    height: `${bounds.height}px`,
+    left: `${Math.round(bounds.left * 100) / 100}px`,
+    top: `${Math.round(bounds.top * 100) / 100}px`,
+    width: `${Math.round(bounds.width * 100) / 100}px`,
+    height: `${Math.round(bounds.height * 100) / 100}px`,
   } satisfies Partial<CSSStyleDeclaration>
 }
 
-function create(options: ToggleComponentInspectorOptions) {
+function create(options: ToggleComponentInspectorOptions & { elementId?: string, style?: Partial<CSSStyleDeclaration> }) {
   // create container
   const containerEl = document.createElement('div')
-  containerEl.id = CONTAINER_ELEMENT_ID
+  containerEl.id = options.elementId ?? CONTAINER_ELEMENT_ID
   Object.assign(containerEl.style, {
     ...containerStyles,
     ...getStyles(options.bounds),
+    ...options.style,
   })
 
   // create card
@@ -101,6 +104,7 @@ function create(options: ToggleComponentInspectorOptions) {
   cardEl.appendChild(indicatorEl)
   containerEl.appendChild(cardEl)
   document.body.appendChild(containerEl)
+  return containerEl
 }
 
 function update(options: ToggleComponentInspectorOptions) {
@@ -188,4 +192,47 @@ export function inspectComponentInspector() {
     }
     window.addEventListener('click', onSelect)
   })
+}
+
+export function scrollToComponent(options: ScrollToComponentOptions) {
+  const instance = getComponentInstance(devtoolsContext.appRecord!, options.id)
+  if (instance) {
+    const [el] = getRootElementsFromComponentInstance(instance)
+    // @ts-expect-error type mismatch
+    if (typeof el.scrollIntoView !== 'function') {
+      // @ts-expect-error type mismatch
+      el.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }
+    else {
+      const bounds = getComponentBoundingRect(instance)
+      const scrollTarget = document.createElement('div')
+      const styles = {
+        ...getStyles(bounds),
+        position: 'absolute',
+      }
+      Object.assign(scrollTarget.style, styles)
+      document.body.appendChild(scrollTarget)
+      scrollTarget.scrollIntoView({
+        behavior: 'smooth',
+      })
+      setTimeout(() => {
+        document.body.removeChild(scrollTarget)
+      }, 2000)
+    }
+
+    setTimeout(() => {
+      const bounds = getComponentBoundingRect(instance)
+      if (bounds.width || bounds.height) {
+        const name = getInstanceName(instance)
+        const el = getCotainerElement()
+        el ? update({ ...options, name, bounds }) : create({ ...options, name, bounds })
+        setTimeout(() => {
+          if (el)
+            el.style.display = 'none'
+        }, 1500)
+      }
+    }, 1200)
+  }
 }

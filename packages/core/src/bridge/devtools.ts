@@ -83,6 +83,10 @@ export class BridgeRpc {
     return devtoolsBridge.rpc.emit<{ data: { id: string } }>(bridgeRpcEvents.inspectComponentInspector)
   }
 
+  static scrollToComponent(payload: BridgeRpcEventPayload['scroll-to-component']) {
+    return devtoolsBridge.rpc.emit(bridgeRpcEvents.scrollToComponent, payload)
+  }
+
   static async getComponentBoundingRect<R extends { data: unknown } = { data: { top: number, left: number, width: number, height: number } }>(payload: BridgeRpcEventPayload['component-bounding-rect']) {
     return devtoolsBridge.rpc.emit<R>(bridgeRpcEvents.componentBoundingRect, payload)
   }

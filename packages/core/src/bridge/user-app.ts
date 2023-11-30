@@ -30,6 +30,12 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return devtools.context.api.inspectComponentInspector()
   })
 
+  // scroll to component
+  bridgeRpcCore.on(bridgeRpcEvents.scrollToComponent, (payload) => {
+    devtools.context.api.scrollToComponent(payload!)
+    return Promise.resolve(JSON.stringify({}))
+  })
+
   // component bounding rect getter
   bridgeRpcCore.on(bridgeRpcEvents.componentBoundingRect, async (payload) => {
     return devtools.context.api.getComponentBoundingRect(payload!)

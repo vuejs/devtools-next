@@ -8,7 +8,7 @@ import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { getVueInspector } from '../core/vue-inspector'
-import { inspectComponentInspector, toggleComponentInspector } from '../core/component-inspector'
+import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
@@ -25,12 +25,16 @@ export class DevToolsPluginApi {
     apiHooks.callHook(DevToolsEvents.ADD_TIMELINE_EVENT, payload)
   }
 
-  toggleComponentInspector(payload: Parameters<DevToolsEvent[DevToolsEvents.CREATE_COMPONENT_INSPECTOR]>[0]) {
+  toggleComponentInspector(payload: Parameters<DevToolsEvent[DevToolsEvents.TOGGLE_COMPONENT_INSPECTOR]>[0]) {
     return toggleComponentInspector(payload)
   }
 
   inspectComponentInspector() {
     return inspectComponentInspector()
+  }
+
+  scrollToComponent(payload: Parameters<DevToolsEvent[DevToolsEvents.SCROLL_TO_COMPONENT]>[0]) {
+    return scrollToComponent(payload)
   }
 
   getComponentBoundingRect(payload: Parameters<DevToolsEvent[DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]>[0]) {

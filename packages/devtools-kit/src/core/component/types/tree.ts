@@ -18,6 +18,7 @@ export interface ComponentTreeNode {
   domOrder?: number[]
   tags: InspectorNodeTag[]
   autoOpen: boolean
+  file: string
 }
 
 export interface InspectorTreeApiPayload {

@@ -2,7 +2,7 @@ import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
-import type { ToggleComponentInspectorOptions } from '../core/component-inspector/types'
+import type { ScrollToComponentOptions, ToggleComponentInspectorOptions } from '../core/component-inspector/types'
 import type { TimelineEvent } from '../core/timeline'
 import type { RouterInfo } from '../core/router'
 
@@ -10,8 +10,9 @@ export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
   ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
-  CREATE_COMPONENT_INSPECTOR = 'component-inspector:create',
+  TOGGLE_COMPONENT_INSPECTOR = 'component-inspector:toggle',
   GET_COMPONENT_BOUNDING_RECT = 'component-bounding-rect:get',
+  SCROLL_TO_COMPONENT = 'scroll-to-component',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
@@ -35,8 +36,9 @@ export interface DevToolsEvent {
       instance: VueAppInstance | undefined
     }
   }) => void
-  [DevToolsEvents.CREATE_COMPONENT_INSPECTOR]: (payload: ToggleComponentInspectorOptions) => void
+  [DevToolsEvents.TOGGLE_COMPONENT_INSPECTOR]: (payload: ToggleComponentInspectorOptions) => void
   [DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]: (payload: ComponentBoundingRectApiPayload) => void
+  [DevToolsEvents.SCROLL_TO_COMPONENT]: (payload: ScrollToComponentOptions) => void
   [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => void
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: string) => void
   [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => void

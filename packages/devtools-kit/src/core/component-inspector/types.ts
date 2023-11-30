@@ -6,3 +6,7 @@ export interface ToggleComponentInspectorOptions {
   id?: string
   visible?: boolean
 }
+
+export interface ScrollToComponentOptions {
+  id?: string
+}

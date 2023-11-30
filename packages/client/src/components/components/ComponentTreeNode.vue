@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (e: 'select', id: string): void
-  (e: 'mouseover', id: string, visible: boolean): void
+  (e: 'mouseenter', id: string, visible: boolean): void
   (e: 'mouseleave', id: string, visible: boolean): void
 }>()
 
@@ -29,7 +29,7 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
     :class="{ active: isSelected }"
     @click.stop="toggleSelected(data.id)"
-    @mouseover="emit('mouseover', data.id, true)"
+    @mouseenter="emit('mouseenter', data.id, true)"
     @mouseleave="emit('mouseleave', data.id, false)"
   >
     <!-- expand-icon -->
@@ -42,6 +42,6 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
     <InspectorNodeTag v-for="(item, index) in data.tags" :key="index" :tag="item" />
   </div>
   <template v-if="data.children?.length && isExpanded">
-    <ComponentTreeNode v-for="item in data.children" :key="item.id" :data="item" :depth="depth + 1" :linked-list="[...linkedList, data.id]" @select="(id) => emit('select', id)" @mouseover="(id) => emit('mouseover', id, true)" @mouseleave="(id) => emit('mouseleave', id, false)" />
+    <ComponentTreeNode v-for="item in data.children" :key="item.id" :data="item" :depth="depth + 1" :linked-list="[...linkedList, data.id]" @select="(id) => emit('select', id)" @mouseenter="(id) => emit('mouseenter', id, true)" @mouseleave="(id) => emit('mouseleave', id, false)" />
   </template>
 </template>

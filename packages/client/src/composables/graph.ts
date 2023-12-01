@@ -255,10 +255,11 @@ function getEdge(modId: string, dep: string) {
 }
 
 function removeVerbosePath(path: string) {
-  return path.replace(/\?.*$/, '').replace(/\#.*$/, '')
+  // remove query, hash, and duplicate slash
+  return path.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(/\/{2,}/g, '/')
 }
 
-function checkIsVueStyle(path: string) {
+function isVueStyleFile(path: string) {
   // TODO: [check vue style file in graph] need consider edge case, let's leave it before someone report the issue
   return path.includes('vue&type=style')
 }
@@ -278,10 +279,14 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   const totalNode: Node[] = []
 
   modules.forEach((mod) => {
-    // skip vue style file, a Vue file will have 2 modules, one is script, one is style, we don't need style
-    if (checkIsVueStyle(mod.id))
+    // skip vue style file, a Vue file will have 2 modules(if has a style tag), one is script, one is style, we don't need style
+    if (isVueStyleFile(mod.id))
       return
-    const path = removeVerbosePath(mod.id)
+    mod.id = removeVerbosePath(mod.id)
+    // skip duplicate module
+    if (totalNode.some(node => node.id === mod.id))
+      return
+    const path = mod.id
     const pathSegments = path.split('/')
     const displayName = pathSegments.at(-1) ?? ''
     const displayPath = removeRootPath(path)
@@ -307,22 +312,26 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
 
     // remove vue style reference, e.g, a.vue -> a.vue?type=style
     // don't use `mod.deps.filter`, will save filter overhead(for performance)
-    const filteredDeps: string[] = []
+    const uniqueDeps: string[] = []
     mod.deps.forEach((dep) => {
-      if (checkIsVueStyle(dep))
+      if (isVueStyleFile(dep))
         return
-      filteredDeps.push(dep)
+      dep = removeVerbosePath(dep)
+      // skip duplicate dep
+      if (uniqueDeps.includes(dep))
+        return
+      uniqueDeps.push(dep)
       // save references
       if (!moduleReferences.has(dep))
         moduleReferences.set(dep, [])
       moduleReferences.get(dep)!.push({
-        path: mod.id,
-        displayPath: removeRootPath(removeVerbosePath(mod.id)),
+        path,
+        displayPath: removeRootPath(path),
         mod,
       })
       node.edges.push(getEdge(mod.id, dep))
     })
-    mod.deps = filteredDeps
+    mod.deps = uniqueDeps
     graphNodesTotal.value.push(node)
     graphNodesTotalMap.set(mod.id, node)
 
@@ -345,7 +354,7 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
 export interface DrawerData {
   name: string
   path: string
-  fullPath: string
+  displayPath: string
   refs: { path: string, displayPath: string }[]
   deps: { path: string, displayPath: string }[]
 }
@@ -391,8 +400,8 @@ export function updateGraphDrawerData(nodeId: string): DrawerData | undefined {
 
   graphDrawerData.value = {
     name: node.info.displayName,
-    path: node.info.displayPath,
-    fullPath: node.mod.id,
+    displayPath: node.info.displayPath,
+    path: node.mod.id,
     deps,
     refs,
   }
@@ -428,6 +437,7 @@ function recursivelyGetGraphNodeData(nodeId: string): GraphNodesTotalData[] {
     if (node)
       result.push(...recursivelyGetGraphNodeData(node.mod.id))
   })
-  return result
+  // unique result
+  return Array.from(new Set(result))
 }
 // #endregion

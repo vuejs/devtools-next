@@ -45,7 +45,7 @@ const keys = [
           />
         </span>
         <button text-gray-500 truncate hover="underline" text-left @click="_openInEditor(data!.path)">
-          {{ data?.path }}
+          {{ data?.displayPath }}
         </button>
       </div>
       <div
@@ -66,7 +66,7 @@ const keys = [
         </div>
       </div>
       <div p3>
-        <VueButton type="primary" @click="filterId = data!.fullPath">
+        <VueButton type="primary" @click="filterId = data!.path">
           Filter to this module
         </VueButton>
       </div>

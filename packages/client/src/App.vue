@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useDevToolsState } from '@vue-devtools-next/core'
+import { useDevToolsBridge, useDevToolsState } from '@vue-devtools-next/core'
 import { isInChromePanel } from '@vue-devtools-next/shared'
 
 // @TODO: fix browser extension cross-origin localStorage issue
@@ -13,6 +13,7 @@ const clientState = devtoolsClientState
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
 const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)
 const { toggle } = useToggleViewMode()
+const bridge = useDevToolsBridge()
 
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
@@ -29,6 +30,11 @@ watch(connected, (v) => {
   }
 }, {
   immediate: true,
+})
+
+useEventListener('keydown', (e) => {
+  if (e.code === 'KeyD' && e.altKey && e.shiftKey)
+    bridge.value.emit('toggle-panel')
 })
 </script>
 

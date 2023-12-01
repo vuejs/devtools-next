@@ -66,6 +66,8 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
       if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')
         resolve()
     })
+
+    bridge.on('toggle-panel', togglePanelVisible)
   })
 }
 

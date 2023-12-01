@@ -7,6 +7,7 @@ import Inspect from 'vite-plugin-inspect'
 import VueInspector from 'vite-plugin-vue-inspector'
 import { setupViteRPCServer } from '@vue-devtools-next/core'
 import { setupAssetsRPC, setupGraphRPC } from '@vue-devtools-next/core/server'
+import { bold, dim, green, yellow } from 'kolorist'
 import { DIR_CLIENT } from './dir'
 
 type DeepRequired<T> = {
@@ -16,6 +17,15 @@ type DeepRequired<T> = {
 function getVueDevtoolsPath() {
   const pluginPath = normalizePath(path.dirname(fileURLToPath(import.meta.url)))
   return pluginPath.replace(/\/dist$/, '/\/src')
+}
+
+const toggleComboKeysMap = {
+  option: process.platform === 'darwin' ? 'Option(⌥)' : 'Alt(⌥)',
+  meta: 'Command(⌘)',
+  shift: 'Shift(⇧)',
+}
+function normalizeComboKeyPrint(toggleComboKey: string) {
+  return toggleComboKey.split('-').map(key => toggleComboKeysMap[key] || key[0].toUpperCase() + key.slice(1)).join(dim('+'))
 }
 
 export interface VitePluginVueDevToolsOptions {
@@ -70,6 +80,12 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         rpc: inspect.api.rpc,
       }),
     })
+    const _printUrls = server.printUrls
+    server.printUrls = () => {
+      const keys = normalizeComboKeyPrint('option-shift-d')
+      _printUrls()
+      console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the VueDevTools`)}\n`)
+    }
   }
   const plugin = <PluginOption>{
     name: 'vite-plugin-vue-devtools',

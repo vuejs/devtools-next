@@ -84,7 +84,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     server.printUrls = () => {
       const keys = normalizeComboKeyPrint('option-shift-d')
       _printUrls()
-      console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the VueDevTools`)}\n`)
+      console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }
   }
   const plugin = <PluginOption>{

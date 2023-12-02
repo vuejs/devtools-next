@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueCheckbox, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
+import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
 
 const categories = categorizedTabs
 
@@ -45,12 +45,10 @@ function pinMove(name: string, delta: number) {
   pinnedTabs.value = newPinnedTabs
 }
 
+const clearOptionsConfirmState = ref(false)
 async function clearOptions() {
-  // eslint-disable-next-line no-alert
-  if (confirm('Are you sure you to reset all local settings & state? Devtools will reload.')) {
-    clearDevtoolsClientState()
-    window.location.reload()
-  }
+  clearDevtoolsClientState()
+  window.location.reload()
 }
 </script>
 
@@ -145,10 +143,18 @@ async function clearOptions() {
           Debug
         </h3>
         <div flex="~ gap-2">
-          <VueButton outlined type="warning" @click="clearOptions">
+          <VueButton outlined type="warning" @click="clearOptionsConfirmState = true">
             <div i-carbon-breaking-change />
             Reset Local Settings & State
           </VueButton>
+          <VueConfirm
+            v-model="clearOptionsConfirmState"
+            title="Clear Local Settings & State"
+            width="40%"
+            height="200px"
+            content="Are you sure you to reset all local settings & state? Devtools will reload."
+            @confirm="clearOptions"
+          />
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ global[StateKey] ??= {
   activeAppRecord: null,
   selectedComponentId: null,
   pluginBuffer: [],
+  tabs: [],
 }
 global[ContextKey] ??= {
   appRecord: null,
@@ -48,6 +49,16 @@ export const devtoolsState = new Proxy(global[StateKey], {
   deleteProperty(target, property) {
     delete target[property]
     return true
+  },
+})
+
+Object.defineProperty(devtoolsState.tabs, 'push', {
+  configurable: true,
+  value(...items) {
+    const result = Array.prototype.push.apply(this, items)
+    devtoolsState.tabs = this
+    apiHooks.callHook(DevToolsEvents.CUSTOM_TABS_UPDATED, this)
+    return result
   },
 })
 

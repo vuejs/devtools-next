@@ -1,6 +1,8 @@
 export enum BridgeEvents {
   // user app
   DEVTOOLS_STATE_UPDATED = 'devtools-state:updated',
+  // custom tabs
+  CUSTOM_TABS_UPDATED = 'custom-tabs:updated',
   // router info
   ROUTER_INFO_UPDATED = 'router-info:updated',
   // router

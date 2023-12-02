@@ -94,5 +94,6 @@ export default defineConfig(mergeConfigs([unoConfig, {
   safelist: [
     'state-value-literal',
     'state-value-string',
+    'i-carbon-ibm-watson-discovery',
   ],
 }]))

@@ -1,10 +1,12 @@
 import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
+import { target } from '@vue-devtools-next/shared'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
 import type { ScrollToComponentOptions, ToggleComponentInspectorOptions } from '../core/component-inspector/types'
 import type { TimelineEvent } from '../core/timeline'
 import type { RouterInfo } from '../core/router'
+import type { CustomTab } from '../core/custom-tab/types'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
@@ -20,6 +22,7 @@ export enum DevToolsEvents {
   SEND_INSPECTOR_STATE = 'inspector-state:send',
   VISIT_COMPONENT_TREE = 'component-tree:visit',
   ADD_TIMELINE_EVENT = 'timeline:add-event',
+  CUSTOM_TABS_UPDATED = 'custom-tabs:updated',
 }
 
 export interface DevToolsEvent {
@@ -51,10 +54,11 @@ export interface DevToolsEvent {
     filter: string
   }) => void
   [DevToolsEvents.ADD_TIMELINE_EVENT]: (payload: TimelineEvent) => void
+  [DevToolsEvents.CUSTOM_TABS_UPDATED]: (payload: CustomTab[]) => void
 }
 
-// export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
-export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = createHooks<DevToolsEvent>()
+export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
+// export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = createHooks<DevToolsEvent>()
 
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
@@ -93,4 +97,7 @@ export const on = {
     apiHooks.hook(DevToolsEvents.EDIT_INSPECTOR_STATE, fn)
   },
   editComponentState() {},
+  customTabsUpdated(fn: DevToolsEvent[DevToolsEvents.CUSTOM_TABS_UPDATED]) {
+    apiHooks.hook(DevToolsEvents.CUSTOM_TABS_UPDATED, fn)
+  },
 }

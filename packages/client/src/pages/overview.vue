@@ -1,10 +1,48 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue-devtools-next/shared'
-import { useDevToolsState } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
+import type { ComponentTreeNode } from 'vue-devtools-kit'
+import { VueButton } from '@vue-devtools-next/ui'
 
-import { VueBadge, VueButton } from '@vue-devtools-next/ui'
+import { version } from '../../../core/package.json'
+
+const bridgeRpc = useDevToolsBridgeRpc()
 
 const { vueVersion } = useDevToolsState()
+const pageCount = ref(1)
+const componentCount = ref(0)
+
+function normalizeComponentCount(data: ComponentTreeNode[]) {
+  let count = 0
+  for (const node of data) {
+    count++
+    if (node.children?.length)
+      count += normalizeComponentCount(node.children)
+  }
+  return count
+}
+
+onDevToolsClientConnected(() => {
+  // page count getter
+  bridgeRpc.getRouterInfo().then(({ data }) => {
+    pageCount.value = data?.routes?.length || 1
+  })
+  bridgeRpc.on.routerInfoUpdated((data) => {
+    pageCount.value = data?.routes?.length || 1
+  })
+
+  // component count getter
+  bridgeRpc.getInspectorTree<{ data: ComponentTreeNode[] }>({ inspectorId: 'components', filter: '' }).then(({ data }) => {
+    componentCount.value = normalizeComponentCount(data)
+  })
+  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[], inspectorId: string }>((data) => {
+    if (!data?.data?.length)
+      return
+    componentCount.value = normalizeComponentCount(data.data)
+  }, {
+    inspectorId: 'components',
+  })
+})
 </script>
 
 <template>
@@ -16,19 +54,12 @@ const { vueVersion } = useDevToolsState()
       <div flex="~ col" mt-20 items-center>
         <div flex="~" mt--10 items-center justify-center>
           <DevToolsLogo h-18 />
-          <button mr--16 mt--6>
-            <VueBadge
-              bg-green-400:10 text-green-400
-              title="preview"
-              v-text="'preview'"
-            />
-          </button>
         </div>
         <div mb6 mt--1 text-center text-sm flex="~ gap-1">
           <span op40>
             Vue DevTools
           </span>
-          <code op40>v0.0.1</code>
+          <code op40>v{{ version }}</code>
         </div>
       </div>
 
@@ -40,11 +71,11 @@ const { vueVersion } = useDevToolsState()
         </div>
         <RouterLink flex="~ col auto" to="/pages" replace min-w-40 p4 theme-card-lime>
           <div i-carbon-tree-view-alt text-3xl />
-          <div>100 pages</div>
+          <div>{{ pageCount }} pages</div>
         </RouterLink>
-        <RouterLink flex="~ col auto" to="/components" replace min-w-40 p4 theme-card-lime>
+        <RouterLink v-if="componentCount" flex="~ col auto" to="/components" replace min-w-40 p4 theme-card-lime>
           <div i-carbon-assembly-cluster text-3xl />
-          <div>3 components</div>
+          <div>{{ componentCount }} components</div>
         </RouterLink>
       </div>
       <div flex="~ gap-6 wrap" mt-5 items-center justify-center>

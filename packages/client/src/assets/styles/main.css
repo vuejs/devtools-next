@@ -86,6 +86,10 @@ body::-webkit-scrollbar {
   transition: none !important;
 }
 
+.v-popper--theme-tooltip{
+  --at-apply: $ui-z-max-override;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

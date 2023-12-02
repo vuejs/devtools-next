@@ -7,6 +7,9 @@ import { addTimelineLayer } from '../core/timeline'
 import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
+import { addCustomTab } from '../core/custom-tab'
+import type { CustomTab } from '../core/custom-tab/types'
+
 import { getVueInspector } from '../core/vue-inspector'
 import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
 import type { DevToolsEvent } from './on'
@@ -138,6 +141,10 @@ export class DevToolsPluginApi {
 
       apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, stringify({ ...parse(res), inspectorId }) as string)
     }
+  }
+
+  addCustomTab(tab: CustomTab) {
+    addCustomTab(tab)
   }
 
   addInspector(payload: AddInspectorApiPayload) {

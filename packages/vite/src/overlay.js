@@ -1,7 +1,7 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
 import { Bridge, prepareInjection, setDevToolsClientUrl } from '@vue-devtools-next/core'
 import { BROADCAST_CHANNEL_NAME } from '@vue-devtools-next/shared'
-import { devtools } from 'vue-devtools-kit'
+import { addCustomTab, devtools } from 'vue-devtools-kit'
 
 const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
 const body = document.getElementsByTagName('body')[0]
@@ -11,6 +11,18 @@ const devtoolsClientUrl = `${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
 
 devtools.init()
+
+// create vite inspect tab
+addCustomTab({
+  title: 'Vite Inspect',
+  name: 'vite-inspect',
+  icon: 'i-carbon-ibm-watson-discovery',
+  view: {
+    type: 'iframe',
+    src: `${window.location.origin}${vueDevToolsOptions.base || '/'}__inspect`,
+  },
+  category: 'advanced',
+})
 
 // create link stylesheet
 const link = document.createElement('link')

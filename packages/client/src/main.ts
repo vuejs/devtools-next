@@ -19,6 +19,7 @@ import Assets from '~/pages/assets.vue'
 import Graph from '~/pages/graph.vue'
 import Index from '~/pages/index.vue'
 import Settings from '~/pages/settings.vue'
+import CustomTabView from '~/pages/custom-tab-view.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -42,6 +43,7 @@ const routes = [
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },
   { path: '/settings', component: Settings },
+  { path: '/custom-tab-view', component: CustomTabView },
 ]
 
 // @TODO: find a better way to handle it

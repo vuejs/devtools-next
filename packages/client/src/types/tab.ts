@@ -1,18 +1,9 @@
 import type { MaybeRefOrGetter } from 'vue'
+import type { CustomTab } from 'vue-devtools-kit'
 
-type TabCategory =
-  | 'pinned'
-  | 'app'
-  | 'modules'
-  | 'advanced'
-
-export interface ModuleBuiltinTab {
-  name: string
-  icon?: string
-  title?: string
+export interface ModuleBuiltinTab extends Pick<CustomTab, 'name' | 'icon' | 'title' | 'category'> {
   order?: number
-  path?: string
-  category?: TabCategory
+  path: string
   show?: () => MaybeRefOrGetter<any>
   badge?: () => MaybeRefOrGetter<number | string | undefined>
   onClick?: () => void

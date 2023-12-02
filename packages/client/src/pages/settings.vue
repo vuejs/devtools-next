@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
 
-const categories = categorizedTabs
+const { categorizedTabs: categories } = useAllTabs()
 
 const { hiddenTabCategories, hiddenTabs, pinnedTabs } = toRefs(devtoolsClientState.value.tabSettings)
 const expandSidebar = computed({

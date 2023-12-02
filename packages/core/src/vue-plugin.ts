@@ -1,5 +1,6 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
+import type { CustomTab } from 'vue-devtools-kit'
 import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'
 
@@ -12,11 +13,13 @@ function initDevToolsState() {
   const connected = ref(false)
   const componentCount = ref(0)
   const vueVersion = ref('')
+  const tabs = ref<CustomTab[]>([])
 
   function init() {
     DevToolsRpc.getDevToolsState().then(({ data }) => {
       connected.value = data.connected
       vueVersion.value = data.vueVersion || ''
+      tabs.value = data.tabs
     })
     DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
@@ -30,6 +33,7 @@ function initDevToolsState() {
     vueVersion,
     connected,
     componentCount,
+    tabs,
   }
 }
 
@@ -46,7 +50,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

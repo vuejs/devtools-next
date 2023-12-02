@@ -9,7 +9,7 @@ const buttonMoreTabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = ref(false)
 
-const displayedTabs = categorizedTabs
+const { categorizedTabs: displayedTabs } = useAllTabs()
 </script>
 
 <template>

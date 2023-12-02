@@ -11,6 +11,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return JSON.stringify({
       connected: devtools.state.connected,
       vueVersion: devtools.state?.activeAppRecord?.version || '',
+      tabs: devtools.state.tabs,
     })
   })
 
@@ -100,6 +101,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
         vueVersion: payload?.activeAppRecord?.version || '',
         connected: payload.connected,
       }))
+    })
+
+    // custom tabs updated
+    devtools.context.api.on.customTabsUpdated((payload) => {
+      bridge.emit(BridgeEvents.CUSTOM_TABS_UPDATED, JSON.stringify(payload))
     })
 
     // router info updated

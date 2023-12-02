@@ -1,4 +1,4 @@
-import type { InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
+import type { CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
@@ -59,6 +59,11 @@ export class BridgeRpc {
         cb(parse(payload))
       })
     },
+    customTabsUpdated(cb: (payload: CustomTab[]) => void) {
+      devtoolsBridge.value.on(BridgeEvents.CUSTOM_TABS_UPDATED, (payload) => {
+        cb(parse(payload))
+      })
+    },
     routerInfoUpdated(cb: (payload: RouterInfo) => void) {
       devtoolsBridge.value.on(BridgeEvents.ROUTER_INFO_UPDATED, (payload) => {
         cb(parse(payload))
@@ -104,7 +109,7 @@ export class BridgeRpc {
   }
 
   static async getDevToolsState() {
-    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string } }>(bridgeRpcEvents.state)
+    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[] } }>(bridgeRpcEvents.state)
   }
 
   static async getTimelineLayer() {

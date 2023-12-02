@@ -165,13 +165,13 @@ const supportsPreview = computed(() => {
                 target="_blank"
               >
                 <VueIcon
-                  v-tooltip="'Open in DevTools'"
+                  v-tooltip="'Open in Browser'"
                   flex-none
                   :to="asset.publicPath"
                   icon="i-carbon-launch"
                   action
                   :border="false"
-                  title="Open in DevTools"
+                  title="Open in Browser"
                 />
               </RouterLink>
             </div>

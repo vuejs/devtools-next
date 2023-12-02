@@ -160,16 +160,20 @@ const supportsPreview = computed(() => {
                 :border="false"
                 @click="copy(asset.publicPath, 'assets-public-path')"
               />
-              <VueIcon
-                v-tooltip="'Open in browser'"
-                flex-none
+              <RouterLink
                 :to="asset.publicPath"
-                icon="i-carbon-launch"
-                action
                 target="_blank"
-                :border="false"
-                title="Open in browser"
-              />
+              >
+                <VueIcon
+                  v-tooltip="'Open in DevTools'"
+                  flex-none
+                  :to="asset.publicPath"
+                  icon="i-carbon-launch"
+                  action
+                  :border="false"
+                  title="Open in DevTools"
+                />
+              </RouterLink>
             </div>
           </td>
         </tr>

@@ -25,6 +25,8 @@ export function useAllTabs() {
     customTabs.value.forEach((tab) => {
       const currentTab: [string, Array<ModuleBuiltinTab | CustomTab>] | undefined = tabs.find(t => t[0] === tab.category)
       if (currentTab) {
+        if (currentTab[1].some(t => t.name === tab.name))
+          return
         currentTab[1].push({
           ...tab,
         })

@@ -167,7 +167,6 @@ const supportsPreview = computed(() => {
                 <VueIcon
                   v-tooltip="'Open in Browser'"
                   flex-none
-                  :to="asset.publicPath"
                   icon="i-carbon-launch"
                   action
                   :border="false"

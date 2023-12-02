@@ -41,7 +41,7 @@ const displayedTabs = categorizedTabs
           </template>
         </button>
         <template #popper>
-          DockingPanel
+          <DockingPanel />
         </template>
       </VueDropdown>
     </div>

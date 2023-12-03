@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
+import { isInChromePanel } from '@vue-devtools-next/shared'
+
+// #region view mode
+const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
+const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
+const { toggle: toggleViewMode } = useToggleViewMode()
+// #endregion
 
 const { categorizedTabs: categories } = useAllTabs()
 
@@ -126,12 +133,15 @@ async function clearOptions() {
           Appearance
         </h3>
         <VueCard p4 flex="~ col gap-2">
-          <div>
+          <div flex="~ gap2">
             <VueDarkToggle v-slot="{ isDark, toggle }">
               <VueButton outlined type="primary" @click="toggle">
                 <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark ? 'Dark' : 'Light' }}
               </VueButton>
             </VueDarkToggle>
+            <VueButton v-if="viewModeSwitchVisible" outlined type="primary" @click="toggleViewMode('overlay')">
+              Switch to Overlay Mode
+            </VueButton>
           </div>
           <div mx--2 my1 h-1px border="b base" op75 />
           <div class="flex items-center gap2 text-sm">

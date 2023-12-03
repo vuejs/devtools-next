@@ -59,15 +59,15 @@ onDevToolsClientConnected(() => {
 </script>
 
 <template>
-  <div h-screen>
+  <PanelGrids h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
           <InspectorTree v-for="(item) in tree" :key="item.id" v-model="selected" :data="item" />
         </div>
       </Pane>
-      <Pane flex flex-col overflow-y-scroll class="no-scrollbar">
-        <div p-2>
+      <Pane flex flex-col>
+        <div p-2 grow h-0 overflow-auto class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key + Date.now()"
@@ -77,5 +77,5 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
     </Splitpanes>
-  </div>
+  </PanelGrids>
 </template>

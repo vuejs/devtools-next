@@ -71,7 +71,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',
     'panel-grids-center': 'panel-grids flex flex-col h-full gap-2 items-center justify-center',
 
-    'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer bg-base hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
+    'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
 
     // component state
     'state-key': 'text-purple-700 dark:text-purple-300',

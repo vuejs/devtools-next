@@ -84,7 +84,7 @@ function toggleView() {
 </script>
 
 <template>
-  <div h-full of-auto>
+  <PanelGrids h-full of-auto block>
     <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
       <template #actions>
         <div flex-none flex="~ gap2 items-center" text-lg>
@@ -169,5 +169,5 @@ function toggleView() {
     >
       <AssetDetails v-if="selected" v-model="selected" />
     </VueDrawer>
-  </div>
+  </PanelGrids>
 </template>

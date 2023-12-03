@@ -94,7 +94,7 @@ watch(() => activeTimelineEvent.value.length, (l) => {
 </script>
 
 <template>
-  <div>
+  <PanelGrids>
     <Splitpanes>
       <!-- layer -->
       <Pane border="r base" size="20">
@@ -126,5 +126,5 @@ watch(() => activeTimelineEvent.value.length, (l) => {
         </div>
       </Pane>
     </Splitpanes>
-  </div>
+  </PanelGrids>
 </template>

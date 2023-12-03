@@ -206,7 +206,7 @@ watchDebounced(filterName, (v) => {
 </script>
 
 <template>
-  <div h-screen>
+  <PanelGrids h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div w-full px2 py2 flex gap2>
@@ -261,5 +261,5 @@ watchDebounced(filterName, (v) => {
         </div>
       </Pane>
     </Splitpanes>
-  </div>
+  </PanelGrids>
 </template>

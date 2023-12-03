@@ -6,16 +6,16 @@
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
+    "directory": "packages/browser-extension",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git",
-    "directory": "packages/browser-extension"
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "cross-env NODE_ENV=production tsup",
+    "dev": "cross-env NODE_ENV=development tsup --watch",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {

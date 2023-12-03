@@ -18,15 +18,17 @@ function devtoolsUserAppPipe(tabId: string | number) {
   const { devtools, userApp } = ports[tabId]
 
   function onDevtoolsMessage(message) {
-    // @TODO: dev only
-    console.log('%cdevtools -> userApp', 'color:#888;', message)
+    if (process.env.NODE_ENV === 'development')
+      console.log('%cdevtools -> userApp', 'color:#888;', message)
+
     userApp.postMessage(message)
   }
   devtools.onMessage.addListener(onDevtoolsMessage)
 
   function onUserAppMessage(message) {
-    // @TODO: dev only
-    console.log('%cuserApp -> devtools', 'color:#888;', message)
+    if (process.env.NODE_ENV === 'development')
+      console.log('%cuserApp -> devtools', 'color:#888;', message)
+
     devtools.postMessage(message)
   }
   userApp.onMessage.addListener(onUserAppMessage)

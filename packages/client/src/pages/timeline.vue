@@ -18,7 +18,7 @@ const selectedLayer = ref('')
 const selectedEvent = ref('')
 createCollapseContext('inspector-state')
 
-const activeTimelineEvent = computed(() => timelineEvent.value[selectedLayer.value] ?? [])
+const activeTimelineEvent = computed(() => timelineEvent.value[selectedLayer.value]?.map((item, index) => ({ ...item, id: `${index}` })) ?? [])
 const selectedEventInfo = computed(() => activeTimelineEvent.value?.[+(selectedEvent.value ?? 0)]?.data ?? {})
 const normalizedEventInfo = computed(() => {
   const info: InspectorState[] = []
@@ -106,8 +106,7 @@ watch(() => activeTimelineEvent.value.length, (l) => {
       <Pane border="r base" size="45">
         <div h-screen select-none overflow-scroll class="no-scrollbar">
           <template v-if="activeTimelineEvent.length">
-            <!-- @TODO: recycle scroller wrapper -->
-            <TimelineEvent v-for="(item, index) in activeTimelineEvent" :id="`${index}`" :key="index" v-model="selectedEvent" :data="item" />
+            <TimelineEvent v-model="selectedEvent" :data="activeTimelineEvent" />
           </template>
           <EmptyPane v-else icon="i-ic-baseline-inbox">
             No events

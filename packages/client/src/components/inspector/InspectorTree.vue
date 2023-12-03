@@ -1,30 +1,40 @@
 <script setup lang="ts">
 // eslint-disable-next-line ts/consistent-type-imports
 import type { InspectorNodeTag } from 'vue-devtools-kit'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
-const props = defineProps<{
+defineProps<{
   modelValue: string
   data: {
     label: string
     id: string
     tags?: InspectorNodeTag[]
-  }
+  }[]
 }>()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
-function select() {
-  emit('update:modelValue', props.data.id)
+function select(id: string) {
+  emit('update:modelValue', id)
 }
 </script>
 
 <template>
-  <div class="selectable-item" :class="{ active: modelValue === data.id }" @click="select">
-    <span>
-      {{ data.label }}
-    </span>
-    <InspectorNodeTag v-for="(item, index) in data.tags" :key="index" :tag="item" />
-  </div>
+  <RecycleScroller
+    v-slot="{ item }"
+    :items="data"
+    :min-item-size="32"
+    key-field="id"
+    page-mode
+  >
+    <div class="selectable-item" :class="{ active: modelValue === item.id }" @click="select(item.id)">
+      <span>
+        {{ item.label }}
+      </span>
+      <InspectorNodeTag v-for="(childItem, index) in item.tags" :key="index" :tag="childItem" />
+    </div>
+  </RecycleScroller>
 </template>

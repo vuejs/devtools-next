@@ -63,7 +63,7 @@ onDevToolsClientConnected(() => {
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <InspectorTree v-for="(item) in tree" :key="item.id" v-model="selected" :data="item" />
+          <InspectorTree v-model="selected" :data="tree" />
         </div>
       </Pane>
       <Pane flex flex-col>

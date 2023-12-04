@@ -268,6 +268,27 @@ export function removeRootPath(path: string) {
   return path.replace(projectRoot.value, '')
 }
 
+function determineNodeSize(depsLen: number) {
+  return 15 + Math.min(depsLen / 2, 8)
+}
+
+function getUniqueDeps(deps: string[], processEachDep?: (dep: string) => void) {
+  // remove vue style reference, e.g, a.vue -> a.vue?type=style, skip duplicate dep
+  // don't use `mod.deps.filter`, will save filter overhead(for performance)
+  const uniqueDeps: string[] = []
+  deps.forEach((dep) => {
+    if (isVueStyleFile(dep))
+      return
+    dep = removeVerbosePath(dep)
+    // skip duplicate dep
+    if (uniqueDeps.includes(dep))
+      return
+    uniqueDeps.push(dep)
+    processEachDep?.(dep)
+  })
+  return uniqueDeps
+}
+
 export function parseGraphRawData(modules: ModuleInfo[], root: string) {
   if (!modules)
     return
@@ -283,9 +304,19 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
     if (isVueStyleFile(mod.id))
       return
     mod.id = removeVerbosePath(mod.id)
-    // skip duplicate module
-    if (totalNode.some(node => node.id === mod.id))
+    // skip duplicate module, merge their deps
+    if (totalNode.some(node => node.id === mod.id)) {
+      const nodeData = modulesMap.get(mod.id)!
+      nodeData.node.size = determineNodeSize(nodeData.edges.length + mod.deps.length)
+      const edges: Edge[] = []
+      const uniqueDeps = getUniqueDeps(mod.deps, (dep) => {
+        edges.push(getEdge(mod.id, dep))
+      })
+      const incrementalDeps = uniqueDeps.filter(dep => !nodeData.mod.deps.includes(dep))
+      nodeData.mod.deps.push(...incrementalDeps)
+      totalEdges.push(...edges)
       return
+    }
     const path = mod.id
     const pathSegments = path.split('/')
     const displayName = pathSegments.at(-1) ?? ''
@@ -300,7 +331,7 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
         id: mod.id,
         label: displayName,
         group: path.match(/\.(\w+)$/)?.[1] || 'unknown',
-        size: 15 + Math.min(mod.deps.length / 2, 8),
+        size: determineNodeSize(mod.deps.length),
         shape: mod.id.includes('/node_modules/')
           ? 'hexagon'
           : mod.virtual
@@ -310,17 +341,7 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
       edges: [],
     }
 
-    // remove vue style reference, e.g, a.vue -> a.vue?type=style
-    // don't use `mod.deps.filter`, will save filter overhead(for performance)
-    const uniqueDeps: string[] = []
-    mod.deps.forEach((dep) => {
-      if (isVueStyleFile(dep))
-        return
-      dep = removeVerbosePath(dep)
-      // skip duplicate dep
-      if (uniqueDeps.includes(dep))
-        return
-      uniqueDeps.push(dep)
+    const uniqueDeps = getUniqueDeps(mod.deps, (dep) => {
       // save references
       if (!moduleReferences.has(dep))
         moduleReferences.set(dep, [])

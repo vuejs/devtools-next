@@ -8,7 +8,7 @@ export function stringifyReplacer(key: string) {
   // @TODO: need to check if it will cause any other issues
   if (key === 'compilerOptions')
     return
-  /* eslint-disable ts/no-invalid-this */
+
   // @ts-expect-error invalid this
   const val: unknown = this[key]
   // eslint-enable

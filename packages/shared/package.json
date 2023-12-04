@@ -28,6 +28,6 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4"
+    "@types/node": "^20.10.3"
   }
 }

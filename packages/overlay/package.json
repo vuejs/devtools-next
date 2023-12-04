@@ -35,11 +35,11 @@
     "vue-devtools-kit": "workspace:*"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.145",
-    "@types/node": "^20.9.4",
-    "@vitejs/plugin-vue": "^4.5.0",
+    "@iconify/json": "^2.2.152",
+    "@types/node": "^20.10.3",
+    "@vitejs/plugin-vue": "^4.5.1",
     "sass": "^1.69.5",
-    "vite": "^5.0.2",
-    "vue": "^3.3.8"
+    "vite": "^5.0.5",
+    "vue": "^3.3.10"
   }
 }

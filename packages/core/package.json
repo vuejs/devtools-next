@@ -43,10 +43,10 @@
     "pathe": "^1.1.1",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.7.42",
+    "vite-plugin-inspect": "^0.8.1",
     "vue-devtools-kit": "workspace:^"
   },
   "devDependencies": {
-    "vue": "^3.3.8"
+    "vue": "^3.3.10"
   }
 }

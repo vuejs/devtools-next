@@ -52,13 +52,13 @@
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
-    "@histoire/plugin-vue": "^0.17.5",
-    "@types/node": "^20.9.4",
-    "@unocss/reset": "^0.57.7",
-    "@vitejs/plugin-vue": "^4.5.0",
+    "@histoire/plugin-vue": "^0.17.6",
+    "@types/node": "^20.10.3",
+    "@unocss/reset": "^0.58.0",
+    "@vitejs/plugin-vue": "^4.5.1",
     "floating-vue": "2.0.0-beta.24",
-    "histoire": "^0.17.5",
-    "unocss": "^0.57.7",
-    "vite-plugin-dts": "^3.6.3"
+    "histoire": "^0.17.6",
+    "unocss": "^0.58.0",
+    "vite-plugin-dts": "^3.6.4"
   }
 }

@@ -91,4 +91,5 @@ components.d.ts
 
 packages/browser-extension/overlay/**/*
 packages/browser-extension/client/**/*
+packages/electron/client/**/*
 packages/vite/src/overlay/**/*

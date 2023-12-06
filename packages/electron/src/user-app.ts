@@ -11,6 +11,7 @@ const socket = createSocket(fullHost)
 
 devtools.init()
 
+console.log(2)
 const bridge = new Bridge({
   tracker(fn) {
     socket.on('vue-message', (data) => {
@@ -25,4 +26,5 @@ const bridge = new Bridge({
 socket.on('connect', () => {
   prepareInjection(bridge)
   socket.emit('vue-devtools-init')
+  console.log(3)
 })

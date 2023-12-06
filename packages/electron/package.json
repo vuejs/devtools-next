@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/electron",
+  "name": "vue-devtools-next",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -10,6 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "bin": {
     "vue-devtools-next": "./cli.mjs"
   },
@@ -17,9 +28,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild && tsup",
-    "dev": "unbuild && tsup --watch",
-    "prepublishOnly": "unbuild && pnpm build"
+    "build": "tsx scripts/build.ts",
+    "dev": "tsx scripts/build.ts --watch",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
@@ -32,6 +43,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.1",
+    "tsx": "^4.6.2",
     "unbuild": "^2.0.0",
     "vue": "^3.3.10"
   }

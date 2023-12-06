@@ -2,6 +2,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
+import { connect } from 'vue-devtools-next'
 
 // import App from './App.vue'
 import App from './App.preview.vue'
@@ -9,6 +10,9 @@ import Home from './pages/Home.vue'
 import Hello from './pages/Hello.vue'
 import Hey from './pages/Hey.vue'
 import './style.css'
+
+// connect to remote devtools
+connect('http://localhost', 8098)
 
 const pinia = createPinia()
 
@@ -41,6 +45,7 @@ const router = createRouter({
 app.use(router)
 app.use(pinia)
 
+console.log(4)
 // setTimeout(() => {
 app.mount('#app')
 // }, 2000)

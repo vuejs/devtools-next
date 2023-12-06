@@ -32,6 +32,9 @@ declare global {
   var __VUE_DEVTOOLS_BROWSER_EXTENSION_DETECTED__: boolean
   // vite client url
   var __VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__: string
+  // remote devtools option
+  var __VUE_DEVTOOLS_HOST__: string
+  var __VUE_DEVTOOLS_PORT__: number
 }
 
 export { }

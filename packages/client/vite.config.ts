@@ -12,13 +12,17 @@ export default defineConfig(mergeConfig(baseConfig, {
       enforce: 'post',
       async closeBundle() {
         // copy
-        const overlayFile = resolve(__dirname, './dist')
+        const clientFile = resolve(__dirname, './dist')
         fse.copySync(
-          overlayFile,
+          clientFile,
           resolve(__dirname, '../browser-extension/client'),
         )
         fse.copySync(
-          overlayFile,
+          clientFile,
+          resolve(__dirname, '../electron/client'),
+        )
+        fse.copySync(
+          clientFile,
           resolve(__dirname, '../vite/dist/client'),
         )
       },

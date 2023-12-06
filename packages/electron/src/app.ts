@@ -1,6 +1,9 @@
 import path from 'node:path'
 import { URL } from 'node:url'
 import { BrowserWindow, app } from 'electron'
+import { init as initServer } from './server'
+
+initServer()
 
 let mainWindow: BrowserWindow | null = null
 function createWindow() {

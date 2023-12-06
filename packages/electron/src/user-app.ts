@@ -9,9 +9,9 @@ const port = 8098
 const fullHost = `${host}:${port}`
 const socket = createSocket(fullHost)
 
+// @TODO: de-duplicate
 devtools.init()
 
-console.log(2)
 const bridge = new Bridge({
   tracker(fn) {
     socket.on('vue-message', (data) => {
@@ -26,5 +26,4 @@ const bridge = new Bridge({
 socket.on('connect', () => {
   prepareInjection(bridge)
   socket.emit('vue-devtools-init')
-  console.log(3)
 })

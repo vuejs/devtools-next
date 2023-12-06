@@ -1,19 +1,27 @@
+import io from 'socket.io-client'
 import { initDevTools } from '../client/devtools-panel'
 import { Bridge } from '../../core/src/bridge'
 
-initDevTools({
-  connect(cb) {
-    const bridge = new Bridge({
-      tracker(fn: any) {
-      },
-      trigger(data) {
-      },
-    })
+const port = 8098
+const socket = io(`http://localhost:${port}`)
 
-    cb(bridge)
-  },
-  reload(fn) {
-  },
+socket.on('vue-devtools-init', () => {
+  initDevTools({
+    connect(cb) {
+      const bridge = new Bridge({
+        tracker(fn: any) {
+          socket.on('vue-message', (data) => {
+            fn(data)
+          })
+        },
+        trigger(data) {
+          socket.emit('vue-message', data)
+        },
+      })
+
+      cb(bridge)
+    },
+    reload(fn) {
+    },
+  })
 })
-
-console.log('????')

@@ -3,6 +3,7 @@ import type { Options } from 'tsup'
 export default <Options>{
   entryPoints: [
     'src/client.ts',
+    'src/user-app.ts',
   ],
   esbuildOptions(options) {
     if (options.format === 'iife')
@@ -18,5 +19,5 @@ export default <Options>{
   clean: false,
   format: ['iife'],
   dts: true,
-  shims: false,
+  shims: true,
 }

@@ -3,7 +3,7 @@ import { Bridge, prepareInjection, setDevToolsClientUrl } from '@vue-devtools-ne
 import { BROADCAST_CHANNEL_NAME } from '@vue-devtools-next/shared'
 import { addCustomTab, devtools } from 'vue-devtools-kit'
 
-const overlayDir = '/@id/virtual:vue-devtools-path:overlay'
+const overlayDir = `${vueDevToolsOptions.base || '/'}@id/virtual:vue-devtools-path:overlay`
 const body = document.getElementsByTagName('body')[0]
 const head = document.getElementsByTagName('head')[0]
 

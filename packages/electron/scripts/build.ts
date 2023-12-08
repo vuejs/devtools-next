@@ -53,7 +53,7 @@ async function buildBundle() {
   })
 
   build({
-    entry: [resolve('./src/client.ts')],
+    entry: [resolve('./src/devtools.ts')],
     ...baseOptions,
     format: ['iife'],
   })

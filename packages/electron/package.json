@@ -1,0 +1,50 @@
+{
+  "name": "vue-devtools-next",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "directory": "packages/electron",
+    "type": "git",
+    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "vue-devtools-next": "./cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "dev": "tsx scripts/build.ts --watch",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/shared": "workspace:^",
+    "electron": "^28.0.0",
+    "execa": "^8.0.1",
+    "h3": "^1.9.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.1",
+    "tsx": "^4.6.2",
+    "unbuild": "^2.0.0",
+    "vue": "^3.3.10"
+  }
+}

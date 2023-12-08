@@ -65,3 +65,12 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
     },
   ]],
 ]
+
+export const viteOnlyTabs = [
+  'assets',
+  'graph',
+  'vite-inspect',
+]
+export function getBuiltinTab(viteDetected: boolean) {
+  return viteDetected ? builtinTab : JSON.parse(JSON.stringify(builtinTab)).map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
+}

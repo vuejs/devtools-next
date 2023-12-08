@@ -14,12 +14,14 @@ function initDevToolsState() {
   const componentCount = ref(0)
   const vueVersion = ref('')
   const tabs = ref<CustomTab[]>([])
+  const vitePluginDetected = ref(false)
 
   function init() {
     DevToolsRpc.getDevToolsState().then(({ data }) => {
       connected.value = data.connected
       vueVersion.value = data.vueVersion || ''
       tabs.value = data.tabs
+      vitePluginDetected.value = data.vitePluginDetected
     })
     DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
@@ -34,6 +36,7 @@ function initDevToolsState() {
     connected,
     componentCount,
     tabs,
+    vitePluginDetected,
   }
 }
 
@@ -50,7 +53,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

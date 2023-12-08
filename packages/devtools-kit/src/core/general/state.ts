@@ -14,6 +14,7 @@ global[StateKey] ??= {
   selectedComponentId: null,
   pluginBuffer: [],
   tabs: [],
+  vitePluginDetected: false,
 }
 global[ContextKey] ??= {
   appRecord: null,

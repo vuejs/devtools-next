@@ -7,6 +7,7 @@ const overlayDir = `${vueDevToolsOptions.base || '/'}@id/virtual:vue-devtools-pa
 const body = document.getElementsByTagName('body')[0]
 const head = document.getElementsByTagName('head')[0]
 
+window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
 const devtoolsClientUrl = `${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
 
@@ -40,7 +41,6 @@ head.appendChild(link)
 body.appendChild(script)
 
 // Used in the browser extension
-window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
 
 // @TODO: we might should move this to a separate file?

@@ -12,6 +12,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       connected: devtools.state.connected,
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       tabs: devtools.state.tabs,
+      vitePluginDetected: devtools.state.vitePluginDetected,
     })
   })
 

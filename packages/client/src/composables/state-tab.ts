@@ -21,12 +21,16 @@ export function useAllTabs() {
   const state = useDevToolsState()
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
   const allTabs = computed(() => {
-    const tabs = [...builtinTab]
+    const vitePluginDetected = state.vitePluginDetected.value
+    const tabs = [...getBuiltinTab(vitePluginDetected)]
     customTabs.value.forEach((tab) => {
       const currentTab: [string, Array<ModuleBuiltinTab | CustomTab>] | undefined = tabs.find(t => t[0] === tab.category)
       if (currentTab) {
         if (currentTab[1].some(t => t.name === tab.name))
           return
+        if (!vitePluginDetected && viteOnlyTabs.includes(tab.name))
+          return
+
         currentTab[1].push({
           ...tab,
         })

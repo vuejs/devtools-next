@@ -42,9 +42,9 @@
     "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.5.1",
+    "@vitejs/plugin-vue": "^4.5.2",
     "tsx": "^4.6.2",
     "unbuild": "^2.0.0",
-    "vue": "^3.3.10"
+    "vue": "^3.3.11"
   }
 }

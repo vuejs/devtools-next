@@ -45,17 +45,17 @@
     "vue": ">=3.0.0-0"
   },
   "dependencies": {
-    "@vueuse/components": "^10.6.1",
-    "@vueuse/core": "^10.6.1",
-    "@vueuse/integrations": "^10.6.1",
+    "@vueuse/components": "^10.7.0",
+    "@vueuse/core": "^10.7.0",
+    "@vueuse/integrations": "^10.7.0",
     "colord": "^2.9.3",
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.6",
-    "@types/node": "^20.10.3",
+    "@types/node": "^20.10.4",
     "@unocss/reset": "^0.58.0",
-    "@vitejs/plugin-vue": "^4.5.1",
+    "@vitejs/plugin-vue": "^4.5.2",
     "floating-vue": "2.0.0-beta.24",
     "histoire": "^0.17.6",
     "unocss": "^0.58.0",

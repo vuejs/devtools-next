@@ -47,6 +47,6 @@
     "vue-devtools-kit": "workspace:^"
   },
   "devDependencies": {
-    "vue": "^3.3.10"
+    "vue": "^3.3.11"
   }
 }

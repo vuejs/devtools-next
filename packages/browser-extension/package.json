@@ -23,7 +23,7 @@
     "@vue-devtools-next/shared": "workspace:^"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.5.1",
-    "vue": "^3.3.10"
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vue": "^3.3.11"
   }
 }

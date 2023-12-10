@@ -5,8 +5,24 @@ function detect(win: Window) {
   }
 
   function runDetect() {
-    // @TODO: check nuxt
-  // @ts-expect-error types
+    // 1. check Nuxt
+    // @ts-expect-error types
+    const nuxtDetected = !!(window.__NUXT__)
+
+    if (nuxtDetected) {
+      win.postMessage({
+        devtoolsEnabled: window.__VUE_DEVTOOLS_GLOBAL_HOOK__ && window.__VUE_DEVTOOLS_GLOBAL_HOOK__.enabled,
+        vueDetected: true,
+        nuxtDetected: true,
+        vitePluginDetected: !!window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__,
+        vitePluginClientUrl: window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__,
+      }, '*')
+
+      return
+    }
+
+    // 2. check Vue
+    // @ts-expect-error types
     const vueDetected = !!(window.__VUE__)
     if (vueDetected) {
       win.postMessage({

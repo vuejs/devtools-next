@@ -30,7 +30,7 @@ function connect() {
       connectionInfo.retryTimer = setTimeout(connect, 1000)
     })
     if (connectionInfo.count > 1)
-      connectionInfo.listeners.forEach(fn => port.onMessage.addListener(fn))
+      connectionInfo.listeners.forEach(fn => connectionInfo.port.onMessage.addListener(fn))
   }
   catch (e) {
     connectionInfo.disconnected = true

@@ -38,6 +38,15 @@ export function clearDevtoolsClientState() {
   devtoolsClientState.value = undefined
 }
 
+// #region split screen related
 const windowSize = useWindowSize()
 
 export const splitScreenAvailable = computed(() => windowSize.width.value > 1080)
+
+watch(() => devtoolsClientState.value.splitScreen.enabled, (enabled, o) => {
+  if (o && !enabled) {
+    // reset size
+    devtoolsClientState.value.splitScreen.size = [50, 50]
+  }
+})
+// #endregion

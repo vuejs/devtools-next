@@ -31,7 +31,7 @@ const keys = [
 </script>
 
 <template>
-  <VueDrawer v-model="show" :top="top" :close-outside="false" permanent content-blur>
+  <VueDrawer v-model="show" :top="top" :close-outside="false" permanent content-blur mount-to=".graph-body">
     <div class="w-300px" h-full of-auto>
       <div border-b border-base h-80px text-md p3 flex="~ col gap1">
         <span text-lg flex="~ gap2 items-center">

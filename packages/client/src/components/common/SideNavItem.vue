@@ -24,6 +24,8 @@ const isActive = computed(() => route.path.startsWith(tabPath.value))
 function onClick() {
   if ('onClick' in props.tab && props.tab.onClick)
     props.tab.onClick()
+  else if (props.target === 'side')
+    devtoolsClientState.value.splitScreen.view = props.tab.name
 }
 </script>
 

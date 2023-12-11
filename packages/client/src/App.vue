@@ -64,7 +64,7 @@ const splitScreenSize = computed({
           <RouterView />
         </Pane>
         <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" h-full class="of-auto!" :size="splitScreenSize[1]">
-          <div>hello world</div>
+          <SplitScreen />
         </Pane>
       </Splitpanes>
     </div>

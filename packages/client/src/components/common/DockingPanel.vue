@@ -13,6 +13,12 @@ const expandSidebar = computed({
   set: v => (devtoolsClientState.value.expandSidebar = v),
 })
 
+const splitScreenEnabled = computed({
+  get: () => devtoolsClientState.value.splitScreen.enabled,
+  set: v => (devtoolsClientState.value.splitScreen.enabled = v),
+})
+const isSplitScreenAvailable = splitScreenAvailable
+
 function refreshPage() {
   location.reload()
 }
@@ -34,6 +40,12 @@ function refreshPage() {
       </VueButton>
       <VueButton to="/settings" outlined type="primary">
         <div i-carbon-settings-adjust /> Settings
+      </VueButton>
+    </div>
+    <div v-if="isSplitScreenAvailable" px3 py2 border="b base" flex="~ gap-2">
+      <VueButton outlined type="primary" @click="splitScreenEnabled = !splitScreenEnabled">
+        <div i-carbon-split-screen />
+        {{ splitScreenEnabled ? 'Close Split Screen' : 'Split Screen' }}
       </VueButton>
     </div>
     <div px3 py2 flex="~ gap2">

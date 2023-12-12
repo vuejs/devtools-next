@@ -84,7 +84,7 @@ function toggleView() {
 </script>
 
 <template>
-  <PanelGrids h-full of-auto block>
+  <PanelGrids h-full of-auto block class="drawer-container relative">
     <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
       <template #actions>
         <div flex-none flex="~ gap2 items-center" text-lg>
@@ -162,7 +162,7 @@ function toggleView() {
     <VueDrawer
       :model-value="!!selected"
       :top="navbar"
-      permanent
+      permanent mount-to=".drawer-container"
       content-class="w120 text-sm" @update:model-value="(v) => {
         if (!v) selected = undefined
       }"

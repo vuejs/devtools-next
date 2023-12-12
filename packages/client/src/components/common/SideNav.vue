@@ -9,7 +9,7 @@ const buttonMoreTabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = ref(false)
 
-const { categorizedTabs: displayedTabs } = useAllTabs()
+const { enabledTabs } = useAllTabs()
 </script>
 
 <template>
@@ -50,7 +50,7 @@ const { categorizedTabs: displayedTabs } = useAllTabs()
       flex="~ auto col gap-0.5 items-center" w-full p1 class="no-scrollbar"
       :class="sidebarExpanded ? '' : 'of-x-hidden of-y-auto'"
     >
-      <template v-for="[name, tabs], idx of displayedTabs.filter(([{ hidden }, items]) => items.length && !hidden)" :key="name">
+      <template v-for="[name, tabs], idx of enabledTabs" :key="name">
         <!-- if is not the first nonempty list, render the top divider -->
         <div v-if="idx" my1 h-1px w-full border="b base" />
         <SideNavItem

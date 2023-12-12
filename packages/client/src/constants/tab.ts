@@ -71,6 +71,8 @@ export const viteOnlyTabs = [
   'graph',
   'vite-inspect',
 ]
-export function getBuiltinTab(viteDetected: boolean) {
-  return viteDetected ? builtinTab : JSON.parse(JSON.stringify(builtinTab)).map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
+export function getBuiltinTab(viteDetected: boolean): [string, ModuleBuiltinTab[]][] {
+  return viteDetected
+    ? builtinTab
+    : deepClone(builtinTab).map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }

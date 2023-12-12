@@ -17,6 +17,8 @@ export interface CategorizedCategory {
   hidden: boolean
 }
 
+export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
+
 export function useAllTabs() {
   const state = useDevToolsState()
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
@@ -49,7 +51,7 @@ export function useAllTabs() {
   const categorizedTabs = computed(() => {
     const { hiddenTabCategories, hiddenTabs, pinnedTabs } = devtoolsClientState.value.tabSettings
     // TODO: custom tabs
-    const tabs = allTabs.value.reduce<[CategorizedCategory, CategorizedTab[]][]>((prev, [category, tabs]) => {
+    const tabs = allTabs.value.reduce<CategorizedTabs>((prev, [category, tabs]) => {
       const data: [CategorizedCategory, CategorizedTab[]] = [{ hidden: false, name: category }, []]
       let hiddenCount = 0
       tabs.forEach((tab) => {
@@ -75,6 +77,17 @@ export function useAllTabs() {
     tabs[0][1].sort((a, b) => pinnedTabs.indexOf(a.name) - pinnedTabs.indexOf(b.name))
     return tabs
   })
+  const enabledTabs = computed(() => {
+    return categorizedTabs.value.reduce<CategorizedTabs>((prev, [meta, tabs]) => {
+      if (meta.hidden)
+        return prev
+      const filtered = tabs.filter(t => !t.hidden)
+      if (filtered.length)
+        prev.push([meta, filtered])
+      return prev
+    }, [])
+  })
+
   const bridgeRpc = useDevToolsBridgeRpc()
   onDevToolsClientConnected(() => {
     bridgeRpc.on.customTabsUpdated((data) => {
@@ -82,5 +95,5 @@ export function useAllTabs() {
     })
   })
 
-  return { categorizedTabs, flattenedTabs }
+  return { categorizedTabs, flattenedTabs, enabledTabs }
 }

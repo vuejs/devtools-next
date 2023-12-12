@@ -2,6 +2,7 @@
 import type { Ref } from 'vue'
 import { useDevToolsBridge, useDevToolsState } from '@vue-devtools-next/core'
 import { isInChromePanel } from '@vue-devtools-next/shared'
+import { Pane, Splitpanes } from 'splitpanes'
 
 // @TODO: fix browser extension cross-origin localStorage issue
 useColorMode()
@@ -36,6 +37,13 @@ useEventListener('keydown', (e) => {
   if (e.code === 'KeyD' && e.altKey && e.shiftKey)
     bridge.value.emit('toggle-panel')
 })
+
+const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
+const isSplitScreenAvailable = splitScreenAvailable
+const splitScreenSize = computed({
+  get: () => clientState.value.splitScreen.size,
+  set: v => clientState.value.splitScreen.size = v,
+})
 </script>
 
 <template>
@@ -49,7 +57,16 @@ useEventListener('keydown', (e) => {
       h-full h-screen of-hidden font-sans bg-base
     >
       <SideNav v-if="!isUtilityView" of-x-hidden of-y-auto />
-      <RouterView />
+      <Splitpanes
+        @resize="splitScreenSize = $event.map((v) => v.size)"
+      >
+        <Pane h-full class="of-auto!" min-size="10" :size="splitScreenSize[0]">
+          <RouterView />
+        </Pane>
+        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" h-full class="of-auto!" :size="splitScreenSize[1]">
+          <SplitScreen />
+        </Pane>
+      </Splitpanes>
     </div>
   </main>
 </template>

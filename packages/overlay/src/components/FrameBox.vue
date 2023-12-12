@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, watchOnce } from '@vueuse/core'
 
+import type { Bridge } from '@vue-devtools-next/core'
 import { useFrameState } from '~/composables'
 import { PANEL_MAX, PANEL_MIN } from '~/constants'
 
@@ -18,17 +19,18 @@ const props = defineProps<{
   }
   viewMode: 'xs' | 'default' | 'fullscreen'
 
-  minimizedPanelInteractive: number
+  bridge?: InstanceType<typeof Bridge>
 }>()
 
 const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
 
-watchEffect(() => {
-  updateState({
-    minimizePanelInactive: props.minimizedPanelInteractive,
-  })
+watchOnce(() => props.bridge, (bridge) => {
+  if (!bridge)
+    return
+  bridge.on('update-minimize-panel-inactive', v => updateState({ minimizePanelInactive: v }))
+  bridge.on('update-close-on-click-outside', v => updateState({ closeOnOutsideClick: v }))
 })
 
 watchEffect(() => {

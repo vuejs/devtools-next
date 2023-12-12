@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
 import { target } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
-import { useIframe, usePanelVisible, usePosition } from '~/composables'
+import { useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
 
@@ -36,11 +36,12 @@ target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
 }
 
-const minimizedPanelInteractive = ref(0)
+const bridgeRef = shallowRef<InstanceType<typeof Bridge>>()
+const { updateState, state } = useFrameState()
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
-    const bridge = new Bridge({
+    const bridge = bridgeRef.value = new Bridge({
       tracker(fn) {
         if (!overlayVisible.value)
           return
@@ -69,9 +70,10 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
     })
 
     bridge.on('toggle-panel', togglePanelVisible)
-
-    bridge.on('update-minimize-panel-inactive', (v: number) => {
-      minimizedPanelInteractive.value = v
+    bridge.on('update-show-floating-panel', (v) => {
+      updateState({
+        preferShowFloatingPanel: v,
+      })
     })
   })
 }
@@ -98,7 +100,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 
 <template>
   <div
-    v-show="overlayVisible"
+    v-show="state.preferShowFloatingPanel ? overlayVisible : panelVisible"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,
@@ -146,7 +148,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       :style="iframeStyle" :is-dragging="isDragging" :client="{
         close: closePanel,
         getIFrame: getIframe,
-      }" :view-mode="panelState.viewMode" :minimized-panel-interactive="minimizedPanelInteractive"
+      }" :view-mode="panelState.viewMode" :bridge="bridgeRef"
     />
   </div>
 </template>

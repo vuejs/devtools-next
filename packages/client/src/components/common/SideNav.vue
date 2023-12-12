@@ -5,17 +5,32 @@ const showDocking = ref(false)
 const showMoreTabs = ref(false)
 const panel = ref()
 const buttonDocking = ref<HTMLButtonElement>()
-const buttonMoreTabs = ref<HTMLButtonElement>()
+const Tabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
-const sidebarScrollable = ref(false)
+const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSidebar)
 
-const { enabledTabs } = useAllTabs()
+const { enabledTabs, flattenedTabs } = useAllTabs()
+
+const ITEM_HEIGHT = 45
+const { height: windowHeight } = useWindowSize()
+const containerCapacity = computed(() => {
+  const containerHeight = windowHeight.value - 130
+  return Math.max(0, Math.floor(containerHeight / ITEM_HEIGHT))
+})
+const inlineTabs = computed(() => flattenedTabs.value.slice(0, containerCapacity.value))
+const overflowTabs = computed(() => flattenedTabs.value.slice(containerCapacity.value))
+const categorizedInlineTabs = getCategorizedTabs(inlineTabs, enabledTabs)
+const categorizedOverflowTabs = getCategorizedTabs(overflowTabs, enabledTabs)
+
+const displayedTabs = computed(() => (sidebarScrollable.value || sidebarExpanded.value)
+  ? enabledTabs.value
+  : categorizedInlineTabs.value)
 </script>
 
 <template>
   <div
-    border="r base" flex="~ col"
-    z-100 h-full items-start of-hidden bg-base
+    border="r base" flex="~ col items-start"
+    z-100 h-full of-hidden bg-base
   >
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
@@ -50,7 +65,7 @@ const { enabledTabs } = useAllTabs()
       flex="~ auto col gap-0.5 items-center" w-full p1 class="no-scrollbar"
       :class="sidebarExpanded ? '' : 'of-x-hidden of-y-auto'"
     >
-      <template v-for="[name, tabs], idx of enabledTabs" :key="name">
+      <template v-for="[name, tabs], idx of displayedTabs" :key="name">
         <!-- if is not the first nonempty list, render the top divider -->
         <div v-if="idx" my1 h-1px w-full border="b base" />
         <SideNavItem
@@ -67,6 +82,32 @@ const { enabledTabs } = useAllTabs()
       :flex="`~ items-center gap-1 ${sidebarExpanded ? '' : 'none col'}`"
       border="t base" sticky bottom-0 w-full p1 bg-base
     >
+      <VueDropdown
+        v-if="overflowTabs.length && !sidebarScrollable && !sidebarExpanded" placement="left-end"
+        :distance="6"
+      >
+        <button
+          flex="~"
+          hover="bg-active" relative
+          h-10 w-10 select-none items-center justify-center rounded-xl p1 text-secondary
+          exact-active-class="!text-primary bg-active"
+        >
+          <TabIcon
+            text-xl
+            icon="i-carbon-overflow-menu-vertical" title="More tabs" :show-title="false"
+          />
+          <div
+            absolute bottom-0 right-0 h-4 w-4 rounded-full text-9px
+            flex="~ items-center justify-center"
+            border="~ base"
+          >
+            <span translate-y-0.5px>{{ overflowTabs.length }}</span>
+          </div>
+        </button>
+        <template #popper>
+          <TabsGrid :categories="categorizedOverflowTabs" max-w-80 target="main" />
+        </template>
+      </VueDropdown>
       <SideNavItem
         :minimized="!sidebarExpanded"
         :tab="{

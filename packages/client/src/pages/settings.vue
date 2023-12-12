@@ -15,6 +15,10 @@ const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,
   set: v => (devtoolsClientState.value.expandSidebar = v),
 })
+const scrollableSidebar = computed({
+  get: () => devtoolsClientState.value.scrollableSidebar,
+  set: v => (devtoolsClientState.value.scrollableSidebar = v),
+})
 
 function toggleTab(name: string, v: boolean) {
   if (v)
@@ -147,6 +151,10 @@ async function clearOptions() {
           <div class="flex items-center gap2 text-sm">
             <VueCheckbox v-model="expandSidebar" />
             <span op75>Expand Sidebar</span>
+          </div>
+          <div class="flex items-center gap2 text-sm">
+            <VueCheckbox v-model="scrollableSidebar" />
+            <span op75>Scrollable Sidebar</span>
           </div>
         </VueCard>
         <h3 mt2 text-lg>

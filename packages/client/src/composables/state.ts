@@ -8,6 +8,7 @@ export const devtoolsClientState: RemovableRef<{
   graphSettings: GraphSettings
   tabSettings: TabSettings
   expandSidebar: boolean
+  scrollableSidebar: boolean
   splitScreen: {
     enabled: boolean
     view: string
@@ -32,6 +33,7 @@ export const devtoolsClientState: RemovableRef<{
     size: [50, 50],
   },
   expandSidebar: false,
+  scrollableSidebar: true,
 }, { mergeDefaults: true })
 
 export function clearDevtoolsClientState() {

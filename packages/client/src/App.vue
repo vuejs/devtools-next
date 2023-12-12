@@ -58,12 +58,13 @@ const splitScreenSize = computed({
     >
       <SideNav v-if="!isUtilityView" of-x-hidden of-y-auto />
       <Splitpanes
+        h-full of-hidden
         @resize="splitScreenSize = $event.map((v) => v.size)"
       >
         <Pane h-full class="of-auto!" min-size="10" :size="splitScreenSize[0]">
           <RouterView />
         </Pane>
-        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" h-full class="of-auto!" :size="splitScreenSize[1]">
+        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" relative h-full class="of-auto!" :size="splitScreenSize[1]">
           <SplitScreen />
         </Pane>
       </Splitpanes>

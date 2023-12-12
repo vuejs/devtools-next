@@ -5,6 +5,7 @@ const showDocking = ref(false)
 const showMoreTabs = ref(false)
 const panel = ref()
 const buttonDocking = ref<HTMLButtonElement>()
+const buttonMoreTabs = ref<HTMLButtonElement>()
 const Tabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSidebar)
@@ -25,6 +26,19 @@ const categorizedOverflowTabs = getCategorizedTabs(overflowTabs, enabledTabs)
 const displayedTabs = computed(() => (sidebarScrollable.value || sidebarExpanded.value)
   ? enabledTabs.value
   : categorizedInlineTabs.value)
+
+onClickOutside(
+  panel,
+  (e) => {
+    if (buttonDocking.value && e.composedPath().includes(buttonDocking.value))
+      return
+    if (buttonMoreTabs.value && e.composedPath().includes(buttonMoreTabs.value))
+      return
+    showDocking.value = false
+    showMoreTabs.value = false
+  },
+  { detectIframe: true },
+)
 </script>
 
 <template>
@@ -87,7 +101,7 @@ const displayedTabs = computed(() => (sidebarScrollable.value || sidebarExpanded
         :distance="6"
       >
         <button
-          flex="~"
+          ref="buttonMoreTabs" flex="~"
           hover="bg-active" relative
           h-10 w-10 select-none items-center justify-center rounded-xl p1 text-secondary
           exact-active-class="!text-primary bg-active"

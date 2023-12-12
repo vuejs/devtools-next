@@ -19,6 +19,11 @@ const bridge = useDevToolsBridge()
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
 
+watchEffect(() => {
+  const scale = devtoolsClientState.value.scale
+  document.body.style.fontSize = `${scale * 15}px`
+})
+
 watch(connected, (v) => {
   if (v) {
     router.replace(clientState.value.isFirstVisit ? '/' : clientState.value.route)
@@ -36,6 +41,10 @@ watch(connected, (v) => {
 useEventListener('keydown', (e) => {
   if (e.code === 'KeyD' && e.altKey && e.shiftKey)
     bridge.value.emit('toggle-panel')
+})
+
+watchEffect(() => {
+  bridge.value.emit('update-minimize-panel-inactive', devtoolsClientState.value.minimizePanelInteractive)
 })
 
 const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)

@@ -17,11 +17,19 @@ const props = defineProps<{
     // } | undefined
   }
   viewMode: 'xs' | 'default' | 'fullscreen'
+
+  minimizedPanelInteractive: number
 }>()
 
 const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
+
+watchEffect(() => {
+  updateState({
+    minimizePanelInactive: props.minimizedPanelInteractive,
+  })
+})
 
 watchEffect(() => {
   if (!container.value)

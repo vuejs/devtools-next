@@ -36,6 +36,7 @@ target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
 }
 
+const minimizedPanelInteractive = ref(0)
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
@@ -68,6 +69,10 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
     })
 
     bridge.on('toggle-panel', togglePanelVisible)
+
+    bridge.on('update-minimize-panel-inactive', (v: number) => {
+      minimizedPanelInteractive.value = v
+    })
   })
 }
 
@@ -141,7 +146,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       :style="iframeStyle" :is-dragging="isDragging" :client="{
         close: closePanel,
         getIFrame: getIframe,
-      }" :view-mode="panelState.viewMode"
+      }" :view-mode="panelState.viewMode" :minimized-panel-interactive="minimizedPanelInteractive"
     />
   </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { VueButton, VueDarkToggle, VueIcon } from '@vue-devtools-next/ui'
+import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue-devtools-next/ui'
 import { isInChromePanel } from '@vue-devtools-next/shared'
+import { useDevToolsState } from '@vue-devtools-next/core'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -22,6 +23,14 @@ const isSplitScreenAvailable = splitScreenAvailable
 function refreshPage() {
   location.reload()
 }
+
+const devtoolsState = useDevToolsState()
+const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
+  label: app.name + (app.version ? ` (${app.version})` : ''),
+  value: app.id,
+})))
+
+const activeAppRecords = ref(appRecords.value[0].value)
 </script>
 
 <template>
@@ -49,6 +58,7 @@ function refreshPage() {
       </VueButton>
     </div>
     <div px3 py2 flex="~ gap2">
+      <VueSelect v-model="activeAppRecords" :options="appRecords" placeholder="Toggle App" :button-props="{ outlined: true, type: 'primary' }" />
       <VueButton outlined type="primary" @click="refreshPage">
         Refresh Page
       </VueButton>

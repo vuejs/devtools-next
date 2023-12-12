@@ -9,7 +9,7 @@ const appRecordInfo = target.__VUE_DEVTOOLS_APP_RECROD_INFO__ ??= {
 
 function getAppRecordName(app: VueAppInstance['appContext']['app'], fallbackName: string) {
   if (app._component)
-    return app._component.name!
+    return app._component.name! || `App ${fallbackName}`
   return `App ${fallbackName}`
 }
 

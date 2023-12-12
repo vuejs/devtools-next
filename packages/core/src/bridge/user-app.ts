@@ -13,6 +13,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       tabs: devtools.state.tabs,
       vitePluginDetected: devtools.state.vitePluginDetected,
+      appRecords: devtools.state.appRecords.map(item => ({
+        id: item.id,
+        name: item.name,
+        version: item.version,
+      })),
     })
   })
 

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { VClosePopper as vClosePopper } from 'floating-vue'
 import VueDropdown from './Dropdown.vue'
 import VueButton from './Button.vue'
+import type { ButtonProps } from './Button.vue'
 
 const props = withDefaults(defineProps<{
   modelValue: K
@@ -10,10 +11,13 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   autoClose?: boolean
   disabled?: boolean
+  buttonProps?: ButtonProps
 }>(), {
   placeholder: 'Select...',
   autoClose: true,
   disabled: false,
+  buttonClass: '',
+  buttonProps: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -27,7 +31,13 @@ const value = computed({
 </script>
 
 <template>
-  <VueDropdown :label="placeholder" :disabled="disabled">
+  <VueDropdown
+    :label="placeholder"
+    v-bind="{
+      buttonProps,
+      disabled,
+    }"
+  >
     <template #popper>
       <div class="m1 flex flex-col min-w-140px w-auto">
         <VueButton

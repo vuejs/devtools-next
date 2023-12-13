@@ -399,37 +399,6 @@ importers:
         specifier: ^20.10.4
         version: 20.10.4
 
-  packages/simple:
-    dependencies:
-      vue:
-        specifier: ^3.3.11
-        version: 3.3.11(typescript@5.3.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^4.5.2
-        version: 4.5.2(vite@5.0.7)(vue@3.3.11)
-      sass:
-        specifier: ^1.69.5
-        version: 1.69.5
-      serve:
-        specifier: ^14.2.1
-        version: 14.2.1
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-      vite:
-        specifier: ^5.0.7
-        version: 5.0.7(@types/node@20.10.4)(sass@1.69.5)
-      vite-plugin-inspect:
-        specifier: ^0.8.1
-        version: 0.8.1(rollup@3.28.1)(vite@5.0.7)
-      vite-plugin-vue-devtools:
-        specifier: workspace:*
-        version: link:../vite
-      vue-devtools-next:
-        specifier: workspace:*
-        version: link:../electron
-
   packages/ui:
     dependencies:
       '@vueuse/components':
@@ -8787,7 +8756,7 @@ packages:
       rollup: ^3.25
       typescript: ^4.5 || ^5.0
     dependencies:
-      magic-string: 0.30.3
+      magic-string: 0.30.5
       rollup: 3.28.1
       typescript: 5.3.3
     optionalDependencies:

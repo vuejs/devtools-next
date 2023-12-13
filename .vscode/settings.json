@@ -2,7 +2,7 @@
   "eslint.experimental.useFlatConfig": true,
   "prettier.enable": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll": true
   },
   "editor.formatOnSave": false,
   // Silent the stylistic rules in you IDE, but still auto fix them

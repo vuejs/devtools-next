@@ -133,6 +133,10 @@ export class BridgeRpc {
     return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.openInEditor, JSON.stringify(payload))
   }
 
+  static async toggleApp(id: string) {
+    return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.toggleApp, id)
+  }
+
   // assets
   static getStaticAssets() {
     return devtoolsBridge.viteRpc!.api!.getStaticAssets()

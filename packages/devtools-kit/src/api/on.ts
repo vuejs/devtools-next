@@ -101,3 +101,5 @@ export const on = {
     apiHooks.hook(DevToolsEvents.CUSTOM_TABS_UPDATED, fn)
   },
 }
+
+export const clear = apiHooks.removeAllHooks.bind(apiHooks)

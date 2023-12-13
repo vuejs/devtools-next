@@ -95,7 +95,7 @@ export interface AppRecord {
   types?: Record<string, string | symbol>
   instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
-  api?: unknown
+  api?: PluginApi
 }
 
 export interface DevToolsState {

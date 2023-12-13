@@ -95,6 +95,12 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return JSON.stringify(matched)
   })
 
+  // toggle app
+  bridgeRpcCore.on(bridgeRpcEvents.toggleApp, async (id) => {
+    await devtools.context.api.toggleApp(id!)
+    return JSON.stringify({})
+  })
+
   bridge.on(BridgeEvents.APP_CONNECTED, () => {
     bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
       vueVersion: devtools.state?.activeAppRecord?.version || '',

@@ -43,14 +43,19 @@ const router = createRouter({
   routes,
 })
 
+const router2 = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
 app.use(router)
 app.use(pinia)
 
 // setTimeout(() => {
 // }, 2000)
 
-app2.use(router)
-// app.use(pinia)
+app2.use(router2)
+app2.use(pinia)
 app2.mount('#app2')
 
 app.mount('#app')

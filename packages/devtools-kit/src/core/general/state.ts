@@ -7,6 +7,16 @@ import { RouterKey, devtoolsRouterInfo, normalizeRouterInfo } from '../router'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const ContextKey = '__VUE_DEVTOOLS_CONTEXT__'
+const DefaultContext = {
+  appRecord: null,
+  api: null,
+  inspector: [],
+  timelineLayer: [],
+  routerInfo: {},
+  router: null,
+  activeInspectorTreeId: '',
+}
+
 global[StateKey] ??= {
   connected: false,
   appRecords: [],
@@ -16,15 +26,9 @@ global[StateKey] ??= {
   tabs: [],
   vitePluginDetected: false,
 }
-global[ContextKey] ??= {
-  appRecord: null,
-  api: null,
-  inspector: [],
-  timelineLayer: [],
-  routerInfo: {},
-  router: null,
-  activeInspectorTreeId: '',
-}
+
+// @TODO: use deepClone instead
+global[ContextKey] ??= JSON.parse(JSON.stringify(DefaultContext))
 
 export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
@@ -68,6 +72,9 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
     if (property === 'router')
       return global[RouterKey]
 
+    else if (property === 'clear')
+      return clearDevToolsContext
+
     return global[ContextKey][property]
   },
 }) as unknown as {
@@ -87,4 +94,12 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
   routerInfo: RouterInfo
   router: Router
   activeInspectorTreeId: string
+  clear: () => void
+}
+
+function clearDevToolsContext() {
+  // @ts-expect-error missing type
+  global[ContextKey].api.clear()
+  // @TODO: use deepClone instead
+  global[ContextKey] = JSON.parse(JSON.stringify(DefaultContext))
 }

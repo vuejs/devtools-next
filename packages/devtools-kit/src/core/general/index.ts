@@ -36,6 +36,7 @@ export function initDevTools() {
       },
     ]
 
+    // @TODO: use toggle app record instead
     if (devtoolsState.appRecords.length === 1) {
       await registerComponentsDevTools(app)
       // set first app as default record
@@ -43,11 +44,11 @@ export function initDevTools() {
       // devtoolsState.connected = true
       // mark vue app as connected
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
+      registerPlugin({
+        app,
+        api,
+      })
     }
-    registerPlugin({
-      app,
-      api,
-    })
   })
 
   subscribeDevToolsHook()

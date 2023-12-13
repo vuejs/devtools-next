@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue-devtools-next/ui'
 import { isInChromePanel } from '@vue-devtools-next/shared'
-import { useDevToolsState } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
 const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
 const { toggle: toggleViewMode } = useToggleViewMode()
 // #endregion
+
+const bridgeRpc = useDevToolsBridgeRpc()
 
 const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,
@@ -31,6 +33,10 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
 })))
 
 const activeAppRecords = ref(appRecords.value[0].value)
+
+watch(activeAppRecords, (id) => {
+  bridgeRpc.toggleApp(`${id}`)
+})
 </script>
 
 <template>

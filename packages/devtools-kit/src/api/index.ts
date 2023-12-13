@@ -6,6 +6,7 @@ import type { TimelineEvent } from '../core/timeline'
 import { addTimelineLayer } from '../core/timeline'
 import { StateEditor } from '../core/component/state/editor'
 import { openInEditor } from '../core/open-in-editor'
+import { toggleAppRecord } from '../core/general/app-record'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { addCustomTab } from '../core/custom-tab'
 import type { CustomTab } from '../core/custom-tab/types'
@@ -13,15 +14,21 @@ import type { CustomTab } from '../core/custom-tab/types'
 import { getVueInspector } from '../core/vue-inspector'
 import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
 import type { DevToolsEvent } from './on'
-import { DevToolsEvents, apiHooks, on } from './on'
+import { DevToolsEvents, apiHooks, clear, on } from './on'
 
 export { DevToolsEvents, apiHooks } from './on'
 export * from './plugin'
 
 export class DevToolsPluginApi {
   public on: typeof on
+  public clear: typeof clear
   constructor() {
     this.on = on
+    this.clear = clear
+  }
+
+  toggleApp(id: string) {
+    return toggleAppRecord(id)
   }
 
   addTimelineEvent(payload: TimelineEvent) {
@@ -103,6 +110,7 @@ export class DevToolsPluginApi {
 
     // @ts-expect-error TODO: types
     const state = _payload.state
+
     delete state.instance
     return stringify(state) as string
   }

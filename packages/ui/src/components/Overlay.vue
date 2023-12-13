@@ -9,11 +9,7 @@ defineProps<OverlayProps>()
 
 <template>
   <div
-    class="
-         $ui-z-max $ui-fcc w-full h-full absolute top-0 left-0
-         transition-duration-300 transition-opacity
-         $ui-bg-base absolute
-        "
+    class="absolute absolute left-0 top-0 $ui-z-max h-full w-full $ui-fcc transition-opacity transition-duration-300 $ui-bg-base"
     :class="[
       dim ? 'bg-opacity-50!' : 'bg-opacity-0!',
       blur ? 'backdrop-blur-sm' : '',

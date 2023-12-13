@@ -17,10 +17,6 @@
     { "rule": "*quotes", "severity": "off" },
     { "rule": "*semi", "severity": "off" }
   ],
-  "unocss.root": [
-    "packages/ui",
-    "packages/client"
-  ],
   // Enable eslint for all supported languages
   "eslint.validate": [
     "javascript",

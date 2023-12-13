@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
-// eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from 'vue-devtools-kit'
 import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 import { Pane, Splitpanes } from 'splitpanes'
@@ -209,7 +208,7 @@ watchDebounced(filterName, (v) => {
   <PanelGrids h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
-        <div w-full px2 py2 flex gap2>
+        <div w-full flex gap2 px2 py2>
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
           <button px-1 @click="inspectComponentInspector">
             <svg
@@ -227,15 +226,15 @@ watchDebounced(filterName, (v) => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div px2 py3 flex justify-between overflow-auto class="no-scrollbar">
+        <div flex justify-between overflow-auto px2 py3 class="no-scrollbar">
           <span v-if="selectedComponentTreeNode?.name">{{ selectedComponentTreeNode.name }}</span>
           <div flex="~ gap2">
             <VueIcon
               v-tooltip="'Scroll to Component'"
-              flex-none
+
               title="Scroll to Component"
               icon="i-iconoir:mouse-scroll-wheel"
-              action
+              action flex-none
               :border="false"
               @click="scrollToComponent(selectedComponentTree)"
             />
@@ -243,17 +242,17 @@ watchDebounced(filterName, (v) => {
             <VueIcon
               v-show="selectedComponentFilePath"
               v-tooltip="'Open in Editor'"
-              flex-none
+
               title="Open in Editor"
               icon="i-carbon-launch"
-              action
+              action flex-none
               :border="false"
               @click="_openInEditor(selectedComponentFilePath)"
             />
           </div>
         </div>
         <p class="x-divider" />
-        <div p-2 grow h-0 overflow-auto class="no-scrollbar">
+        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"
             :node-id="activeComponentId" :data="state" :name="`${key}`" inspector-id="components"

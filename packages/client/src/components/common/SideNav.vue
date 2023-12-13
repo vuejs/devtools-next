@@ -25,7 +25,7 @@ const { enabledTabs } = useAllTabs()
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"
           hover="bg-active"
-          relative h-10 select-none p2 text-secondary
+          text-secondary relative h-10 select-none p2
           exact-active-class="!text-primary bg-active"
           :class="[
             sidebarExpanded ? 'w-full rounded pl2.5' : 'w-10 rounded-xl',
@@ -33,7 +33,7 @@ const { enabledTabs } = useAllTabs()
         >
           <div i-logos-vue h-6 w-6 />
           <template v-if="sidebarExpanded">
-            <span text-lg text-base font-600>
+            <span text-lg font-600 text-base>
               DevTools
             </span>
             <div flex-auto />

@@ -4,8 +4,8 @@ import Card from '../src/components/Card.vue'
 
 <template>
   <Story>
-    <div class="py30px box-border">
-      <Card class="w-200px h-200px">
+    <div class="box-border py30px">
+      <Card class="h-200px w-200px">
         Card
       </Card>
     </div>

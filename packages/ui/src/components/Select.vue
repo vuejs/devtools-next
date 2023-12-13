@@ -29,7 +29,7 @@ const value = computed({
 <template>
   <VueDropdown :label="placeholder" :disabled="disabled">
     <template #popper>
-      <div class="m1 flex flex-col min-w-140px w-auto">
+      <div class="m1 min-w-140px w-auto flex flex-col">
         <VueButton
           v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
           class="flex-[auto_1_1] not-action:[&:not(.active)]:bg-transparent!"

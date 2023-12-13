@@ -59,7 +59,7 @@ const transitionClass = computed(() => props.placement.startsWith('top') ? 'tran
         :style="{ justifyContent: placement.includes('right') ? 'right' : placement.includes('left') ? 'left' : 'center' }"
       >
         <div
-          class="$ui-bg-base m3 flex-inline items-center gap2 b-1 b-1 rounded px4 py1 transition-all duration-300 shadow"
+          class="m3 flex-inline items-center gap2 b-1 b-1 rounded px4 py1 shadow transition-all duration-300 $ui-bg-base"
           :class="[classes, typeClasses[type]]"
         >
           <div :class="icons[type]" />

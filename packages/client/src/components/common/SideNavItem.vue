@@ -36,10 +36,10 @@ function onClick() {
       :to="tabPath"
       :flex="`~ items-center ${minimized ? 'justify-center' : 'justify-between'}`"
       hover="bg-active op-100"
-      relative block h-10 op65
-      :w="minimized ? '10' : 'full'" select-none
+
+      :w="minimized ? '10' : 'full'"
       :rounded="minimized ? 'xl' : ''"
-      :p="minimized ? '1' : 'x3'" text-secondary
+      :p="minimized ? '1' : 'x3'" text-secondary relative block h-10 select-none op65
       exact-active-class="!text-primary-600 bg-active op-100!"
       @click="onClick"
     >

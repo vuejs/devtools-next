@@ -84,7 +84,7 @@ function toggleView() {
 </script>
 
 <template>
-  <PanelGrids h-full of-auto block class="drawer-container relative">
+  <PanelGrids block h-full of-auto class="drawer-container relative">
     <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
       <template #actions>
         <div flex-none flex="~ gap2 items-center" text-lg>
@@ -98,10 +98,10 @@ function toggleView() {
             <IconTitle
               v-tooltip.bottom-end="'Filter'"
               icon="i-carbon-filter hover:op50" :border="false"
-              title="Filter" p2 text-lg relative cursor-pointer
+              title="Filter" relative cursor-pointer p2 text-lg
               @click="() => { }"
             >
-              <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full text-white bg-primary-800 text-8px>
+              <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px text-white>
                 {{ extensions.length }}
               </span>
             </IconTitle>
@@ -119,10 +119,10 @@ function toggleView() {
           </VueDropdown>
           <VueIcon
             v-tooltip.bottom-end="'Toggle View'"
-            cursor-pointer text-lg :border="false"
+            :border="false"
             :icon="view === 'grid' ? 'i-carbon-list' : 'i-carbon-grid'"
             title="Toggle view"
-            action
+            action cursor-pointer text-lg
             @click="toggleView"
           />
         </div>

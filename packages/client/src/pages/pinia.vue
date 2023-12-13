@@ -67,7 +67,7 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div p-2 grow h-0 overflow-auto class="no-scrollbar">
+        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key + Date.now()"

@@ -4,16 +4,16 @@ const { fileTypeData, fileTypeShow, toggleFileType } = useFileTypes()
 
 <template>
   <div
-    absolute bottom-0 px4 py2 rounded-tr-lg w-260px grid gap-2 grid-cols-3 b-1 border-base
-    glass-effect transition-transform duration-300 text-sm
+
+    absolute bottom-0 grid grid-cols-3 w-260px gap-2 b-1 border-base rounded-tr-lg px4 py2 text-sm transition-transform duration-300 glass-effect
     class="group"
     :class="{
       'translate-x-[calc(-100%+30px)] translate-y-[calc(100%-30px)]': !fileTypeShow,
     }"
   >
     <div
-      absolute right-0 bg-primary-500 text-white rounded-tr-lg cursor-pointer class="group"
-      transition-opacity w30px h30px flex="~ justify-center items-center"
+      class="group"
+      absolute right-0 h30px w30px cursor-pointer rounded-tr-lg bg-primary-500 text-white transition-opacity flex="~ justify-center items-center"
       :class="{
         'rounded-bl-lg opacity-0 group-hover:opacity-100': fileTypeShow,
       }"
@@ -28,9 +28,9 @@ const { fileTypeData, fileTypeShow, toggleFileType } = useFileTypes()
         ]"
       />
     </div>
-    <div v-for="item of fileTypeData" :key="item.key" flex gap-2 items-center>
+    <div v-for="item of fileTypeData" :key="item.key" flex items-center gap-2>
       <div
-        rounded-full w12px h12px :style="{
+        h12px w12px rounded-full :style="{
           backgroundColor: item.color,
         }"
       />

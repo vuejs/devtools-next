@@ -47,7 +47,7 @@ const splitScreenSize = computed({
 </script>
 
 <template>
-  <main class="$ui-bg-base fixed inset-0 h-screen w-screen">
+  <main class="fixed inset-0 h-screen w-screen $ui-bg-base">
     <AppConnecting v-if="!connected" />
     <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
     <div

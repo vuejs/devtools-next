@@ -46,7 +46,7 @@ function close(close = false) {
 
 <template>
   <VueDialog v-model="value" :width="width" :height="height" :title="title" :closable="false">
-    <slot class="w-auto h-auto">
+    <slot class="h-auto w-auto">
       {{ content }}
     </slot>
     <template #footer>

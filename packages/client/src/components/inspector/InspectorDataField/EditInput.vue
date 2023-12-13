@@ -61,7 +61,7 @@ const isWarning = computed(() =>
 
 <template>
   <span class="flex-inline items-center gap4px">
-    <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="w120px h25px px4px" :auto-focus="autoFocus" @click.stop />
+    <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="h25px w120px px4px" :auto-focus="autoFocus" @click.stop />
     <template v-if="showActions">
       <template v-if="!isWarning">
         <VueButton

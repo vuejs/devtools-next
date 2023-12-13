@@ -132,10 +132,10 @@ const supportsPreview = computed(() => {
               <FilepathItem :filepath="asset.filePath" text-left />
               <VueIcon
                 v-tooltip="'Open in Editor'"
-                flex-none
+
                 title="Open in Editor"
                 icon="i-carbon-launch"
-                action
+                action flex-none
                 :border="false"
                 @click="_openInEditor(asset.filePath)"
               />
@@ -153,10 +153,10 @@ const supportsPreview = computed(() => {
               </div>
               <VueIcon
                 v-tooltip="'Copy public path'"
-                flex-none mr1 mt--2px
+
                 title="Copy public path"
                 icon="i-carbon-copy"
-                action
+                action mr1 mt--2px flex-none
                 :border="false"
                 @click="copy(asset.publicPath, 'assets-public-path')"
               />
@@ -166,9 +166,9 @@ const supportsPreview = computed(() => {
               >
                 <VueIcon
                   v-tooltip="'Open in Browser'"
-                  flex-none
+
                   icon="i-carbon-launch"
-                  action
+                  action flex-none
                   :border="false"
                   title="Open in Browser"
                 />

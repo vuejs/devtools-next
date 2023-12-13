@@ -148,7 +148,6 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 
 <style scoped lang="scss">
 .vue-devtools {
-
   // anchor
   &__anchor {
     position: fixed;
@@ -258,7 +257,11 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
     box-shadow: 2px 2px 8px var(--vue-devtools-widget-shadow);
     user-select: none;
     max-width: 150px;
-    transition: max-width 0.4s ease, padding 0.5s ease, transform 0.3s ease, all 0.4s ease;
+    transition:
+      max-width 0.4s ease,
+      padding 0.5s ease,
+      transform 0.3s ease,
+      all 0.4s ease;
 
     &-content {
       transition: opacity 0.4s ease;

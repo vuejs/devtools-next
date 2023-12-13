@@ -52,7 +52,7 @@ const showGridPanel = ref(false)
   <div h-full h-screen of-hidden>
     <div v-if="PageComponent && currentTab" border="b base" flex="~ gap1" z-99 px4 py3 navbar-glass>
       <VueDropdown placement="bottom-start" :distance="12" :skidding="5" :shown="showGridPanel" trigger="click">
-        <div flex gap2 items-center cursor-pointer>
+        <div flex cursor-pointer items-center gap2>
           <div i-carbon-chevron-down text-sm op50 />
           <TabIcon
             text-xl
@@ -72,7 +72,7 @@ const showGridPanel = ref(false)
       <div flex-auto />
       <button
         v-tooltip="'Close split screen'"
-        title="Close split screen" hover:bg-active px1 cursor-pointer
+        title="Close split screen" cursor-pointer hover:bg-active px1
         @click="close"
       >
         <div i-carbon:side-panel-open />

@@ -54,7 +54,7 @@ watchDebounced(routeInput, () => {
 </script>
 
 <template>
-  <PanelGrids h-screen of-auto block>
+  <PanelGrids block h-screen of-auto>
     <div h-full of-auto>
       <div border="b base" flex="~ col gap1" px4 py3>
         <div>

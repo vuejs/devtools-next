@@ -134,9 +134,9 @@ useEventListener('drop', onDrop)
       v-tooltip.bottom-end="'Close'"
       icon="i-carbon-close"
       title="Close"
-      absolute right-5 top-5 z-20 text-xl
+
       :border="false"
-      action
+      action absolute right-5 top-5 z-20 text-xl
       @click="close"
     />
     <div v-if="!files?.length" h-full w-full flex items-center justify-center>

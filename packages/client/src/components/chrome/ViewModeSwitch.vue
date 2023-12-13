@@ -7,9 +7,9 @@ const { toggle } = useToggleViewMode()
 </script>
 
 <template>
-  <div class="$ui-bg-base fixed inset-0 h-screen w-screen flex flex-col justify-center items-center">
+  <div class="fixed inset-0 h-screen w-screen flex flex-col items-center justify-center $ui-bg-base">
     <DevToolsLogo h-18 />
-    <p class="text-sm p3 font-bold">
+    <p class="p3 text-sm font-bold">
       DevTools is currently injected into user application in <em class="text-primary-600">Overlay</em> view mode.
     </p>
     <p>

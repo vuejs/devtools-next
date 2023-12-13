@@ -125,7 +125,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       @update:visible="v => popupVisible = v"
     >
       <template #popper>
-        <div class="py5px w160px">
+        <div class="w160px py5px">
           <VueDropdownButton
             @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
           >

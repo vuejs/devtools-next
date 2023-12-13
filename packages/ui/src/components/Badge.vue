@@ -4,10 +4,7 @@
 
 <template>
   <span
-    class="
-      $ui-base mx-0.5 select-none rounded
-      inline-block px-1.5 py-0.5 text-xs whitespace-nowrap
-    "
+    class="mx-0.5 $ui-base inline-block select-none whitespace-nowrap rounded px-1.5 py-0.5 text-xs"
   >
     <slot />
   </span>

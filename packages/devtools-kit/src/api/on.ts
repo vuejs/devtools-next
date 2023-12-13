@@ -62,44 +62,42 @@ export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target
 
 export const on = {
   devtoolsStateUpdated(fn: DevToolsEvent[DevToolsEvents.DEVTOOLS_STATE_UPDATED]) {
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
+    return apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, fn)
   },
   routerInfoUpdated(fn: DevToolsEvent[DevToolsEvents.ROUTER_INFO_UPDATED]) {
-    apiHooks.hook(DevToolsEvents.ROUTER_INFO_UPDATED, fn)
+    return apiHooks.hook(DevToolsEvents.ROUTER_INFO_UPDATED, fn)
   },
   getComponentBoundingRect(fn: DevToolsEvent[DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]) {
-    apiHooks.hook(DevToolsEvents.GET_COMPONENT_BOUNDING_RECT, fn)
+    return apiHooks.hook(DevToolsEvents.GET_COMPONENT_BOUNDING_RECT, fn)
   },
   // compatible
   inspectComponent(fn: DevToolsEvent[DevToolsEvents.COMPONENT_STATE_INSPECT]) {
-    apiHooks.hook(DevToolsEvents.COMPONENT_STATE_INSPECT, fn)
+    return apiHooks.hook(DevToolsEvents.COMPONENT_STATE_INSPECT, fn)
   },
   visitComponentTree(fn: DevToolsEvent[DevToolsEvents.VISIT_COMPONENT_TREE]) {
-    apiHooks.hook(DevToolsEvents.VISIT_COMPONENT_TREE, fn)
+    return apiHooks.hook(DevToolsEvents.VISIT_COMPONENT_TREE, fn)
   },
   getInspectorTree(fn: DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]) {
-    apiHooks.hook(DevToolsEvents.GET_INSPECTOR_TREE, fn)
+    return apiHooks.hook(DevToolsEvents.GET_INSPECTOR_TREE, fn)
   },
   getInspectorState(fn: DevToolsEvent[DevToolsEvents.GET_INSPECTOR_STATE]) {
-    apiHooks.hook(DevToolsEvents.GET_INSPECTOR_STATE, fn)
+    return apiHooks.hook(DevToolsEvents.GET_INSPECTOR_STATE, fn)
   },
   // private
   sendInspectorTree(fn: DevToolsEvent[DevToolsEvents.SEND_INSPECTOR_TREE]) {
-    apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_TREE, fn)
+    return apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_TREE, fn)
   },
   sendInspectorState(fn: DevToolsEvent[DevToolsEvents.SEND_INSPECTOR_STATE]) {
-    apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_STATE, fn)
+    return apiHooks.hook(DevToolsEvents.SEND_INSPECTOR_STATE, fn)
   },
   addTimelineEvent(fn: DevToolsEvent[DevToolsEvents.ADD_TIMELINE_EVENT]) {
-    apiHooks.hook(DevToolsEvents.ADD_TIMELINE_EVENT, fn)
+    return apiHooks.hook(DevToolsEvents.ADD_TIMELINE_EVENT, fn)
   },
   editInspectorState(fn: DevToolsEvent[DevToolsEvents.EDIT_INSPECTOR_STATE]) {
-    apiHooks.hook(DevToolsEvents.EDIT_INSPECTOR_STATE, fn)
+    return apiHooks.hook(DevToolsEvents.EDIT_INSPECTOR_STATE, fn)
   },
   editComponentState() {},
   customTabsUpdated(fn: DevToolsEvent[DevToolsEvents.CUSTOM_TABS_UPDATED]) {
-    apiHooks.hook(DevToolsEvents.CUSTOM_TABS_UPDATED, fn)
+    return apiHooks.hook(DevToolsEvents.CUSTOM_TABS_UPDATED, fn)
   },
 }
-
-export const clear = apiHooks.removeAllHooks.bind(apiHooks)

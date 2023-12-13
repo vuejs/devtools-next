@@ -1,4 +1,5 @@
 import type { VueAppInstance } from '@vue-devtools-next/schema'
+import { target } from '@vue-devtools-next/shared'
 import { setupDevToolsPlugin } from '../../api/plugin'
 import { getAppRecord, getComponentId, getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
@@ -11,7 +12,12 @@ import { hook } from '../general/hook'
 
 const INSPECTOR_ID = 'components'
 
+target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER ??= []
+
 export function registerComponentsDevTools(app: VueAppInstance) {
+  target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.forEach(clean => clean())
+  target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.length = 0
+
   setupDevToolsPlugin({
     id: INSPECTOR_ID,
     label: 'Components',
@@ -23,7 +29,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       treeFilterPlaceholder: 'Search components',
     })
 
-    api.on.getComponentBoundingRect((payload) => {
+    const getComponentBoundingRectCleanup = api.on.getComponentBoundingRect((payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
         if (instance) {
@@ -42,7 +48,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    api.on.getInspectorTree(async (payload) => {
+    const getInspectorTreeCleanup = api.on.getInspectorTree(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
         if (instance) {
@@ -57,7 +63,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    api.on.getInspectorState(async (payload) => {
+    const getInspectorStateCleanup = api.on.getInspectorState(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const result = getInstanceState({
           instanceId: payload.nodeId,
@@ -77,14 +83,14 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    api.on.editInspectorState(async (payload) => {
+    const editInspectorStateCleanup = api.on.editInspectorState(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         editState(payload)
         await api.sendInspectorState('components')
       }
     })
 
-    hook.on.componentAdded(async (app, uid, parentUid, component) => {
+    const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -112,7 +118,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       api.sendInspectorTree(INSPECTOR_ID)
     })
 
-    hook.on.componentUpdated(async (app, uid, parentUid, component) => {
+    const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -140,7 +146,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       api.sendInspectorTree(INSPECTOR_ID)
       api.sendInspectorState(INSPECTOR_ID)
     })
-    hook.on.componentRemoved(async (app, uid, parentUid, component) => {
+    const componentRemovedCleanup = hook.on.componentRemoved(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -161,5 +167,15 @@ export function registerComponentsDevTools(app: VueAppInstance) {
 
       api.sendInspectorTree(INSPECTOR_ID)
     })
+    target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.push(
+      // @TODO: refactor
+      getComponentBoundingRectCleanup,
+      componentAddedCleanup,
+      componentUpdatedCleanup,
+      componentRemovedCleanup,
+      getInspectorTreeCleanup,
+      getInspectorStateCleanup,
+      editInspectorStateCleanup,
+    )
   })
 }

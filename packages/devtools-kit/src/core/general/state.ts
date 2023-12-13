@@ -98,8 +98,6 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
 }
 
 function clearDevToolsContext() {
-  // @ts-expect-error missing type
-  global[ContextKey].api.clear()
   // @TODO: use deepClone instead
   global[ContextKey] = JSON.parse(JSON.stringify(DefaultContext))
 }

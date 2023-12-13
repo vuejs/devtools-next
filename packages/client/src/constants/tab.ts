@@ -1,3 +1,4 @@
+import { deepClone } from '@vue-devtools-next/shared'
 import type { ModuleBuiltinTab } from '~/types'
 
 // @unocss-include

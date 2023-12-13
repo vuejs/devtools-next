@@ -30,12 +30,12 @@ export const devtoolsRouterInfo: RouterInfo = new Proxy(global[RouterInfoKey], {
 })
 
 export function normalizeRouterInfo(appRecord: AppRecord) {
-  const getRoutes = (router: Router) => {
+  const getRoutes = (router?: Router) => {
     const routesMap = new Map()
     return (router?.getRoutes() || []).filter(i => !routesMap.has(i.path) && routesMap.set(i.path, 1))
   }
   function init() {
-    const router = appRecord.app?.config.globalProperties.$router as Router
+    const router = appRecord.app?.config.globalProperties.$router as Router | undefined
     const currentRoute = router?.currentRoute.value
     const routes = getRoutes(router).map((item) => {
       const { path, name, children } = item
@@ -48,7 +48,7 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
     const c = console.warn
     console.warn = () => {}
     global[RouterInfoKey] = {
-      currentRoute: JSON.parse(JSON.stringify(currentRoute)),
+      currentRoute: currentRoute ? JSON.parse(JSON.stringify(currentRoute)) : {},
       routes: JSON.parse(JSON.stringify(routes)),
     }
     global[RouterKey] = router

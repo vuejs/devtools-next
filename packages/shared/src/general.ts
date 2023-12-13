@@ -1,3 +1,5 @@
+import rfdc from 'rfdc'
+
 export function NOOP() { }
 export const isNumeric = (str: string | number) => `${+str}` === str
 export const isMacOS = () => navigator?.platform ? navigator?.platform.toLowerCase().includes('mac') : /Macintosh/.test(navigator.userAgent)
@@ -46,3 +48,9 @@ export function sortByKey(state: unknown[]) {
     return 0
   })
 }
+
+/**
+ * @copyright [rfdc](https://github.com/davidmarkclements/rfdc)
+ * @description A really fast deep clone alternative
+ */
+export const deepClone = rfdc()

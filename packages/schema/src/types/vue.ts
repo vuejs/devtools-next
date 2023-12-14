@@ -96,6 +96,7 @@ export interface AppRecord {
   instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
   api?: PluginApi
+  routerId?: string
 }
 
 export interface DevToolsState {

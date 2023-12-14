@@ -3,6 +3,7 @@ import type { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue
 import { getAppRecord } from '../core/component/general'
 import { devtoolsState } from '../core/general/state'
 import { devtoolsHooks } from '../core/general/hook'
+import { getRouterDevToolsId } from '../core/router'
 import type { DevToolsPluginApi } from './index'
 
 export function collectRegisteredPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
@@ -19,6 +20,16 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {
     const appRecord = await getAppRecord(plugin.app)
+    if (plugin.packageName === 'vue-router') {
+      const id = getRouterDevToolsId(`${plugin.id}`)
+      if (plugin.app === app) {
+        devtoolsState.appRecords = devtoolsState.appRecords.map(item => ({
+          ...item,
+          routerId: id,
+        }))
+      }
+    }
+
     setupFn(api)
   })
 }

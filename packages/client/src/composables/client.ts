@@ -24,3 +24,7 @@ export function onDevToolsClientConnected(fn: () => void) {
     fns.splice(fns.indexOf(fn), 1)
   }
 }
+
+export function refreshCurrentPageData() {
+  fns.forEach(fn => fn())
+}

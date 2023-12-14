@@ -10,6 +10,7 @@ const { toggle: toggleViewMode } = useToggleViewMode()
 // #endregion
 
 const bridgeRpc = useDevToolsBridgeRpc()
+const router = useRouter()
 
 const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,
@@ -35,7 +36,11 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
 const activeAppRecords = ref(appRecords.value[0].value)
 
 watch(activeAppRecords, (id) => {
-  bridgeRpc.toggleApp(`${id}`)
+  bridgeRpc.toggleApp(`${id}`).then(() => {
+    router.push('/overview').then(() => {
+      refreshCurrentPageData()
+    })
+  })
 })
 </script>
 

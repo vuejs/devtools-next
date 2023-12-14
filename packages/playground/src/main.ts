@@ -14,6 +14,7 @@ import './style.css'
 // connect('http://localhost', 8098)
 
 const pinia = createPinia()
+const pinia2 = createPinia()
 
 const app = createApp(App)
 
@@ -55,7 +56,7 @@ app.use(pinia)
 // }, 2000)
 
 app2.use(router2)
-app2.use(pinia)
+app2.use(pinia2)
 app2.mount('#app2')
 
 app.mount('#app')

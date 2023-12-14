@@ -29,7 +29,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       treeFilterPlaceholder: 'Search components',
     })
 
-    const getComponentBoundingRectCleanup = api.on.getComponentBoundingRect((payload) => {
+    api.on.getComponentBoundingRect((payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
         if (instance) {
@@ -48,7 +48,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    const getInspectorTreeCleanup = api.on.getInspectorTree(async (payload) => {
+    api.on.getInspectorTree(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
         if (instance) {
@@ -63,7 +63,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    const getInspectorStateCleanup = api.on.getInspectorState(async (payload) => {
+    api.on.getInspectorState(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const result = getInstanceState({
           instanceId: payload.nodeId,
@@ -83,7 +83,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    const editInspectorStateCleanup = api.on.editInspectorState(async (payload) => {
+    api.on.editInspectorState(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         editState(payload)
         await api.sendInspectorState('components')
@@ -168,14 +168,9 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       api.sendInspectorTree(INSPECTOR_ID)
     })
     target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.push(
-      // @TODO: refactor
-      getComponentBoundingRectCleanup,
       componentAddedCleanup,
       componentUpdatedCleanup,
       componentRemovedCleanup,
-      getInspectorTreeCleanup,
-      getInspectorStateCleanup,
-      editInspectorStateCleanup,
     )
   })
 }

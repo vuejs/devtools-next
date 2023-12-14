@@ -1,5 +1,6 @@
 import { devtools } from 'vue-devtools-kit'
 import { stringify } from 'vue-devtools-kit/shared'
+import { isBrowser } from '@vue-devtools-next/shared'
 import { BridgeEvents } from './types'
 import type { BridgeInstanceType } from './core'
 import { BridgeRpcCore, bridgeRpcEvents } from './core'
@@ -28,29 +29,29 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
 
   // component inspector creator
   bridgeRpcCore.on(bridgeRpcEvents.toggleComponentInspector, (payload) => {
-    devtools.context.api.toggleComponentInspector(payload!)
+    devtools.api.toggleComponentInspector(payload!)
     return Promise.resolve(JSON.stringify({}))
   })
 
   // inspect component inspector
   bridgeRpcCore.on(bridgeRpcEvents.inspectComponentInspector, () => {
-    return devtools.context.api.inspectComponentInspector()
+    return devtools.api.inspectComponentInspector()
   })
 
   // scroll to component
   bridgeRpcCore.on(bridgeRpcEvents.scrollToComponent, (payload) => {
-    devtools.context.api.scrollToComponent(payload!)
+    devtools.api.scrollToComponent(payload!)
     return Promise.resolve(JSON.stringify({}))
   })
 
   // component bounding rect getter
   bridgeRpcCore.on(bridgeRpcEvents.componentBoundingRect, async (payload) => {
-    return devtools.context.api.getComponentBoundingRect(payload!)
+    return devtools.api.getComponentBoundingRect(payload!)
   })
 
   // inspector tree getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorTree, (payload) => {
-    return devtools.context.api.getInspectorTree(payload)
+    return devtools.api.getInspectorTree(payload)
   })
 
   // inspector tree id updater
@@ -60,12 +61,12 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
 
   // inspector state getter
   bridgeRpcCore.on(bridgeRpcEvents.inspectorState, async (payload) => {
-    return devtools.context.api.getInspectorState(payload)
+    return devtools.api.getInspectorState(payload)
   })
 
   // inspector state editor
   bridgeRpcCore.on(bridgeRpcEvents.editState, async (payload) => {
-    return devtools.context.api.editInspectorState(payload!)
+    return devtools.api.editInspectorState(payload!)
   })
 
   // router info getter
@@ -81,7 +82,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
 
   // open in editor
   bridgeRpcCore.on(bridgeRpcEvents.openInEditor, async (payload) => {
-    return devtools.context.api.openInEditor(JSON.parse(payload!))
+    return devtools.api.openInEditor(JSON.parse(payload!))
   })
 
   // route matched
@@ -97,18 +98,13 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
 
   // toggle app
   bridgeRpcCore.on(bridgeRpcEvents.toggleApp, async (id) => {
-    await devtools.context.api.toggleApp(id!)
+    await devtools.api.toggleApp(id!)
     return JSON.stringify({})
   })
 
-  bridge.on(BridgeEvents.APP_CONNECTED, () => {
-    bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
-      vueVersion: devtools.state?.activeAppRecord?.version || '',
-      connected: true,
-    }))
-
+  function subscribeDevToolsApiUpdated() {
     // devtools state updated
-    devtools.context.api.on.devtoolsStateUpdated((payload) => {
+    devtools.api.on.devtoolsStateUpdated((payload) => {
       bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
         vueVersion: payload?.activeAppRecord?.version || '',
         connected: payload.connected,
@@ -116,30 +112,47 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     })
 
     // custom tabs updated
-    devtools.context.api.on.customTabsUpdated((payload) => {
+    devtools.api.on.customTabsUpdated((payload) => {
       bridge.emit(BridgeEvents.CUSTOM_TABS_UPDATED, JSON.stringify(payload))
     })
 
     // router info updated
-    devtools.context.api.on.routerInfoUpdated((payload) => {
+    devtools.api.on.routerInfoUpdated((payload) => {
       bridge.emit(BridgeEvents.ROUTER_INFO_UPDATED, JSON.stringify(payload))
     })
 
     // inspector tree updated
-    devtools.context.api.on.sendInspectorTree((payload) => {
+    devtools.api.on.sendInspectorTree((payload) => {
       bridge.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
     })
 
     // inspector state updated
-    devtools.context.api.on.sendInspectorState((payload) => {
+    devtools.api.on.sendInspectorState((payload) => {
       bridge.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)
     })
 
     // add timeline event
-    devtools.context.api.on.addTimelineEvent((payload) => {
+    devtools.api.on.addTimelineEvent((payload) => {
       bridge.emit(BridgeEvents.ADD_TIMELINE_EVENT, stringify(payload))
     })
+  }
+
+  bridge.on(BridgeEvents.APP_CONNECTED, () => {
+    bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
+      vueVersion: devtools.state?.activeAppRecord?.version || '',
+      connected: true,
+    }))
+    subscribeDevToolsApiUpdated()
   })
+
+  // @TODO: find a better way to handle it
+  if (isBrowser) {
+    window.addEventListener('message', (e) => {
+      const event = e.data
+      if (event.target === 'vue-devtools' && event.event === 'toggle-app-record')
+        subscribeDevToolsApiUpdated()
+    })
+  }
 }
 
 export class BridgeRpc {

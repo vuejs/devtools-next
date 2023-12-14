@@ -13,6 +13,7 @@ import type { CustomTab } from '../core/custom-tab/types'
 
 import { getVueInspector } from '../core/vue-inspector'
 import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
+import { clear } from './off'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
 
@@ -21,8 +22,10 @@ export * from './plugin'
 
 export class DevToolsPluginApi {
   public on: typeof on
+  public clear: typeof clear
   constructor() {
     this.on = on
+    this.clear = clear
   }
 
   toggleApp(id: string) {
@@ -144,7 +147,6 @@ export class DevToolsPluginApi {
         inspectorId,
         nodeId: inspector.nodeId,
       })
-
       apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, stringify({ ...parse(res), inspectorId }) as string)
     }
   }

@@ -41,6 +41,7 @@ export function initDevTools() {
       await registerComponentsDevTools(app)
       // set first app as default record
       devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
+      devtoolsState.activeAppRecordId = `${devtoolsState.activeAppRecord.id}`
       // devtoolsState.connected = true
       // mark vue app as connected
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)

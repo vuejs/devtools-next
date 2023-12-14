@@ -17,6 +17,7 @@ function initDevToolsState() {
   const tabs = ref<CustomTab[]>([])
   const vitePluginDetected = ref(false)
   const appRecords = ref<Array<Pick<AppRecord, 'name' | 'id' | 'version'>>>([])
+  const activeAppRecordId = ref('')
 
   function init() {
     DevToolsRpc.getDevToolsState().then(({ data }) => {
@@ -25,10 +26,12 @@ function initDevToolsState() {
       tabs.value = data.tabs
       vitePluginDetected.value = data.vitePluginDetected
       appRecords.value = data.appRecords
+      activeAppRecordId.value = data.activeAppRecordId
     })
     DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
       vueVersion.value = payload.vueVersion || ''
+      activeAppRecordId.value = payload.activeAppRecordId
     })
   }
 
@@ -41,6 +44,7 @@ function initDevToolsState() {
     tabs,
     vitePluginDetected,
     appRecords,
+    activeAppRecordId,
   }
 }
 
@@ -57,7 +61,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean>, appRecords: Ref<Array<Pick<AppRecord, 'name' | 'id' | 'version'>>> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean>, appRecords: Ref<Array<Pick<AppRecord, 'name' | 'id' | 'version'>>>, activeAppRecordId: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

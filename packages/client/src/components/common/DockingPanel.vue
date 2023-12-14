@@ -33,7 +33,7 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
   value: app.id,
 })))
 
-const activeAppRecords = ref(appRecords.value[0].value)
+const activeAppRecords = ref(devtoolsState.activeAppRecordId.value)
 
 watch(activeAppRecords, (id) => {
   bridgeRpc.toggleApp(`${id}`).then(() => {

@@ -13,6 +13,7 @@ export async function toggleAppRecord(id: string) {
     appRecord.api = api
     await registerComponentsDevTools(appRecord!.app as unknown as VueAppInstance)
     devtoolsState.activeAppRecord = appRecord
+    devtoolsState.activeAppRecordId = `${appRecord.id}`
     registerPlugin({
       app: appRecord.app as unknown as VueAppInstance,
       api: appRecord.api,

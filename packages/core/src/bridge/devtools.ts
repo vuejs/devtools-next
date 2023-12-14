@@ -110,7 +110,7 @@ export class BridgeRpc {
   }
 
   static async getDevToolsState() {
-    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], vitePluginDetected: boolean, appRecords: Array<Pick<AppRecord, 'name' | 'id' | 'version'>> } }>(bridgeRpcEvents.state)
+    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], vitePluginDetected: boolean, appRecords: Array<Pick<AppRecord, 'name' | 'id' | 'version'>>, activeAppRecordId: string } }>(bridgeRpcEvents.state)
   }
 
   static async getTimelineLayer() {

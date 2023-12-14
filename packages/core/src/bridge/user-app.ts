@@ -19,6 +19,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
         name: item.name,
         version: item.version,
       })),
+      activeAppRecordId: devtools.state.activeAppRecordId,
     })
   })
 
@@ -108,6 +109,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
         vueVersion: payload?.activeAppRecord?.version || '',
         connected: payload.connected,
+        activeAppRecordId: payload.activeAppRecordId,
       }))
     })
 
@@ -141,6 +143,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     bridge.emit(BridgeEvents.DEVTOOLS_STATE_UPDATED, JSON.stringify({
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       connected: true,
+      activeAppRecordId: devtools.state?.activeAppRecordId,
     }))
     subscribeDevToolsApiUpdated()
   })

@@ -25,6 +25,7 @@ global[StateKey] ??= {
   pluginBuffer: [],
   tabs: [],
   vitePluginDetected: false,
+  activeAppRecordId: null,
 }
 
 // @TODO: use deepClone instead

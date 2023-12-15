@@ -70,11 +70,6 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
     })
 
     bridge.on('toggle-panel', togglePanelVisible)
-    bridge.on('update-show-floating-panel', (v) => {
-      updateState({
-        preferShowFloatingPanel: v,
-      })
-    })
   })
 }
 

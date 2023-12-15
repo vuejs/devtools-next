@@ -44,13 +44,11 @@ useEventListener('keydown', (e) => {
 })
 
 watchEffect(() => {
-  bridge.value.emit('update-minimize-panel-inactive', devtoolsClientState.value.minimizePanelInteractive)
-})
-watchEffect(() => {
-  bridge.value.emit('update-close-on-click-outside', devtoolsClientState.value.interactionCloseOnOutsideClick)
-})
-watchEffect(() => {
-  bridge.value.emit('update-show-floating-panel', devtoolsClientState.value.showPanel)
+  bridge.value.emit('update-client-state', {
+    minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
+    closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
+    showFloatingPanel: devtoolsClientState.value.showPanel,
+  })
 })
 
 const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)

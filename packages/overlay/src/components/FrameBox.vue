@@ -25,8 +25,14 @@ const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
 
 waitBridgeReady().then((bridge) => {
-  bridge.on('update-minimize-panel-inactive', v => updateState({ minimizePanelInactive: v }))
-  bridge.on('update-close-on-click-outside', v => updateState({ closeOnOutsideClick: v }))
+  // @TODO: add type
+  bridge.on('update-client-state', (v) => {
+    updateState({
+      minimizePanelInactive: v.minimizePanelInteractive,
+      closeOnOutsideClick: v.closeOnOutsideClick,
+      preferShowFloatingPanel: v.showFloatingPanel,
+    })
+  })
 })
 
 watchEffect(() => {

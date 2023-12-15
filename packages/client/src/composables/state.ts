@@ -8,11 +8,16 @@ export const devtoolsClientState: RemovableRef<{
   graphSettings: GraphSettings
   tabSettings: TabSettings
   expandSidebar: boolean
+  scrollableSidebar: boolean
   splitScreen: {
     enabled: boolean
     view: string
     size: [number, number]
   }
+  scale: number
+  interactionCloseOnOutsideClick: boolean
+  showPanel: boolean
+  minimizePanelInteractive: number
 }> = useLocalStorage('__VUE_DEVTOOLS_CLIENT_STATE__', {
   isFirstVisit: true,
   route: '/',
@@ -32,6 +37,11 @@ export const devtoolsClientState: RemovableRef<{
     size: [50, 50],
   },
   expandSidebar: false,
+  scrollableSidebar: true,
+  scale: 1,
+  interactionCloseOnOutsideClick: false,
+  showPanel: true,
+  minimizePanelInteractive: 5000,
 }, { mergeDefaults: true })
 
 export function clearDevtoolsClientState() {

@@ -19,6 +19,11 @@ const bridge = useDevToolsBridge()
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
 
+watchEffect(() => {
+  const scale = devtoolsClientState.value.scale
+  document.body.style.fontSize = `${scale * 15}px`
+})
+
 watch(connected, (v) => {
   if (v) {
     router.replace(clientState.value.isFirstVisit ? '/' : clientState.value.route)
@@ -36,6 +41,14 @@ watch(connected, (v) => {
 useEventListener('keydown', (e) => {
   if (e.code === 'KeyD' && e.altKey && e.shiftKey)
     bridge.value.emit('toggle-panel')
+})
+
+watchEffect(() => {
+  bridge.value.emit('update-client-state', {
+    minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
+    closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
+    showFloatingPanel: devtoolsClientState.value.showPanel,
+  })
 })
 
 const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
@@ -58,12 +71,13 @@ const splitScreenSize = computed({
     >
       <SideNav v-if="!isUtilityView" of-x-hidden of-y-auto />
       <Splitpanes
+        h-full of-hidden
         @resize="splitScreenSize = $event.map((v) => v.size)"
       >
         <Pane h-full class="of-auto!" min-size="10" :size="splitScreenSize[0]">
           <RouterView />
         </Pane>
-        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" h-full class="of-auto!" :size="splitScreenSize[1]">
+        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" relative h-full class="of-auto!" :size="splitScreenSize[1]">
           <SplitScreen />
         </Pane>
       </Splitpanes>

@@ -13,6 +13,7 @@ interface DevToolsFrameState {
   isFirstVisit: boolean
   closeOnOutsideClick: boolean
   minimizePanelInactive: number
+  preferShowFloatingPanel: boolean
 }
 
 export interface UseFrameStateReturn {
@@ -31,6 +32,7 @@ const state = useLocalStorage<DevToolsFrameState>('__vue-devtools-frame-state__'
   isFirstVisit: true,
   closeOnOutsideClick: false,
   minimizePanelInactive: 5000,
+  preferShowFloatingPanel: true,
 })
 
 export function useFrameState(): UseFrameStateReturn {

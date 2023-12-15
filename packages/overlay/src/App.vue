@@ -4,7 +4,7 @@ import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
 import { target } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
-import { useIframe, usePanelVisible, usePosition } from '~/composables'
+import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
 
@@ -36,6 +36,7 @@ target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
 }
 
+const { updateState, state } = useFrameState()
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
@@ -61,6 +62,7 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
     })
 
     prepareInjection(bridge)
+    registerBridge(bridge)
 
     window.addEventListener('message', (data) => {
       if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')
@@ -93,7 +95,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 
 <template>
   <div
-    v-show="overlayVisible"
+    v-show="state.preferShowFloatingPanel ? overlayVisible : panelVisible"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,

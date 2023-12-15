@@ -7,11 +7,6 @@ import { getRouterDevToolsId } from '../core/router'
 import type { DevToolsPluginApi } from './index'
 
 export function collectRegisteredPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
-  // de-duplicate
-  // const duplicated = devtoolsState.pluginBuffer.find(([plugin]) => plugin.app === pluginDescriptor.app && plugin.id === pluginDescriptor.id)
-  // if (duplicated)
-  //   return
-
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
 }
 

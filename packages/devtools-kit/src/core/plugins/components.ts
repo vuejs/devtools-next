@@ -1,5 +1,4 @@
 import type { VueAppInstance } from '@vue-devtools-next/schema'
-import { target } from '@vue-devtools-next/shared'
 import { setupDevToolsPlugin } from '../../api/plugin'
 import { getAppRecord, getComponentId, getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
@@ -12,12 +11,7 @@ import { hook } from '../general/hook'
 
 const INSPECTOR_ID = 'components'
 
-target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER ??= []
-
 export function registerComponentsDevTools(app: VueAppInstance) {
-  target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.forEach(clean => clean())
-  target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.length = 0
-
   setupDevToolsPlugin({
     id: INSPECTOR_ID,
     label: 'Components',
@@ -167,10 +161,10 @@ export function registerComponentsDevTools(app: VueAppInstance) {
 
       api.sendInspectorTree(INSPECTOR_ID)
     })
-    target.__VUE_DEVTOOLS_COMPONENTS_DEVTOOLS_HOOK_BUFFER.push(
+    devtoolsContext.componentPluginHookBuffer = [
       componentAddedCleanup,
       componentUpdatedCleanup,
       componentRemovedCleanup,
-    )
+    ]
   })
 }

@@ -4,6 +4,7 @@ import { DevToolsPluginApi, registerPlugin } from '../../api'
 import { devtoolsContext, devtoolsState } from './state'
 
 export async function toggleAppRecord(id: string) {
+  devtoolsContext.componentPluginHookBuffer.forEach(cleanup => cleanup())
   devtoolsContext.api.clear()
   devtoolsContext.clear()
   const appRecord = devtoolsState.appRecords.find(record => record.id === id)

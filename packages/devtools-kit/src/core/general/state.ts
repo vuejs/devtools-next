@@ -15,6 +15,7 @@ const DefaultContext = {
   routerInfo: {},
   router: null,
   activeInspectorTreeId: '',
+  componentPluginHookBuffer: [],
 }
 
 global[StateKey] ??= {
@@ -94,6 +95,7 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
   routerInfo: RouterInfo
   router: Router
   activeInspectorTreeId: string
+  componentPluginHookBuffer: (() => void)[]
   clear: () => void
 }
 

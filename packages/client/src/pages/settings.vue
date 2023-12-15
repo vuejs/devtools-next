@@ -200,7 +200,7 @@ const minimizePanelInteractiveLabel = computed(() => {
 
           <p>Minimize floating panel on inactive</p>
           <div>
-            <VueSelect v-model="minimizePanelInteractive" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
+            <VueSelect v-model="minimizePanelInteractive" :button-props="{ outlined: true }" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
           </div>
         </VueCard>
 

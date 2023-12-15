@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
 import { target } from '@vue-devtools-next/shared'
 import { devtools } from 'vue-devtools-kit'
-import { useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
+import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
 
@@ -36,12 +36,11 @@ target.__VUE_DEVTOOLS_TOGGLE_OVERLAY__ = (visible: boolean) => {
   overlayVisible.value = visible
 }
 
-const bridgeRef = shallowRef<InstanceType<typeof Bridge>>()
 const { updateState, state } = useFrameState()
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
-    const bridge = bridgeRef.value = new Bridge({
+    const bridge = new Bridge({
       tracker(fn) {
         if (!overlayVisible.value)
           return
@@ -63,6 +62,7 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
     })
 
     prepareInjection(bridge)
+    registerBridge(bridge)
 
     window.addEventListener('message', (data) => {
       if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')
@@ -148,7 +148,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       :style="iframeStyle" :is-dragging="isDragging" :client="{
         close: closePanel,
         getIFrame: getIframe,
-      }" :view-mode="panelState.viewMode" :bridge="bridgeRef"
+      }" :view-mode="panelState.viewMode"
     />
   </div>
 </template>

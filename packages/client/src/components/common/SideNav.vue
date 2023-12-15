@@ -6,7 +6,6 @@ const showMoreTabs = ref(false)
 const panel = ref()
 const buttonDocking = ref<HTMLButtonElement>()
 const buttonMoreTabs = ref<HTMLButtonElement>()
-const Tabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSidebar)
 

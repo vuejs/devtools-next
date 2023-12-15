@@ -11,6 +11,8 @@ export function registerBridge(bridge: InstanceType<typeof Bridge>) {
 
 export function waitBridgeReady() {
   return new Promise<BridgeTye>((resolve) => {
+    if (bridgeRef.value)
+      resolve(bridgeRef.value)
     watchEffect(() => {
       if (bridgeRef.value)
         resolve(bridgeRef.value)

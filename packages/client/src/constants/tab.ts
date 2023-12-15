@@ -95,5 +95,5 @@ export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: Devtools
   })
   return viteDetected
     ? tab
-    : deepClone(tab).map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
+    : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }

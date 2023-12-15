@@ -97,6 +97,10 @@ export interface AppRecord {
   rootInstance: VueAppInstance
   api?: PluginApi
   routerId?: string
+  moduleDetectives?: {
+    vueRouter: boolean
+    pinia: boolean
+  }
 }
 
 export interface DevToolsState {

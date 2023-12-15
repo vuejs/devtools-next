@@ -28,6 +28,19 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
 
     setupFn(api)
   })
+
+  devtoolsState.appRecords = devtoolsState.appRecords.map((record) => {
+    const globalProperties = record.app?.config?.globalProperties
+    if (!globalProperties)
+      return record
+    return {
+      ...record,
+      moduleDetectives: {
+        vueRouter: !!globalProperties.$router,
+        pinia: !!globalProperties.$pinia,
+      },
+    }
+  })
 }
 
 export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {

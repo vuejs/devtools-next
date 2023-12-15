@@ -44,6 +44,13 @@ const splitScreenSize = computed({
   get: () => clientState.value.splitScreen.size,
   set: v => clientState.value.splitScreen.size = v,
 })
+
+// setup active app
+const devtoolsState = useDevToolsState()
+watchEffect(() => {
+  activeAppRecords.value = devtoolsState.appRecords.value
+  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+})
 </script>
 
 <template>

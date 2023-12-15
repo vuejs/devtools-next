@@ -19,6 +19,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
         name: item.name,
         version: item.version,
         routerId: item.routerId,
+        moduleDetectives: item.moduleDetectives,
       })),
       activeAppRecordId: devtools.state.activeAppRecordId,
     })
@@ -114,6 +115,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
         name: item.name,
         version: item.version,
         routerId: item.routerId,
+        moduleDetectives: item.moduleDetectives,
       })),
     }))
     // devtools state updated
@@ -126,6 +128,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
           name: item.name,
           version: item.version,
           routerId: item.routerId,
+          moduleDetectives: item.moduleDetectives,
         })),
         activeAppRecordId: payload.activeAppRecordId,
       }))

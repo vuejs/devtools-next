@@ -24,7 +24,7 @@ export function useAllTabs() {
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
   const allTabs = computed(() => {
     const vitePluginDetected = state.vitePluginDetected.value
-    const tabs = [...getBuiltinTab(vitePluginDetected)]
+    const tabs = [...getBuiltinTab(vitePluginDetected, activeAppRecord.value?.moduleDetectives)]
     customTabs.value.forEach((tab) => {
       const currentTab: [string, Array<ModuleBuiltinTab | CustomTab>] | undefined = tabs.find(t => t[0] === tab.category)
       if (currentTab) {

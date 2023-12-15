@@ -1,8 +1,8 @@
 import type { CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from 'vue-devtools-kit'
 import { parse } from 'vue-devtools-kit/shared'
 import type { ViteHotContext } from 'vite-hot-client'
-import type { AppRecord } from '@vue-devtools-next/schema'
 import { setupViteRPCClient } from '../vite-rpc'
+import type { DevtoolsBridgeAppRecord } from '../vue-plugin'
 import { BridgeEvents } from './types'
 import type { BridgeInstanceType, BridgeRpcEventPayload } from './core'
 import { BridgeRpcCore, bridgeRpcEvents } from './core'
@@ -110,7 +110,7 @@ export class BridgeRpc {
   }
 
   static async getDevToolsState() {
-    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], vitePluginDetected: boolean, appRecords: Array<Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>>, activeAppRecordId: string } }>(bridgeRpcEvents.state)
+    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], vitePluginDetected: boolean, appRecords: Array<DevtoolsBridgeAppRecord>, activeAppRecordId: string } }>(bridgeRpcEvents.state)
   }
 
   static async getTimelineLayer() {

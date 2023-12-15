@@ -1,5 +1,5 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { target as global } from '@vue-devtools-next/shared'
+import { deepClone, target as global } from '@vue-devtools-next/shared'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'
 import type { Router, RouterInfo } from '../router'
@@ -28,8 +28,7 @@ global[StateKey] ??= {
   activeAppRecordId: null,
 }
 
-// @TODO: use deepClone instead
-global[ContextKey] ??= JSON.parse(JSON.stringify(DefaultContext))
+global[ContextKey] ??= deepClone(DefaultContext)
 
 export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
@@ -99,6 +98,5 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
 }
 
 function clearDevToolsContext() {
-  // @TODO: use deepClone instead
-  global[ContextKey] = JSON.parse(JSON.stringify(DefaultContext))
+  global[ContextKey] = deepClone(DefaultContext)
 }

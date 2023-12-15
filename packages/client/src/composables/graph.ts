@@ -1,6 +1,7 @@
 import type { ModuleInfo } from '@vue-devtools-next/core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
+import { deepClone } from '@vue-devtools-next/shared'
 
 // #region file types
 export const fileTypes = {

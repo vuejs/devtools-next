@@ -21,7 +21,6 @@ const inspectorId = computed(() => {
 createCollapseContext('inspector-state')
 
 function getRouterState(nodeId: string) {
-  // @TODO: should to support multiple router instances ?
   bridgeRpc.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then(({ data }) => {
     state.value = data
   })

@@ -15,6 +15,7 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {
     const appRecord = await getAppRecord(plugin.app)
+    // edge case for router plugin
     if (plugin.packageName === 'vue-router') {
       const id = getRouterDevToolsId(`${plugin.id}`)
       if (plugin.app === app) {

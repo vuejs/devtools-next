@@ -43,11 +43,19 @@ export interface VitePluginVueDevToolsOptions {
    * @default false
    */
   openInEditorHost?: string | false
+
+  /**
+   * DevTools client host (e.g. http://localhost:3000)
+   * useful for projects that use a reverse proxy
+   * @default false
+   */
+  clientHost?: string | false
 }
 
 const defaultOptions: DeepRequired<VitePluginVueDevToolsOptions> = {
   appendTo: '',
   openInEditorHost: false,
+  clientHost: false,
 }
 
 function mergeOptions(options: VitePluginVueDevToolsOptions): DeepRequired<VitePluginVueDevToolsOptions> {
@@ -108,7 +116,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     },
     async load(id) {
       if (id === 'virtual:vue-devtools-options')
-        return `export default ${JSON.stringify({ base: config.base })}`
+        return `export default ${JSON.stringify({ base: config.base, clientHost: pluginOptions.clientHost })}`
     },
     transform(code, id) {
       const { root, base } = config

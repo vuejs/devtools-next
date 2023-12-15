@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { target as global } from '@vue-devtools-next/shared'
+import { deepClone, target as global } from '@vue-devtools-next/shared'
 import { debounce } from 'perfect-debounce'
 import { DevToolsEvents, apiHooks } from '../../api'
 import { hook } from '../general/hook'
@@ -30,12 +30,12 @@ export const devtoolsRouterInfo: RouterInfo = new Proxy(global[RouterInfoKey], {
 })
 
 export function normalizeRouterInfo(appRecord: AppRecord) {
-  const getRoutes = (router: Router) => {
+  const getRoutes = (router?: Router) => {
     const routesMap = new Map()
     return (router?.getRoutes() || []).filter(i => !routesMap.has(i.path) && routesMap.set(i.path, 1))
   }
   function init() {
-    const router = appRecord.app?.config.globalProperties.$router as Router
+    const router = appRecord.app?.config.globalProperties.$router as Router | undefined
     const currentRoute = router?.currentRoute.value
     const routes = getRoutes(router).map((item) => {
       const { path, name, children } = item
@@ -48,8 +48,8 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
     const c = console.warn
     console.warn = () => {}
     global[RouterInfoKey] = {
-      currentRoute: JSON.parse(JSON.stringify(currentRoute)),
-      routes: JSON.parse(JSON.stringify(routes)),
+      currentRoute: currentRoute ? deepClone(currentRoute) : {},
+      routes: deepClone(routes),
     }
     global[RouterKey] = router
     console.warn = c
@@ -62,4 +62,8 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
     init()
     apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[RouterInfoKey])
   }, 200))
+}
+
+export function getRouterDevToolsId(id: string) {
+  return id.replace(/\D/g, '') || '0'
 }

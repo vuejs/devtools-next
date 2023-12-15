@@ -82,6 +82,7 @@ export const bridgeRpcEvents = {
   routeMatched: 'route-matched',
   editState: 'edit-inspector-state',
   openInEditor: 'open-in-editor',
+  toggleApp: 'toggle-app',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -110,6 +111,7 @@ export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.routeMatched]: string
   [bridgeRpcEvents.editState]: InspectorStateEditorPayload
   [bridgeRpcEvents.openInEditor]: string
+  [bridgeRpcEvents.toggleApp]: string
 }
 
 export class BridgeRpcCore {

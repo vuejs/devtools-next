@@ -25,13 +25,13 @@ const on = {
     devtoolsHooks.hook(DevToolsHooks.APP_CONNECTED, fn)
   },
   componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) {
-    devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
+    return devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
   },
   componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) {
-    devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
+    return devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
   },
   componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) {
-    devtoolsHooks.hook(DevToolsHooks.COMPONENT_REMOVED, fn)
+    return devtoolsHooks.hook(DevToolsHooks.COMPONENT_REMOVED, fn)
   },
   setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) {
     devtoolsHooks.hook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)

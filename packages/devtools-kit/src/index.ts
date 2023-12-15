@@ -14,6 +14,9 @@ export const devtools = {
   context: devtoolsContext,
   init: initDevTools,
   hook,
+  get api() {
+    return devtoolsContext.api
+  },
 }
 
 export {

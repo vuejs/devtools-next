@@ -2,7 +2,7 @@ import type { RemovableRef } from '@vueuse/core'
 import type { GraphSettings } from './graph'
 import type { TabSettings } from './state-tab'
 
-export const devtoolsClientState: RemovableRef<{
+interface DevtoolsClientState {
   isFirstVisit: boolean
   route: string
   graphSettings: GraphSettings
@@ -13,29 +13,39 @@ export const devtoolsClientState: RemovableRef<{
     view: string
     size: [number, number]
   }
-}> = useLocalStorage('__VUE_DEVTOOLS_CLIENT_STATE__', {
-  isFirstVisit: true,
-  route: '/',
-  graphSettings: {
-    node_modules: false,
-    virtual: false,
-    lib: false,
-  },
-  tabSettings: {
-    hiddenTabCategories: [],
-    hiddenTabs: [],
-    pinnedTabs: [],
-  },
-  splitScreen: {
-    enabled: false,
-    view: 'overview',
-    size: [50, 50],
-  },
-  expandSidebar: false,
-}, { mergeDefaults: true })
+}
 
-export function clearDevtoolsClientState() {
-  devtoolsClientState.value = undefined
+function clientStateFactory(): DevtoolsClientState {
+  return {
+    isFirstVisit: true,
+    route: '/',
+    graphSettings: {
+      node_modules: false,
+      virtual: false,
+      lib: false,
+    },
+    tabSettings: {
+      hiddenTabCategories: [],
+      hiddenTabs: [],
+      pinnedTabs: [],
+    },
+    splitScreen: {
+      enabled: false,
+      view: 'overview',
+      size: [50, 50],
+    },
+    expandSidebar: false,
+  }
+}
+
+export const devtoolsClientState: RemovableRef<DevtoolsClientState> = useLocalStorage(
+  '__VUE_DEVTOOLS_CLIENT_STATE__',
+  clientStateFactory(),
+  { mergeDefaults: true },
+)
+
+export function resetDevtoolsClientState() {
+  devtoolsClientState.value = clientStateFactory()
 }
 
 // #region split screen related

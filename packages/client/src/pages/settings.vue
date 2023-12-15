@@ -74,6 +74,12 @@ async function clearOptions() {
   clearDevtoolsClientState()
   window.location.reload()
 }
+
+const minimizePanelInteractiveOptions = MinimizeInactiveOptions.map(([label, value]) => ({ label, value }))
+const minimizePanelInteractiveLabel = computed(() => {
+  const option = minimizePanelInteractiveOptions.find(i => i.value === minimizePanelInteractive.value)
+  return `${option?.label ?? 'Select...'}`
+})
 </script>
 
 <template>
@@ -194,7 +200,7 @@ async function clearOptions() {
 
           <p>Minimize floating panel on inactive</p>
           <div>
-            <VueSelect v-model="minimizePanelInteractive" :options="MinimizeInactiveOptions.map(([label, value]) => ({ label, value }))" />
+            <VueSelect v-model="minimizePanelInteractive" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
           </div>
         </VueCard>
 

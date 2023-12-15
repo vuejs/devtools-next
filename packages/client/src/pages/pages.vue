@@ -103,6 +103,7 @@ watchDebounced(routeInput, () => {
         :padding="false"
       >
         <RoutesTable
+          v-if="routes.length"
           :pages="routes"
           :matched="currentRoute?.matched ?? []"
           :matched-pending="routeInputMatched"

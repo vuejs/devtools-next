@@ -17,4 +17,5 @@ export interface DevToolsContext {
   routerInfo: unknown
   router: unknown
   activeInspectorTreeId: string
+  componentPluginHookBuffer: Array<() => void>
 }

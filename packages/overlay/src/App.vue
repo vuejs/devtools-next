@@ -80,7 +80,7 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
 
 const vueInspector = ref()
 
-devtools.context.api.getVueInspector().then((inspector) => {
+devtools.api.getVueInspector().then((inspector) => {
   vueInspector.value = inspector
 })
 

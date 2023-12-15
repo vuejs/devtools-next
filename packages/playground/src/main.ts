@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 
-// import App from './App.vue'
+import App2 from './App.vue'
 import App from './App.preview.vue'
 import Home from './pages/Home.vue'
 import Hello from './pages/Hello.vue'
@@ -14,8 +14,11 @@ import './style.css'
 // connect('http://localhost', 8098)
 
 const pinia = createPinia()
+const pinia2 = createPinia()
 
 const app = createApp(App)
+
+const app2 = createApp(App2)
 
 const routes: RouteRecordRaw[] = [
   {
@@ -41,9 +44,19 @@ const router = createRouter({
   routes,
 })
 
+const router2 = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
 app.use(router)
 app.use(pinia)
 
 // setTimeout(() => {
-app.mount('#app')
 // }, 2000)
+
+app.mount('#app')
+
+app2.use(router2)
+app2.use(pinia2)
+app2.mount('#app2')

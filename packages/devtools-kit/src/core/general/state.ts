@@ -78,6 +78,12 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
 
     return global[ContextKey][property]
   },
+  set(target, property, value) {
+    if (property === 'componentPluginHookBuffer')
+      global[ContextKey][property] = value
+
+    return true
+  },
 }) as unknown as {
   appRecord: AppRecord
   api: DevToolsPluginApi

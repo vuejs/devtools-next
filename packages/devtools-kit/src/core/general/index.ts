@@ -1,10 +1,10 @@
 import { target } from '@vue-devtools-next/shared'
 import { DevToolsHooks } from '@vue-devtools-next/schema'
-import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin, registerPlugin } from '../../api'
-import { registerComponentsDevTools } from '../plugins'
+import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin } from '../../api'
 import { createAppRecord } from './app'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from './hook'
 import { devtoolsContext, devtoolsState } from './state'
+import { setActiveAppRecord } from './app-record'
 
 // usage: inject to user application and call it before the vue app is created
 export function initDevTools() {
@@ -36,19 +36,9 @@ export function initDevTools() {
       },
     ]
 
-    // @TODO: use toggle app record instead
     if (devtoolsState.appRecords.length === 1) {
-      await registerComponentsDevTools(app)
-      // set first app as default record
-      devtoolsState.activeAppRecord = devtoolsState.appRecords[0]
-      devtoolsState.activeAppRecordId = `${devtoolsState.activeAppRecord.id}`
-      // devtoolsState.connected = true
-      // mark vue app as connected
+      setActiveAppRecord(devtoolsState.appRecords[0])
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
-      registerPlugin({
-        app,
-        api,
-      })
     }
   })
 

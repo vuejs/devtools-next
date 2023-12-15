@@ -27,6 +27,7 @@ function refreshPage() {
   location.reload()
 }
 
+// #region toggle app
 const devtoolsState = useDevToolsState()
 const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
   label: app.name + (app.version ? ` (${app.version})` : ''),
@@ -43,6 +44,7 @@ watch(activeAppRecordId, (id) => {
     })
   })
 })
+// #endregion
 </script>
 
 <template>

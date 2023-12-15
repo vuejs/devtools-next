@@ -33,9 +33,10 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
   value: app.id,
 })))
 
-const activeAppRecords = ref(devtoolsState.activeAppRecordId.value)
+const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
+const activeAppRecordName = computed(() => appRecords.value.find(app => app.value === activeAppRecordId.value)?.label ?? '')
 
-watch(activeAppRecords, (id) => {
+watch(activeAppRecordId, (id) => {
   bridgeRpc.toggleApp(`${id}`).then(() => {
     router.push('/overview').then(() => {
       refreshCurrentPageData()
@@ -69,7 +70,9 @@ watch(activeAppRecords, (id) => {
       </VueButton>
     </div>
     <div px3 py2 flex="~ gap2">
-      <VueSelect v-model="activeAppRecords" :options="appRecords" placeholder="Toggle App" :button-props="{ outlined: true, type: 'primary' }" />
+      <template v-if="appRecords.length > 1">
+        <VueSelect v-model="activeAppRecordId" :options="appRecords" :placeholder="activeAppRecordName || 'Toggle App'" :button-props="{ outlined: true, type: 'primary' }" />
+      </template>
       <VueButton outlined type="primary" @click="refreshPage">
         Refresh Page
       </VueButton>

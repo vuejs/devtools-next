@@ -8,25 +8,24 @@ import VueButton from './Button.vue'
 const props = withDefaults(defineProps<{
   label?: string
   buttonProps?: ButtonProps
-  buttonClass?: ''
+  buttonClass?: string
 } & FloatingVueCommonProps>(), {
   trigger: 'click',
   buttonClass: '',
   distance: 0,
   disabled: false,
+  buttonProps: () => ({}),
 })
 
 defineEmits<{
   'update:visible': [value: boolean]
 }>()
-
 defineSlots<{
   default(): any
   popper(props: { hide: () => void }): any
   'button-icon'(): any
   'button-icon-right'(): any
 }>()
-
 provide('$ui-dropdown-disabled', computed(() => props.disabled))
 </script>
 

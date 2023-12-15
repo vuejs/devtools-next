@@ -63,3 +63,7 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
     apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[RouterInfoKey])
   }, 200))
 }
+
+export function getRouterDevToolsId(id: string) {
+  return id.replace(/\D/g, '') || '0'
+}

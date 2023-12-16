@@ -1,5 +1,5 @@
 {
-  "name": "vue-devtools-next",
+  "name": "@vue-devtools-next/electron",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -15,7 +15,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./cli": {
+      "import": "./dist/cli.mjs",
+      "require": "./dist/cli.cjs"
+    }
   },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",

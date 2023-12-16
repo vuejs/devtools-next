@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 
+// import { devtools } from '@vue/devtools-next'
 import App2 from './App.vue'
 import App from './App.preview.vue'
 import Home from './pages/Home.vue'
@@ -11,7 +12,7 @@ import Hey from './pages/Hey.vue'
 import './style.css'
 
 // connect to remote devtools
-// connect('http://localhost', 8098)
+// devtools.connect('http://localhost', 8098)
 
 const pinia = createPinia()
 const pinia2 = createPinia()

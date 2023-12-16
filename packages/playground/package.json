@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "app": "vue-devtools-next",
     "build:playground": "vite build",
     "dev": "vite",
     "preview": "vite preview"
@@ -15,12 +16,12 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
+    "@vue/devtools-next": "workspace:*",
     "sass": "^1.69.5",
     "serve": "^14.2.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.7",
     "vite-plugin-inspect": "^0.8.1",
-    "vite-plugin-vue-devtools": "workspace:*",
-    "vue-devtools-next": "workspace:*"
+    "vite-plugin-vue-devtools": "workspace:*"
   }
 }

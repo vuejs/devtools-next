@@ -1,0 +1,37 @@
+{
+  "name": "@vue/devtools-next",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "webfansplz",
+  "license": "MIT",
+  "repository": {
+    "directory": "packages/devtools",
+    "type": "git",
+    "url": "git+https://github.com/vuejs/vue-devtools-next.git"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "vue-devtools-next": "./cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --clean",
+    "prepare:type": "tsup --dts-only",
+    "prepublishOnly": "pnpm build",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
+  },
+  "dependencies": {
+    "@vue-devtools-next/electron": "workspace:^",
+    "vue-devtools-kit": "workspace:^"
+  }
+}

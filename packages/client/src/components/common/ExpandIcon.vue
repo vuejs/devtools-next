@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <i
-    class="i-radix-icons:triangle-right text-5 op-50 transition-base flex-none"
+    class="i-radix-icons:triangle-right flex-none text-5 op-50 transition-base"
     :class="{
       'transform rotate-90': value,
     }"

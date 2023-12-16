@@ -28,7 +28,7 @@ const disabled = ref(false)
     <Variant title="Dropdown buttons">
       <Dropdown label="Dropdown" :disabled="disabled" :distance="5" :placement="placement">
         <template #popper>
-          <div class="py5px w200px">
+          <div class="w200px py5px">
             <DropdownButton>
               Edit
             </DropdownButton>

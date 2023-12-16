@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// eslint-disable-next-line ts/consistent-type-imports
 import type { ComponentTreeNode } from 'vue-devtools-kit'
 
 const props = withDefaults(defineProps<{
@@ -25,7 +24,7 @@ const { isSelected, toggleSelected } = useSelectWithContext('component-tree', pr
 
 <template>
   <div
-    class="selectable-item group"
+    class="group selectable-item"
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
     :class="{ active: isSelected }"
     @click.stop="toggleSelected(data.id)"

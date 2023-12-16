@@ -76,8 +76,7 @@ watchEffect(() => {
 
 <template>
   <div
-    class="relative w-auto w-200px overflow-hidden b-1 rounded-1
-           flex justify-between items-center gap-2px py-3px px12px color-gray-800 dark:color-gray-100 group"
+    class="group relative w-200px w-auto flex items-center justify-between gap-2px overflow-hidden b-1 rounded-1 px12px py-3px color-gray-800 dark:color-gray-100"
     :class="[
       {
         'border-none bg-transparent group': variant === 'flat',
@@ -100,8 +99,7 @@ watchEffect(() => {
     </div>
     <input
       ref="inputRef" v-model="value"
-      class="$ui-base w-full outline-none bg-transparent color-inherit
-        placeholder-color-gray-500 dark:placeholder-gray-300" :type="props.password ? 'password' : 'text'"
+      class="$ui-base w-full bg-transparent color-inherit outline-none placeholder-color-gray-500 dark:placeholder-gray-300" :type="props.password ? 'password' : 'text'"
       :placeholder="placeholder" :disabled="disabled"
       @blur="focused = false"
     >
@@ -113,12 +111,7 @@ watchEffect(() => {
     </div>
     <!-- Focus animation -->
     <div
-      v-if="!noFocusAnimation" class="absolute z-9999 bottom--1px bg-primary-500
-           h-3px pointer-events-none transition-all duration-240
-           left-50% right-50% opacity-0
-           group-[&.focused]:(left-0 right-0 opacity-100)
-           group-[&.accent.focused]:bg-accent-500
-      "
+      v-if="!noFocusAnimation" class="pointer-events-none absolute bottom--1px left-50% right-50% z-9999 h-3px bg-primary-500 opacity-0 transition-all duration-240 group-[&.focused]:(left-0 right-0 opacity-100) group-[&.accent.focused]:bg-accent-500"
     />
   </div>
 </template>

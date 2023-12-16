@@ -17,7 +17,7 @@ defineProps<{
       color: `#${toHex(tag.textColor)}`,
       backgroundColor: `#${toHex(tag.backgroundColor)}`,
     }"
-    class="text-[0.75rem] px-1 rounded-sm ml-2 leading-snug"
+    class="ml-2 rounded-sm px-1 text-[0.75rem] leading-snug"
   >
     {{ tag.label }}
   </span>

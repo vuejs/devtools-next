@@ -53,7 +53,7 @@ onClickOutside(
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"
           hover="bg-active"
-          relative h-10 select-none p2 text-secondary
+          text-secondary relative h-10 select-none p2
           exact-active-class="!text-primary bg-active"
           :class="[
             sidebarExpanded ? 'w-full rounded pl2.5' : 'w-10 rounded-xl',
@@ -61,7 +61,7 @@ onClickOutside(
         >
           <div i-logos-vue h-6 w-6 />
           <template v-if="sidebarExpanded">
-            <span text-lg text-base font-600>
+            <span text-lg font-600 text-base>
               DevTools
             </span>
             <div flex-auto />
@@ -101,8 +101,8 @@ onClickOutside(
       >
         <button
           ref="buttonMoreTabs" flex="~"
-          hover="bg-active" relative
-          h-10 w-10 select-none items-center justify-center rounded-xl p1 text-secondary
+          hover="bg-active"
+          text-secondary relative h-10 w-10 select-none items-center justify-center rounded-xl p1
           exact-active-class="!text-primary bg-active"
         >
           <TabIcon

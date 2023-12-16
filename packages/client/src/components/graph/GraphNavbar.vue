@@ -15,7 +15,7 @@ const filterId = graphFilterNodeId
 </script>
 
 <template>
-  <div navbar-base glass-effect px4 flex="~ items-center gap-4" absolute top-0 left-0 w-full z-10 text-sm>
+  <div flex="~ items-center gap-4" absolute left-0 top-0 z-10 navbar-base w-full px4 text-sm glass-effect>
     <div>
       <VueInput v-model="text" placeholder="Search modules..." />
     </div>

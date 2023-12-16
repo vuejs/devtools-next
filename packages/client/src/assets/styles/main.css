@@ -4,8 +4,8 @@ html {
   --at-apply: font-sans;
   overflow-y: scroll;
   overscroll-behavior: none;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 html.dark {
@@ -62,14 +62,14 @@ body::-webkit-scrollbar {
 /* Overrides Floating Vue */
 .v-popper--theme-dropdown .v-popper__inner,
 .v-popper--theme-tooltip .v-popper__inner {
-  --at-apply: bg-base text-black dark:text-white rounded border border-base shadow;
+  --uno: bg-base text-black 'dark:text-white' rounded border border-base shadow;
   box-shadow: 0 6px 30px #0000001a;
 }
 
 .v-popper--theme-tooltip .v-popper__arrow-inner,
 .v-popper--theme-dropdown .v-popper__arrow-inner {
   visibility: visible;
-  --at-apply: border-white dark:border-hex-121212;
+  --uno: border-white 'dark:border-hex-121212';
 }
 
 .v-popper--theme-tooltip .v-popper__arrow-outer,
@@ -146,4 +146,9 @@ body::-webkit-scrollbar {
   display: none;
   width: 0 !important;
   height: 0 !important;
+}
+
+.no-scrollbar {
+  /* Support Firefox */
+  scrollbar-width: none;
 }

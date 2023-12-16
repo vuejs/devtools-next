@@ -15,6 +15,6 @@
   width: 800px;
   height: 150px;
   line-height: 150px;
-  margin-top:1000px;
+  margin-top: 1000px;
 }
 </style>

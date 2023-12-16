@@ -59,7 +59,7 @@ provide('$ui-dropdown-disabled', computed(() => props.disabled))
       </VueButton>
     </slot>
     <template #popper="{ hide }">
-      <div class="rounded-lg shadow-lg overflow-hidden">
+      <div class="overflow-hidden rounded-lg shadow-lg">
         <slot v-bind="{ hide }" name="popper">
           <div class="p2 opacity-40">
             Empty...

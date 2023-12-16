@@ -85,10 +85,10 @@ onMounted(() => isMount.value = true)
             top: placement === 'bottom' ? 'auto' : `${height}px`,
             height: ['top', 'bottom'].includes(placement) ? 'auto' : `calc(100% - ${height}px)`,
           }"
-          class="drawer pointer-events-auto transition-transform transition-duration-300 absolute min-w-100px $ui-border-base of-auto"
+          class="drawer pointer-events-auto absolute min-w-100px of-auto $ui-border-base transition-transform transition-duration-300"
           @click.stop
         >
-          <div v-if="closable" class="i-carbon-close $ui-z-max text-lg right-1.5 top-1.5 absolute $ui-text cursor-pointer p1" @click="show = false" />
+          <div v-if="closable" class="i-carbon-close absolute right-1.5 top-1.5 $ui-z-max cursor-pointer p1 text-lg $ui-text" @click="show = false" />
           <slot />
         </div>
       </Overlay>

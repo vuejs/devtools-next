@@ -174,7 +174,7 @@ const { isHovering } = useHover(containerRef)
   <div ref="containerRef" class="pl-6" :style="{ paddingLeft: `${depth * 15 + 4}px` }">
     <template v-if="!hasChildren">
       <div>
-        <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ normalizedDisplayedKey }}</span>
+        <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
         <span mx-1>:</span>
         <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
         <template v-else>
@@ -187,9 +187,9 @@ const { isHovering } = useHover(containerRef)
     </template>
     <template v-else>
       <div cursor-pointer>
-        <div flex items-center relative @click="toggleCollapse">
-          <ExpandIcon :value="isExpanded" group-hover:text-white absolute left--6 />
-          <span state-key whitespace-nowrap overflow-hidden text-ellipsis>{{ data.key }}</span>
+        <div relative flex items-center @click="toggleCollapse">
+          <ExpandIcon :value="isExpanded" absolute left--6 group-hover:text-white />
+          <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ data.key }}</span>
           <span mx-1>:</span>
           <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
           <template v-else>
@@ -204,7 +204,7 @@ const { isHovering } = useHover(containerRef)
             v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no"
           />
           <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
-            <span state-key whitespace-nowrap overflow-hidden text-ellipsis>
+            <span overflow-hidden text-ellipsis whitespace-nowrap state-key>
               <EditInput v-model="draftingNewProp.key" type="string" :show-actions="false" />
             </span>
             <span mx-1>:</span>
@@ -219,9 +219,9 @@ const { isHovering } = useHover(containerRef)
 <style lang="scss" scoped>
 // function
 :deep(.state-format-function) {
-  --at-apply: "font-italic";
+  --at-apply: font-italic;
   & > span {
-    --at-apply: "text-#0033cc dark:text-#997fff";
+    --at-apply: 'text-#0033cc dark:text-#997fff';
     font-family: Menlo, monospace;
   }
 }
@@ -230,7 +230,7 @@ const { isHovering } = useHover(containerRef)
 :deep(.state-format-component-definition) {
   --at-apply: text-primary-500;
   & > span {
-    --at-apply: "text-#aaa";
+    --at-apply: 'text-#aaa';
   }
 }
 
@@ -238,13 +238,14 @@ const { isHovering } = useHover(containerRef)
 :deep(.state-format-component) {
   --at-apply: text-primary-500;
   &::before {
-    content: "<";
+    content: '<';
   }
-   &::after {
-    content: ">";
+  &::after {
+    content: '>';
   }
-  &::before, &::after {
-    --at-apply: "text-#aaa";
+  &::before,
+  &::after {
+    --at-apply: 'text-#aaa';
   }
 }
 </style>

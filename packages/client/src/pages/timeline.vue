@@ -2,7 +2,6 @@
 import { UNDEFINED } from 'vue-devtools-kit/shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
-// eslint-disable-next-line ts/consistent-type-imports
 import type { InspectorState, TimelineEvent } from 'vue-devtools-kit'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 

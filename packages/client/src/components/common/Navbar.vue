@@ -22,7 +22,7 @@ watch(input, () => {
 </script>
 
 <template>
-  <div flex="~ col gap2" border="b base" flex-1 navbar-glass p4>
+  <div flex="~ col gap2" border="b base" flex-1 p4 navbar-glass>
     <div flex="~ gap4" items-center>
       <slot name="search">
         <VueInput

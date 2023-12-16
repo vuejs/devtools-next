@@ -12,7 +12,7 @@ withDefaults(defineProps<{
 <template>
   <div
     v-for="(item, index) in data"
-    :key="index" class="flex items-center font-data-field pl-8"
+    :key="index" class="flex items-center pl-8 font-data-field"
   >
     <InspectorStateField :data="item" :no="index" />
   </div>

@@ -22,7 +22,7 @@ const disabled = inject<ComputedGetter<boolean> | undefined>('$ui-dropdown-disab
       round: false,
     }"
     :disabled="disabled"
-    class="transition-colors justify-start w-full not-action:bg-transparent!"
+    class="w-full justify-start transition-colors not-action:bg-transparent!"
   >
     <template #icon>
       <slot name="icon" />

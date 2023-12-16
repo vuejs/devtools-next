@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
-// eslint-disable-next-line ts/consistent-type-imports
 import type { InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -71,7 +70,7 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div p-2 grow h-0 overflow-auto class="no-scrollbar">
+        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key + Date.now()" :data="item" :name="`${key}`"

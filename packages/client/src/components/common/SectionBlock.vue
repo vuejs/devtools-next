@@ -48,7 +48,7 @@ function onToggle(e) {
           v-if="collapse"
           icon="i-carbon-chevron-down"
           class="chevron"
-          cursor-pointer place-self-start text-base op75 transition duration-500
+          cursor-pointer place-self-start op75 transition duration-500 text-base
         />
       </IconTitle>
     </summary>
@@ -82,7 +82,7 @@ details[open] summary {
 }
 
 details summary::-webkit-details-marker {
-  display:none;
+  display: none;
 }
 
 details[open] .chevron {

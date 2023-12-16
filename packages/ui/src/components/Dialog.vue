@@ -65,31 +65,26 @@ onMounted(() => isMount.value = true)
     >
       <Overlay v-if="show" :dim="dim" :blur="blur">
         <div
-          class="modal rounded-md relative bg-white dark:bg-gray-900 dark:color-gray-200 color-gray-800
-        shadow-2xl transition-duration-300 transition-transform
-          max-w-[calc(100vw-100px)] max-h-[calc(100vh-100x)]
-          min-w-200px min-h-100px px24px py18px $ui-base
-          grid grid-rows-[30px_1fr_40px] gap-10px
-        "
+          class="modal relative grid grid-rows-[30px_1fr_40px] $ui-base max-h-[calc(100vh-100x)] max-w-[calc(100vw-100px)] min-h-100px min-w-200px gap-10px rounded-md bg-white px24px py18px color-gray-800 shadow-2xl transition-transform transition-duration-300 dark:bg-gray-900 dark:color-gray-200"
           :style="{
             width: props.width,
             height: props.height,
           }"
         >
-          <div class="w-full h-30px $ui-fbc">
+          <div class="h-30px w-full $ui-fbc">
             <div class="text-18px">
               <slot name="title">
                 {{ props.title }}
               </slot>
             </div>
-            <div v-if="closable" class="transition-colors w6 h6 rounded-full cursor-pointer $ui-fcc hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
+            <div v-if="closable" class="h6 w6 $ui-fcc cursor-pointer rounded-full transition-colors hover:bg-primary-100 dark:hover:bg-gray-700" @click="close">
               <div class="i-carbon-close" />
             </div>
           </div>
           <div class="content transition-all transition-duration-300">
             <slot />
           </div>
-          <div class="w-full h32px footer delay-250 transition-all transition-duration-300">
+          <div class="footer h32px w-full transition-all transition-duration-300 delay-250">
             <slot name="footer">
               <slot name="footer">
                 <div class="$ui-fcc">

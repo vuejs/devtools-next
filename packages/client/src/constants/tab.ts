@@ -1,3 +1,4 @@
+import type { DevtoolsBridgeAppRecord } from '@vue-devtools-next/core'
 import { deepClone } from '@vue-devtools-next/shared'
 import type { ModuleBuiltinTab } from '~/types'
 
@@ -72,8 +73,27 @@ export const viteOnlyTabs = [
   'graph',
   'vite-inspect',
 ]
-export function getBuiltinTab(viteDetected: boolean): [string, ModuleBuiltinTab[]][] {
+
+type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
+
+const moduleDetectivesMapping = {
+  pinia: 'pinia',
+  router: 'vueRouter',
+} satisfies Record<string, keyof Detective>
+
+export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {
+  const key = tab.name
+  return key in moduleDetectivesMapping && moduleDetectives[moduleDetectivesMapping[key]]
+}
+
+export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: DevtoolsBridgeAppRecord['moduleDetectives']): [string, ModuleBuiltinTab[]][] {
+  const tab = deepClone(builtinTab)
+  // filter out modules that are not detected
+  tab.forEach((item) => {
+    if (item[0] === 'modules')
+      item[1] = item[1].filter(t => moduleDetectives ? isDetected(moduleDetectives, t) : true)
+  })
   return viteDetected
-    ? builtinTab
-    : deepClone(builtinTab).map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
+    ? tab
+    : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }

@@ -10,13 +10,15 @@ export interface DevToolsPluginOptions {
   viewMode: 'overlay' | 'panel'
 }
 
+export type DevtoolsBridgeAppRecord = Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId' | 'moduleDetectives'>
+
 function initDevToolsState() {
   const connected = ref(false)
   const componentCount = ref(0)
   const vueVersion = ref('')
   const tabs = ref<CustomTab[]>([])
   const vitePluginDetected = ref(false)
-  const appRecords = ref<Array<Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>>>([])
+  const appRecords = ref<Array<DevtoolsBridgeAppRecord>>([])
   const activeAppRecordId = ref('')
 
   function init() {
@@ -62,7 +64,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean>, appRecords: Ref<Array<Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>>>, activeAppRecordId: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean>, appRecords: Ref<Array<DevtoolsBridgeAppRecord>>, activeAppRecordId: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

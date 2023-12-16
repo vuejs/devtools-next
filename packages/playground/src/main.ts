@@ -59,4 +59,4 @@ app.mount('#app')
 
 // app2.use(router2)
 // app2.use(pinia2)
-app2.mount('#app2')
+// app2.mount('#app2')

@@ -18,9 +18,6 @@
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "bin": {
-    "vue-devtools-next": "./cli.mjs"
-  },
   "files": [
     "dist"
   ],

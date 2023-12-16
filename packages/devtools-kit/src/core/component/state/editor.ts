@@ -1,6 +1,6 @@
 import type { MaybeRef, Ref } from 'vue'
 import { isReactive, isRef } from 'vue'
-import { getComponentInstance, nodeIdToInstanceId } from '../general'
+import { getComponentInstance } from '../general'
 import { devtoolsContext } from '../../general'
 
 import type { InspectorStateEditorPayload, PropPath } from '../types'
@@ -119,10 +119,9 @@ class RefStateEditor {
 
 export async function editComponentState(payload: InspectorStateEditorPayload, stateEditor: StateEditor) {
   const { path, nodeId, state, type } = payload
-  const instanceId = nodeIdToInstanceId(devtoolsContext.appRecord.id, nodeId)
   // assert data types, currently no...
   // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
-  const instance = getComponentInstance(devtoolsContext.appRecord, instanceId)
+  const instance = getComponentInstance(devtoolsContext.appRecord, nodeId)
   if (!instance)
     return
 

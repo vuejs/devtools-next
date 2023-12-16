@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
 import type { InspectorState } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
@@ -12,11 +12,15 @@ const state = ref<{
   inspectorId?: string
   state?: InspectorState[]
 }>({})
+const devtoolsState = useDevToolsState()
+const inspectorId = computed(() => {
+  const item = devtoolsState.appRecords.value.find(app => app.id === devtoolsState.activeAppRecordId.value)
+  return `router-inspector:${item?.routerId ?? 0}`
+})
 createCollapseContext('inspector-state')
 
 function getRouterState(nodeId: string) {
-  // @TODO: should to support multiple router instances ?
-  bridgeRpc.getInspectorState({ inspectorId: 'router-inspector:0', nodeId }).then(({ data }) => {
+  bridgeRpc.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then(({ data }) => {
     state.value = data
   })
 }
@@ -26,7 +30,7 @@ watch(selected, () => {
 })
 
 onDevToolsClientConnected(() => {
-  bridgeRpc.getInspectorTree({ inspectorId: 'router-inspector:0', filter: '' }).then(({ data }) => {
+  bridgeRpc.getInspectorTree({ inspectorId: inspectorId.value, filter: '' }).then(({ data }) => {
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
@@ -43,16 +47,16 @@ onDevToolsClientConnected(() => {
       getRouterState(data.data[0].id)
     }
   }, {
-    inspectorId: 'router-inspector:0',
+    inspectorId: inspectorId.value,
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {
-    if (!data || !data.state || data.inspectorId !== 'router-inspector:0')
+    if (!data || !data.state || data.inspectorId !== inspectorId.value)
       return
 
     state.value = data
   }, {
-    inspectorId: 'router-inspector:0',
+    inspectorId: inspectorId.value,
   })
 })
 </script>

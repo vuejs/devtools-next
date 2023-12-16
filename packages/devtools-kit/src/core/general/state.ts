@@ -1,5 +1,5 @@
 import type { AppRecord } from '@vue-devtools-next/schema'
-import { target as global } from '@vue-devtools-next/shared'
+import { deepClone, target as global } from '@vue-devtools-next/shared'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'
 import type { Router, RouterInfo } from '../router'
@@ -7,6 +7,17 @@ import { RouterKey, devtoolsRouterInfo, normalizeRouterInfo } from '../router'
 
 const StateKey = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const ContextKey = '__VUE_DEVTOOLS_CONTEXT__'
+const DefaultContext = {
+  appRecord: null,
+  api: null,
+  inspector: [],
+  timelineLayer: [],
+  routerInfo: {},
+  router: null,
+  activeInspectorTreeId: '',
+  componentPluginHookBuffer: [],
+}
+
 global[StateKey] ??= {
   connected: false,
   appRecords: [],
@@ -15,16 +26,10 @@ global[StateKey] ??= {
   pluginBuffer: [],
   tabs: [],
   vitePluginDetected: false,
+  activeAppRecordId: null,
 }
-global[ContextKey] ??= {
-  appRecord: null,
-  api: null,
-  inspector: [],
-  timelineLayer: [],
-  routerInfo: {},
-  router: null,
-  activeInspectorTreeId: '',
-}
+
+global[ContextKey] ??= deepClone(DefaultContext)
 
 export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
@@ -68,7 +73,16 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
     if (property === 'router')
       return global[RouterKey]
 
+    else if (property === 'clear')
+      return clearDevToolsContext
+
     return global[ContextKey][property]
+  },
+  set(target, property, value) {
+    if (property === 'componentPluginHookBuffer')
+      global[ContextKey][property] = value
+
+    return true
   },
 }) as unknown as {
   appRecord: AppRecord
@@ -87,4 +101,10 @@ export const devtoolsContext = new Proxy(global[ContextKey], {
   routerInfo: RouterInfo
   router: Router
   activeInspectorTreeId: string
+  componentPluginHookBuffer: (() => void)[]
+  clear: () => void
+}
+
+function clearDevToolsContext() {
+  global[ContextKey] = deepClone(DefaultContext)
 }

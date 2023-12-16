@@ -125,10 +125,6 @@ export function returnError(cb: () => unknown): number | string {
   }
 }
 
-export function nodeIdToInstanceId(appRecordId: AppRecord['id'], nodeId: string) {
-  return `${appRecordId}${nodeId}`
-}
-
 export function getComponentInstance(appRecord: AppRecord, instanceId: string | undefined) {
   instanceId = instanceId || `${appRecord.id}:root`
 

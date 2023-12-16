@@ -1,6 +1,7 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import type { CustomTab } from 'vue-devtools-kit'
+import type { AppRecord } from '@vue-devtools-next/schema'
 import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'
 
@@ -15,6 +16,8 @@ function initDevToolsState() {
   const vueVersion = ref('')
   const tabs = ref<CustomTab[]>([])
   const vitePluginDetected = ref(false)
+  const appRecords = ref<Array<Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>>>([])
+  const activeAppRecordId = ref('')
 
   function init() {
     DevToolsRpc.getDevToolsState().then(({ data }) => {
@@ -22,10 +25,14 @@ function initDevToolsState() {
       vueVersion.value = data.vueVersion || ''
       tabs.value = data.tabs
       vitePluginDetected.value = data.vitePluginDetected
+      appRecords.value = data.appRecords
+      activeAppRecordId.value = data.activeAppRecordId
     })
     DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
       vueVersion.value = payload.vueVersion || ''
+      appRecords.value = payload.appRecords
+      activeAppRecordId.value = payload.activeAppRecordId
     })
   }
 
@@ -37,6 +44,8 @@ function initDevToolsState() {
     componentCount,
     tabs,
     vitePluginDetected,
+    appRecords,
+    activeAppRecordId,
   }
 }
 
@@ -53,7 +62,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 }
 
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
-const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean> }> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<{ connected: Ref<boolean>, componentCount: Ref<number>, vueVersion: Ref<string>, tabs: Ref<CustomTab[]>, vitePluginDetected: Ref<boolean>, appRecords: Ref<Array<Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>>>, activeAppRecordId: Ref<string> }> = Symbol('VueDevToolsStateSymbol')
 export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): Plugin {
   return {
     install(app: App, options) {

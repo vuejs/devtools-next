@@ -84,7 +84,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
-    hook.on.componentAdded(async (app, uid, parentUid, component) => {
+    const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -112,7 +112,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       api.sendInspectorTree(INSPECTOR_ID)
     })
 
-    hook.on.componentUpdated(async (app, uid, parentUid, component) => {
+    const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -140,7 +140,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       api.sendInspectorTree(INSPECTOR_ID)
       api.sendInspectorState(INSPECTOR_ID)
     })
-    hook.on.componentRemoved(async (app, uid, parentUid, component) => {
+    const componentRemovedCleanup = hook.on.componentRemoved(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -161,5 +161,10 @@ export function registerComponentsDevTools(app: VueAppInstance) {
 
       api.sendInspectorTree(INSPECTOR_ID)
     })
+    devtoolsContext.componentPluginHookBuffer = [
+      componentAddedCleanup,
+      componentUpdatedCleanup,
+      componentRemovedCleanup,
+    ]
   })
 }

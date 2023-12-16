@@ -19,7 +19,10 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "app.html",
+    "client",
+    "dist",
+    "icons"
   ],
   "scripts": {
     "build": "tsx scripts/build.ts",

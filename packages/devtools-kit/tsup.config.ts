@@ -11,6 +11,7 @@ export default <Options>{
   external: [
     'vue',
   ],
+  noExternal: ['speakingurl'],
   clean: true,
   format: ['esm', 'cjs'],
   dts: true,

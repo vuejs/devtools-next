@@ -1,8 +1,7 @@
 {
   "name": "@vue-devtools-next/schema",
   "type": "module",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.0.0",
   "author": "webfansplz",
   "license": "MIT",
   "sideEffects": false,

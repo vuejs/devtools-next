@@ -12,4 +12,5 @@ export default <Options>{
   format: ['esm', 'cjs'],
   dts: true,
   shims: true,
+  noExternal: ['rfdc'],
 }

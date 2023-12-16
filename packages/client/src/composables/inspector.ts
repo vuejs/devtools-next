@@ -3,6 +3,7 @@ import type { InjectionKey, Ref } from 'vue'
 interface StateEditorContext {
   nodeId: string
   inspectorId: string
+  disableEdit: boolean
 }
 const StateEditorSymbolKey: InjectionKey<Ref<StateEditorContext>> = Symbol('StateEditorSymbol')
 

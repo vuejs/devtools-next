@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import type { InspectorState } from 'vue-devtools-kit'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: InspectorState[]
   name: string
   id: string
+  // mutate related, nodeId and inspectorId are required if disableMutate is false(by default)
   nodeId: string
   inspectorId: string
-}>()
+  disableEdit?: boolean
+}>(), {
+  disableEdit: false,
+})
 
 const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
 !isExpanded.value && toggleCollapse()
 
 createStateEditorContext({
-  nodeId: props.nodeId,
-  inspectorId: props.inspectorId,
+  nodeId: props.nodeId!,
+  inspectorId: props.inspectorId!,
+  disableEdit: props.disableEdit,
 })
 </script>
 

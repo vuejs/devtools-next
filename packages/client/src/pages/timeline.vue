@@ -75,7 +75,7 @@ onDevToolsClientConnected(() => {
       layer.groups = {}
     })
     if (!selectedLayer.value)
-      selectedLayer.value = data[0].id
+      selectedLayer.value = data.length ? data[0].id : ''
   })
   bridgeRpc.on.addTimelineEvent((payload) => {
     if (!payload)
@@ -116,7 +116,11 @@ watch(() => activeTimelineEvent.value.length, (l) => {
       <Pane size="35">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
           <template v-if="selectedEvent">
-            <InspectorState v-for="(item, key) in inspectorState" :id="`${key}`" :key="key + Date.now()" :data="item" :name="`${key}`" />
+            <InspectorState
+              v-for="(item, key) in inspectorState"
+              :id="`${key}`" :key="key + Date.now()" :data="item" :name="`${key}`"
+              :disable-edit="true" node-id="" inspector-id=""
+            />
           </template>
           <EmptyPane v-else icon="i-carbon:menu">
             Select an event to display details

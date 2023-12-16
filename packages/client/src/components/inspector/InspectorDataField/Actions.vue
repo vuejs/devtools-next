@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<{
   hovering: boolean
   depth: number
   showAddIfNeeded?: boolean
+  disableEdit?: boolean
 }>(), {
   showAddIfNeeded: true,
 })
@@ -59,7 +60,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
 <template>
   <div class="inline pl5px">
     <!-- only editable will show operate actions -->
-    <template v-if="data.editable">
+    <template v-if="!props.disableEdit && data.editable">
       <!-- input edit, number/string/object -->
       <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object'">
         <VueButton
@@ -107,7 +108,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       </template>
     </template>
     <!-- delete prop, only appear if depth > 0 -->
-    <VueButton v-if="depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(data.value, true)">
+    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(data.value, true)">
       <template #icon>
         <VueIcon icon="i-material-symbols-delete-rounded" />
       </template>

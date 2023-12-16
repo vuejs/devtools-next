@@ -1,7 +1,7 @@
 {
   "name": "@vue-devtools-next/client",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {

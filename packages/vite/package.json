@@ -2,6 +2,7 @@
   "name": "vite-plugin-vue-devtools",
   "type": "module",
   "version": "1.0.0-rc.8",
+  "private": true,
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",

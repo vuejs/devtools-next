@@ -51,8 +51,8 @@
     "scripting",
     "storage"
   ],
-  "version": "0.0.1",
-  "version_name": "0.0.1",
+  "version": "0.0.0",
+  "version_name": "0.0.0",
   "web_accessible_resources": [
     {
       "matches": [

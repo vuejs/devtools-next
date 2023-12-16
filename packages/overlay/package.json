@@ -2,14 +2,9 @@
   "name": "@vue-devtools-next/overlay",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
-  "repository": {
-    "directory": "packages/overlay",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-next/issues"
   },

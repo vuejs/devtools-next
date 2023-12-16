@@ -5,11 +5,6 @@
   "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/browser-extension",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "files": [
     "dist"
   ],

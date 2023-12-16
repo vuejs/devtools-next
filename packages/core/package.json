@@ -2,13 +2,9 @@
   "name": "@vue-devtools-next/core",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/core",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

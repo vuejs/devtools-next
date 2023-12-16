@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "@vue-devtools-next/playground",
   "type": "module",
   "private": true,
   "scripts": {

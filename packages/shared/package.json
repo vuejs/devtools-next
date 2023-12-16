@@ -2,13 +2,9 @@
   "name": "@vue-devtools-next/shared",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/shared",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",

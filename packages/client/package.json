@@ -4,12 +4,6 @@
   "version": "0.0.1",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
-  "repository": {
-    "directory": "packages/client",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "bugs": {
     "url": "https://github.com/webfansplz/vue-devtools-next/issues"
   },

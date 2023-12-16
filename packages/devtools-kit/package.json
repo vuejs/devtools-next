@@ -4,11 +4,6 @@
   "version": "0.0.1-aplha.0",
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/devtools-kit",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",

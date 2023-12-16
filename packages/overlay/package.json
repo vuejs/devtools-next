@@ -5,9 +5,6 @@
   "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/webfansplz/vue-devtools-next/issues"
-  },
   "exports": {
     "./*": "./dist/*"
   },

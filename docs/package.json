@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "docs:build": "vitepress build",
+    "docs:dev": "vitepress dev",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@unocss/reset": "^0.58.0",
+    "@vueuse/core": "^10.7.0",
+    "unplugin-vue-components": "^0.26.0",
+    "vitepress": "1.0.0-rc.30",
+    "vue": "^3.3.11"
+  }
+}

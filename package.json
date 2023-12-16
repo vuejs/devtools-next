@@ -43,7 +43,7 @@
     "dev:ui-play": "nr -C packages/ui-playground dev",
     "prepare:type": "pnpm -r --filter='./packages/**' run prepare:type",
     "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" nr prepare:type && nr build:ui && pnpm -r --parallel --filter='./packages/**' run stub",
-    "build": "pnpm -r --filter='./packages/**' run build",
+    "build": "pnpm build:client && pnpm -r --filter='!./packages/client' run build",
     "build:browser-extension": "nr -C packages/browser-extension build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

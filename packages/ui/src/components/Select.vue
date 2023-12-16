@@ -11,11 +11,13 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   autoClose?: boolean
   disabled?: boolean
+  labelRenderer?: (label: V) => string
   buttonProps?: ButtonProps
 }>(), {
   placeholder: 'Select...',
   autoClose: true,
   disabled: false,
+  labelRenderer: (label: V) => String(label),
   buttonClass: '',
   buttonProps: () => ({}),
 })
@@ -28,11 +30,16 @@ const value = computed({
   get: () => props.modelValue,
   set: v => emit('update:modelValue', v),
 })
+
+const label = computed(() => {
+  const option = props.options.find(i => i.value === value.value)
+  return option?.label ? props.labelRenderer(option.label) : props.placeholder
+})
 </script>
 
 <template>
   <VueDropdown
-    :label="placeholder"
+    :label="label"
     v-bind="{
       buttonProps,
       disabled,

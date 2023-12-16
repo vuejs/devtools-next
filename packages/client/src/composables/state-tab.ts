@@ -1,4 +1,5 @@
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
+import type { MaybeRef } from 'vue'
 import type { CustomTab } from 'vue-devtools-kit'
 import type { ModuleBuiltinTab } from '~/types/tab'
 
@@ -96,4 +97,37 @@ export function useAllTabs() {
   })
 
   return { categorizedTabs, flattenedTabs, enabledTabs }
+}
+
+export function getCategorizedTabs(flattenTabs: MaybeRef<(CustomTab | ModuleBuiltinTab)[]>, enabledTabs: MaybeRef<CategorizedTabs>) {
+  return computed<CategorizedTabs>(() => {
+    const categories: CategorizedTabs = []
+    const pinnedTabs = devtoolsClientState.value.tabSettings.pinnedTabs
+    const tabs = toValue(enabledTabs).reduce<{ tab: CategorizedTab, category: CategorizedCategory }[]>((prev, [{ name: cateName, hidden }, tabs]) => {
+      tabs.forEach((tab) => {
+        if (toValue(flattenTabs).some(i => i.name === tab.name)) {
+          const category = pinnedTabs.includes(tab.name) ? 'pinned' : (cateName || 'app')
+          prev.push({
+            tab,
+            category: {
+              name: category,
+              hidden,
+            },
+          })
+        }
+      })
+      return prev
+    }, [])
+    tabs.forEach(({ tab, category }) => {
+      const cates = categories.find(([{ name }]) => name === category.name)
+      if (!cates)
+        categories.push([category, [tab]])
+      else
+        cates[1].push(tab)
+    })
+    const pinned = categories.find(([{ name }]) => name === 'pinned')
+    if (pinned)
+      pinned.sort((a, b) => pinnedTabs.indexOf(a[0].name) - pinnedTabs.indexOf(b[0].name))
+    return categories
+  })
 }

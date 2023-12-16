@@ -8,11 +8,16 @@ interface DevtoolsClientState {
   graphSettings: GraphSettings
   tabSettings: TabSettings
   expandSidebar: boolean
+  scrollableSidebar: boolean
   splitScreen: {
     enabled: boolean
     view: string
     size: [number, number]
   }
+  scale: number
+  interactionCloseOnOutsideClick: boolean
+  showPanel: boolean
+  minimizePanelInteractive: number
 }
 
 function clientStateFactory(): DevtoolsClientState {
@@ -29,12 +34,17 @@ function clientStateFactory(): DevtoolsClientState {
       hiddenTabs: [],
       pinnedTabs: [],
     },
+    expandSidebar: false,
+    scrollableSidebar: true,
     splitScreen: {
       enabled: false,
       view: 'overview',
       size: [50, 50],
     },
-    expandSidebar: false,
+    scale: 1,
+    interactionCloseOnOutsideClick: false,
+    showPanel: true,
+    minimizePanelInteractive: 5000,
   }
 }
 

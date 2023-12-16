@@ -2,7 +2,7 @@
 import { computed, ref, watchEffect } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
-import { useFrameState } from '~/composables'
+import { useFrameState, waitBridgeReady } from '~/composables'
 import { PANEL_MAX, PANEL_MIN } from '~/constants'
 
 const props = defineProps<{
@@ -17,11 +17,23 @@ const props = defineProps<{
     // } | undefined
   }
   viewMode: 'xs' | 'default' | 'fullscreen'
+
 }>()
 
 const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
+
+waitBridgeReady().then((bridge) => {
+  // @TODO: add type
+  bridge.on('update-client-state', (v) => {
+    updateState({
+      minimizePanelInactive: v.minimizePanelInteractive,
+      closeOnOutsideClick: v.closeOnOutsideClick,
+      preferShowFloatingPanel: v.showFloatingPanel,
+    })
+  })
+})
 
 watchEffect(() => {
   if (!container.value)

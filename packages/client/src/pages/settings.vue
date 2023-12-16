@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSwitch } from '@vue-devtools-next/ui'
+import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, VueSwitch } from '@vue-devtools-next/ui'
 import { isInChromePanel } from '@vue-devtools-next/shared'
 
 // #region view mode
@@ -10,12 +10,28 @@ const { toggle: toggleViewMode } = useToggleViewMode()
 
 const { categorizedTabs: categories } = useAllTabs()
 
-const { hiddenTabCategories, hiddenTabs, pinnedTabs } = toRefs(devtoolsClientState.value.tabSettings)
-const expandSidebar = computed({
-  get: () => devtoolsClientState.value.expandSidebar,
-  set: v => (devtoolsClientState.value.expandSidebar = v),
-})
+const { scale, interactionCloseOnOutsideClick, showPanel, minimizePanelInteractive, expandSidebar, scrollableSidebar } = toRefs(devtoolsClientState.value)
 
+// #region settings
+const scaleOptions = [
+  ['Tiny', 12 / 15],
+  ['Small', 14 / 15],
+  ['Normal', 1],
+  ['Large', 16 / 15],
+  ['Huge', 18 / 15],
+]
+const MinimizeInactiveOptions = [
+  ['Always', 0],
+  ['1s', 1000],
+  ['2s', 2000],
+  ['5s', 5000],
+  ['10s', 10000],
+  ['Never', -1],
+]
+// #endregion
+
+// #region tabs
+const { hiddenTabCategories, hiddenTabs, pinnedTabs } = toRefs(devtoolsClientState.value.tabSettings)
 function toggleTab(name: string, v: boolean) {
   if (v)
     hiddenTabs.value = hiddenTabs.value.filter(i => i !== name)
@@ -51,12 +67,19 @@ function pinMove(name: string, delta: number) {
   newPinnedTabs.splice(newIndex, 0, name)
   pinnedTabs.value = newPinnedTabs
 }
+// #endregion
 
 const clearOptionsConfirmState = ref(false)
 async function clearOptions() {
   resetDevtoolsClientState()
   window.location.reload()
 }
+
+const minimizePanelInteractiveOptions = MinimizeInactiveOptions.map(([label, value]) => ({ label, value }))
+const minimizePanelInteractiveLabel = computed(() => {
+  const option = minimizePanelInteractiveOptions.find(i => i.value === minimizePanelInteractive.value)
+  return `${option?.label ?? 'Select...'}`
+})
 </script>
 
 <template>
@@ -143,12 +166,44 @@ async function clearOptions() {
               Switch to Overlay Mode
             </VueButton>
           </div>
+          <!-- TODO: need rewrite client/(UI package) to rem based -->
+          <!-- <div mx--2 my1 h-1px border="b base" op75 />
+          <p>UI Scale</p>
+          <div>
+            <VueSelect v-model="scale" :options="scaleOptions.map(([label, value]) => ({ label, value }))" />
+          </div> -->
           <div mx--2 my1 h-1px border="b base" op75 />
           <div class="flex items-center gap2 text-sm">
             <VueCheckbox v-model="expandSidebar" />
             <span op75>Expand Sidebar</span>
           </div>
+          <div class="flex items-center gap2 text-sm">
+            <VueCheckbox v-model="scrollableSidebar" />
+            <span op75>Scrollable Sidebar</span>
+          </div>
         </VueCard>
+
+        <h3 mt2 text-lg>
+          Features
+        </h3>
+        <VueCard p4 flex="~ col gap-2">
+          <div class="flex items-center gap2 text-sm">
+            <VueCheckbox v-model="interactionCloseOnOutsideClick" />
+            <span op75>Close DevTools when clicking outside</span>
+          </div>
+          <div class="flex items-center gap2 text-sm">
+            <VueCheckbox v-model="showPanel" />
+            <span op75>Always show the floating panel</span>
+          </div>
+
+          <div mx--2 my1 h-1px border="b base" op75 />
+
+          <p>Minimize floating panel on inactive</p>
+          <div>
+            <VueSelect v-model="minimizePanelInteractive" :button-props="{ outlined: true }" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
+          </div>
+        </VueCard>
+
         <h3 mt2 text-lg>
           Debug
         </h3>

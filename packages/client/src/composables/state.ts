@@ -2,7 +2,7 @@ import type { RemovableRef } from '@vueuse/core'
 import type { GraphSettings } from './graph'
 import type { TabSettings } from './state-tab'
 
-export const devtoolsClientState: RemovableRef<{
+interface DevtoolsClientState {
   isFirstVisit: boolean
   route: string
   graphSettings: GraphSettings
@@ -18,34 +18,44 @@ export const devtoolsClientState: RemovableRef<{
   interactionCloseOnOutsideClick: boolean
   showPanel: boolean
   minimizePanelInteractive: number
-}> = useLocalStorage('__VUE_DEVTOOLS_CLIENT_STATE__', {
-  isFirstVisit: true,
-  route: '/',
-  graphSettings: {
-    node_modules: false,
-    virtual: false,
-    lib: false,
-  },
-  tabSettings: {
-    hiddenTabCategories: [],
-    hiddenTabs: [],
-    pinnedTabs: [],
-  },
-  splitScreen: {
-    enabled: false,
-    view: 'overview',
-    size: [50, 50],
-  },
-  expandSidebar: false,
-  scrollableSidebar: true,
-  scale: 1,
-  interactionCloseOnOutsideClick: false,
-  showPanel: true,
-  minimizePanelInteractive: 5000,
-}, { mergeDefaults: true })
+}
 
-export function clearDevtoolsClientState() {
-  devtoolsClientState.value = undefined
+function clientStateFactory(): DevtoolsClientState {
+  return {
+    isFirstVisit: true,
+    route: '/',
+    graphSettings: {
+      node_modules: false,
+      virtual: false,
+      lib: false,
+    },
+    tabSettings: {
+      hiddenTabCategories: [],
+      hiddenTabs: [],
+      pinnedTabs: [],
+    },
+    expandSidebar: false,
+    scrollableSidebar: true,
+    splitScreen: {
+      enabled: false,
+      view: 'overview',
+      size: [50, 50],
+    },
+    scale: 1,
+    interactionCloseOnOutsideClick: false,
+    showPanel: true,
+    minimizePanelInteractive: 5000,
+  }
+}
+
+export const devtoolsClientState: RemovableRef<DevtoolsClientState> = useLocalStorage(
+  '__VUE_DEVTOOLS_CLIENT_STATE__',
+  clientStateFactory(),
+  { mergeDefaults: true },
+)
+
+export function resetDevtoolsClientState() {
+  devtoolsClientState.value = clientStateFactory()
 }
 
 // #region split screen related

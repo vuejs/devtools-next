@@ -71,7 +71,7 @@ function pinMove(name: string, delta: number) {
 
 const clearOptionsConfirmState = ref(false)
 async function clearOptions() {
-  clearDevtoolsClientState()
+  resetDevtoolsClientState()
   window.location.reload()
 }
 

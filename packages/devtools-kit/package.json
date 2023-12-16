@@ -11,14 +11,8 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    },
-    "./shared": {
-      "types": "./dist/shared/index.d.ts",
-      "import": "./dist/shared/index.mjs",
-      "require": "./dist/shared/index.cjs"
     }
   },
   "main": "./dist/index.cjs",

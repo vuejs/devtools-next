@@ -9,6 +9,8 @@ export type * from './core/vue-inspector'
 export type * from './core/component-inspector/types'
 export type * from './core/custom-tab/types'
 
+export * from './shared'
+
 export const devtools = {
   state: devtoolsState,
   context: devtoolsContext,

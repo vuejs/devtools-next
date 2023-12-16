@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UNDEFINED } from 'vue-devtools-kit/shared'
+import { UNDEFINED } from 'vue-devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import type { InspectorState, TimelineEvent } from 'vue-devtools-kit'

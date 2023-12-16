@@ -1,5 +1,4 @@
-import { devtools } from 'vue-devtools-kit'
-import { stringify } from 'vue-devtools-kit/shared'
+import { devtools, stringify } from 'vue-devtools-kit'
 import { isBrowser } from '@vue-devtools-next/shared'
 import { BridgeEvents } from './types'
 import type { BridgeInstanceType } from './core'

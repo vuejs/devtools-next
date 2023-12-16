@@ -49,13 +49,13 @@
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/kit": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
     "birpc": "^0.2.14",
     "execa": "^8.0.1",
     "sirv": "^2.0.3",
     "vite-plugin-inspect": "^0.8.1",
-    "vite-plugin-vue-inspector": "^4.0.2",
-    "vue-devtools-kit": "workspace:^"
+    "vite-plugin-vue-inspector": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

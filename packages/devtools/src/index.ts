@@ -1,7 +1,7 @@
-import { devtools as _devtools, addCustomTab, onDevToolsConnected } from 'vue-devtools-kit'
+import { devtools as _devtools, addCustomTab, onDevToolsConnected } from '@vue-devtools-next/kit'
 import { connect } from '@vue-devtools-next/electron'
 
-export type * from 'vue-devtools-kit'
+export type * from '@vue-devtools-next/kit'
 
 const devtools = {
   ..._devtools,

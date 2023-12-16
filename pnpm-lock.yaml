@@ -111,6 +111,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:../core
+      '@vue-devtools-next/kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
       '@vue-devtools-next/schema':
         specifier: workspace:*
         version: link:../schema
@@ -147,9 +150,6 @@ importers:
       vite-hot-client:
         specifier: ^0.2.3
         version: 0.2.3(vite@5.0.7)
-      vue-devtools-kit:
-        specifier: workspace:^
-        version: link:../devtools-kit
       vue-router:
         specifier: ^4.2.5
         version: 4.2.5(vue@3.3.11)
@@ -217,6 +217,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@vue-devtools-next/kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
       '@vue-devtools-next/schema':
         specifier: workspace:^
         version: link:../schema
@@ -247,9 +250,6 @@ importers:
       vite-plugin-inspect:
         specifier: ^0.8.1
         version: 0.8.1(rollup@3.28.1)(vite@5.0.6)
-      vue-devtools-kit:
-        specifier: workspace:^
-        version: link:../devtools-kit
     devDependencies:
       vue:
         specifier: ^3.3.11
@@ -260,7 +260,7 @@ importers:
       '@vue-devtools-next/electron':
         specifier: workspace:^
         version: link:../electron
-      vue-devtools-kit:
+      '@vue-devtools-next/kit':
         specifier: workspace:^
         version: link:../devtools-kit
 
@@ -334,6 +334,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:../core
+      '@vue-devtools-next/kit':
+        specifier: workspace:*
+        version: link:../devtools-kit
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -343,9 +346,6 @@ importers:
       '@vueuse/core':
         specifier: ^10.7.0
         version: 10.7.0(vue@3.3.11)
-      vue-devtools-kit:
-        specifier: workspace:*
-        version: link:../devtools-kit
     devDependencies:
       '@iconify/json':
         specifier: ^2.2.154
@@ -500,6 +500,9 @@ importers:
       '@vue-devtools-next/core':
         specifier: workspace:^
         version: link:../core
+      '@vue-devtools-next/kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
       '@vue-devtools-next/shared':
         specifier: workspace:^
         version: link:../shared
@@ -521,9 +524,6 @@ importers:
       vite-plugin-vue-inspector:
         specifier: ^4.0.2
         version: 4.0.2(vite@5.0.5)
-      vue-devtools-kit:
-        specifier: workspace:^
-        version: link:../devtools-kit
     devDependencies:
       '@types/node':
         specifier: ^20.10.4

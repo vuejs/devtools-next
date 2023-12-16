@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { UNDEFINED } from 'vue-devtools-kit'
+import { UNDEFINED } from '@vue-devtools-next/kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
-import type { InspectorState, TimelineEvent } from 'vue-devtools-kit'
+import type { InspectorState, TimelineEvent } from '@vue-devtools-next/kit'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 
 const bridgeRpc = useDevToolsBridgeRpc()

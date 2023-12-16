@@ -1,6 +1,6 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import type { CustomTab } from 'vue-devtools-kit'
+import type { CustomTab } from '@vue-devtools-next/kit'
 import type { AppRecord } from '@vue-devtools-next/schema'
 import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'

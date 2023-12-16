@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { CustomTab } from 'vue-devtools-kit'
+import type { CustomTab } from '@vue-devtools-next/kit'
 
 export interface ModuleBuiltinTab extends Pick<CustomTab, 'name' | 'icon' | 'title' | 'category'> {
   order?: number

@@ -21,10 +21,10 @@
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/kit": "workspace:*",
     "@vue-devtools-next/shared": "workspace:^",
     "@vue-devtools-next/ui": "workspace:*",
-    "@vueuse/core": "^10.7.0",
-    "vue-devtools-kit": "workspace:*"
+    "@vueuse/core": "^10.7.0"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.154",

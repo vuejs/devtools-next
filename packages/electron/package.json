@@ -1,29 +1,23 @@
 {
-  "name": "vue-devtools-next",
+  "name": "@vue-devtools-next/electron",
   "type": "module",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.0.0",
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/electron",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./cli": {
+      "import": "./dist/cli.mjs",
+      "require": "./dist/cli.cjs"
+    }
   },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "bin": {
-    "vue-devtools-next": "./cli.mjs"
-  },
   "files": [
     "dist"
   ],

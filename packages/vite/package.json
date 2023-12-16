@@ -1,18 +1,18 @@
 {
   "name": "vite-plugin-vue-devtools",
   "type": "module",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.8",
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
+  "homepage": "https://github.com/vuejs/vue-devtools-next#readme",
   "repository": {
     "directory": "packages/vite",
     "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
+    "url": "git+https://github.com/vuejs/vue-devtools-next.git"
   },
   "bugs": {
-    "url": "https://github.com/webfansplz/vue-devtools-next/issues"
+    "url": "https://github.com/vuejs/vue-devtools-next/issues"
   },
   "keywords": [
     "vue-devtools",
@@ -34,6 +34,7 @@
   "files": [
     "*.d.ts",
     "./src/overlay.js",
+    "./src/overlay/**",
     "dist",
     "overlay"
   ],
@@ -49,13 +50,13 @@
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/kit": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
     "birpc": "^0.2.14",
     "execa": "^8.0.1",
     "sirv": "^2.0.3",
     "vite-plugin-inspect": "^0.8.1",
-    "vite-plugin-vue-inspector": "^4.0.2",
-    "vue-devtools-kit": "workspace:^"
+    "vite-plugin-vue-inspector": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

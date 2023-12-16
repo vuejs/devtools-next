@@ -1,14 +1,9 @@
 {
   "name": "@vue-devtools-next/schema",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/schema",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "sideEffects": false,
   "exports": {
     ".": {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
-import type { InspectorState } from 'vue-devtools-kit'
+import type { InspectorState } from '@vue-devtools-next/kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()

@@ -1,18 +1,10 @@
 {
   "name": "@vue-devtools-next/client",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "private": true,
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/webfansplz/vue-devtools-next#readme",
-  "repository": {
-    "directory": "packages/client",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
-  "bugs": {
-    "url": "https://github.com/webfansplz/vue-devtools-next/issues"
-  },
   "exports": {
     "./*": "./dist/*"
   },
@@ -33,6 +25,7 @@
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
+    "@vue-devtools-next/kit": "workspace:^",
     "@vue-devtools-next/schema": "workspace:*",
     "@vue-devtools-next/shared": "workspace:^",
     "@vue-devtools-next/ui": "workspace:*",
@@ -45,7 +38,6 @@
     "splitpanes": "^3.1.5",
     "vis-network": "^9.1.9",
     "vite-hot-client": "^0.2.3",
-    "vue-devtools-kit": "workspace:^",
     "vue-router": "^4.2.5",
     "vue-virtual-scroller": "2.0.0-beta.8"
   },

@@ -1,6 +1,6 @@
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 import type { MaybeRef } from 'vue'
-import type { CustomTab } from 'vue-devtools-kit'
+import type { CustomTab } from '@vue-devtools-next/kit'
 import type { ModuleBuiltinTab } from '~/types/tab'
 
 export interface TabSettings {

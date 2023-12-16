@@ -1,17 +1,11 @@
 {
   "name": "@vue-devtools-next/core",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "webfansplz",
   "license": "MIT",
-  "repository": {
-    "directory": "packages/core",
-    "type": "git",
-    "url": "git+https://github.com/webfansplz/vue-devtools-next.git"
-  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
@@ -34,6 +28,7 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
+    "@vue-devtools-next/kit": "workspace:^",
     "@vue-devtools-next/schema": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
     "birpc": "^0.2.14",
@@ -43,8 +38,7 @@
     "pathe": "^1.1.1",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.8.1",
-    "vue-devtools-kit": "workspace:^"
+    "vite-plugin-inspect": "^0.8.1"
   },
   "devDependencies": {
     "vue": "^3.3.11"

@@ -81,7 +81,7 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     ['link', { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Arlo(webfansplz)' }],
-    ['meta', { name: 'og:site_name', content: 'VitePress' }],
+    ['meta', { name: 'og:site_name', content: 'Vue DevTools' }],
     ['meta', { property: 'og:title', content: 'Vue DevTools' }],
     ['meta', { property: 'og:image', content: '' }],
     ['meta', { property: 'og:description', content: 'Unleash Vue Developer Experience' }],

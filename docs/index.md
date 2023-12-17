@@ -34,3 +34,5 @@ features:
     title: Extendable
     details: Provide plugin API for integrations, a friendly bridge between your libraries and the devtools.
 ---
+
+<Home />

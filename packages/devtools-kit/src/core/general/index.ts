@@ -37,7 +37,7 @@ export function initDevTools() {
     ]
 
     if (devtoolsState.appRecords.length === 1) {
-      setActiveAppRecord(devtoolsState.appRecords[0])
+      await setActiveAppRecord(devtoolsState.appRecords[0])
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
     }
   })

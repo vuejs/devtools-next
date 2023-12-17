@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue-devtools-next/core'
 import { target } from '@vue-devtools-next/shared'
-import { devtools } from '@vue-devtools-next/kit'
+import { devtools, onDevToolsConnected } from '@vue-devtools-next/kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
@@ -75,8 +75,10 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
 
 const vueInspector = ref()
 
-devtools.api.getVueInspector().then((inspector) => {
-  vueInspector.value = inspector
+onDevToolsConnected(() => {
+  devtools.api.getVueInspector().then((inspector) => {
+    vueInspector.value = inspector
+  })
 })
 
 const vueInspectorEnabled = computed(() => {

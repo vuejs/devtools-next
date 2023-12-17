@@ -10,12 +10,17 @@ import { setActiveAppRecord } from './app-record'
 export function initDevTools() {
   devtoolsState.vitePluginDetected = !!target.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__
 
+  const isNewDevTools = target.__VUE_DEVTOOLS_GLOBAL_HOOK__?.id === 'vue-devtools-next'
   // de-duplicate
-  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__)
+  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isNewDevTools)
     return
 
-  // override directly to prevent conflict with the old devtools
-  target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
+  // compatible with old devtools
+  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__)
+    Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
+
+  else
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
 
   target.__VUE_DEVTOOLS_APP_RECORDS__ ??= []
 

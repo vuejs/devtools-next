@@ -40,6 +40,7 @@ const on = {
 
 export function createDevToolsHook(): DevtoolsHook {
   return {
+    id: 'vue-devtools-next',
     enabled: false,
     appRecords: [],
     apps: {},

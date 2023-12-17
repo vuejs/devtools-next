@@ -19,6 +19,7 @@ export enum DevToolsHooks {
 }
 
 export interface DevtoolsHook {
+  id: string
   enabled?: boolean
   events: Map<DevToolsHooks, Function[]>
   emit: (event: DevToolsHooks, ...payload: any[]) => void

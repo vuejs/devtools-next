@@ -35,8 +35,8 @@ const keys = [
     v-model="show"
     :top="top"
     :close-outside="false"
-
-    content-blur permanent
+    :permanent="true"
+    :content-blur="true"
     mount-to=".graph-body"
   >
     <div class="w-300px" h-full of-auto>

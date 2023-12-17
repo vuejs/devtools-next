@@ -2,7 +2,9 @@ import { resolve as _resolve } from 'node:path'
 import type { Options } from 'tsup'
 import { build } from 'tsup'
 import { build as unbuild } from 'unbuild'
+import { dependencies } from '../package.json'
 
+const ExternalModules = Object.keys(dependencies)
 const argv = process.argv.slice(2)
 const enableWatch = argv.includes('--watch')
 
@@ -18,6 +20,8 @@ const baseOptions = {
   watch: enableWatch,
   splitting: false,
   clean: false,
+  minify: true,
+  external: ExternalModules,
 } satisfies Options
 
 function resolve(path: string) {
@@ -35,6 +39,7 @@ async function buildBundle() {
       emitCJS: true,
       inlineDependencies: true,
     },
+    externals: ExternalModules,
     failOnWarn: false,
   })
 
@@ -48,7 +53,7 @@ async function buildBundle() {
   build({
     entry: [resolve('./src/index.ts'), resolve('./src/app.ts')],
     ...baseOptions,
-    external: ['./user-app.mjs', './user-app.js'],
+    external: ['./user-app.mjs', './user-app.js', ...ExternalModules],
     clean: false,
   })
 

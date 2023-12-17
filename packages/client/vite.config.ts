@@ -35,7 +35,7 @@ export default defineConfig(mergeConfig(baseConfig, {
   },
   build: {
     target: 'esnext',
-    minify: false, // 'esbuild',
+    minify: true, // 'esbuild',
     emptyOutDir: true,
   },
 }))

@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production tsup",
-    "dev": "cross-env NODE_ENV=development tsup --watch",
-    "prepublishOnly": "pnpm build"
+    "dev": "cross-env NODE_ENV=development tsup --watch"
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",

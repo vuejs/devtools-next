@@ -26,8 +26,7 @@
   ],
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "dev": "tsx scripts/build.ts --watch",
-    "prepublishOnly": "pnpm build"
+    "dev": "tsx scripts/build.ts --watch"
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",

@@ -24,7 +24,6 @@
   "scripts": {
     "build": "tsup --clean",
     "prepare:type": "tsup --dts-only",
-    "prepublishOnly": "pnpm build",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {

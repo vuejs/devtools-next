@@ -4,7 +4,11 @@ import { version } from '../../package.json'
 import vite from './vite.config'
 
 const GUIDES: DefaultTheme.NavItemWithLink[] = [
-  { text: 'Getting Started', link: '/guide/' },
+  { text: 'Getting Started', link: '/guide/getting-started' },
+  { text: 'Features', link: '/guide/features' },
+  { text: 'Vite Plugin', link: '/guide/vite-plugin' },
+  { text: 'Browser Extension', link: '/guide/browser-extension' },
+  { text: 'Standalone App', link: '/guide/standalone' },
 ]
 
 const VERSIONS: DefaultTheme.NavItemWithLink[] = [
@@ -56,7 +60,7 @@ export default defineConfig({
 
     editLink: {
       pattern: 'https://github.com/vuejs/vue-devtools-next/edit/main/docs/:path',
-      text: 'Edit this page on GitHub',
+      text: 'Suggest changes to this page',
     },
     search: {
       provider: 'local',

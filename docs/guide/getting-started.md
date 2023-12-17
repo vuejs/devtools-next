@@ -1,23 +1,21 @@
 # Getting Started
 
-## Installation
+## Overview
 
-::: code-group
+**Vue DevTools is a tool designed to enhance the Vue developer experience,** It provides some [features](/guide/features) to help you better understand your Vue application.There are several ways to use Vue DevTools in your Vue project:
 
-```sh [npm]
-$ npm add -D vite-plugin-vue-devtools
-```
+- **[Recommended]** [Vite Plugin](/guide/vite-plugin.md)
+- **[Coming soon]** [Browser Extension](/guide/browser-extension.md)
+- [Standalone App](/guide/standalone.md)
 
-```sh [pnpm]
-$ pnpm add -D vite-plugin-vue-devtools
-```
+<!-- ## Trying Vue DevTools Online -->
 
-```sh [yarn]
-$ yarn add -D vite-plugin-vue-devtools
-```
+## Notice
 
-```sh [bun]
-$ bun add -D vite-plugin-vue-devtools
-```
+:::warning Compatibility Note
+The DevTools is only compatible with Vue 3. If you are still using Vue2, use [vue-devtools](https://devtools.vuejs.org/) instead.
+:::
 
+:::tip Recommendation
+If you are using Nuxt, use [nuxt-devtools](https://github.com/nuxt/devtools) for a more powerful developer experience.
 :::

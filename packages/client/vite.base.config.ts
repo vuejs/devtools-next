@@ -11,6 +11,9 @@ export default {
       '~/': `${resolve(__dirname)}/src/`,
     },
   },
+  build: {
+    chunkSizeWarningLimit: 2000,
+  },
   plugins: [
     {
       name: 'local-object-transform',

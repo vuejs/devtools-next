@@ -52,7 +52,9 @@
     "dep:up": "taze -I major",
     "prepare": "simple-git-hooks",
     "test": "vitest",
-    "play": "nr -C packages/playground dev"
+    "play": "nr -C packages/playground dev",
+    "docs": "pnpm -C docs run docs:dev",
+    "docs:build": "pnpm -C docs run docs:build"
   },
   "devDependencies": {
     "@antfu/eslint-config": "2.4.2",

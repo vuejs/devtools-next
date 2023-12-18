@@ -1,5 +1,5 @@
 import type { DevtoolsBridgeAppRecord } from '@vue-devtools-next/core'
-import { deepClone } from '@vue-devtools-next/shared'
+import { deepClone, isInElectron } from '@vue-devtools-next/shared'
 import type { ModuleBuiltinTab } from '~/types'
 
 // @unocss-include
@@ -93,7 +93,9 @@ export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: Devtools
     if (item[0] === 'modules')
       item[1] = item[1].filter(t => moduleDetectives ? isDetected(moduleDetectives, t) : true)
   })
-  return viteDetected
+
+  // @TODO: electron app support vite only tabs
+  return (viteDetected && !isInElectron)
     ? tab
     : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }

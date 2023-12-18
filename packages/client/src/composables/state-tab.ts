@@ -1,6 +1,8 @@
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue-devtools-next/kit'
+import { isInElectron } from '@vue-devtools-next/shared'
+
 import type { ModuleBuiltinTab } from '~/types/tab'
 
 export interface TabSettings {
@@ -31,7 +33,9 @@ export function useAllTabs() {
       if (currentTab) {
         if (currentTab[1].some(t => t.name === tab.name))
           return
-        if (!vitePluginDetected && viteOnlyTabs.includes(tab.name))
+
+        // @TODO: electron app support vite only tabs
+        if ((!vitePluginDetected || isInElectron) && viteOnlyTabs.includes(tab.name))
           return
 
         currentTab[1].push({

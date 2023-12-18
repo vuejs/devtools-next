@@ -41,4 +41,6 @@ socket.on('vue-devtools:disconnect-user-app', () => {
   socket.disconnect()
 })
 
-// @TODO: disconnect logic
+window.addEventListener('beforeunload', () => {
+  socket.emit('vue-devtools:disconnect')
+})

@@ -12,7 +12,7 @@ import Hey from './pages/Hey.vue'
 import './style.css'
 
 // connect to remote devtools
-// devtools.connect('http://localhost', 8098)
+// devtools.connect('http://localhost', 8080)
 
 const pinia = createPinia()
 const pinia2 = createPinia()

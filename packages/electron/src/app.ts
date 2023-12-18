@@ -15,7 +15,8 @@ function createWindow() {
       webSecurity: false,
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      // @TODO: enabled in dev mode
+      devTools: false,
     },
   })
   const appEntryPath = path.join(__dirname, '../app.html')

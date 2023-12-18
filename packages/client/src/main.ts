@@ -2,7 +2,7 @@ import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue-devtools-next/core'
-import { BROADCAST_CHANNEL_NAME, isInIframe } from '@vue-devtools-next/shared'
+import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue-devtools-next/shared'
 import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
 
 import type { App as AppType } from 'vue'
@@ -105,6 +105,14 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   })
 }
 
+export function createConnectionApp(container: string = '#app', props?: Record<string, string>) {
+  const app = createApp(WaitForConnection, {
+    ...props,
+  })
+  app.mount(container)
+  return app
+}
+
 window.addEventListener('message', (event) => {
   if (event.data === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
     initDevTools({
@@ -133,7 +141,7 @@ window.addEventListener('message', (event) => {
 })
 
 // @TODO: refactor separate window channel
-if (!isInIframe) {
+if (!isInIframe && !isInChromePanel && !isInElectron) {
   function initSeparateWindowChannel() {
     const connectionInfo: {
       connected: boolean
@@ -146,12 +154,6 @@ if (!isInIframe) {
     }
 
     const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
-
-    function createConnectionApp() {
-      const app = createApp(WaitForConnection)
-      app.mount('#app')
-      return app
-    }
 
     function connect() {
       connectionInfo.timer = setInterval(() => {

@@ -11,7 +11,8 @@ export function init() {
     '/',
     eventHandler(() => {
       const userAppContent = fs.readFileSync(path.join(__dirname, './user-app.js'), 'utf-8')
-      return userAppContent
+      const processSyntaxPolyfill = `if(!window.process){window.process={env:{}}};`
+      return processSyntaxPolyfill + userAppContent
     }),
   )
 
@@ -28,6 +29,10 @@ export function init() {
 
     socket.on('vue-devtools:init', () => {
       socket.broadcast.emit('vue-devtools:init')
+    })
+
+    socket.on('vue-devtools:disconnect', () => {
+      socket.broadcast.emit('vue-devtools:disconnect')
     })
 
     socket.on('disconnect', (reason) => {

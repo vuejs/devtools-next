@@ -7,7 +7,7 @@ import Inspect from 'vite-plugin-inspect'
 import VueInspector from 'vite-plugin-vue-inspector'
 import { setupViteRPCServer } from '@vue-devtools-next/core'
 import { setupAssetsRPC, setupGraphRPC } from '@vue-devtools-next/core/server'
-import { bold, dim, green, yellow } from 'kolorist'
+import { bold, cyan, dim, green, yellow } from 'kolorist'
 import { DIR_CLIENT } from './dir'
 
 type DeepRequired<T> = {
@@ -88,10 +88,17 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         rpc: inspect.api.rpc,
       }),
     })
+
     const _printUrls = server.printUrls
+    const colorUrl = (url: string) =>
+      cyan(url.replace(/:(\d+)\//, (_, port) => `:${bold(port)}/`))
+
     server.printUrls = () => {
+      const urls = server.resolvedUrls!
       const keys = normalizeComboKeyPrint('option-shift-d')
       _printUrls()
+      for (const url of urls?.local)
+        console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Open ${colorUrl(`${url}__devtools__/`)} as a separate window`)}`)
       console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }
   }

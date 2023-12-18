@@ -3,12 +3,13 @@ import VueLogo from '~/assets/images/vue-logo.svg'
 </script>
 
 <template>
-  <div class="h-screen w-screen $ui-fcc">
+  <div class="h-screen w-screen $ui-fcc flex-col">
     <div class="outer">
       <div class="inner">
         <img :src="VueLogo" class="max-w-18" alt="Vue logo">
       </div>
     </div>
+    <slot />
   </div>
 </template>
 

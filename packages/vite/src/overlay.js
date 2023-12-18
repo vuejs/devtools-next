@@ -43,7 +43,7 @@ body.appendChild(script)
 // Used in the browser extension
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
 
-// @TODO: we might should move this to a separate file?
+// @TODO: refactor separate window channel
 const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
 
 const bridge = new Bridge({
@@ -69,4 +69,8 @@ bridge.on('ready', () => {
   setTimeout(() => {
     bridge.emit('syn')
   }, 200)
+
+  window.addEventListener('beforeunload', (event) => {
+    bridge.emit('disconnect')
+  })
 })

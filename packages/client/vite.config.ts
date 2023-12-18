@@ -13,6 +13,13 @@ export default defineConfig(mergeConfig(baseConfig, {
       closeBundle() {
         // copy
         const clientFile = resolve(__dirname, './dist')
+
+        // we removed `browser-extension` and `electron` when `build:lib`
+        // now we need remove `vite/dist/client` when building
+        ;['../vite/dist/client'].forEach((dir) => {
+          fse.rmSync(resolve(__dirname, dir), { recursive: true, force: true })
+        })
+
         ;['../browser-extension/client', '../electron/client', '../vite/dist/client'].forEach((dir) => {
           fse.copySync(clientFile, resolve(__dirname, dir))
         })

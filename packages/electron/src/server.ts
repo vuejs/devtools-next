@@ -30,6 +30,10 @@ export function init() {
       socket.broadcast.emit('vue-devtools:init')
     })
 
+    socket.on('vue-devtools:disconnect', () => {
+      socket.broadcast.emit('vue-devtools:disconnect')
+    })
+
     socket.on('disconnect', (reason) => {
       if (reason.indexOf('client'))
         socket.broadcast.emit('vue-devtools-disconnect-devtools')

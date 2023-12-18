@@ -2,6 +2,8 @@ import { VIEW_MODE_STORAGE_KEY, isBrowser, isInChromePanel, target } from '@vue-
 
 import { initDevTools as _initDevTools } from './main'
 
+export { createConnectionApp } from './main'
+
 export function initDevTools(shell) {
   if (!isBrowser)
     return

@@ -105,8 +105,10 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   })
 }
 
-export function createConnectionApp(container: string = '#app') {
-  const app = createApp(WaitForConnection)
+export function createConnectionApp(container: string = '#app', props?: Record<string, string>) {
+  const app = createApp(WaitForConnection, {
+    ...props,
+  })
   app.mount(container)
   return app
 }

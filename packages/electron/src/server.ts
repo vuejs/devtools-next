@@ -11,7 +11,8 @@ export function init() {
     '/',
     eventHandler(() => {
       const userAppContent = fs.readFileSync(path.join(__dirname, './user-app.js'), 'utf-8')
-      return userAppContent
+      const processSyntaxPolyfill = `if(!window.process){window.process={env:{}}};`
+      return processSyntaxPolyfill + userAppContent
     }),
   )
 

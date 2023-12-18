@@ -1,13 +1,19 @@
 import io from 'socket.io-client/dist/socket.io.js'
+import ip from 'ip'
 import { createConnectionApp, initDevTools } from '../client/devtools-panel'
 import { Bridge } from '../../core/src/bridge'
 
 const port = window.process.env.PORT || 8098
 
 function init() {
-  const socket = io(`http://localhost:${port}`)
+  const localhost = `http://localhost:${port}`
+  const socket = io(localhost)
   let reload: Function | null = null
-  const app = createConnectionApp()
+
+  const app = createConnectionApp('#app', {
+    local: localhost,
+    network: `http://${ip.address()}:${port}`,
+  })
 
   socket.on('vue-devtools:init', () => {
     app.unmount()

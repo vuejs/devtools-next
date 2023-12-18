@@ -4,13 +4,6 @@ import { Bridge } from '../../core/src/bridge'
 import { prepareInjection } from '../../core/src/injection'
 import { devtools } from '../../devtools-kit/src/index'
 
-if (!window.process) {
-// @ts-expect-error expected type
-  window.process = {
-    env: {},
-  }
-}
-
 const createSocket = io
 const host = target.__VUE_DEVTOOLS_HOST__ || 'http://localhost'
 const port = target.__VUE_DEVTOOLS_PORT__ !== undefined ? target.__VUE_DEVTOOLS_PORT__ : 8098

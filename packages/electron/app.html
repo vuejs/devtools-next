@@ -11,6 +11,14 @@
         display: flex;
         height: 100%;
       }
+      .loading {
+        width: 100vw;
+        height: 100vh;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
     <link rel="stylesheet" type="text/css" href="./client/devtools-panel.css" />
     <script>
@@ -19,7 +27,9 @@
   </head>
   <body>
     <div id="container">
-      <div id="app"></div>
+      <div id="app">
+        <p class="loading">Loading DevTools Client...</p>
+      </div>
     </div>
     <script src="./dist/devtools.js"></script>
   </body>

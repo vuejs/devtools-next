@@ -16,7 +16,6 @@ function init() {
     if (reload)
       return reload()
 
-    console.log()
     initDevTools({
       connect(cb) {
         const bridge = new Bridge({

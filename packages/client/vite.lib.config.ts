@@ -39,7 +39,7 @@ export default defineConfig(mergeConfig(baseConfig, {
       name: 'vite-plugin-copy-devtools-client',
       apply: 'build',
       enforce: 'post',
-      async closeBundle() {
+      closeBundle() {
         // copy
         const clientFile = resolve(__dirname, './dist')
         fse.copySync(

@@ -18,6 +18,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/devtools-next": "workspace:*",
+    "@vue/devtools-next-api": "workspace:*",
     "sass": "^1.69.5",
     "serve": "^14.2.1",
     "typescript": "^5.3.3",

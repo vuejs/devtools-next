@@ -291,6 +291,12 @@ importers:
         specifier: workspace:^
         version: link:../devtools-kit
 
+  packages/devtools-api:
+    dependencies:
+      '@vue-devtools-next/kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
+
   packages/devtools-kit:
     dependencies:
       '@vue-devtools-next/schema':
@@ -417,6 +423,9 @@ importers:
       '@vue/devtools-next':
         specifier: workspace:*
         version: link:../devtools
+      '@vue/devtools-next-api':
+        specifier: workspace:*
+        version: link:../devtools-api
       sass:
         specifier: ^1.69.5
         version: 1.69.5

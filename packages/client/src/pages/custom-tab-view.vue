@@ -5,7 +5,7 @@ import type { CustomTab } from '@vue-devtools-next/kit'
 const route = useRoute()
 const router = useRouter()
 const { flattenedTabs } = useAllTabs()
-const tabName = computed(() => route.query.name as string | undefined)
+const tabName = computed(() => route.params.name as string | undefined)
 const tab = computed(() => flattenedTabs.value.find(tab => tabName.value === tab.name) || null!) as ComputedRef<CustomTab>
 
 onMounted(() => {
@@ -31,13 +31,13 @@ onMounted(() => {
       </div>
     </PanelGrids>
   </template>
-  <template v-else-if="tab.view.type === 'iframe'">
+  <template v-else-if="tab?.view?.type === 'iframe'">
     <IframeView :src="tab.view.src" />
   </template>
   <template v-else>
     <PanelGrids>
       <NCard flex="~ col" h-full items-center justify-center>
-        Unknown tab type {{ tab.view }}
+        Unknown tab type {{ tab?.view }}
       </NCard>
     </PanelGrids>
   </template>

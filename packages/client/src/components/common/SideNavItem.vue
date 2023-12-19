@@ -17,7 +17,7 @@ const props = withDefaults(
 )
 const route = useRoute()
 
-const tabPath = computed(() => 'path' in props.tab ? props.tab.path! : `/custom-tab-view?name=${(props.tab as ModuleBuiltinTab).name}`)
+const tabPath = computed(() => 'path' in props.tab ? (`${props.tab.path.startsWith('/') ? `` : `/`}${props.tab.path!}`) : `/custom-tab-view/${(props.tab as ModuleBuiltinTab).name}`)
 const badge = computed(() => 'badge' in props.tab && props.tab.badge?.())
 const isActive = computed(() => route.path.startsWith(tabPath.value))
 

@@ -1,5 +1,6 @@
 import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected } from './core/general'
 import { addCustomTab } from './core/custom-tab'
+import { setupDevToolsPlugin } from './api/plugin'
 
 export type * from './core/component/types'
 export type * from './core/timeline/types'
@@ -24,4 +25,5 @@ export const devtools = {
 export {
   onDevToolsConnected,
   addCustomTab,
+  setupDevToolsPlugin,
 }

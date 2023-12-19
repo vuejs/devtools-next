@@ -2,6 +2,8 @@
 
 > In case you are using an unsupported browser, or if you have other specific needs (for example your application is in Electron), you can use the standalone application.
 
+![electron](/features/electron.png)
+
 ## Installation
 
 ### Install the package globally:
@@ -113,3 +115,69 @@ if (process.env.NODE_ENV === 'development')
 **host** - is an optional argument that tells your application where devtools middleware server is running, if you debug your app on your computer you don't have to set this (the default is `http://localhost`), but if you want to debug your app on mobile devices, you might want to pass your local IP (e.g. `http://192.168.1.12`).
 
 **port** - is an optional argument that tells your application on what port devtools middleware server is running. If you use proxy server, you might want to set it to `null` so the port won't be added to connection URL.
+
+## FAQ
+
+### 1. How to change port devtools server is running on?
+
+You can change it by setting environment variable before running it:
+
+```sh
+PORT=8000 vue-devtools-next
+```
+
+Then in your app you'll have to set either:
+
+```ts
+window.__VUE_DEVTOOLS_PORT__ = 8000
+```
+
+Or update connect method with new port:
+
+```ts
+devtools.connect(/ host /, 8000)
+```
+
+### 2. How to remotely inspect page on the server?
+
+For that you can use `ngrok` proxy. You can download it [here](https://ngrok.com/).
+
+Once you start vue-devtools-next run:
+
+```sh
+ngrok http 8098
+```
+
+Then update your host and port accordingly:
+
+```ts
+devtools.connect('https://example.ngrok.io', null)
+```
+
+Make sure to set port to `null` or `false`, because `ngrok` host already proxies to proper port that we defined in the first command.
+
+### 3. How to inspect page served through `HTTPS`?
+
+For that you can also use ngrok, as it automatically proxies https requests to http. Take a look at question number 2 for instructions.
+
+### 4. How to inspect cordova applications?
+
+Make sure that the page under `http://your-ip:8098` is returning a javascript coode on your device/simulator. If it doesn't - make sure to check your anti-virus or router/firewall settings. If it works - please follow the instructions, and connect to devtools using your IP. For example:
+
+```ts
+import devtools from '@vue/devtools-next'
+import Vue from 'vue'
+// ...
+
+function onDeviceReady() {
+  devtools.connect('http://192.168.xx.yy') // use your IP
+}
+
+if (window.location.protocol === 'file:')
+  document.addEventListener('deviceready', onDeviceReady, false)
+
+else
+  onDeviceReady()
+```
+
+This will only work on `development` build of your app.

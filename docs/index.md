@@ -23,16 +23,17 @@ hero:
 features:
   - icon: ⚡️
     title: Developer experience
-    details: Further enhance your DX!
-  - icon: 🍃
-    title: Component Wizard
-    details: See the component node tree, state, and the relationships.
+    details: Enhance your Vue development journey with an amazing experience!
   - icon: 🎛
     title: Extensive App
-    details: Vite Plugin, Browser Extension, Electron App, There always one for you.
+    details: Vite Plugin, Browser Extension, Standalone App, There always one for you.
   - icon: 🔌
     title: Extendable
     details: Provide plugin API for integrations, a friendly bridge between your libraries and the devtools.
+
+  - icon: 🍃
+    title: Component Wizard
+    details: See the component node tree, state, and the relationships.
 ---
 
 <Home />

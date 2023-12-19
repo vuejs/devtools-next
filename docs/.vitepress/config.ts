@@ -40,6 +40,7 @@ export default defineConfig({
           },
         ],
       },
+      { text: 'Features', link: '/guide/features' },
       {
         text: `v${version}`,
         items: VERSIONS,

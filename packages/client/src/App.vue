@@ -4,6 +4,8 @@ import { useDevToolsBridge, useDevToolsState } from '@vue-devtools-next/core'
 import { isInChromePanel } from '@vue-devtools-next/shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
+import('./setup/unocss-runtime')
+
 // @TODO: fix browser extension cross-origin localStorage issue
 useColorMode()
 const router = useRouter()

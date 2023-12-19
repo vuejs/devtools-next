@@ -15,6 +15,14 @@ onMounted(() => {
     }, 2000)
   }
 })
+
+const iframeViewVisible = ref(true)
+watch(() => route.params.name, () => {
+  iframeViewVisible.value = false
+  setTimeout(() => {
+    iframeViewVisible.value = true
+  }, 100)
+})
 </script>
 
 <template>
@@ -32,7 +40,7 @@ onMounted(() => {
     </PanelGrids>
   </template>
   <template v-else-if="tab?.view?.type === 'iframe'">
-    <IframeView :src="tab.view.src" />
+    <IframeView v-if="iframeViewVisible" :src="tab.view.src" />
   </template>
   <template v-else>
     <PanelGrids>

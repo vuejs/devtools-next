@@ -1,3 +1,4 @@
+import { randomStr } from '@vue-devtools-next/shared'
 import { MaybeRefOrGetter } from 'vue'
 
 export interface CommandItem {
@@ -56,6 +57,16 @@ export function useCommands() {
       ...Array.from(registeredCommands.values())
         .flatMap(i => toValue(i)),
     ]
+  })
+}
+
+export function registerCommands(getter: MaybeRefOrGetter<CommandItem[]>) {
+  const id = randomStr()
+
+  registeredCommands.set(id, getter)
+
+  onUnmounted(() => {
+    registeredCommands.delete(id)
   })
 }
 

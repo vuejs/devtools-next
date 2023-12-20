@@ -54,3 +54,7 @@ export function sortByKey(state: unknown[]) {
  * @description A really fast deep clone alternative
  */
 export const deepClone = rfdc()
+
+export function randomStr() {
+  return Math.random().toString(36).slice(2)
+}

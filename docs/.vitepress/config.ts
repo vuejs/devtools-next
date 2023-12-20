@@ -11,6 +11,10 @@ const GUIDES: DefaultTheme.NavItemWithLink[] = [
   { text: 'Standalone App', link: '/guide/standalone' },
 ]
 
+const PLUGINS: DefaultTheme.NavItemWithLink[] = [
+  { text: 'API', link: '/plugins/api' },
+]
+
 const VERSIONS: DefaultTheme.NavItemWithLink[] = [
   { text: `v${version} (current)`, link: '/' },
 ]
@@ -42,6 +46,14 @@ export default defineConfig({
       },
       { text: 'Features', link: '/guide/features' },
       {
+        text: 'Plugins',
+        items: [
+          {
+            items: PLUGINS,
+          },
+        ],
+      },
+      {
         text: `v${version}`,
         items: VERSIONS,
       },
@@ -55,8 +67,31 @@ export default defineConfig({
             text: 'Guide',
             items: GUIDES,
           },
+          {
+            text: 'Plugins',
+            items: [
+              {
+                items: PLUGINS,
+              },
+            ],
+          },
         ],
+        // '/plugins/': [
+        //   {
+        //     text: 'Guide',
+        //     items: GUIDES,
+        //   },
+        //   {
+        //     text: 'Plugins',
+        //     items: [
+        //       {
+        //         items: PLUGINS,
+        //       },
+        //     ],
+        //   },
+        // ],
       },
+
     ),
 
     editLink: {

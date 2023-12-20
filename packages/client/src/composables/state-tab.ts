@@ -92,6 +92,14 @@ export function useAllTabs() {
       return prev
     }, [])
   })
+  const enabledFlattenTabs = computed(() => {
+    return enabledTabs.value.reduce((prev, [_, tabs]) => {
+      tabs.forEach((tab) => {
+        prev.push(tab)
+      })
+      return prev
+    }, [] as Array<ModuleBuiltinTab | CustomTab>)
+  })
 
   const bridgeRpc = useDevToolsBridgeRpc()
   onDevToolsClientConnected(() => {
@@ -100,7 +108,7 @@ export function useAllTabs() {
     })
   })
 
-  return { categorizedTabs, flattenedTabs, enabledTabs }
+  return { categorizedTabs, flattenedTabs, enabledTabs, enabledFlattenTabs }
 }
 
 export function getCategorizedTabs(flattenTabs: MaybeRef<(CustomTab | ModuleBuiltinTab)[]>, enabledTabs: MaybeRef<CategorizedTabs>) {

@@ -94,3 +94,6 @@ packages/browser-extension/client/**/*
 packages/electron/client/**/*
 packages/vite/src/overlay/**/*
 docs/.vitepress/cache/
+
+# for scripts
+clones

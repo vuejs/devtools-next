@@ -91,5 +91,6 @@ watchEffect(() => {
         </Pane>
       </Splitpanes>
     </div>
+    <CommandPalette />
   </main>
 </template>

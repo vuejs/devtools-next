@@ -101,6 +101,28 @@ onDevToolsClientConnected(() => {
         </RouterLink>
       </div>
       <div flex-auto />
+      <div flex="~ gap-1" cursor-default items-center justify-center pb-2 text-sm op40>
+        Press
+        <template v-if="isMacOS()">
+          <VueButton>
+            ⌘ Command
+          </VueButton>
+          <span>+</span>
+          <VueButton>
+            K
+          </VueButton>
+        </template>
+        <template v-else>
+          <VueButton>
+            Alt
+          </VueButton>
+          <span>+</span>
+          <VueButton>
+            K
+          </VueButton>
+        </template>
+        to toggle Command Palette
+      </div>
       <div flex="~ gap-1" cursor-default items-center justify-center pb-8 text-sm op40>
         Press
         <template v-if="isMacOS()">

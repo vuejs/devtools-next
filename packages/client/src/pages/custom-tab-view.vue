@@ -42,6 +42,9 @@ watch(() => route.params.name, () => {
   <template v-else-if="tab?.view?.type === 'iframe'">
     <IframeView v-if="iframeViewVisible" :src="tab.view.src" />
   </template>
+  <template v-else-if="tab?.view?.type === 'vnode'">
+    <Component :is="tab.view.vnode" />
+  </template>
   <template v-else>
     <PanelGrids>
       <NCard flex="~ col" h-full items-center justify-center>

@@ -1,10 +1,12 @@
+import type { VNode } from 'vue'
+
 type TabCategory =
   | 'pinned'
   | 'app'
   | 'modules'
   | 'advanced'
 
-export type ModuleView = ModuleIframeView
+export type ModuleView = ModuleIframeView | ModuleVNodeView
 
 export interface ModuleIframeView {
   /**
@@ -21,6 +23,17 @@ export interface ModuleIframeView {
    * @default true
    */
   persistent?: boolean
+}
+
+export interface ModuleVNodeView {
+  /**
+   * Vue's VNode view
+   */
+  type: 'vnode'
+  /**
+   * Send vnode to the client, they must be static and serializable
+   */
+  vnode: VNode
 }
 
 export interface CustomTab {

@@ -3,8 +3,6 @@ import { createApp } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { addCustomTab } from '@vue/devtools-next-api'
-
 // import { devtools } from '@vue/devtools-next'
 import App2 from './App.vue'
 import App from './App.preview.vue'
@@ -52,17 +50,16 @@ const router2 = createRouter({
   routes,
 })
 
-addCustomTab({
-  name: 'vueuse',
-  // @unocss-include
-  icon: 'i-logos-vueuse',
-  title: 'VueUse',
-  view: {
-    type: 'iframe',
-    src: 'https://vueuse.org/',
-  },
-  category: 'app',
-})
+// addCustomTab({
+//   name: 'vueuse',
+//   icon: 'i-logos-vueuse',
+//   title: 'VueUse',
+//   view: {
+//     type: 'iframe',
+//     src: 'https://vueuse.org/',
+//   },
+//   category: 'app',
+// })
 
 app.use(router)
 app.use(pinia)

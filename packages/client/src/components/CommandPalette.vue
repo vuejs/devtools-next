@@ -3,7 +3,7 @@ import { VueIcon, VueInput, VueOverlay } from '@vue-devtools-next/ui'
 import Fuse from 'fuse.js'
 import type { CommandItem } from '../composables/state-commands'
 
-const show = ref(true)
+const show = ref(false)
 const search = ref('')
 
 const rootItems = useCommands()

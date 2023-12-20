@@ -166,12 +166,13 @@ const minimizePanelInteractiveLabel = computed(() => {
               Switch to Overlay Mode
             </VueButton>
           </div>
-          <!-- TODO: need rewrite client/(UI package) to rem based -->
-          <!-- <div mx--2 my1 h-1px border="b base" op75 />
+          <div mx--2 my1 h-1px border="b base" op75 />
           <p>UI Scale</p>
           <div>
-            <VueSelect v-model="scale" :options="scaleOptions.map(([label, value]) => ({ label, value }))" />
-          </div> -->
+            <VueSelect
+              v-model="scale" :options="scaleOptions.map(([label, value]) => ({ label, value }))" :button-props="{ outlined: true }"
+            />
+          </div>
           <div mx--2 my1 h-1px border="b base" op75 />
           <div class="flex items-center gap2 text-sm">
             <VueCheckbox v-model="expandSidebar" />

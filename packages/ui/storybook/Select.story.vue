@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Select from '../src/components/Select.vue'
+import { VueCheckbox } from '../src'
 
 const options = [
   {
@@ -22,6 +23,7 @@ const options = [
 ]
 
 const current = ref(options[0].value)
+const currentMultiple = ref([options[0].value, options[1].value])
 const disabled = ref(false)
 </script>
 
@@ -39,6 +41,25 @@ const disabled = ref(false)
     </Variant>
     <Variant title="auto-close set false">
       <Select v-model="current" :options="options" :auto-close="false" :disabled="disabled" />
+    </Variant>
+    <Variant title="multiple select">
+      <Select v-model="currentMultiple" :multiple="true" :options="options" :disabled="disabled" :auto-close="false" />
+      Value: {{ currentMultiple }}
+    </Variant>
+    <Variant title="custom item">
+      <Select v-model="currentMultiple" :multiple="true" :options="options" :disabled="disabled" :auto-close="false">
+        <template #item="{ item: { label }, active }">
+          {{ label }} <VueCheckbox :model-value="active" />
+        </template>
+      </Select>
+      Value: {{ currentMultiple }}
+    </Variant>
+    <Variant title="custom button">
+      <Select v-model="currentMultiple" :multiple="true" :options="options" :disabled="disabled" :auto-close="false">
+        <template #button>
+          <button>click me</button>
+        </template>
+      </Select>
     </Variant>
   </Story>
 </template>

@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<{
   cancelText: 'Cancel',
   confirmText: 'Confirm',
   width: '20%',
-  height: '150px',
+  height: '9rem',
   title: 'Warning',
   loading: false,
   autoClose: true,
@@ -50,7 +50,7 @@ function close(close = false) {
       {{ content }}
     </slot>
     <template #footer>
-      <div class="$ui-fec gap10px">
+      <div class="$ui-fec gap2.5">
         <VueButton
           @click="() => {
             emit('cancel')

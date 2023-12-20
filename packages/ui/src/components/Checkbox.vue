@@ -17,7 +17,7 @@ const value = useVModel(props, 'modelValue', emit)
 
 <template>
   <div
-    class="relative $ui-base h20px w20px $ui-inline-fcc cursor-pointer border-2px rounded-5px transition-colors duration-200 ease-in-out"
+    class="relative $ui-base h5 w5 $ui-inline-fcc cursor-pointer border-0.125rem rounded-1.25 transition-colors duration-200 ease-in-out"
     :class="[
       value
         ? variant === 'normal'
@@ -31,7 +31,7 @@ const value = useVModel(props, 'modelValue', emit)
       :class="[
         value ? 'opacity-100' : 'opacity-0',
       ]"
-      class="h-60% w-35% transform-translate-y--1px transform-rotate-45 border-width-[0_2px_2px_0] border-white border-solid transition-opacity duration-200 ease-in-out"
+      class="h-60% w-35% transform-translate-y--0.25 transform-rotate-45 border-width-[0_0.125rem_0.125rem_0] border-white border-solid transition-opacity duration-200 ease-in-out"
     />
   </div>
 </template>

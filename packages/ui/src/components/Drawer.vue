@@ -85,7 +85,7 @@ onMounted(() => isMount.value = true)
             top: placement === 'bottom' ? 'auto' : `${height}px`,
             height: ['top', 'bottom'].includes(placement) ? 'auto' : `calc(100% - ${height}px)`,
           }"
-          class="drawer pointer-events-auto absolute min-w-100px of-auto $ui-border-base transition-transform transition-duration-300"
+          class="drawer pointer-events-auto absolute min-w-25 of-auto $ui-border-base transition-transform transition-duration-300"
           @click.stop
         >
           <div v-if="closable" class="i-carbon-close absolute right-1.5 top-1.5 $ui-z-max cursor-pointer p1 text-lg $ui-text" @click="show = false" />

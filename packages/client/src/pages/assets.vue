@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AssetInfo } from '@vue-devtools-next/core'
-import { VueCheckbox, VueDrawer, VueDropdown, VueIcon } from '@vue-devtools-next/ui'
+import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue-devtools-next/ui'
 import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
 import Fuse from 'fuse.js'
 
@@ -11,14 +11,19 @@ const navbar = ref<HTMLElement>()
 const view = ref('grid')
 const assets = ref<AssetInfo[]>([])
 const bridgeRpc = useDevToolsBridgeRpc()
-const extensions = reactiveComputed(() => {
-  const results: { name: string, value: boolean }[] = []
+const uniqAssetsTypes = computed(() => {
+  const results: { label: string, value: string }[] = []
   for (const asset of assets.value || []) {
     const ext = asset.path.split('.').pop()
-    if (ext && !results.find(e => e.name === ext))
-      results.push({ name: ext, value: true })
+    if (ext && !results.find(e => e.value === ext))
+      results.push({ label: ext, value: ext })
   }
   return results
+})
+const filteredExtensions = ref<string[]>([])
+// first time, selected all
+watchOnce(() => uniqAssetsTypes.value, (v) => {
+  filteredExtensions.value = v.map(i => i.value)
 })
 const selected = ref<AssetInfo>()
 const fuse = computed(() => new Fuse(assets.value || [], {
@@ -32,7 +37,7 @@ const filtered = computed(() => {
     : (assets.value || [])
   return result.filter((asset) => {
     const ext = asset.path.split('.').pop()
-    return !ext || extensions.some(e => e.name === ext && e.value)
+    return !ext || filteredExtensions.value.includes(ext)
   })
 })
 
@@ -94,29 +99,32 @@ function toggleView() {
             title="File Upload" :border="false" flex="~ gap-0!" action
             @click="dropzone = !dropzone"
           /> -->
-          <VueDropdown direction="end" n="sm primary">
-            <IconTitle
-              v-tooltip.bottom-end="'Filter'"
-              icon="i-carbon-filter hover:op50" :border="false"
-              title="Filter" relative cursor-pointer p2 text-lg
-              @click="() => { }"
+          <VueSelect v-model="filteredExtensions" :multiple="true" :options="uniqAssetsTypes">
+            <template #button>
+              <IconTitle
+                v-tooltip.bottom-end="'Filter'"
+                icon="i-carbon-filter hover:op50" :border="false"
+                title="Filter" relative cursor-pointer p2 text-lg
+                @click="() => { }"
+              >
+                <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px text-white>
+                  {{ filteredExtensions.length }}
+                </span>
+              </IconTitle>
+            </template>
+            <template
+              #item="{
+                item, active,
+              }"
             >
-              <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px text-white>
-                {{ extensions.length }}
-              </span>
-            </IconTitle>
-            <template #popper>
-              <div flex="~ col" w-30 of-auto>
-                <div
-                  v-for="item of extensions" :key="item.name"
-                  w-full flex="~ gap-2 items-center" rounded px2 py2
-                >
-                  <VueCheckbox v-model="item.value" />
-                  <span text-xs op75>{{ item.name }}</span>
-                </div>
+              <div
+                w-full flex="~ gap-2 items-center" rounded px2 py2
+              >
+                <VueCheckbox :model-value="active" />
+                <span text-xs op75>{{ item.label }}</span>
               </div>
             </template>
-          </VueDropdown>
+          </VueSelect>
           <VueIcon
             v-tooltip.bottom-end="'Toggle View'"
             :border="false"

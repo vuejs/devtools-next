@@ -76,7 +76,7 @@ watchEffect(() => {
 
 <template>
   <div
-    class="group relative w-200px w-auto flex items-center justify-between gap-2px overflow-hidden b-1 rounded-1 px12px py-3px color-gray-800 dark:color-gray-100"
+    class="group relative w-50 w-auto flex items-center justify-between gap-0.5 overflow-hidden b-1 rounded-1 px3 py-0.75 color-gray-800 dark:color-gray-100"
     :class="[
       {
         'border-none bg-transparent group': variant === 'flat',
@@ -111,7 +111,7 @@ watchEffect(() => {
     </div>
     <!-- Focus animation -->
     <div
-      v-if="!noFocusAnimation" class="pointer-events-none absolute bottom--1px left-50% right-50% z-9999 h-3px bg-primary-500 opacity-0 transition-all duration-240 group-[&.focused]:(left-0 right-0 opacity-100) group-[&.accent.focused]:bg-accent-500"
+      v-if="!noFocusAnimation" class="pointer-events-none absolute bottom--0.25 left-50% right-50% z-9999 h-0.75 bg-primary-500 opacity-0 transition-all duration-240 group-[&.focused]:(left-0 right-0 opacity-100) group-[&.accent.focused]:bg-accent-500"
     />
   </div>
 </template>

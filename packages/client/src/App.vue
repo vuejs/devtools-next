@@ -23,7 +23,7 @@ const sidebarExpanded = computed(() => clientState.value.expandSidebar)
 
 watchEffect(() => {
   const scale = devtoolsClientState.value.scale
-  document.body.style.fontSize = `${scale * 15}px`
+  document.documentElement.style.fontSize = `${scale * 15}px`
 })
 
 watch(connected, (v) => {

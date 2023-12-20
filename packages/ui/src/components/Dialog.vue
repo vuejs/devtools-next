@@ -19,8 +19,8 @@ const props = withDefaults(
     title: 'Dialog',
     modelValue: false,
     autoClose: true,
-    width: '500px',
-    height: '300px',
+    width: '32rem',
+    height: '18rem',
     closable: true,
     mountTo: 'body',
   },
@@ -58,21 +58,21 @@ onMounted(() => isMount.value = true)
 <template>
   <Teleport v-if="isMount || mountTo === 'body'" :to="mountTo">
     <Transition
-      enter-from-class="opacity-0 [&_.modal]:scale-95 [&_.content,&_.footer]:translate-y--10px [&_.content,&_.footer]:opacity-0"
+      enter-from-class="opacity-0 [&_.modal]:scale-95 [&_.content,&_.footer]:translate-y--2.5 [&_.content,&_.footer]:opacity-0"
       enter-to-class="opacity-100 [&_.modal]:scale-100"
       leave-from-class="opacity-100 [&_.modal]:scale-100"
       leave-to-class="opacity-0 [&_.modal]:scale-95"
     >
       <Overlay v-if="show" :dim="dim" :blur="blur">
         <div
-          class="modal relative grid grid-rows-[30px_1fr_40px] $ui-base max-h-[calc(100vh-100x)] max-w-[calc(100vw-100px)] min-h-100px min-w-200px gap-10px rounded-md bg-white px24px py18px color-gray-800 shadow-2xl transition-transform transition-duration-300 dark:bg-gray-900 dark:color-gray-200"
+          class="modal relative grid grid-rows-[1.875rem_1fr_2.5rem] $ui-base max-h-[calc(100vh-6.25rem)] max-w-[calc(100vw-6.25rem)] min-h-6.25rem min-w-12.5rem gap-2.5 rounded-md bg-white px6 py4.5 color-gray-800 shadow-2xl transition-transform transition-duration-300 dark:bg-gray-900 dark:color-gray-200"
           :style="{
             width: props.width,
             height: props.height,
           }"
         >
-          <div class="h-30px w-full $ui-fbc">
-            <div class="text-18px">
+          <div class="h7.5 w-full $ui-fbc">
+            <div class="text-4.5">
               <slot name="title">
                 {{ props.title }}
               </slot>
@@ -84,7 +84,7 @@ onMounted(() => isMount.value = true)
           <div class="content transition-all transition-duration-300">
             <slot />
           </div>
-          <div class="footer h32px w-full transition-all transition-duration-300 delay-250">
+          <div class="footer h8 w-full transition-all transition-duration-300 delay-250">
             <slot name="footer">
               <slot name="footer">
                 <div class="$ui-fcc">

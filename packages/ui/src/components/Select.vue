@@ -46,7 +46,7 @@ const label = computed(() => {
     }"
   >
     <template #popper>
-      <div class="m1 min-w-140px w-auto flex flex-col">
+      <div class="m1 min-w-35 w-auto flex flex-col">
         <VueButton
           v-for="item in options" :key="item.value" v-close-popper="props.autoClose" :disabled="disabled" round="normal"
           class="flex-[auto_1_1] not-action:[&:not(.active)]:bg-transparent!"

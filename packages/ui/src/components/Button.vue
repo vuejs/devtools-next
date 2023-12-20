@@ -108,7 +108,7 @@ const variantClasses = computed(() => {
   <component
     :is="component" v-bind="$attrs"
     role="button" :aria-disabled="disabled"
-    class="$ui-base $ui-inline-fcc inline-flex cursor-pointer select-none gap5px py-0 no-underline $ui-transition"
+    class="$ui-base $ui-inline-fcc inline-flex cursor-pointer select-none gap1.25 py-0 no-underline $ui-transition"
     :class="[
       [styles.common[props.type]],
       {
@@ -119,14 +119,14 @@ const variantClasses = computed(() => {
       },
       [
         outlined ? 'b-1 $ui-border-base active:ring-3 shadow-sm' : 'border-none',
-        size === 'mini' ? 'px4px text-12px h22px' : 'px-14px text-14px h32px',
+        size === 'mini' ? 'px1 text-3 h5.5' : 'px3.5 text-3.5 h8',
         variantClasses,
       ],
     ]"
     @click.capture="handleClick"
   >
-    <LoadingIndicator v-if="loading" class="mt2px h-full w-12px" />
-    <slot v-else name="icon" class="h-full w-12px $ui-inline-fcc" />
+    <LoadingIndicator v-if="loading" class="mt0.5 h-full w3" />
+    <slot v-else name="icon" class="h-full w3 $ui-inline-fcc" />
     <div v-if="slots.default">
       <slot />
     </div>

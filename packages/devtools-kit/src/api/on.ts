@@ -7,6 +7,7 @@ import type { ScrollToComponentOptions, ToggleComponentInspectorOptions } from '
 import type { TimelineEvent } from '../core/timeline'
 import type { RouterInfo } from '../core/router'
 import type { CustomTab } from '../core/custom-tab/types'
+import type { CustomAction } from '../core/custom-action'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
@@ -23,6 +24,7 @@ export enum DevToolsEvents {
   VISIT_COMPONENT_TREE = 'component-tree:visit',
   ADD_TIMELINE_EVENT = 'timeline:add-event',
   CUSTOM_TABS_UPDATED = 'custom-tabs:updated',
+  CUSTOM_ACTIONS_UPDATED = 'custom-actions:updated',
 }
 
 export interface DevToolsEvent {
@@ -55,6 +57,7 @@ export interface DevToolsEvent {
   }) => void
   [DevToolsEvents.ADD_TIMELINE_EVENT]: (payload: TimelineEvent) => void
   [DevToolsEvents.CUSTOM_TABS_UPDATED]: (payload: CustomTab[]) => void
+  [DevToolsEvents.CUSTOM_ACTIONS_UPDATED]: (payload: CustomAction[]) => void
 }
 
 export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
@@ -99,5 +102,8 @@ export const on = {
   editComponentState() {},
   customTabsUpdated(fn: DevToolsEvent[DevToolsEvents.CUSTOM_TABS_UPDATED]) {
     apiHooks.hook(DevToolsEvents.CUSTOM_TABS_UPDATED, fn)
+  },
+  customActionsUpdated(fn: DevToolsEvent[DevToolsEvents.CUSTOM_ACTIONS_UPDATED]) {
+    apiHooks.hook(DevToolsEvents.CUSTOM_ACTIONS_UPDATED, fn)
   },
 }

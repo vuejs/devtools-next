@@ -111,5 +111,6 @@ export interface DevToolsState {
   selectedComponentId: string | null
   pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
   tabs: unknown[]
+  actions: unknown[]
   activeAppRecordId: string | null
 }

@@ -1,5 +1,7 @@
 import { randomStr } from '@vue-devtools-next/shared'
+import { CustomAction } from '@vue-devtools-next/kit'
 import { MaybeRefOrGetter } from 'vue'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
 export interface CommandItem {
   id: string
@@ -15,6 +17,20 @@ const registeredCommands = reactive(new Map<string, MaybeRefOrGetter<CommandItem
 export function useCommands() {
   const { enabledFlattenTabs } = useAllTabs()
   const router = useRouter()
+  const state = useDevToolsState()
+
+  const customActions = ref<CustomAction[]>(state.actions.value || [])
+
+  watchEffect(() => {
+    customActions.value = state.actions.value || []
+  })
+
+  const bridgeRpc = useDevToolsBridgeRpc()
+  onDevToolsClientConnected(() => {
+    bridgeRpc.on.customActionsUpdated((data) => {
+      customActions.value = data
+    })
+  })
 
   const fixedCommands: CommandItem[] = [
     {
@@ -54,6 +70,29 @@ export function useCommands() {
     return [
       ...fixedCommands,
       ...tabCommands.value,
+      ...customActions.value.map(i => ({
+        id: `${i.id}`,
+        title: i.title,
+        icon: i.icon,
+        description: i.description,
+        action: () => {
+          // priority: children > url > undefined
+          if (i.children) {
+            return i.children.map(i => ({
+              id: i.id,
+              title: i.title,
+              icon: i.icon,
+              description: i.description,
+              action: () => {
+                if (i.url)
+                  window.open(i.url, '_blank')
+              },
+            }))
+          }
+          if (i.url)
+            window.open(i.url, '_blank')
+        },
+      })),
       ...Array.from(registeredCommands.values())
         .flatMap(i => toValue(i)),
     ]

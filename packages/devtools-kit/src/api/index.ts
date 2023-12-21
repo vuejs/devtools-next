@@ -10,6 +10,8 @@ import { toggleAppRecord } from '../core/general/app-record'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { addCustomTab } from '../core/custom-tab'
 import type { CustomTab } from '../core/custom-tab/types'
+import { addCustomAction, removeCustomAction } from '../core/custom-action'
+import type { CustomAction } from '../core/custom-action'
 
 import { getVueInspector } from '../core/vue-inspector'
 import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
@@ -153,6 +155,14 @@ export class DevToolsPluginApi {
 
   addCustomTab(tab: CustomTab) {
     addCustomTab(tab)
+  }
+
+  addCustomAction(action: CustomAction) {
+    addCustomAction(action)
+  }
+
+  removeCustomAction(action: CustomAction) {
+    removeCustomAction(action)
   }
 
   addInspector(payload: AddInspectorApiPayload) {

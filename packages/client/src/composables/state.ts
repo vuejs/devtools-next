@@ -59,10 +59,6 @@ export function resetDevtoolsClientState() {
 }
 
 // #region split screen related
-const windowSize = useWindowSize()
-
-export const splitScreenAvailable = computed(() => windowSize.width.value > 1080)
-
 watch(() => devtoolsClientState.value.splitScreen.enabled, (enabled, o) => {
   if (o && !enabled) {
     // reset size

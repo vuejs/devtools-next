@@ -21,7 +21,6 @@ const splitScreenEnabled = computed({
   get: () => devtoolsClientState.value.splitScreen.enabled,
   set: v => (devtoolsClientState.value.splitScreen.enabled = v),
 })
-const isSplitScreenAvailable = splitScreenAvailable
 
 function refreshPage() {
   location.reload()
@@ -65,7 +64,7 @@ watch(activeAppRecordId, (id) => {
         <div i-carbon-settings-adjust /> Settings
       </VueButton>
     </div>
-    <div v-if="isSplitScreenAvailable" px3 py2 border="b base" flex="~ gap-2">
+    <div px3 py2 border="b base" flex="~ gap-2">
       <VueButton outlined type="primary" @click="splitScreenEnabled = !splitScreenEnabled">
         <div i-carbon-split-screen />
         {{ splitScreenEnabled ? 'Close Split Screen' : 'Split Screen' }}

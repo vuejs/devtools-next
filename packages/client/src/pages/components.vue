@@ -203,7 +203,7 @@ watchDebounced(filterName, (v) => {
   })
 }, { debounce: 300 })
 
-const state = useDevToolsState()
+const devtoolsState = useDevToolsState()
 </script>
 
 <template>
@@ -212,7 +212,7 @@ const state = useDevToolsState()
       <Pane flex flex-col border="r base">
         <div w-full flex gap2 px2 py2>
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
-          <button v-if="state.vitePluginDetected.value" px-1 @click="inspectComponentInspector">
+          <button v-if="devtoolsState.vitePluginDetected.value" px-1 @click="inspectComponentInspector">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               style="height: 1.1em; width: 1.1em; opacity:0.5;"
@@ -242,7 +242,7 @@ const state = useDevToolsState()
             />
 
             <VueIcon
-              v-if="selectedComponentFilePath && state.vitePluginDetected.value"
+              v-if="selectedComponentFilePath && devtoolsState.vitePluginDetected.value"
               v-tooltip="'Open in Editor'"
               title="Open in Editor"
               icon="i-carbon-launch"

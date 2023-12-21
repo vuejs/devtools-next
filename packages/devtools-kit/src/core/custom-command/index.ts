@@ -29,8 +29,8 @@ export function addCustomCommand(action: CustomCommand) {
   devtoolsState.commands.push(action)
 }
 
-export function removeCustomCommand(action: CustomCommand) {
-  const index = (devtoolsState.commands as unknown as CustomCommand[]).findIndex(t => t.id === action.id)
+export function removeCustomCommand(actionId: CustomCommand['id']) {
+  const index = (devtoolsState.commands as unknown as CustomCommand[]).findIndex(t => t.id === actionId)
   if (index === -1)
     return
 

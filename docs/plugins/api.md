@@ -7,19 +7,19 @@ Plugins API for easier DevTools integrations.
 ::: code-group
 
 ```sh [npm]
-$ npm add -D @vue/devtools-next-api
+npm add -D @vue/devtools-next-api
 ```
 
 ```sh [pnpm]
-$ pnpm add -D @vue/devtools-next-api
+pnpm add -D @vue/devtools-next-api
 ```
 
 ```sh [yarn]
-$ yarn add -D @vue/devtools-next-api
+yarn add -D @vue/devtools-next-api
 ```
 
 ```sh [bun]
-$ bun add -D @vue/devtools-next-api
+bun add -D @vue/devtools-next-api
 ```
 
 :::
@@ -27,7 +27,7 @@ $ bun add -D @vue/devtools-next-api
 ## `addCustomTab`
 
 ```ts
-import { devtools } from '@vue/devtools-next-api'
+import { addCustomTab } from '@vue/devtools-next-api'
 
 addCustomTab({
   // unique identifier
@@ -43,4 +43,49 @@ addCustomTab({
   },
   category: 'advanced',
 })
+```
+
+## `addCustomCommand`
+
+```ts
+import { addCustomCommand } from '@vue/devtools-next-api'
+
+// Add a custom command with auxiliary menus
+addCustomCommand({
+  // unique identifier
+  id: 'vueuse',
+  title: 'VueUse',
+  icon: 'i-logos-vueuse',
+  children: [
+    {
+      id: 'vueuse:github',
+      title: 'Github',
+      icon: 'i-logos-github',
+      url: 'https://github.com/vueuse/vueuse',
+    },
+    {
+      id: 'vueuse:website',
+      title: 'Website',
+      icon: 'i-logos-vueuse',
+      url: 'https://vueuse.org/',
+    },
+  ],
+})
+
+// Add a custom command with url
+addCustomCommand({
+  id: 'vueuse',
+  title: 'VueUse',
+  icon: 'i-logos-vueuse',
+  url: 'https://vueuse.org/',
+})
+```
+
+## `removeCustomCommand`
+
+```ts
+import { removeCustomCommand } from '@vue/devtools-next-api'
+
+// Remove a custom command by id
+removeCustomCommand('vueuse')
 ```

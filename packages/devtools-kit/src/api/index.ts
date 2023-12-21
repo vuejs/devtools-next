@@ -161,8 +161,8 @@ export class DevToolsPluginApi {
     addCustomCommand(action)
   }
 
-  removeCustomCommand(action: CustomCommand) {
-    removeCustomCommand(action)
+  removeCustomCommand(actionId: CustomCommand['id']) {
+    removeCustomCommand(actionId)
   }
 
   addInspector(payload: AddInspectorApiPayload) {

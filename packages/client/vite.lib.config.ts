@@ -45,10 +45,7 @@ export default defineConfig(mergeConfig(baseConfig, {
         ;['../browser-extension/client', '../electron/client'].forEach((dir) => {
           // NOTE: remember the order of `build:lib` and `build`,
           // if change the order, rmSync must set in `build` stage
-          const absoluteDir = resolve(__dirname, dir)
-          if (fse.existsSync(absoluteDir))
-            fse.removeSync(absoluteDir)
-          fse.copySync(clientFile, absoluteDir)
+          fse.copySync(clientFile, resolve(__dirname, dir))
         })
       },
     },

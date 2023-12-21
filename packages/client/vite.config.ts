@@ -14,14 +14,6 @@ export default defineConfig(mergeConfig(baseConfig, {
         // copy
         const clientFile = resolve(__dirname, './dist')
 
-        // Removed `browser-extension` and `electron` on `build:lib`
-        // Remove `vite/dist/client` on building
-        ;['../vite/dist/client'].forEach((dir) => {
-          const absoluteDir = resolve(__dirname, dir)
-          if (fse.existsSync(absoluteDir))
-            fse.removeSync(absoluteDir)
-        })
-
         ;['../browser-extension/client', '../electron/client', '../vite/dist/client'].forEach((dir) => {
           fse.copySync(clientFile, resolve(__dirname, dir))
         })

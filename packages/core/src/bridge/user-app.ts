@@ -139,7 +139,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       bridge.emit(BridgeEvents.CUSTOM_TABS_UPDATED, JSON.stringify(payload))
     })
 
-    // custom actions updated
+    // custom commands updated
     devtools.api.on.customCommandsUpdated((payload) => {
       bridge.emit(BridgeEvents.CUSTOM_COMMANDS_UPDATED, JSON.stringify(payload))
     })

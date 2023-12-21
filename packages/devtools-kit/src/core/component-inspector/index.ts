@@ -199,7 +199,7 @@ export function scrollToComponent(options: ScrollToComponentOptions) {
   if (instance) {
     const [el] = getRootElementsFromComponentInstance(instance)
     // @ts-expect-error type mismatch
-    if (typeof el.scrollIntoView !== 'function') {
+    if (typeof el.scrollIntoView === 'function') {
       // @ts-expect-error type mismatch
       el.scrollIntoView({
         behavior: 'smooth',

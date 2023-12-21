@@ -1,6 +1,6 @@
 import { devtoolsState } from '../general/state'
 
-export interface CustomAction {
+export interface CustomCommand {
   /**
    * The id of the command, should be unique
    */
@@ -19,20 +19,20 @@ export interface CustomAction {
   /**
    * - children of action, if set, execute the action will show the children
    */
-  children?: Omit<CustomAction, 'children'>[]
+  children?: Omit<CustomCommand, 'children'>[]
 }
 
-export function addCustomAction(action: CustomAction) {
-  if ((devtoolsState.actions as unknown as CustomAction[]).some(t => t.id === action.id))
+export function addCustomCommand(action: CustomCommand) {
+  if ((devtoolsState.commands as unknown as CustomCommand[]).some(t => t.id === action.id))
     return
 
-  devtoolsState.actions.push(action)
+  devtoolsState.commands.push(action)
 }
 
-export function removeCustomAction(action: CustomAction) {
-  const index = (devtoolsState.actions as unknown as CustomAction[]).findIndex(t => t.id === action.id)
+export function removeCustomCommand(action: CustomCommand) {
+  const index = (devtoolsState.commands as unknown as CustomCommand[]).findIndex(t => t.id === action.id)
   if (index === -1)
     return
 
-  devtoolsState.actions.splice(index, 1)
+  devtoolsState.commands.splice(index, 1)
 }

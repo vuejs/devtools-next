@@ -2,11 +2,11 @@ export {
   onDevToolsConnected,
   setupDevToolsPlugin,
   addCustomTab,
-  addCustomAction,
-  removeCustomAction,
+  addCustomCommand,
+  removeCustomCommand,
 } from '@vue-devtools-next/kit'
 
 export type {
-  CustomAction,
+  CustomCommand,
   CustomTab,
 } from '@vue-devtools-next/kit'

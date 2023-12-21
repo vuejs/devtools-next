@@ -1,6 +1,6 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import type { CustomAction, CustomTab } from '@vue-devtools-next/kit'
+import type { CustomCommand, CustomTab } from '@vue-devtools-next/kit'
 import type { AppRecord } from '@vue-devtools-next/schema'
 import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'
@@ -17,7 +17,7 @@ function initDevToolsState() {
   const componentCount = ref(0)
   const vueVersion = ref('')
   const tabs = ref<CustomTab[]>([])
-  const actions = ref<CustomAction[]>([])
+  const commands = ref<CustomCommand[]>([])
   const vitePluginDetected = ref(false)
   const appRecords = ref<Array<DevtoolsBridgeAppRecord>>([])
   const activeAppRecordId = ref('')
@@ -27,7 +27,7 @@ function initDevToolsState() {
       connected.value = data.connected
       vueVersion.value = data.vueVersion || ''
       tabs.value = data.tabs
-      actions.value = data.actions
+      commands.value = data.commands
       vitePluginDetected.value = data.vitePluginDetected
       appRecords.value = data.appRecords
       activeAppRecordId.value = data.activeAppRecordId
@@ -47,7 +47,7 @@ function initDevToolsState() {
     connected,
     componentCount,
     tabs,
-    actions,
+    commands,
     vitePluginDetected,
     appRecords,
     activeAppRecordId,
@@ -72,7 +72,7 @@ const VueDevToolsStateSymbol: InjectionKey<{
   componentCount: Ref<number>
   vueVersion: Ref<string>
   tabs: Ref<CustomTab[]>
-  actions: Ref<CustomAction[]>
+  commands: Ref<CustomCommand[]>
   vitePluginDetected: Ref<boolean>
   appRecords: Ref<Array<DevtoolsBridgeAppRecord>>
   activeAppRecordId: Ref<string>

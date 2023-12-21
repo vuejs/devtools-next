@@ -1,5 +1,5 @@
 import { randomStr } from '@vue-devtools-next/shared'
-import { CustomAction } from '@vue-devtools-next/kit'
+import { CustomCommand } from '@vue-devtools-next/kit'
 import { MaybeRefOrGetter } from 'vue'
 import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
@@ -19,16 +19,16 @@ export function useCommands() {
   const router = useRouter()
   const state = useDevToolsState()
 
-  const customActions = ref<CustomAction[]>(state.actions.value || [])
+  const customCommands = ref<CustomCommand[]>(state.commands.value || [])
 
   watchEffect(() => {
-    customActions.value = state.actions.value || []
+    customCommands.value = state.commands.value || []
   })
 
   const bridgeRpc = useDevToolsBridgeRpc()
   onDevToolsClientConnected(() => {
-    bridgeRpc.on.customActionsUpdated((data) => {
-      customActions.value = data
+    bridgeRpc.on.customCommandsUpdated((data) => {
+      customCommands.value = data
     })
   })
 
@@ -70,7 +70,7 @@ export function useCommands() {
     return [
       ...fixedCommands,
       ...tabCommands.value,
-      ...customActions.value.map(i => ({
+      ...customCommands.value.map(i => ({
         id: `${i.id}`,
         title: i.title,
         icon: i.icon,

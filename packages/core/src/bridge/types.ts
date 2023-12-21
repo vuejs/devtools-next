@@ -3,8 +3,8 @@ export enum BridgeEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools-state:updated',
   // custom tabs
   CUSTOM_TABS_UPDATED = 'custom-tabs:updated',
-  // custom actions
-  CUSTOM_ACTIONS_UPDATED = 'custom-actions:updated',
+  // custom commands
+  CUSTOM_COMMANDS_UPDATED = 'custom-commands:updated',
   // router info
   ROUTER_INFO_UPDATED = 'router-info:updated',
   // router

@@ -1,4 +1,4 @@
-import type { CustomAction, CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from '@vue-devtools-next/kit'
+import type { CustomCommand, CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from '@vue-devtools-next/kit'
 import { parse } from '@vue-devtools-next/kit'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
@@ -65,8 +65,8 @@ export class BridgeRpc {
         cb(parse(payload))
       })
     },
-    customActionsUpdated(cb: (payload: CustomAction[]) => void) {
-      devtoolsBridge.value.on(BridgeEvents.CUSTOM_ACTIONS_UPDATED, (payload) => {
+    customCommandsUpdated(cb: (payload: CustomCommand[]) => void) {
+      devtoolsBridge.value.on(BridgeEvents.CUSTOM_COMMANDS_UPDATED, (payload) => {
         cb(parse(payload))
       })
     },
@@ -115,7 +115,7 @@ export class BridgeRpc {
   }
 
   static async getDevToolsState() {
-    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], actions: CustomAction[], vitePluginDetected: boolean, appRecords: Array<DevtoolsBridgeAppRecord>, activeAppRecordId: string } }>(bridgeRpcEvents.state)
+    return devtoolsBridge.rpc.emit<{ data: { connected: boolean, vueVersion: string, tabs: CustomTab[], commands: CustomCommand[], vitePluginDetected: boolean, appRecords: Array<DevtoolsBridgeAppRecord>, activeAppRecordId: string } }>(bridgeRpcEvents.state)
   }
 
   static async getTimelineLayer() {

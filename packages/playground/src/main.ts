@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // import { devtools } from '@vue/devtools-next'
-import { addCustomAction, addCustomTab } from '@vue/devtools-next-api'
+import { addCustomCommand, addCustomTab } from '@vue/devtools-next-api'
 import App2 from './App.vue'
 import App from './App.preview.vue'
 import Home from './pages/Home.vue'
@@ -62,7 +62,7 @@ addCustomTab({
   category: 'app',
 })
 
-addCustomAction({
+addCustomCommand({
   id: 'vueuse',
   title: 'VueUse',
   icon: 'i-logos-vueuse',

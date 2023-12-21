@@ -12,7 +12,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       connected: devtools.state.connected,
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       tabs: devtools.state.tabs,
-      actions: devtools.state.actions,
+      commands: devtools.state.commands,
       vitePluginDetected: devtools.state.vitePluginDetected,
       appRecords: devtools.state.appRecords.map(item => ({
         id: item.id,
@@ -140,8 +140,8 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     })
 
     // custom actions updated
-    devtools.api.on.customActionsUpdated((payload) => {
-      bridge.emit(BridgeEvents.CUSTOM_ACTIONS_UPDATED, JSON.stringify(payload))
+    devtools.api.on.customCommandsUpdated((payload) => {
+      bridge.emit(BridgeEvents.CUSTOM_COMMANDS_UPDATED, JSON.stringify(payload))
     })
 
     // router info updated

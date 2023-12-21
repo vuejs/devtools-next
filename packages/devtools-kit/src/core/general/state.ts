@@ -25,7 +25,7 @@ global[StateKey] ??= {
   selectedComponentId: null,
   pluginBuffer: [],
   tabs: [],
-  actions: [],
+  commands: [],
   vitePluginDetected: false,
   activeAppRecordId: null,
 }
@@ -70,12 +70,12 @@ Object.defineProperty(devtoolsState.tabs, 'push', {
 })
 
 ;['push', 'splice'].forEach((method) => {
-  Object.defineProperty(devtoolsState.actions, method, {
+  Object.defineProperty(devtoolsState.commands, method, {
     configurable: true,
     value(...args: unknown[]) {
       const result = Array.prototype[method].apply(this, args)
-      devtoolsState.actions = this
-      apiHooks.callHook(DevToolsEvents.CUSTOM_ACTIONS_UPDATED, this)
+      devtoolsState.commands = this
+      apiHooks.callHook(DevToolsEvents.CUSTOM_COMMANDS_UPDATED, this)
       return result
     },
   })

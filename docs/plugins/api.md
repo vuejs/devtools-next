@@ -7,19 +7,19 @@ Plugins API for easier DevTools integrations.
 ::: code-group
 
 ```sh [npm]
-npm add -D @vue/devtools-next-api
+$ npm add -D @vue/devtools-next-api
 ```
 
 ```sh [pnpm]
-pnpm add -D @vue/devtools-next-api
+$ pnpm add -D @vue/devtools-next-api
 ```
 
 ```sh [yarn]
-yarn add -D @vue/devtools-next-api
+$ yarn add -D @vue/devtools-next-api
 ```
 
 ```sh [bun]
-bun add -D @vue/devtools-next-api
+$ bun add -D @vue/devtools-next-api
 ```
 
 :::

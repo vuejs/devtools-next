@@ -15,9 +15,9 @@
     "node": ">=v14.21.3"
   },
   "scripts": {
-    "build": "nr build:lib & vite build",
+    "build": "nr build:lib && vite build",
     "build:lib": "vite build --config vite.lib.config.ts",
-    "stub": "nr stub:lib & vite build --watch",
+    "stub": "nr stub:lib && vite build --watch",
     "stub:lib": "vite build --config vite.lib.config.ts --watch"
   },
   "peerDependencies": {

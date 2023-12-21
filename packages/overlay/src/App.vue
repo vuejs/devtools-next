@@ -121,23 +121,25 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
           <path fill="#35495E" d="M50.56 0L128 133.12L204.8 0h-47.36L128 51.2L97.92 0H50.56Z" />
         </svg>
       </div>
-      <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
-      <div
-        class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"
-        title="Toggle Component Inspector"
-        :class="{ active: vueInspectorEnabled }"
-        @click="enableVueInspector"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg" style="height: 1.1em; width: 1.1em; opacity:0.5;"
-          :style="vueInspectorEnabled ? 'opacity:1;color:#00dc82;' : ''" viewBox="0 0 24 24"
+      <template v-if="devtools.state.vitePluginDetected">
+        <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
+        <div
+          class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"
+          title="Toggle Component Inspector"
+          :class="{ active: vueInspectorEnabled }"
+          @click="enableVueInspector"
         >
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <circle cx="12" cy="12" r=".5" fill="currentColor" />
-            <path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" />
-          </g>
-        </svg>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg" style="height: 1.1em; width: 1.1em; opacity:0.5;"
+            :style="vueInspectorEnabled ? 'opacity:1;color:#00dc82;' : ''" viewBox="0 0 24 24"
+          >
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <circle cx="12" cy="12" r=".5" fill="currentColor" />
+              <path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" />
+            </g>
+          </svg>
+        </div>
+      </template>
     </div>
 
     <!-- iframe -->

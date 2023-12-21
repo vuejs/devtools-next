@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue-devtools-next/kit'
 import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
@@ -202,6 +202,8 @@ watchDebounced(filterName, (v) => {
     toggleFiltered()
   })
 }, { debounce: 300 })
+
+const state = useDevToolsState()
 </script>
 
 <template>
@@ -210,7 +212,7 @@ watchDebounced(filterName, (v) => {
       <Pane flex flex-col border="r base">
         <div w-full flex gap2 px2 py2>
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
-          <button px-1 @click="inspectComponentInspector">
+          <button v-if="state.vitePluginDetected.value" px-1 @click="inspectComponentInspector">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               style="height: 1.1em; width: 1.1em; opacity:0.5;"
@@ -240,9 +242,8 @@ watchDebounced(filterName, (v) => {
             />
 
             <VueIcon
-              v-show="selectedComponentFilePath"
+              v-if="selectedComponentFilePath && state.vitePluginDetected.value"
               v-tooltip="'Open in Editor'"
-
               title="Open in Editor"
               icon="i-carbon-launch"
               action flex-none

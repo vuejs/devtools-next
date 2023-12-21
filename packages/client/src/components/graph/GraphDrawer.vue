@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VueButton, VueDrawer, showVueNotification } from '@vue-devtools-next/ui'
+import { useDevToolsState } from '@vue-devtools-next/core'
 
 defineProps<{
   top?: HTMLElement
@@ -8,7 +9,15 @@ defineProps<{
 const data = graphDrawerData
 const show = graphDrawerShow
 const filterId = graphFilterNodeId
-const _openInEditor = openInEditor
+const state = useDevToolsState()
+
+const _openInEditor = (path: string) => {
+  if (state.vitePluginDetected.value) {
+    openInEditor(path)
+    return
+  }
+  copy(path)
+}
 
 const copiedDuring = 1500
 const { copy: copyApi, isSupported, copied } = useClipboard({

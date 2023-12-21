@@ -242,9 +242,8 @@ const state = useDevToolsState()
             />
 
             <VueIcon
-              v-show="selectedComponentFilePath"
+              v-if="selectedComponentFilePath && state.vitePluginDetected.value"
               v-tooltip="'Open in Editor'"
-
               title="Open in Editor"
               icon="i-carbon-launch"
               action flex-none

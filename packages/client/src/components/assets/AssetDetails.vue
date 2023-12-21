@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet } from '@vue-devtools-next/core'
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue-devtools-next/ui'
 
 const props = defineProps<{
@@ -11,6 +11,7 @@ const props = defineProps<{
 const emit = defineEmits<{ (...args: any): void }>()
 
 const bridgeRpc = useDevToolsBridgeRpc()
+const state = useDevToolsState()
 
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
@@ -131,8 +132,8 @@ const supportsPreview = computed(() => {
             <div flex="~ gap-1" w-full items-center>
               <FilepathItem :filepath="asset.filePath" text-left />
               <VueIcon
+                v-if="state.vitePluginDetected.value"
                 v-tooltip="'Open in Editor'"
-
                 title="Open in Editor"
                 icon="i-carbon-launch"
                 action flex-none

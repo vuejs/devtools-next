@@ -71,13 +71,20 @@ addCustomCommand({
       id: 'vueuse:github',
       title: 'Github',
       icon: 'i-logos-github',
-      url: 'https://github.com/vueuse/vueuse',
+      action: {
+        type: 'url',
+        src: 'https://github.com/vueuse/vueuse',
+      },
     },
     {
       id: 'vueuse:website',
       title: 'Website',
       icon: 'i-logos-vueuse',
-      url: 'https://vueuse.org/',
+      action: {
+        type: 'url',
+        src: 'https://vueuse.org/',
+      },
+      order: 2,
     },
   ],
 })

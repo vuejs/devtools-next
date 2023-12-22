@@ -8,6 +8,7 @@ export interface CommandItem {
   title: string
   description?: string
   icon?: string
+  order?: number
   action: () => void | CommandItem[] | Promise<CommandItem[] | void>
 }
 
@@ -70,32 +71,46 @@ export function useCommands() {
     return [
       ...fixedCommands,
       ...tabCommands.value,
-      ...customCommands.value.map(i => ({
-        id: `${i.id}`,
-        title: i.title,
-        icon: i.icon,
-        description: i.description,
-        action: () => {
-          // priority: children > url > undefined
-          if (i.children) {
-            return i.children.map(i => ({
-              id: i.id,
-              title: i.title,
-              icon: i.icon,
-              description: i.description,
-              action: () => {
-                if (i.url)
-                  window.open(i.url, '_blank')
-              },
-            }))
-          }
-          if (i.url)
-            window.open(i.url, '_blank')
-        },
-      })),
+      ...resolveCustomCommands(customCommands.value),
       ...Array.from(registeredCommands.values())
         .flatMap(i => toValue(i)),
     ]
+  })
+}
+
+function resolveCustomAction(action: CustomCommand['action']) {
+  if (action?.type === 'url')
+    window.open(action.src, '_blank')
+  // TODO: support more types
+}
+
+function resolveCustomCommands(commands: CustomCommand[]) {
+  return commands.map(i => ({
+    id: `${i.id}`,
+    title: i.title,
+    icon: i.icon,
+    description: i.description,
+    order: i.order,
+    action: () => {
+      // priority: children > url > undefined
+      if (i.children) {
+        return i.children.map(i => ({
+          id: i.id,
+          title: i.title,
+          icon: i.icon,
+          description: i.description,
+          order: i.order,
+          action: () => {
+            resolveCustomAction(i.action)
+          },
+        })).sort((a, b) => {
+          return (b.order ?? 0) - (a.order ?? 0)
+        })
+      }
+      resolveCustomAction(i.action)
+    },
+  })).sort((a, b) => {
+    return (b.order ?? 0) - (a.order ?? 0)
   })
 }
 

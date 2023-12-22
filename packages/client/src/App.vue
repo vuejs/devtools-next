@@ -54,7 +54,6 @@ watchEffect(() => {
 })
 
 const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
-const isSplitScreenAvailable = splitScreenAvailable
 const splitScreenSize = computed({
   get: () => clientState.value.splitScreen.size,
   set: v => clientState.value.splitScreen.size = v,
@@ -86,7 +85,7 @@ watchEffect(() => {
         <Pane h-full class="of-auto!" min-size="10" :size="splitScreenSize[0]">
           <RouterView />
         </Pane>
-        <Pane v-if="!isUtilityView && splitScreenEnabled && isSplitScreenAvailable" relative h-full class="of-auto!" :size="splitScreenSize[1]">
+        <Pane v-if="!isUtilityView && splitScreenEnabled" relative h-full class="of-auto!" :size="splitScreenSize[1]">
           <SplitScreen />
         </Pane>
       </Splitpanes>

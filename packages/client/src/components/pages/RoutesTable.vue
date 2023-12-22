@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueBadge } from '@vue-devtools-next/ui'
 import type { RouteRecordNormalized } from 'vue-router'
+import { useDevToolsState } from '@vue-devtools-next/core'
 
 const props = defineProps<{
   pages: RouteRecordNormalized[]
@@ -17,6 +18,7 @@ const sorted = computed(() => {
 })
 
 const _openInEditor = openInEditor
+const state = useDevToolsState()
 </script>
 
 <template>
@@ -61,7 +63,7 @@ const _openInEditor = openInEditor
               />
               <div op0 group-hover:op100 flex="~ gap1">
                 <button
-                  v-if="item.file || item.meta?.file"
+                  v-if="(item.file || item.meta?.file) && state.vitePluginDetected.value"
                   text-sm op40 hover="op100 text-primary-400"
                   title="Open in editor"
                   @click="_openInEditor((item.file || item.meta?.file) as string)"

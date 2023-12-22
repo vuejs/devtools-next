@@ -26,7 +26,8 @@
   ],
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "dev": "tsx scripts/build.ts --watch"
+    "dev": "tsx scripts/build.ts --watch",
+    "prepare:type": "tsup src/index.ts --dts-only --format cjs,esm"
   },
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",

@@ -32,7 +32,7 @@
   "dependencies": {
     "@vue-devtools-next/core": "workspace:^",
     "@vue-devtools-next/shared": "workspace:^",
-    "electron": "^28.0.0",
+    "electron": "^28.1.0",
     "execa": "^8.0.1",
     "h3": "^1.9.0",
     "ip": "^1.1.8",
@@ -41,8 +41,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
-    "tsx": "^4.6.2",
+    "tsx": "^4.7.0",
     "unbuild": "^2.0.0",
-    "vue": "^3.3.12"
+    "vue": "^3.3.13"
   }
 }

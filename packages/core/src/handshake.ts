@@ -29,7 +29,7 @@ export class HandShakeClient extends HandShake {
       this.socket.on(HandShakeEvents.SYN_ACK, () => {
         clearInterval(timer)
         this.socket.emit(HandShakeEvents.ACK)
-        devtools.state.connected = true
+        devtools.state.clientConnected = true
         resolve()
       })
     })

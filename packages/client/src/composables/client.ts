@@ -9,15 +9,17 @@ export function onDevToolsClientConnected(fn: () => void) {
     fns.splice(fns.indexOf(fn), 1)
   })
 
-  const { connected } = useDevToolsState()
+  const { connected, clientConnected } = useDevToolsState()
+  const devtoolsReady = computed(() => clientConnected.value && connected.value)
 
-  if (connected.value) {
+  if (devtoolsReady.value) {
     fns.forEach(fn => fn())
     return
   }
 
-  watchOnce(connected, (v) => {
-    v && fns.forEach(fn => fn())
+  watchOnce(devtoolsReady, (v) => {
+    if (v)
+      fns.forEach(fn => fn())
   })
 
   return () => {

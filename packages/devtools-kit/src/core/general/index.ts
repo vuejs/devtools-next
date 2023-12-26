@@ -43,6 +43,7 @@ export function initDevTools() {
 
     if (devtoolsState.appRecords.length === 1) {
       await setActiveAppRecord(devtoolsState.appRecords[0])
+      devtoolsState.connected = true
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
     }
   })
@@ -60,6 +61,23 @@ export function onDevToolsConnected(fn: () => void) {
 
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
       if (state.connected) {
+        fn()
+        resolve()
+      }
+    })
+  })
+}
+
+export function onDevToolsClientConnected(fn: () => void) {
+  return new Promise<void>((resolve) => {
+    if (devtoolsState.connected && devtoolsState.clientConnected) {
+      fn()
+      resolve()
+      return
+    }
+
+    apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
+      if (state.connected && devtoolsState.clientConnected) {
         fn()
         resolve()
       }

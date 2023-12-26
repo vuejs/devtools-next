@@ -50,6 +50,20 @@ addCustomTab({
 ```ts
 import { addCustomCommand } from '@vue/devtools-next-api'
 
+// Add a custom command with url
+addCustomCommand({
+  // unique identifier
+  id: 'vueuse',
+  // title to display in the command
+  title: 'VueUse',
+  // any icon from Iconify, or a URL to an image
+  icon: 'i-logos-vueuse',
+  action: {
+    type: 'url',
+    src: 'https://vueuse.org/'
+  }
+})
+
 // Add a custom command with auxiliary menus
 addCustomCommand({
   // unique identifier
@@ -79,22 +93,6 @@ addCustomCommand({
       }
     },
   ],
-})
-
-// Add a custom command with url
-addCustomCommand({
-  // unique identifier
-  id: 'vueuse',
-  // title to display in the command
-  title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
-  action: {
-    // action type, only support `url` for now
-    type: 'url',
-    // url to open when the command is executed
-    src: 'https://vueuse.org/'
-  }
 })
 ```
 

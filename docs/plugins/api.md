@@ -54,8 +54,11 @@ import { addCustomCommand } from '@vue/devtools-next-api'
 addCustomCommand({
   // unique identifier
   id: 'vueuse',
+  // title to display in the command
   title: 'VueUse',
+  // any icon from Iconify, or a URL to an image
   icon: 'i-logos-vueuse',
+  // command children, will show if the command is executed
   children: [
     {
       id: 'vueuse:github',
@@ -80,11 +83,16 @@ addCustomCommand({
 
 // Add a custom command with url
 addCustomCommand({
+  // unique identifier
   id: 'vueuse',
+  // title to display in the command
   title: 'VueUse',
+  // any icon from Iconify, or a URL to an image
   icon: 'i-logos-vueuse',
   action: {
+    // action type, only support `url` for now
     type: 'url',
+    // url to open when the command is executed
     src: 'https://vueuse.org/'
   }
 })

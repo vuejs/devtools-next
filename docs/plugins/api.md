@@ -63,7 +63,7 @@ addCustomCommand({
     {
       id: 'vueuse:github',
       title: 'Github',
-      icon: 'i-logos-github',
+      icon: 'i-carbon-logo-github',
       action: {
         type: 'url',
         src: 'https://github.com/vueuse/vueuse'

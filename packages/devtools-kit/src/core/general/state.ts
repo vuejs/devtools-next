@@ -1,5 +1,6 @@
-import type { AppRecord } from '@vue-devtools-next/schema'
+import type { AppRecord, DevToolsState } from '@vue-devtools-next/schema'
 import { deepClone, target as global } from '@vue-devtools-next/shared'
+import { debounce } from 'perfect-debounce'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'
 import type { Router, RouterInfo } from '../router'
@@ -33,6 +34,10 @@ global[StateKey] ??= {
 
 global[ContextKey] ??= deepClone(DefaultContext)
 
+const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+  apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, state, oldState)
+}, 80)
+
 export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
     return global[StateKey][property]
@@ -51,7 +56,7 @@ export const devtoolsState = new Proxy(global[StateKey], {
       global[ContextKey].routerInfo = devtoolsRouterInfo
     }
 
-    apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, global[StateKey], oldState)
+    callStateUpdatedHook(global[StateKey], oldState)
     return true
   },
   deleteProperty(target, property) {

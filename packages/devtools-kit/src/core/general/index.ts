@@ -77,7 +77,7 @@ export function onDevToolsClientConnected(fn: () => void) {
     }
 
     apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
-      if (state.connected && devtoolsState.clientConnected) {
+      if (state.connected && state.clientConnected) {
         fn()
         resolve()
       }

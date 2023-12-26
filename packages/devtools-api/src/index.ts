@@ -1,5 +1,6 @@
 export {
   onDevToolsConnected,
+  onDevToolsClientConnected,
   setupDevToolsPlugin,
   addCustomTab,
   addCustomCommand,

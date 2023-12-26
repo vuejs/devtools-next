@@ -97,6 +97,10 @@ app.use(pinia)
 
 app.mount('#app')
 
+// onDevToolsClientConnected(() => {
+//   console.log('devtools client connected')
+// })
+
 // app2.use(router2)
 // app2.use(pinia2)
 // app2.mount('#app2')

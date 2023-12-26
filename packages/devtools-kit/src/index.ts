@@ -1,4 +1,4 @@
-import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsConnected } from './core/general'
+import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsClientConnected, onDevToolsConnected } from './core/general'
 import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
 import { setupDevToolsPlugin } from './api/plugin'
@@ -25,6 +25,7 @@ export const devtools = {
 }
 
 export {
+  onDevToolsClientConnected,
   onDevToolsConnected,
   addCustomTab,
   addCustomCommand,

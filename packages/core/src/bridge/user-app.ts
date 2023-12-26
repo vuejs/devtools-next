@@ -12,6 +12,7 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       connected: devtools.state.connected,
       vueVersion: devtools.state?.activeAppRecord?.version || '',
       tabs: devtools.state.tabs,
+      commands: devtools.state.commands,
       vitePluginDetected: devtools.state.vitePluginDetected,
       appRecords: devtools.state.appRecords.map(item => ({
         id: item.id,
@@ -136,6 +137,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     // custom tabs updated
     devtools.api.on.customTabsUpdated((payload) => {
       bridge.emit(BridgeEvents.CUSTOM_TABS_UPDATED, JSON.stringify(payload))
+    })
+
+    // custom commands updated
+    devtools.api.on.customCommandsUpdated((payload) => {
+      bridge.emit(BridgeEvents.CUSTOM_COMMANDS_UPDATED, JSON.stringify(payload))
     })
 
     // router info updated

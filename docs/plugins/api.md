@@ -44,3 +44,63 @@ addCustomTab({
   category: 'advanced',
 })
 ```
+
+## `addCustomCommand`
+
+```ts
+import { addCustomCommand } from '@vue/devtools-next-api'
+
+// Add a custom command with url
+addCustomCommand({
+  // unique identifier
+  id: 'vueuse',
+  // title to display in the command
+  title: 'VueUse',
+  // any icon from Iconify, or a URL to an image
+  icon: 'i-logos-vueuse',
+  action: {
+    type: 'url',
+    src: 'https://vueuse.org/'
+  }
+})
+
+// Add a custom command with submenu
+addCustomCommand({
+  // unique identifier
+  id: 'vueuse',
+  // title to display in the command
+  title: 'VueUse',
+  // any icon from Iconify, or a URL to an image
+  icon: 'i-logos-vueuse',
+  // submenu, which is shown when the menu is clicked
+  children: [
+    {
+      id: 'vueuse:github',
+      title: 'Github',
+      icon: 'i-carbon-logo-github',
+      action: {
+        type: 'url',
+        src: 'https://github.com/vueuse/vueuse'
+      }
+    },
+    {
+      id: 'vueuse:website',
+      title: 'Website',
+      icon: 'i-logos-vueuse',
+      action: {
+        type: 'url',
+        src: 'https://vueuse.org/'
+      }
+    },
+  ],
+})
+```
+
+## `removeCustomCommand`
+
+```ts
+import { removeCustomCommand } from '@vue/devtools-next-api'
+
+// Remove a custom command by id
+removeCustomCommand('vueuse')
+```

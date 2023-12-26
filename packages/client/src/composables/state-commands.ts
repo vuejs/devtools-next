@@ -1,11 +1,14 @@
 import { randomStr } from '@vue-devtools-next/shared'
+import { CustomCommand } from '@vue-devtools-next/kit'
 import { MaybeRefOrGetter } from 'vue'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
 
 export interface CommandItem {
   id: string
   title: string
   description?: string
   icon?: string
+  order?: number
   action: () => void | CommandItem[] | Promise<CommandItem[] | void>
 }
 
@@ -15,6 +18,20 @@ const registeredCommands = reactive(new Map<string, MaybeRefOrGetter<CommandItem
 export function useCommands() {
   const { enabledFlattenTabs } = useAllTabs()
   const router = useRouter()
+  const state = useDevToolsState()
+
+  const customCommands = ref<CustomCommand[]>(state.commands.value || [])
+
+  watchEffect(() => {
+    customCommands.value = state.commands.value || []
+  })
+
+  const bridgeRpc = useDevToolsBridgeRpc()
+  onDevToolsClientConnected(() => {
+    bridgeRpc.on.customCommandsUpdated((data) => {
+      customCommands.value = data
+    })
+  })
 
   const fixedCommands: CommandItem[] = [
     {
@@ -54,9 +71,46 @@ export function useCommands() {
     return [
       ...fixedCommands,
       ...tabCommands.value,
+      ...resolveCustomCommands(customCommands.value),
       ...Array.from(registeredCommands.values())
         .flatMap(i => toValue(i)),
     ]
+  })
+}
+
+function resolveCustomAction(action: CustomCommand['action']) {
+  if (action?.type === 'url')
+    window.open(action.src, '_blank')
+  // TODO: support more types
+}
+
+function resolveCustomCommands(commands: CustomCommand[]) {
+  return commands.map(i => ({
+    id: `${i.id}`,
+    title: i.title,
+    icon: i.icon,
+    description: i.description,
+    order: i.order,
+    action: () => {
+      // priority: children > url > undefined
+      if (i.children) {
+        return i.children.map(i => ({
+          id: i.id,
+          title: i.title,
+          icon: i.icon,
+          description: i.description,
+          order: i.order,
+          action: () => {
+            resolveCustomAction(i.action)
+          },
+        })).sort((a, b) => {
+          return (b.order ?? 0) - (a.order ?? 0)
+        })
+      }
+      resolveCustomAction(i.action)
+    },
+  })).sort((a, b) => {
+    return (b.order ?? 0) - (a.order ?? 0)
   })
 }
 

@@ -1,7 +1,12 @@
-import { addCustomTab, onDevToolsConnected, setupDevToolsPlugin } from '@vue-devtools-next/kit'
-
 export {
   onDevToolsConnected,
-  addCustomTab,
   setupDevToolsPlugin,
-}
+  addCustomTab,
+  addCustomCommand,
+  removeCustomCommand,
+} from '@vue-devtools-next/kit'
+
+export type {
+  CustomCommand,
+  CustomTab,
+} from '@vue-devtools-next/kit'

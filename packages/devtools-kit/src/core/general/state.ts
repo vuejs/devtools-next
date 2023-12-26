@@ -25,6 +25,7 @@ global[StateKey] ??= {
   selectedComponentId: null,
   pluginBuffer: [],
   tabs: [],
+  commands: [],
   vitePluginDetected: false,
   activeAppRecordId: null,
 }
@@ -60,12 +61,24 @@ export const devtoolsState = new Proxy(global[StateKey], {
 
 Object.defineProperty(devtoolsState.tabs, 'push', {
   configurable: true,
-  value(...items) {
+  value(...items: unknown[]) {
     const result = Array.prototype.push.apply(this, items)
     devtoolsState.tabs = this
     apiHooks.callHook(DevToolsEvents.CUSTOM_TABS_UPDATED, this)
     return result
   },
+})
+
+;['push', 'splice'].forEach((method) => {
+  Object.defineProperty(devtoolsState.commands, method, {
+    configurable: true,
+    value(...args: unknown[]) {
+      const result = Array.prototype[method].apply(this, args)
+      devtoolsState.commands = this
+      apiHooks.callHook(DevToolsEvents.CUSTOM_COMMANDS_UPDATED, this)
+      return result
+    },
+  })
 })
 
 export const devtoolsContext = new Proxy(global[ContextKey], {

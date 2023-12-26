@@ -27,7 +27,7 @@ $ bun add -D @vue/devtools-next-api
 ## `addCustomTab`
 
 ```ts
-import { devtools } from '@vue/devtools-next-api'
+import { addCustomTab } from '@vue/devtools-next-api'
 
 addCustomTab({
   // unique identifier

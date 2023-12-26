@@ -64,7 +64,7 @@ addCustomCommand({
   }
 })
 
-// Add a custom command with auxiliary menus
+// Add a custom command with submenu
 addCustomCommand({
   // unique identifier
   id: 'vueuse',
@@ -72,7 +72,7 @@ addCustomCommand({
   title: 'VueUse',
   // any icon from Iconify, or a URL to an image
   icon: 'i-logos-vueuse',
-  // command children, will show if the command is executed
+  // submenu, which is shown when the menu is clicked
   children: [
     {
       id: 'vueuse:github',

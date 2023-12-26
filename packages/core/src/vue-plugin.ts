@@ -14,6 +14,7 @@ export type DevtoolsBridgeAppRecord = Pick<AppRecord, 'name' | 'id' | 'version' 
 
 function initDevToolsState() {
   const connected = ref(false)
+  const clientConnected = ref(false)
   const componentCount = ref(0)
   const vueVersion = ref('')
   const tabs = ref<CustomTab[]>([])
@@ -25,6 +26,7 @@ function initDevToolsState() {
   function init() {
     DevToolsRpc.getDevToolsState().then(({ data }) => {
       connected.value = data.connected
+      clientConnected.value = data.clientConnected
       vueVersion.value = data.vueVersion || ''
       tabs.value = data.tabs
       commands.value = data.commands
@@ -34,6 +36,7 @@ function initDevToolsState() {
     })
     DevToolsRpc.on.devtoolsStateUpdated((payload) => {
       connected.value = payload.connected
+      clientConnected.value = payload.clientConnected
       vueVersion.value = payload.vueVersion || ''
       appRecords.value = payload.appRecords
       activeAppRecordId.value = payload.activeAppRecordId
@@ -45,6 +48,7 @@ function initDevToolsState() {
     restore: init,
     vueVersion,
     connected,
+    clientConnected,
     componentCount,
     tabs,
     commands,
@@ -69,6 +73,7 @@ function initDevToolsBridge(_bridge: DevToolsPluginOptions['bridge']) {
 const VueDevToolsBridgeSymbol: InjectionKey<Ref<BridgeInstanceType>> = Symbol('VueDevToolsBridgeSymbol')
 const VueDevToolsStateSymbol: InjectionKey<{
   connected: Ref<boolean>
+  clientConnected: Ref<boolean>
   componentCount: Ref<number>
   vueVersion: Ref<string>
   tabs: Ref<CustomTab[]>

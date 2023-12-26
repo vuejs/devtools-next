@@ -10,7 +10,7 @@ import('./setup/unocss-runtime')
 useColorMode()
 const router = useRouter()
 const route = useRoute()
-const { connected } = useDevToolsState()
+const { connected, clientConnected } = useDevToolsState()
 const clientState = devtoolsClientState
 
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -20,13 +20,14 @@ const bridge = useDevToolsBridge()
 
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
+const devtoolsReady = computed(() => clientConnected.value && connected.value)
 
 watchEffect(() => {
   const scale = devtoolsClientState.value.scale
   document.documentElement.style.fontSize = `${scale * 15}px`
 })
 
-watch(connected, (v) => {
+watch(devtoolsReady, (v) => {
   if (v) {
     router.replace(clientState.value.isFirstVisit ? '/' : clientState.value.route)
     router.afterEach(() => {
@@ -69,7 +70,7 @@ watchEffect(() => {
 
 <template>
   <main class="fixed inset-0 h-screen w-screen $ui-bg-base">
-    <AppConnecting v-if="!connected" />
+    <AppConnecting v-if="!devtoolsReady" />
     <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
     <div
       v-else

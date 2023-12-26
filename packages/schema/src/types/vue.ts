@@ -105,6 +105,7 @@ export interface AppRecord {
 
 export interface DevToolsState {
   connected: boolean
+  clientConnected: boolean
   vitePluginDetected: boolean
   appRecords: AppRecord[]
   activeAppRecord: AppRecord | null

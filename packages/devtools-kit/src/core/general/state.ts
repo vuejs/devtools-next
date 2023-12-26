@@ -20,6 +20,7 @@ const DefaultContext = {
 
 global[StateKey] ??= {
   connected: false,
+  clientConnected: false,
   appRecords: [],
   activeAppRecord: null,
   selectedComponentId: null,

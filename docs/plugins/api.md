@@ -104,3 +104,13 @@ import { removeCustomCommand } from '@vue/devtools-next-api'
 // Remove a custom command by id
 removeCustomCommand('vueuse')
 ```
+
+## `onDevToolsClientConnected`
+
+```ts
+import { onDevToolsClientConnected } from '@vue/devtools-next-api'
+
+onDevToolsClientConnected(() => {
+  console.log('devtools client connected')
+})
+```

@@ -44,6 +44,8 @@ chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_U
   // for vite plugin
   if (vitePluginDetected) {
     function init(iframe: HTMLIFrameElement) {
+      if (chrome.runtime?.id === undefined)
+        return
       injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
         connect()
 
@@ -97,6 +99,8 @@ chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_U
   else {
     initDevTools({
       connect(cb) {
+        if (chrome.runtime?.id === undefined)
+          return
         injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
           // connect to background to setup proxy
           connect()

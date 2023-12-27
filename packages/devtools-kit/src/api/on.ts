@@ -11,6 +11,7 @@ import type { CustomCommand } from '../core/custom-command'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
+  DEVTOOLS_CONNECTED_UPDATED = 'devtools:connected-updated',
   ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
   TOGGLE_COMPONENT_INSPECTOR = 'component-inspector:toggle',
@@ -29,6 +30,7 @@ export enum DevToolsEvents {
 
 export interface DevToolsEvent {
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
+  [DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
   [DevToolsEvents.ROUTER_INFO_UPDATED]: (routerInfo: RouterInfo) => void
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined

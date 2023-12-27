@@ -59,7 +59,7 @@ export function onDevToolsConnected(fn: () => void) {
       return
     }
 
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
+    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
       if (state.connected) {
         fn()
         resolve()
@@ -76,7 +76,7 @@ export function onDevToolsClientConnected(fn: () => void) {
       return
     }
 
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, (state) => {
+    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
       if (state.connected && state.clientConnected) {
         fn()
         resolve()

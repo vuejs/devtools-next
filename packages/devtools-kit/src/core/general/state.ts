@@ -38,12 +38,17 @@ const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsS
   apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, state, oldState)
 }, 80)
 
+const callConnectedUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+  apiHooks.callHook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, state, oldState)
+}, 80)
+
 export const devtoolsState = new Proxy(global[StateKey], {
   get(target, property) {
     return global[StateKey][property]
   },
   set(target, property, value) {
-    const oldState = global[StateKey]
+    const oldState = { ...global[StateKey] }
+
     target[property] = value
     // sync to global to ensure the state is consistent
     global[StateKey][property] = value
@@ -57,6 +62,9 @@ export const devtoolsState = new Proxy(global[StateKey], {
     }
 
     callStateUpdatedHook(global[StateKey], oldState)
+    if (['connected', 'clientConnected'].includes(property.toString()) && oldState[property] !== value)
+      callConnectedUpdatedHook(global[StateKey], oldState)
+
     return true
   },
   deleteProperty(target, property) {

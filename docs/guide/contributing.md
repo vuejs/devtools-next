@@ -2,26 +2,41 @@
 
 > Hi! We're really excited that you're interested in contributing to Vue DevTools! Before submitting your contribution, please read through the following guide.
 
-## Monorepo
+## Development Setup
 
-The Vue DevTools repo is a monorepo using pnpm workspaces. The package manager used to install and link dependencies must be [pnpm](https://pnpm.io/).
-After cloning the repo, run in the root folder.
+You will need [Node.js](https://nodejs.org) **version 18.12+**, and [PNPM](https://pnpm.io) **version 8+**.
 
-```sh
-pnpm i
+We also recommend installing [@antfu/ni](https://github.com/antfu/ni) to help switching between repos using different package managers. `ni` also provides the handy `nr` command which running npm scripts easier.
+
+After cloning the repo, run:
+
+```bash
+$ pnpm i # install the dependencies of the project
 ```
+
+## Git Hooks
+
+The project uses [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks) to enforce the following on each commit:
+
+- Automatically format changed files using ESLint
 
 ## Development
 
-### Setup
-
-Build the project by
+Build the project with watch mode:
 
 ```sh
 pnpm dev
 ```
 
-And then run the playground
+OR
+
+Build the project with:
+
+```sh
+pnpm build
+```
+
+And then run the playground:
 
 ```sh
 pnpm play

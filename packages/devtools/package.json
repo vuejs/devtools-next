@@ -19,7 +19,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "bin": {
-    "vue-devtools-next": "./cli.mjs"
+    "vue-devtools": "./cli.mjs"
   },
   "files": [
     "dist"

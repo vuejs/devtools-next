@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { VueAppInstance } from '@vue/devtools-schema'
 import type { ComponentBoundingRect } from '../types'
 import { isFragment } from '../general/util'
 

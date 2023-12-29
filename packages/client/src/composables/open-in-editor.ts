@@ -1,4 +1,4 @@
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 

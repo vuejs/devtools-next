@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { VueAppInstance } from '@vue/devtools-schema'
 
 export interface ComponentBoundingRect {
   left: number

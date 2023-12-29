@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/electron",
+  "name": "@vue/devtools-electron",
   "type": "module",
   "version": "0.0.0",
   "author": "webfansplz",
@@ -30,8 +30,8 @@
     "prepare:type": "tsup src/index.ts --dts-only --format cjs,esm"
   },
   "dependencies": {
-    "@vue-devtools-next/core": "workspace:^",
-    "@vue-devtools-next/shared": "workspace:^",
+    "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-shared": "workspace:^",
     "electron": "^28.1.0",
     "execa": "^8.0.1",
     "h3": "^1.9.0",

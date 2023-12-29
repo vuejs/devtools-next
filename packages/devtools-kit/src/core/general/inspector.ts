@@ -1,4 +1,4 @@
-import type { DevToolsContext } from '@vue-devtools-next/schema'
+import type { DevToolsContext } from '@vue/devtools-schema'
 import { devtoolsContext } from './state'
 
 export function addInspector(payload: DevToolsContext['inspector'][0]) {

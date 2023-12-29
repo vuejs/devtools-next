@@ -1,4 +1,4 @@
-import type { Bridge } from '@vue-devtools-next/core'
+import type { Bridge } from '@vue/devtools-core'
 import { shallowRef, watchEffect } from 'vue'
 
 type BridgeTye = InstanceType<typeof Bridge>

@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/browser-extension",
+  "name": "@vue/devtools-browser-extension",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -13,8 +13,8 @@
     "dev": "cross-env NODE_ENV=development tsup --watch"
   },
   "dependencies": {
-    "@vue-devtools-next/core": "workspace:^",
-    "@vue-devtools-next/shared": "workspace:^"
+    "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-shared": "workspace:^"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",

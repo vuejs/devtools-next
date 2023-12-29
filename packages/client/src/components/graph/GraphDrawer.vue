@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueButton, VueDrawer, showVueNotification } from '@vue-devtools-next/ui'
-import { useDevToolsState } from '@vue-devtools-next/core'
+import { VueButton, VueDrawer, showVueNotification } from '@vue/devtools-ui'
+import { useDevToolsState } from '@vue/devtools-core'
 
 defineProps<{
   top?: HTMLElement

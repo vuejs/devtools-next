@@ -1,4 +1,4 @@
-import { devtools } from '@vue-devtools-next/kit'
+import { devtools } from '@vue/devtools-kit'
 import type { BridgeInstanceType } from './bridge/core'
 
 export enum HandShakeEvents {

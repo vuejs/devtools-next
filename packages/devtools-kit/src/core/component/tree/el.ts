@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { VueAppInstance } from '@vue/devtools-schema'
 import type { VNode } from 'vue'
 import { isFragment } from '../general/util'
 

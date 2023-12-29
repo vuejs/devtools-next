@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/client",
+  "name": "@vue/devtools-client",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -26,11 +26,11 @@
   "dependencies": {
     "@unocss/preset-icons": "^0.58.0",
     "@unocss/runtime": "^0.58.0",
-    "@vue-devtools-next/core": "workspace:^",
-    "@vue-devtools-next/kit": "workspace:^",
-    "@vue-devtools-next/schema": "workspace:*",
-    "@vue-devtools-next/shared": "workspace:^",
-    "@vue-devtools-next/ui": "workspace:*",
+    "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-kit": "workspace:^",
+    "@vue/devtools-schema": "workspace:*",
+    "@vue/devtools-shared": "workspace:^",
+    "@vue/devtools-ui": "workspace:*",
     "@vueuse/core": "^10.7.0",
     "@vueuse/integrations": "^10.7.0",
     "colord": "^2.9.3",

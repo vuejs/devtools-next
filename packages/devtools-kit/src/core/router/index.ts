@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
-import type { AppRecord } from '@vue-devtools-next/schema'
-import { deepClone, target as global } from '@vue-devtools-next/shared'
+import type { AppRecord } from '@vue/devtools-schema'
+import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
 import { DevToolsEvents, apiHooks } from '../../api'
 import { hook } from '../general/hook'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentTreeNode } from '@vue-devtools-next/kit'
+import type { ComponentTreeNode } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   data: ComponentTreeNode

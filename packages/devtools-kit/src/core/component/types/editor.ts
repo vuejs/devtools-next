@@ -1,4 +1,4 @@
-import type { AppRecord } from '@vue-devtools-next/schema'
+import type { AppRecord } from '@vue/devtools-schema'
 import type { Recordable } from '../state/editor'
 
 export type PropPath = string | string[]

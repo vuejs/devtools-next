@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue-devtools-next/ui'
-import { isInChromePanel } from '@vue-devtools-next/shared'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
+import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
+import { isInChromePanel } from '@vue/devtools-shared'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))

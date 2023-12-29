@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { Network } from 'vis-network'
 
 const bridgeRpc = useDevToolsBridgeRpc()

@@ -114,3 +114,7 @@ onDevToolsClientConnected(() => {
   console.log('devtools client connected')
 })
 ```
+
+:::tip
+For the legacy [legacy DevTools API](https://devtools.vuejs.org/plugin/api-reference.html), we have provided a certain level of compatibility, but cannot guarantee complete compatibility.
+:::

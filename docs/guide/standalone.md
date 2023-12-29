@@ -57,7 +57,7 @@ $ bun add -D @vue/devtools
 Once you installed the package globally, run:
 
 ```sh
-vue-devtools-next
+vue-devtools
 ```
 
 Then add this code to the `<head>` section of your application HTML file:
@@ -88,11 +88,11 @@ Or if you want to debug your device remotely:
 Once you installed the package as project dependency, run:
 
 ```sh
-./node_modules/.bin/vue-devtools-next
+./node_modules/.bin/vue-devtools
 ```
 
 :::tip
-You can also use the global `vue-devtools-next` to start the app, but you might want to check if the local version matches the global one in this scenario to avoid any incompatibilities.
+You can also use the global `vue-devtools` to start the app, but you might want to check if the local version matches the global one in this scenario to avoid any incompatibilities.
 :::
 
 Then import it directly in your app:
@@ -123,7 +123,7 @@ if (process.env.NODE_ENV === 'development')
 You can change it by setting environment variable before running it:
 
 ```sh
-PORT=8000 vue-devtools-next
+PORT=8000 vue-devtools
 ```
 
 Then in your app you'll have to set either:
@@ -142,7 +142,7 @@ devtools.connect(/ host /, 8000)
 
 For that you can use `ngrok` proxy. You can download it [here](https://ngrok.com/).
 
-Once you start vue-devtools-next run:
+Once you start vue-devtools run:
 
 ```sh
 ngrok http 8098

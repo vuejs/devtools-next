@@ -31,6 +31,11 @@ function mountNetwork() {
   network.on('deselectNode', () => {
     toggleGraphDrawer(false)
   })
+
+  watch(() => graphFilterNodeId.value, (id) => {
+    if (id)
+      network.moveTo({ position: { x: 0, y: 0 } })
+  })
 }
 
 onMounted(() => {

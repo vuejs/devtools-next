@@ -162,7 +162,7 @@ For that you can also use ngrok, as it automatically proxies https requests to h
 
 ### 4. How to inspect cordova applications?
 
-Make sure that the page under `http://your-ip:8098` is returning a javascript coode on your device/simulator. If it doesn't - make sure to check your anti-virus or router/firewall settings. If it works - please follow the instructions, and connect to devtools using your IP. For example:
+Make sure that the page under `http://your-ip:8098` is returning a javascript code on your device/simulator. If it doesn't - make sure to check your anti-virus or router/firewall settings. If it works - please follow the instructions, and connect to devtools using your IP. For example:
 
 ```ts
 import devtools from '@vue/devtools'

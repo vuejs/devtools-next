@@ -1,3 +1,3 @@
 # DevTools Client
 
-> Client for the DevTools.
+> Client for DevTools.

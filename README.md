@@ -19,6 +19,16 @@ Please follow the documentation at [devtools-next.vuejs.org](https://devtools-ne
   </a>
 </p>
 
+## Contribution
+
+Please make sure to read the [Contributing Guide](https://devtools-next.vuejs.org/guide/contributing) before making a pull request.
+
+Thank you to all the people who already contributed to Vue DevTools!
+
+<a href="https://github.com/vuejs/devtools-next/graphs/contributors">
+ <img src="https://contrib.rocks/image?repo=vuejs/devtools-next" />
+</a>
+
 ## License
 
 [MIT](./LICENSE)

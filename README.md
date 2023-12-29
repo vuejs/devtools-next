@@ -25,9 +25,9 @@ Please make sure to read the [Contributing Guide](https://devtools-next.vuejs.or
 
 Thank you to all the people who already contributed to Vue DevTools!
 
-<a href="https://github.com/vuejs/devtools-next/graphs/contributors">
+<!-- <a href="https://github.com/vuejs/devtools-next/graphs/contributors">
  <img src="https://contrib.rocks/image?repo=vuejs/devtools-next" />
-</a>
+</a> -->
 
 ## License
 

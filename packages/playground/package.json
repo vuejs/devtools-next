@@ -10,16 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.7.0",
+    "@vueuse/core": "^10.7.1",
     "pinia": "^2.1.7",
-    "vue": "^3.3.13",
+    "vue": "^3.4.0",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue": "^4.6.0",
     "@vue/devtools": "workspace:*",
     "@vue/devtools-api": "workspace:*",
-    "sass": "^1.69.5",
+    "sass": "^1.69.6",
     "serve": "^14.2.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",

@@ -7,7 +7,7 @@
   "repository": {
     "directory": "packages/devtools",
     "type": "git",
-    "url": "git+https://github.com/vuejs/vue-devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools-next.git"
   },
   "exports": {
     ".": {

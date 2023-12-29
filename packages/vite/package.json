@@ -5,14 +5,14 @@
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/vuejs/vue-devtools-next#readme",
+  "homepage": "https://github.com/vuejs/devtools-next#readme",
   "repository": {
     "directory": "packages/vite",
     "type": "git",
-    "url": "git+https://github.com/vuejs/vue-devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools-next.git"
   },
   "bugs": {
-    "url": "https://github.com/vuejs/vue-devtools-next/issues"
+    "url": "https://github.com/vuejs/devtools-next/issues"
   },
   "keywords": [
     "vue-devtools",

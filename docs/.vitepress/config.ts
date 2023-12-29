@@ -96,7 +96,7 @@ export default defineConfig({
     ),
 
     editLink: {
-      pattern: 'https://github.com/vuejs/vue-devtools-next/edit/main/docs/:path',
+      pattern: 'https://github.com/vuejs/devtools-next/edit/main/docs/:path',
       text: 'Suggest changes to this page',
     },
     search: {

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/vuejs/devtools-next">
-    <img src="https://raw.githubusercontent.com/vuejs/devtools-next/main/docs/public/logo.svg" alt="Vue DevTools - Unleash Vue Developer Experience" width="300">
+    <img src="https://raw.githubusercontent.com/vuejs/devtools-next/main/docs/public/logo.svg" alt="Vue DevTools - Unleash Vue Developer Experience" width="200">
   </a>
   <br>
   <h1 align="center">Vue DevTools Next</h1>

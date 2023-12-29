@@ -1,4 +1,4 @@
-import { isBrowser, target } from '@vue/devtools-next-shared'
+import { isBrowser, target } from '@vue/devtools-shared'
 import { devtools } from '../../devtools-kit/src/index'
 
 export async function connect(host: string, port: number) {

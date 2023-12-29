@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RouteRecordNormalized } from 'vue-router'
-import { VueButton, VueDropdown, VueInput } from '@vue/devtools-next-ui'
+import { VueButton, VueDropdown, VueInput } from '@vue/devtools-ui'
 
 const props = defineProps<{
   route: RouteRecordNormalized

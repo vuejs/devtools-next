@@ -1,4 +1,4 @@
-import { VIEW_MODE_STORAGE_KEY, isBrowser, isInChromePanel, target } from '@vue/devtools-next-shared'
+import { VIEW_MODE_STORAGE_KEY, isBrowser, isInChromePanel, target } from '@vue/devtools-shared'
 
 import { initDevTools as _initDevTools } from './main'
 

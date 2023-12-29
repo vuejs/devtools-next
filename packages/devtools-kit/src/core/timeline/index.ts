@@ -1,4 +1,4 @@
-import type { DevToolsContext } from '@vue/devtools-next-schema'
+import type { DevToolsContext } from '@vue/devtools-schema'
 import { devtoolsContext } from '../general/state'
 
 export type * from './types'

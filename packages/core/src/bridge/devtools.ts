@@ -1,5 +1,5 @@
-import type { CustomCommand, CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from '@vue/devtools-next-kit'
-import { parse } from '@vue/devtools-next-kit'
+import type { CustomCommand, CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from '@vue/devtools-kit'
+import { parse } from '@vue/devtools-kit'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
 import type { DevtoolsBridgeAppRecord } from '../vue-plugin'

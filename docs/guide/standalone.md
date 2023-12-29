@@ -11,19 +11,19 @@
 ::: code-group
 
 ```sh [npm]
-$ npm add -g @vue/devtools-next
+$ npm add -g @vue/devtools
 ```
 
 ```sh [pnpm]
-$ pnpm add -g @vue/devtools-next
+$ pnpm add -g @vue/devtools
 ```
 
 ```sh [yarn]
-$ yarn global add @vue/devtools-next
+$ yarn global add @vue/devtools
 ```
 
 ```sh [bun]
-$ bun add -g @vue/devtools-next
+$ bun add -g @vue/devtools
 ```
 
 :::
@@ -33,19 +33,19 @@ $ bun add -g @vue/devtools-next
 ::: code-group
 
 ```sh [npm]
-$ npm add -D @vue/devtools-next
+$ npm add -D @vue/devtools
 ```
 
 ```sh [pnpm]
-$ pnpm add -D @vue/devtools-next
+$ pnpm add -D @vue/devtools
 ```
 
 ```sh [yarn]
-$ yarn add -D @vue/devtools-next
+$ yarn add -D @vue/devtools
 ```
 
 ```sh [bun]
-$ bun add -D @vue/devtools-next
+$ bun add -D @vue/devtools
 ```
 
 :::
@@ -98,7 +98,7 @@ You can also use the global `vue-devtools-next` to start the app, but you might 
 Then import it directly in your app:
 
 ```ts
-import { devtools } from '@vue/devtools-next'
+import { devtools } from '@vue/devtools'
 ```
 
 :::tip Important
@@ -165,7 +165,7 @@ For that you can also use ngrok, as it automatically proxies https requests to h
 Make sure that the page under `http://your-ip:8098` is returning a javascript coode on your device/simulator. If it doesn't - make sure to check your anti-virus or router/firewall settings. If it works - please follow the instructions, and connect to devtools using your IP. For example:
 
 ```ts
-import devtools from '@vue/devtools-next'
+import devtools from '@vue/devtools'
 import Vue from 'vue'
 // ...
 

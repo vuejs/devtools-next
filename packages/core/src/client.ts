@@ -1,4 +1,4 @@
-import { isBrowser, target } from '@vue/devtools-next-shared'
+import { isBrowser, target } from '@vue/devtools-shared'
 
 export function setDevToolsClientUrl(url: string) {
   target.__VUE_DEVTOOLS_CLIENT_URL__ = url

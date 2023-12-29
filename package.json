@@ -1,5 +1,5 @@
 {
-  "name": "@vue/devtools-next-monorepo",
+  "name": "@vue/devtools-monorepo",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -71,8 +71,8 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.10.5",
     "@unocss/eslint-plugin": "^0.58.0",
-    "@vue/devtools-next-core": "workspace:^",
-    "@vue/devtools-next-schema": "workspace:^",
+    "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-schema": "workspace:^",
     "archiver": "^6.0.1",
     "bumpp": "^9.2.1",
     "cross-env": "^7.0.3",

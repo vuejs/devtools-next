@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import type { AssetInfo, CodeSnippet } from '@vue/devtools-next-core'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-next-core'
-import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-next-ui'
+import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 
 const props = defineProps<{
   modelValue: AssetInfo

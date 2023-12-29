@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InspectorNodeTag } from '@vue/devtools-next-kit'
+import type { InspectorNodeTag } from '@vue/devtools-kit'
 import { toHex } from '~/utils'
 
 defineProps<{

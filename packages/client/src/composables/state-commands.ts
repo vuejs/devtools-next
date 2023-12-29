@@ -1,7 +1,7 @@
-import { randomStr } from '@vue/devtools-next-shared'
-import { CustomCommand } from '@vue/devtools-next-kit'
+import { randomStr } from '@vue/devtools-shared'
+import { CustomCommand } from '@vue/devtools-kit'
 import { MaybeRefOrGetter } from 'vue'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-next-core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
 
 export interface CommandItem {
   id: string

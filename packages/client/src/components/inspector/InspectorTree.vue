@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InspectorNodeTag } from '@vue/devtools-next-kit'
+import type { InspectorNodeTag } from '@vue/devtools-kit'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueDropdown, VTooltip as vTooltip } from '@vue/devtools-next-ui'
+import { VueButton, VueCard, VueDropdown, VTooltip as vTooltip } from '@vue/devtools-ui'
 
 function close() {
   devtoolsClientState.value.splitScreen.enabled = false

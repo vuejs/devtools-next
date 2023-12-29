@@ -1,5 +1,5 @@
 {
-  "name": "@vue/devtools-next-playground",
+  "name": "@vue/devtools-playground",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
-    "@vue/devtools-next": "workspace:*",
-    "@vue/devtools-next-api": "workspace:*",
+    "@vue/devtools": "workspace:*",
+    "@vue/devtools-api": "workspace:*",
     "sass": "^1.69.5",
     "serve": "^14.2.1",
     "typescript": "^5.3.3",

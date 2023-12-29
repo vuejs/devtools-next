@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueIcon, VueInput, VueOverlay } from '@vue/devtools-next-ui'
+import { VueIcon, VueInput, VueOverlay } from '@vue/devtools-ui'
 import Fuse from 'fuse.js'
 import type { CommandItem } from '../composables/state-commands'
 

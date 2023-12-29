@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, VueSwitch } from '@vue/devtools-next-ui'
-import { isInChromePanel } from '@vue/devtools-next-shared'
+import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, VueSwitch } from '@vue/devtools-ui'
+import { isInChromePanel } from '@vue/devtools-shared'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))

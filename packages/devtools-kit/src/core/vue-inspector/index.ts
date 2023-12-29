@@ -1,4 +1,4 @@
-import { target } from '@vue/devtools-next-shared'
+import { target } from '@vue/devtools-shared'
 
 export interface VueInspector {
   enabled: boolean

@@ -1,5 +1,5 @@
 {
-  "name": "@vue/devtools-next-api",
+  "name": "@vue/devtools-api",
   "type": "module",
   "version": "0.0.0",
   "author": "webfansplz",
@@ -27,6 +27,6 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
-    "@vue/devtools-next-kit": "workspace:^"
+    "@vue/devtools-kit": "workspace:^"
   }
 }

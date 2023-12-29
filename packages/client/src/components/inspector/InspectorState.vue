@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InspectorState } from '@vue/devtools-next-kit'
+import type { InspectorState } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   data: InspectorState[]

@@ -1,5 +1,5 @@
-import type { VueAppInstance } from '@vue/devtools-next-schema'
-import { classify, kebabize } from '@vue/devtools-next-shared'
+import type { VueAppInstance } from '@vue/devtools-schema'
+import { classify, kebabize } from '@vue/devtools-shared'
 import { getInstanceName } from '../general/util'
 
 export class ComponentFilter {

@@ -1,4 +1,4 @@
-import { target } from '@vue/devtools-next-shared'
+import { target } from '@vue/devtools-shared'
 import { Bridge } from '../../core/src/bridge'
 import { prepareInjection } from '../../core/src/injection'
 

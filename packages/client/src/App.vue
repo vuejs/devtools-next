@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useDevToolsBridge, useDevToolsState } from '@vue/devtools-next-core'
-import { isInChromePanel } from '@vue/devtools-next-shared'
+import { useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
+import { isInChromePanel } from '@vue/devtools-shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import('./setup/unocss-runtime')

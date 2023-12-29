@@ -1,8 +1,8 @@
-import { NOOP } from '@vue/devtools-next-shared'
+import { NOOP } from '@vue/devtools-shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
-import { parse } from '@vue/devtools-next-kit'
-import type { InspectorStateEditorPayload, ScrollToComponentOptions, ToggleComponentInspectorOptions } from '@vue/devtools-next-kit'
+import { parse } from '@vue/devtools-kit'
+import type { InspectorStateEditorPayload, ScrollToComponentOptions, ToggleComponentInspectorOptions } from '@vue/devtools-kit'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void

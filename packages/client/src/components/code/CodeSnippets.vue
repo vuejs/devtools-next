@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BuiltinLanguage } from 'shikiji'
-import type { CodeSnippet } from '@vue/devtools-next-core'
-import { VueButton } from '@vue/devtools-next-ui'
+import type { CodeSnippet } from '@vue/devtools-core'
+import { VueButton } from '@vue/devtools-ui'
 
 const props = defineProps<{
   codeSnippets: CodeSnippet[]

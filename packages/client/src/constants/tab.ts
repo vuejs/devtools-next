@@ -1,5 +1,5 @@
-import type { DevtoolsBridgeAppRecord } from '@vue/devtools-next-core'
-import { deepClone, isInElectron } from '@vue/devtools-next-shared'
+import type { DevtoolsBridgeAppRecord } from '@vue/devtools-core'
+import { deepClone, isInElectron } from '@vue/devtools-shared'
 import type { ModuleBuiltinTab } from '~/types'
 
 // @unocss-include

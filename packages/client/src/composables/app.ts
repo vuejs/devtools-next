@@ -1,4 +1,4 @@
-import type { DevtoolsBridgeAppRecord } from '@vue/devtools-next-core'
+import type { DevtoolsBridgeAppRecord } from '@vue/devtools-core'
 
 export const activeAppRecords = shallowRef<DevtoolsBridgeAppRecord[]>([])
 export const activeAppRecordId = ref<string | null>(null)

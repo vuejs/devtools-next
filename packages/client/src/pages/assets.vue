@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { AssetInfo } from '@vue/devtools-next-core'
-import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-next-ui'
-import { useDevToolsBridgeRpc } from '@vue/devtools-next-core'
+import type { AssetInfo } from '@vue/devtools-core'
+import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
+import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import Fuse from 'fuse.js'
 
 const DETAILS_MAX_ITEMS = 50

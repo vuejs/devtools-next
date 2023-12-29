@@ -1,5 +1,5 @@
-import type { VueAppInstance } from '@vue/devtools-next-schema'
-import { camelize } from '@vue/devtools-next-shared'
+import type { VueAppInstance } from '@vue/devtools-schema'
+import { camelize } from '@vue/devtools-shared'
 import type { InspectorState } from '../types'
 import { returnError } from '../general/util'
 import { vueBuiltins } from './constants'

@@ -7,19 +7,19 @@ Plugins API for easier DevTools integrations.
 ::: code-group
 
 ```sh [npm]
-$ npm add -D @vue/devtools-next-api
+$ npm add -D @vue/devtools-api
 ```
 
 ```sh [pnpm]
-$ pnpm add -D @vue/devtools-next-api
+$ pnpm add -D @vue/devtools-api
 ```
 
 ```sh [yarn]
-$ yarn add -D @vue/devtools-next-api
+$ yarn add -D @vue/devtools-api
 ```
 
 ```sh [bun]
-$ bun add -D @vue/devtools-next-api
+$ bun add -D @vue/devtools-api
 ```
 
 :::
@@ -27,7 +27,7 @@ $ bun add -D @vue/devtools-next-api
 ## `addCustomTab`
 
 ```ts
-import { addCustomTab } from '@vue/devtools-next-api'
+import { addCustomTab } from '@vue/devtools-api'
 
 addCustomTab({
   // unique identifier
@@ -48,7 +48,7 @@ addCustomTab({
 ## `addCustomCommand`
 
 ```ts
-import { addCustomCommand } from '@vue/devtools-next-api'
+import { addCustomCommand } from '@vue/devtools-api'
 
 // Add a custom command with url
 addCustomCommand({
@@ -99,7 +99,7 @@ addCustomCommand({
 ## `removeCustomCommand`
 
 ```ts
-import { removeCustomCommand } from '@vue/devtools-next-api'
+import { removeCustomCommand } from '@vue/devtools-api'
 
 // Remove a custom command by id
 removeCustomCommand('vueuse')
@@ -108,7 +108,7 @@ removeCustomCommand('vueuse')
 ## `onDevToolsClientConnected`
 
 ```ts
-import { onDevToolsClientConnected } from '@vue/devtools-next-api'
+import { onDevToolsClientConnected } from '@vue/devtools-api'
 
 onDevToolsClientConnected(() => {
   console.log('devtools client connected')

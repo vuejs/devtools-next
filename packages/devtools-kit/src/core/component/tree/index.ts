@@ -1,4 +1,4 @@
-import type { AppRecord } from '@vue/devtools-next-schema'
+import type { AppRecord } from '@vue/devtools-schema'
 import { devtoolsContext } from '../../general/state'
 import { getComponentInstance } from '../general'
 import { ComponentWalker } from './walker'

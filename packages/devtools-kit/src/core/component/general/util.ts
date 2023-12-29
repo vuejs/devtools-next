@@ -1,5 +1,5 @@
-import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
-import { basename, classify } from '@vue-devtools-next/shared'
+import type { AppRecord, VueAppInstance } from '@vue/devtools-next-schema'
+import { basename, classify } from '@vue/devtools-next-shared'
 import { Fragment } from 'vue'
 
 function getComponentTypeName(options: VueAppInstance['type']) {

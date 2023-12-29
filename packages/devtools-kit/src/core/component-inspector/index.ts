@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue-devtools-next/schema'
+import type { VueAppInstance } from '@vue/devtools-next-schema'
 import { getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
 import { getComponentId, getInstanceName } from '../component/general/util'

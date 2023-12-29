@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
+import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-next-ui'
 
 const props = withDefaults(defineProps<{
   modelValue: string

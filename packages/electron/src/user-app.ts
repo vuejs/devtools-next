@@ -1,5 +1,5 @@
 import io from 'socket.io-client/dist/socket.io.js'
-import { target } from '@vue-devtools-next/shared'
+import { target } from '@vue/devtools-next-shared'
 import { Bridge } from '../../core/src/bridge'
 import { prepareInjection } from '../../core/src/injection'
 import { devtools } from '../../devtools-kit/src/index'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueDarkToggle, VueDialog, VueInput } from '@vue-devtools-next/ui'
+import { VueButton, VueDarkToggle, VueDialog, VueInput } from '@vue/devtools-next-ui'
 import { useDark } from '@vueuse/core'
 import { ref } from 'vue'
 

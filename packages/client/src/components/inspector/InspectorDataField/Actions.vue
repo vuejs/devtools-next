@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue-devtools-next/ui'
-import type { InspectorState, InspectorStateEditorPayload } from '@vue-devtools-next/kit'
-import type { ButtonProps } from '@vue-devtools-next/ui/dist/types/src/components/Button'
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-next-ui'
+import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-next-kit'
+import type { ButtonProps } from '@vue/devtools-next-ui/dist/types/src/components/Button'
+import { useDevToolsBridgeRpc } from '@vue/devtools-next-core'
 import type { EditorAddNewPropType, EditorInputValidType } from '../../../composables/inspector'
 
 const props = withDefaults(defineProps<{

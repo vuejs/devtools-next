@@ -1,4 +1,4 @@
-import type { AppRecord, VueAppInstance } from '@vue-devtools-next/schema'
+import type { AppRecord, VueAppInstance } from '@vue/devtools-next-schema'
 import { registerComponentsDevTools } from '../plugins'
 import { DevToolsPluginApi, registerPlugin } from '../../api'
 import { devtoolsContext, devtoolsState } from './state'

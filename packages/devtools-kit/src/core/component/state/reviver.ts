@@ -1,4 +1,4 @@
-import { target } from '@vue-devtools-next/shared'
+import { target } from '@vue/devtools-next-shared'
 import { devtoolsContext } from '../../general/state'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, specialTypeRE, symbolRE } from './constants'
 

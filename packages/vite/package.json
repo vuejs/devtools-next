@@ -49,9 +49,9 @@
     "vite": "^3.1.0 || ^4.0.0-0 || ^5.0.0-0"
   },
   "dependencies": {
-    "@vue-devtools-next/core": "workspace:^",
-    "@vue-devtools-next/kit": "workspace:^",
-    "@vue-devtools-next/shared": "workspace:^",
+    "@vue/devtools-next-core": "workspace:^",
+    "@vue/devtools-next-kit": "workspace:^",
+    "@vue/devtools-next-shared": "workspace:^",
     "birpc": "^0.2.14",
     "execa": "^8.0.1",
     "sirv": "^2.0.4",

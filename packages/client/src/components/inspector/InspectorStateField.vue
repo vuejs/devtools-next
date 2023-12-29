@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue-devtools-next/kit'
-import { sortByKey } from '@vue-devtools-next/shared'
-import { formatInspectorStateValue, getInspectorStateValueType } from '@vue-devtools-next/kit'
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-next-kit'
+import { sortByKey } from '@vue/devtools-next-shared'
+import { formatInspectorStateValue, getInspectorStateValueType } from '@vue/devtools-next-kit'
+import { useDevToolsBridgeRpc } from '@vue/devtools-next-core'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
 

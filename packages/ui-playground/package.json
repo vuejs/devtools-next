@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/ui-playground",
+  "name": "@vue/devtools-next-ui-playground",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@unocss/reset": "^0.58.0",
-    "@vue-devtools-next/ui": "workspace:*",
+    "@vue/devtools-next-ui": "workspace:*",
     "@vueuse/core": "^10.7.0",
     "unocss": "^0.58.0",
     "vue": "^3.3.13"

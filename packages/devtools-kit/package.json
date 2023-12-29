@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/kit",
+  "name": "@vue/devtools-next-kit",
   "type": "module",
   "version": "0.0.0",
   "author": "webfansplz",
@@ -22,8 +22,8 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
-    "@vue-devtools-next/schema": "workspace:^",
-    "@vue-devtools-next/shared": "workspace:^",
+    "@vue/devtools-next-schema": "workspace:^",
+    "@vue/devtools-next-shared": "workspace:^",
     "hookable": "^5.5.3",
     "mitt": "^3.0.1",
     "perfect-debounce": "^1.0.0",

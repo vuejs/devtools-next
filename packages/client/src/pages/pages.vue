@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { RouterInfo } from '@vue-devtools-next/kit'
-import { VueInput } from '@vue-devtools-next/ui'
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import type { RouterInfo } from '@vue/devtools-next-kit'
+import { VueInput } from '@vue/devtools-next-ui'
+import { useDevToolsBridgeRpc } from '@vue/devtools-next-core'
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
 
 const bridgeRpc = useDevToolsBridgeRpc()

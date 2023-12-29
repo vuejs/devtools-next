@@ -1,4 +1,4 @@
-import { useDevToolsState } from '@vue-devtools-next/core'
+import { useDevToolsState } from '@vue/devtools-next-core'
 
 const fns: (() => void)[] = []
 

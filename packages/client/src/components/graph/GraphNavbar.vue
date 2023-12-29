@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueCheckbox, VueInput } from '@vue-devtools-next/ui'
+import { VueCheckbox, VueInput } from '@vue/devtools-next-ui'
 
 const text = graphSearchText
 const settings = graphSettings

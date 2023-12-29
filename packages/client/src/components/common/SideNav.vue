@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueDropdown } from '@vue-devtools-next/ui'
+import { VueDropdown } from '@vue/devtools-next-ui'
 
 const showDocking = ref(false)
 const showMoreTabs = ref(false)

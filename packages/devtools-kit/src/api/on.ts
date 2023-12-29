@@ -1,5 +1,5 @@
-import type { DevToolsState, VueAppInstance } from '@vue-devtools-next/schema'
-import { target } from '@vue-devtools-next/shared'
+import type { DevToolsState, VueAppInstance } from '@vue/devtools-next-schema'
+import { target } from '@vue/devtools-next-shared'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorState, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'

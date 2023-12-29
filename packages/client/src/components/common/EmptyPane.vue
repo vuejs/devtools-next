@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueIcon } from '@vue-devtools-next/ui'
+import { VueIcon } from '@vue/devtools-next-ui'
 
 const props = defineProps<{
   icon?: string

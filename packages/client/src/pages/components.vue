@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-next-core'
 
-import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue-devtools-next/kit'
-import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue-devtools-next/ui'
+import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue/devtools-next-kit'
+import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-next-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()

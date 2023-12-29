@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AssetInfo } from '@vue-devtools-next/core'
+import type { AssetInfo } from '@vue/devtools-next-core'
 
 const props = defineProps<{
   asset: AssetInfo

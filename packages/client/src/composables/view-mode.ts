@@ -1,5 +1,5 @@
-import { VIEW_MODE_STORAGE_KEY, isInChromePanel, target } from '@vue-devtools-next/shared'
-import { useDevToolsBridge } from '@vue-devtools-next/core'
+import { VIEW_MODE_STORAGE_KEY, isInChromePanel, target } from '@vue/devtools-next-shared'
+import { useDevToolsBridge } from '@vue/devtools-next-core'
 
 export function useToggleViewMode() {
   const bridge = useDevToolsBridge()

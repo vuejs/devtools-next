@@ -1,4 +1,4 @@
-import { onDevToolsConnected } from '@vue-devtools-next/kit'
+import { onDevToolsConnected } from '@vue/devtools-next-kit'
 import { BridgeEvents, registerBridgeRpc } from './bridge'
 
 import type { BridgeInstanceType } from './bridge/core'

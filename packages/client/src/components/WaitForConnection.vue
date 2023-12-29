@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueInput } from '@vue-devtools-next/ui'
+import { VueInput } from '@vue/devtools-next-ui'
 import AppConnecting from '~/components/AppConnecting.vue'
 
 const props = defineProps<{

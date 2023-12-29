@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton } from '@vue-devtools-next/ui'
+import { VueButton } from '@vue/devtools-next-ui'
 
 useColorMode()
 

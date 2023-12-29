@@ -1,5 +1,5 @@
-import { target } from '@vue-devtools-next/shared'
-import { DevToolsHooks } from '@vue-devtools-next/schema'
+import { target } from '@vue/devtools-next-shared'
+import { DevToolsHooks } from '@vue/devtools-next-schema'
 import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectRegisteredPlugin } from '../../api'
 import { createAppRecord } from './app'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from './hook'

@@ -30,7 +30,7 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
-    "@vue-devtools-next/electron": "workspace:^",
-    "@vue-devtools-next/kit": "workspace:^"
+    "@vue/devtools-next-electron": "workspace:^",
+    "@vue/devtools-next-kit": "workspace:^"
   }
 }

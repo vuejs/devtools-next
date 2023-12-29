@@ -1,5 +1,5 @@
-import { DevToolsHooks } from '@vue-devtools-next/schema'
-import type { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue-devtools-next/schema'
+import { DevToolsHooks } from '@vue/devtools-next-schema'
+import type { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue/devtools-next-schema'
 import { getAppRecord } from '../core/component/general'
 import { devtoolsState } from '../core/general/state'
 import { devtoolsHooks } from '../core/general/hook'

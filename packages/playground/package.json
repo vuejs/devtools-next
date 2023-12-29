@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/playground",
+  "name": "@vue/devtools-next-playground",
   "type": "module",
   "version": "0.0.0",
   "private": true,

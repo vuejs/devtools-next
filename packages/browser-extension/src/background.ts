@@ -1,4 +1,4 @@
-import { isNumeric } from '@vue-devtools-next/shared'
+import { isNumeric } from '@vue/devtools-next-shared'
 
 type PortInfo = Record<'tab' | 'name', string | number> & { port: chrome.runtime.Port }
 type PortDetail = Record<'devtools' | 'userApp', chrome.runtime.Port>

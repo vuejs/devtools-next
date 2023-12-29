@@ -1,5 +1,5 @@
 {
-  "name": "@vue-devtools-next/overlay",
+  "name": "@vue/devtools-next-overlay",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -20,10 +20,10 @@
     "stub": "vite build --watch"
   },
   "dependencies": {
-    "@vue-devtools-next/core": "workspace:^",
-    "@vue-devtools-next/kit": "workspace:*",
-    "@vue-devtools-next/shared": "workspace:^",
-    "@vue-devtools-next/ui": "workspace:*",
+    "@vue/devtools-next-core": "workspace:^",
+    "@vue/devtools-next-kit": "workspace:*",
+    "@vue/devtools-next-shared": "workspace:^",
+    "@vue/devtools-next-ui": "workspace:*",
     "@vueuse/core": "^10.7.0"
   },
   "devDependencies": {

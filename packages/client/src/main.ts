@@ -1,9 +1,9 @@
 import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 
-import type { BridgeInstanceType } from '@vue-devtools-next/core'
-import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue-devtools-next/shared'
-import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue-devtools-next/core'
+import type { BridgeInstanceType } from '@vue/devtools-next-core'
+import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-next-shared'
+import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue/devtools-next-core'
 
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'

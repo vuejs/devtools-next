@@ -29,10 +29,10 @@ importers:
       '@unocss/eslint-plugin':
         specifier: ^0.58.0
         version: 0.58.0(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:packages/core
-      '@vue-devtools-next/schema':
+      '@vue/devtools-next-schema':
         specifier: workspace:^
         version: link:packages/schema
       archiver:
@@ -131,10 +131,10 @@ importers:
 
   packages/browser-extension:
     dependencies:
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:../core
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
     devDependencies:
@@ -153,19 +153,19 @@ importers:
       '@unocss/runtime':
         specifier: ^0.58.0
         version: 0.58.0
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:../core
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:^
         version: link:../devtools-kit
-      '@vue-devtools-next/schema':
+      '@vue/devtools-next-schema':
         specifier: workspace:*
         version: link:../schema
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
-      '@vue-devtools-next/ui':
+      '@vue/devtools-next-ui':
         specifier: workspace:*
         version: link:../ui
       '@vueuse/core':
@@ -262,13 +262,13 @@ importers:
 
   packages/core:
     dependencies:
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:^
         version: link:../devtools-kit
-      '@vue-devtools-next/schema':
+      '@vue/devtools-next-schema':
         specifier: workspace:^
         version: link:../schema
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
       birpc:
@@ -302,25 +302,25 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@vue-devtools-next/electron':
+      '@vue/devtools-next-electron':
         specifier: workspace:^
         version: link:../electron
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:^
         version: link:../devtools-kit
 
   packages/devtools-api:
     dependencies:
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:^
         version: link:../devtools-kit
 
   packages/devtools-kit:
     dependencies:
-      '@vue-devtools-next/schema':
+      '@vue/devtools-next-schema':
         specifier: workspace:^
         version: link:../schema
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
       hookable:
@@ -345,10 +345,10 @@ importers:
 
   packages/electron:
     dependencies:
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:../core
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
       electron:
@@ -385,16 +385,16 @@ importers:
 
   packages/overlay:
     dependencies:
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:../core
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:*
         version: link:../devtools-kit
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
-      '@vue-devtools-next/ui':
+      '@vue/devtools-next-ui':
         specifier: workspace:*
         version: link:../ui
       '@vueuse/core':
@@ -526,7 +526,7 @@ importers:
       '@unocss/reset':
         specifier: ^0.58.0
         version: 0.58.0
-      '@vue-devtools-next/ui':
+      '@vue/devtools-next-ui':
         specifier: workspace:*
         version: link:../ui
       '@vueuse/core':
@@ -554,13 +554,13 @@ importers:
 
   packages/vite:
     dependencies:
-      '@vue-devtools-next/core':
+      '@vue/devtools-next-core':
         specifier: workspace:^
         version: link:../core
-      '@vue-devtools-next/kit':
+      '@vue/devtools-next-kit':
         specifier: workspace:^
         version: link:../devtools-kit
-      '@vue-devtools-next/shared':
+      '@vue/devtools-next-shared':
         specifier: workspace:^
         version: link:../shared
       birpc:
@@ -11204,7 +11204,7 @@ packages:
       fs-extra: 11.2.0
       open: 9.1.0
       picocolors: 1.0.0
-      sirv: 2.0.4
+      sirv: 2.0.3
       vite: 5.0.5(@types/node@20.10.5)
     transitivePeerDependencies:
       - rollup

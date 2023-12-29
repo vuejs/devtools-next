@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue-devtools-next/core'
+import { useDevToolsBridgeRpc } from '@vue/devtools-next-core'
 
 // eslint-disable-next-line ts/no-import-type-side-effects
-import { type InspectorNodeTag, type InspectorState } from '@vue-devtools-next/kit'
+import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-next-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()

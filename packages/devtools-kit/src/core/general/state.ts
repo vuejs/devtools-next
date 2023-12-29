@@ -1,5 +1,5 @@
-import type { AppRecord, DevToolsState } from '@vue-devtools-next/schema'
-import { deepClone, target as global } from '@vue-devtools-next/shared'
+import type { AppRecord, DevToolsState } from '@vue/devtools-next-schema'
+import { deepClone, target as global } from '@vue/devtools-next-shared'
 import { debounce } from 'perfect-debounce'
 import type { DevToolsPluginApi } from '../../api'
 import { DevToolsEvents, apiHooks } from '../../api'

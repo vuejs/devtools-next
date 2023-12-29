@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import type { CustomTab } from '@vue-devtools-next/kit'
+import type { CustomTab } from '@vue/devtools-next-kit'
 
 const route = useRoute()
 const router = useRouter()

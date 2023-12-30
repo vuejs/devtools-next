@@ -52,6 +52,7 @@ export class BridgeRpc {
         const _payload = parse(payload)
         options.inspectorId === _payload.inspectorId && cb({
           state: _payload.state,
+          getters: _payload.getters,
         } as T)
       })
     },

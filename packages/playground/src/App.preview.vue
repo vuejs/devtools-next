@@ -16,6 +16,9 @@ const app = useAppStore()
     <p>
       Pinia State Count: {{ app.count }}
     </p>
+    <p>
+      Pinia Getter DoubledCount: {{ app.doubledCount }}
+    </p>
     <button @click="app.increment">
       Increment Count (Pinia)
     </button>

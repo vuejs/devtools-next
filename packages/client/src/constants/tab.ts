@@ -13,18 +13,18 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'Overview',
     },
     {
-      icon: 'i-carbon-tree-view-alt',
-      name: 'pages',
-      order: -100,
-      path: 'pages',
-      title: 'Pages',
-    },
-    {
       icon: 'i-carbon-assembly-cluster',
       name: 'components',
       order: -100,
       path: 'components',
       title: 'Components',
+    },
+    {
+      icon: 'i-carbon-tree-view-alt',
+      name: 'pages',
+      order: -100,
+      path: 'pages',
+      title: 'Pages',
     },
     {
       icon: 'i-carbon-image-copy',

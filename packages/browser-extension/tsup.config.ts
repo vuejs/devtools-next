@@ -10,6 +10,8 @@ export default <Options>{
   },
   define: {
     'process.env': JSON.stringify(process.env),
+    '__VUE_OPTIONS_API__': 'true',
+    '__VUE_PROD_DEVTOOLS__': 'true',
   },
   clean: true,
   format: ['iife'],

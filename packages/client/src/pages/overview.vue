@@ -83,11 +83,11 @@ onDevToolsClientConnected(() => {
           <div i-carbon-star />
           Star on GitHub
         </a>
-        <a href="https://github.com/vuejs/devtools-next/discussions/1" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
+        <a href="https://github.com/vuejs/devtools-next/discussions/111" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
           <div i-carbon-data-enrichment />
           Ideas & Suggestions
         </a>
-        <a href="https://github.com/vuejs/devtools-next/discussions/2" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-lime" transition>
+        <a href="https://github.com/vuejs/devtools-next/discussions/112" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-lime" transition>
           <div i-carbon-plan />
           Project Roadmap
         </a>

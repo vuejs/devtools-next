@@ -138,6 +138,17 @@ const graphNodesTotalMap = new Map<string, GraphNodesTotalData>()
 const modulesMap = new Map<string, GraphNodesTotalData>()
 const moduleReferences = new Map<string, { path: string, displayPath: string, mod: ModuleInfo }[]>()
 
+const uniqueNodes = (nodes: Node[]) => nodes.reduce<Node[]>((prev, node) => {
+  if (!prev.some(n => n.id === node.id))
+    prev.push(node)
+  return prev
+}, [])
+const uniqueEdges = (edges: Edge[]) => edges.reduce<Edge[]>((prev, edge) => {
+  if (!prev.some(e => e.from === edge.from && e.to === edge.to))
+    prev.push(edge)
+  return prev
+}, [])
+
 export function cleanupGraphRelatedStates() {
   graphNodesTotal.value = []
   graphNodesTotalMap.clear()
@@ -209,8 +220,8 @@ function updateGraph() {
     }
   }
 
-  graphNodes.add(matchedNodes)
-  graphEdges.add(matchedEdges)
+  graphNodes.add(uniqueNodes(matchedNodes))
+  graphEdges.add(uniqueEdges(matchedEdges))
 }
 
 function recursivelyGetNodeByDep(node: SearcherNode[]) {
@@ -314,6 +325,8 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
         edges.push(getEdge(mod.id, dep))
       })
       const incrementalDeps = uniqueDeps.filter(dep => !nodeData.mod.deps.includes(dep))
+      if (!incrementalDeps.length)
+        return
       nodeData.mod.deps.push(...incrementalDeps)
       totalEdges.push(...edges)
       return
@@ -367,8 +380,9 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
     }
   })
   // set initial data
+  // nodes has been unique in `modules.forEach`
   graphNodes.add(totalNode.slice())
-  graphEdges.add(totalEdges.slice())
+  graphEdges.add(uniqueEdges(totalEdges))
 }
 // #endregion
 
@@ -449,17 +463,23 @@ export function getGraphFilterDataset() {
   return dataset
 }
 
-function recursivelyGetGraphNodeData(nodeId: string): GraphNodesTotalData[] {
+// max depth is 20
+function recursivelyGetGraphNodeData(nodeId: string, depth = 0): GraphNodesTotalData[] {
   const node = modulesMap.get(nodeId)
-  if (!node)
+  depth += 1
+  if (!node || depth > 20)
     return []
   const result = [node]
   node.mod.deps.forEach((dep) => {
     const node = modulesMap.get(dep)
     if (node)
-      result.push(...recursivelyGetGraphNodeData(node.mod.id))
+      result.push(...recursivelyGetGraphNodeData(node.mod.id, depth))
   })
   // unique result
-  return Array.from(new Set(result))
+  return result.reduce<GraphNodesTotalData[]>((prev, node) => {
+    if (!prev.some(n => n.mod.id === node.mod.id))
+      prev.push(node)
+    return prev
+  }, [])
 }
 // #endregion

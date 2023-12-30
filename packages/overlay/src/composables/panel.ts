@@ -15,8 +15,8 @@ export function usePanelVisible() {
     },
   })
 
-  const toggleVisible = () => {
-    visible.value = !visible.value
+  const toggleVisible = (_: unknown, state?: boolean) => {
+    visible.value = state ?? !visible.value
   }
 
   const closePanel = () => {

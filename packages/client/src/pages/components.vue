@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { useDevToolsBridge, useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
 
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
 import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const bridgeRpc = useDevToolsBridgeRpc()
+const bridge = useDevToolsBridge()
 const treeNode = ref<ComponentTreeNode[]>([])
 const activeComponentId = ref('')
 
@@ -121,6 +122,7 @@ function scrollToComponent(id: string) {
 }
 
 function inspectComponentInspector() {
+  bridge.value.emit('toggle-panel', false)
   bridgeRpc.inspectComponentInspector().then(({ data }) => {
     selectedComponentTree.value = data.id
     selectComponentTree(data.id)
@@ -128,6 +130,8 @@ function inspectComponentInspector() {
     linkedList.forEach((id) => {
       componentTreeCollapseMap.value[id] = true
     })
+  }).finally(() => {
+    bridge.value.emit('toggle-panel', true)
   })
 }
 

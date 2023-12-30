@@ -83,6 +83,8 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
     cache = await Promise.all(files.map(async (path) => {
       const filePath = resolve(dir, path)
       const stat = await fsp.lstat(filePath)
+      // remove public prefix that resolve vite assets warning
+      path = path.startsWith('public/') ? path.slice(7) : path
       return {
         path,
         publicPath: join(baseURL, path),

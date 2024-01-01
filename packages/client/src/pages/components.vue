@@ -187,7 +187,10 @@ onDevToolsClientConnected(() => {
       return
 
     treeNode.value = data.data
-    componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data)
+    componentTreeCollapseMap.value = {
+      ...normalizeComponentTreeCollapsed(data.data),
+      ...componentTreeCollapseMap.value,
+    }
     initSelectedComponent(data.data)
   }, {
     inspectorId: 'components',

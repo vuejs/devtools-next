@@ -12,6 +12,7 @@ const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]
+  getters?: InspectorState[]
 }>({})
 
 function getPiniaState(nodeId: string) {
@@ -20,7 +21,12 @@ function getPiniaState(nodeId: string) {
   })
 }
 
+function clearPiniaState() {
+  state.value = {}
+}
+
 watch(selected, () => {
+  clearPiniaState()
   getPiniaState(selected.value)
 })
 
@@ -67,10 +73,10 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
+        <div :key="selected" h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
-            :key="key + Date.now()"
+            :key="key"
             inspector-id="pinia"
             :node-id="selected" :data="item" :name="`${key}`"
           />

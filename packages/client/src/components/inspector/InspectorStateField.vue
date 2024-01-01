@@ -16,10 +16,10 @@ const props = withDefaults(defineProps<{
 
 const state = useStateEditorContext()
 const bridgeRpc = useDevToolsBridgeRpc()
-const value = formatInspectorStateValue(props.data.value)
-const type = getInspectorStateValueType(props.data.value)
+const value = computed(() => formatInspectorStateValue(props.data.value))
+const type = computed(() => getInspectorStateValueType(props.data.value))
 const stateFormatClass = computed(() => {
-  if (type === 'custom')
+  if (type.value === 'custom')
     return `state-format-${(props.data.value as InspectorCustomState)._custom?.type}`
 
   else
@@ -38,7 +38,7 @@ const normalizedValue = computed(() => {
     return ''
   }
   else {
-    const result = `<span class="state-value-${type}">${value}</span>`
+    const result = `<span class="state-value-${type.value}">${value.value}</span>`
     if (stateTypeName)
       return `${result} <span class="text-gray-500">(${stateTypeName})</span>`
 
@@ -48,7 +48,7 @@ const normalizedValue = computed(() => {
 
 const rawValue = computed(() => {
   let value = props.data.value
-  const isCustom = type === 'custom'
+  const isCustom = type.value === 'custom'
   let inherit = {}
   if (isCustom) {
     const data = props.data.value as InspectorCustomState
@@ -84,7 +84,7 @@ const normalizedChildField = computed(() => {
       editable: props.data.editable,
       creating: false,
     }))
-    if (type !== 'custom')
+    if (type.value !== 'custom')
       value = sortByKey(value)
   }
   else {

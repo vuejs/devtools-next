@@ -79,10 +79,10 @@
   --vp-button-brand-text: var(--vp-c-black);
   --vp-button-brand-bg: var(--vp-c-brand-3);
   --vp-button-brand-hover-border: transparent;
-  --vp-button-brand-hover-text: var(--vp-c-white);
+  --vp-button-brand-hover-text: var(--vp-c-black);
   --vp-button-brand-hover-bg: var(--vp-c-brand-2);
   --vp-button-brand-active-border: transparent;
-  --vp-button-brand-active-text: var(--vp-c-white);
+  --vp-button-brand-active-text: var(--vp-c-black);
   --vp-button-brand-active-bg: var(--vp-c-brand-1);
 }
 

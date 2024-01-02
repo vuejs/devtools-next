@@ -76,7 +76,7 @@
 
 :root {
   --vp-button-brand-border: transparent;
-  --vp-button-brand-text: var(--vp-c-white);
+  --vp-button-brand-text: var(--vp-c-black);
   --vp-button-brand-bg: var(--vp-c-brand-3);
   --vp-button-brand-hover-border: transparent;
   --vp-button-brand-hover-text: var(--vp-c-white);

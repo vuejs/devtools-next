@@ -150,8 +150,8 @@ function inspectFn(e: MouseEvent) {
     if (instance) {
       inspectInstance = instance
       const el = instance.vnode.el as HTMLElement | undefined
-      if (el && el.nodeType === Node.ELEMENT_NODE) {
-        const bounds = el.getBoundingClientRect()
+      if (el) {
+        const bounds = getComponentBoundingRect(instance)
         const name = getInstanceName(instance)
         const container = getCotainerElement()
         container ? update({ bounds, name }) : create({ bounds, name })

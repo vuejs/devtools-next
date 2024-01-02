@@ -55,28 +55,32 @@ export function useAllTabs() {
   })
   const categorizedTabs = computed(() => {
     const { hiddenTabCategories, hiddenTabs, pinnedTabs } = devtoolsClientState.value.tabSettings
+    const pinnedHidden = hiddenTabCategories.includes('pinned')
     // TODO: custom tabs
     const tabs = allTabs.value.reduce<CategorizedTabs>((prev, [category, tabs]) => {
       const data: [CategorizedCategory, CategorizedTab[]] = [{ hidden: false, name: category }, []]
-      let hiddenCount = 0
+      const categoryHidden = hiddenTabCategories.includes(category)
       tabs.forEach((tab) => {
-        const hidden = hiddenTabs.includes(tab.name) || hiddenTabCategories.includes(category)
-        if (hidden)
-          hiddenCount += 1
+        const tabHidden = hiddenTabs.includes(tab.name)
 
         if (pinnedTabs.includes(tab.name)) {
           prev[0][1].push({
             ...tab,
-            hidden,
+            hidden: tabHidden || pinnedHidden,
           })
         }
-        else { data[1].push({ ...tab, hidden }) }
+        else {
+          const hidden = tabHidden || categoryHidden
+          data[1].push({ ...tab, hidden })
+        }
       })
-      if (hiddenCount === tabs.length)
-        data[0].hidden = true
+      data[0].hidden = data[1].every(t => t.hidden)
       prev.push(data)
       return prev
     }, [[{ name: 'pinned', hidden: false }, []]])
+
+    // set pinned category hidden value
+    tabs[0][0].hidden = tabs[0][1].every(t => t.hidden)
 
     // sort pinned tabs by pinned order
     tabs[0][1].sort((a, b) => pinnedTabs.indexOf(a.name) - pinnedTabs.indexOf(b.name))

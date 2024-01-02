@@ -139,7 +139,7 @@ export function getCategorizedTabs(flattenTabs: MaybeRef<(CustomTab | ModuleBuil
     })
     const pinned = categories.find(([{ name }]) => name === 'pinned')
     if (pinned)
-      pinned.sort((a, b) => pinnedTabs.indexOf(a[0].name) - pinnedTabs.indexOf(b[0].name))
+      pinned[1].sort((a, b) => pinnedTabs.indexOf(a.name) - pinnedTabs.indexOf(b.name))
     return categories
   })
 }

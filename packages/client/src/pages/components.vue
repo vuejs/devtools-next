@@ -138,6 +138,7 @@ function inspectComponentInspector() {
 // #endregion
 
 function selectComponentTree(id: string) {
+  clearComponentState()
   getComponentState(id)
   activeComponentId.value = id
 }
@@ -170,6 +171,10 @@ function getComponentState(id: string) {
   })
 }
 
+function clearComponentState() {
+  activeComponentState.value = {}
+}
+
 // #endregion
 
 onDevToolsClientConnected(() => {
@@ -182,7 +187,10 @@ onDevToolsClientConnected(() => {
       return
 
     treeNode.value = data.data
-    componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data.data)
+    componentTreeCollapseMap.value = {
+      ...normalizeComponentTreeCollapsed(data.data),
+      ...componentTreeCollapseMap.value,
+    }
     initSelectedComponent(data.data)
   }, {
     inspectorId: 'components',
@@ -257,9 +265,9 @@ const devtoolsState = useDevToolsState()
           </div>
         </div>
         <p class="x-divider" />
-        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
+        <div :key="selectedComponentTree" h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
-            v-for="(state, key) in activeComponentState" :id="key" :key="key + Date.now()"
+            v-for="(state, key) in activeComponentState" :id="key" :key="key"
             :node-id="activeComponentId" :data="state" :name="`${key}`" inspector-id="components"
           />
         </div>

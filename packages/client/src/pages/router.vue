@@ -25,7 +25,12 @@ function getRouterState(nodeId: string) {
   })
 }
 
+function clearRouterState() {
+  state.value = {}
+}
+
 watch(selected, () => {
+  clearRouterState()
   getRouterState(selected.value)
 })
 
@@ -70,10 +75,10 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div h-0 grow overflow-auto p-2 class="no-scrollbar">
+        <div :key="selected" h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
-            :key="key + Date.now()" :data="item" :name="`${key}`"
+            :key="key" :data="item" :name="`${key}`"
             inspector-id="router"
           />
         </div>

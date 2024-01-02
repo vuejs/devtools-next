@@ -31,5 +31,5 @@ createStateEditorContext({
       {{ name }}
     </span>
   </div>
-  <InspectorStateType v-if="isExpanded" :data="data" />
+  <InspectorStateType v-if="isExpanded" :data="data" :root-id="id" />
 </template>

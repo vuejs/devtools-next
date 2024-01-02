@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<{
   data: InspectorState
   depth?: number
   no: number
+  rootId: string
 }>(), {
   depth: 0,
 })
@@ -26,7 +27,7 @@ const stateFormatClass = computed(() => {
     return ``
 })
 
-const { isExpanded, toggleCollapse } = useCollapse('inspector-state', `${props.no}-${props.depth}-${props.data.key}`)
+const { isExpanded, toggleCollapse } = useCollapse('inspector-state', `${props.rootId}-${props.no}-${props.depth}-${props.data.key}`)
 
 const normalizedValue = computed(() => {
   const stateTypeName = (props.data as InspectorCustomState)._custom?.stateTypeName || props.data?.stateTypeName
@@ -208,7 +209,7 @@ const { isHovering } = useHover(containerRef)
         </div>
         <div v-if="isExpanded">
           <InspectorStateField
-            v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no"
+            v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" :root-id="rootId"
           />
           <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
             <span overflow-hidden text-ellipsis whitespace-nowrap state-key>

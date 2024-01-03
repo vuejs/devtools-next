@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:weekly",
+    "group:allNonMajor",
+    ":disableDependencyDashboard"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "depTypeList": [
+        "peerDependencies"
+      ],
+      "enabled": false
+    },
+    {
+      "allowedVersions": "<3.0.0",
+      "matchPackageNames": [
+        "estree-walker"
+      ]
+    }
+  ],
+  "pin": false,
+  "rangeStrategy": "bump"
+}

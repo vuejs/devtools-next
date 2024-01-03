@@ -8,8 +8,7 @@
       "~/*": ["./src/*"]
     },
     "types": [
-      "vite/client",
-      "vite-plugin-pages/client"
+      "vite/client"
     ]
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]

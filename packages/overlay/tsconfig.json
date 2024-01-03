@@ -6,10 +6,7 @@
     "module": "esnext",
     "paths": {
       "~/*": ["./src/*"]
-    },
-    "types": [
-      "vite-plugin-pages/client"
-    ]
+    }
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]
 }

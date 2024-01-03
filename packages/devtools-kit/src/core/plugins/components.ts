@@ -1,4 +1,5 @@
 import type { VueAppInstance } from '@vue/devtools-schema'
+import { debounce } from 'perfect-debounce'
 import { setupDevToolsPlugin } from '../../api/plugin'
 import { getAppRecord, getComponentId, getComponentInstance } from '../component/general'
 import { devtoolsContext } from '../general/state'
@@ -84,6 +85,14 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }
     })
 
+    const debounceSendInspectorTree = debounce(() => {
+      api.sendInspectorTree(INSPECTOR_ID)
+    }, 120)
+
+    const debounceSendInspectorState = debounce(() => {
+      api.sendInspectorState(INSPECTOR_ID)
+    }, 120)
+
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
         return
@@ -109,7 +118,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       if (!appRecord)
         return
 
-      api.sendInspectorTree(INSPECTOR_ID)
+      debounceSendInspectorTree()
     })
 
     const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
@@ -137,8 +146,8 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       if (!appRecord)
         return
 
-      api.sendInspectorTree(INSPECTOR_ID)
-      api.sendInspectorState(INSPECTOR_ID)
+      debounceSendInspectorTree()
+      debounceSendInspectorState()
     })
     const componentRemovedCleanup = hook.on.componentRemoved(async (app, uid, parentUid, component) => {
       if (app?._instance?.type?.devtools?.hide)
@@ -159,7 +168,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       }) as string
       appRecord?.instanceMap.delete(id)
 
-      api.sendInspectorTree(INSPECTOR_ID)
+      debounceSendInspectorTree()
     })
     devtoolsContext.componentPluginHookBuffer = [
       componentAddedCleanup,

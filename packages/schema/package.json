@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-schema",
   "type": "module",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "author": "webfansplz",
   "license": "MIT",
   "sideEffects": false,

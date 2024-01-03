@@ -77,7 +77,7 @@ const normalizedChildField = computed(() => {
       creating: false,
     }))
   }
-  else if (typeof value === 'object') {
+  else if (value !== null && typeof value === 'object') {
     value = Object.keys(value).map(key => ({
       key: `${props.data.key}.${key}`,
       value: value[key],

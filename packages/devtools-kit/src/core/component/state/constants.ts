@@ -1,4 +1,4 @@
-export const vueBuiltins = [
+export const vueBuiltins = new Set([
   'nextTick',
   'defineComponent',
   'defineAsyncComponent',
@@ -50,7 +50,7 @@ export const vueBuiltins = [
   'resolveDirective',
   'withDirectives',
   'withModifiers',
-]
+])
 
 export const symbolRE = /^\[native Symbol Symbol\((.*)\)\]$/
 export const rawTypeRE = /^\[object (\w+)]$/

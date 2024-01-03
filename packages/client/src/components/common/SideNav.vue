@@ -93,7 +93,7 @@ onClickOutside(
 
     <div
       :flex="`~ items-center gap-1 ${sidebarExpanded ? '' : 'none col'}`"
-      border="t base" sticky bottom-0 w-full p1 bg-base
+      border="t base" sticky bottom-0 w-full p1 bg-base class="$ui-z-max-override"
     >
       <VueDropdown
         v-if="overflowTabs.length && !sidebarScrollable && !sidebarExpanded" placement="left-end"

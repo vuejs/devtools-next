@@ -193,7 +193,7 @@ const { isHovering } = useHover(containerRef)
       <div cursor-pointer>
         <div relative flex items-center @click="toggleCollapse">
           <ExpandIcon :value="isExpanded" absolute left--6 group-hover:text-white />
-          <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ data.key }}</span>
+          <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
           <span mx-1>:</span>
           <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
           <template v-else>

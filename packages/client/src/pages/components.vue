@@ -37,6 +37,20 @@ const selectedComponentTreeNode = computed<ComponentTreeNode>(() => {
   find(treeNode.value)
   return res[0]
 })
+
+const treeNodeIdLinkedList = computed<string[][]>(() => {
+  const res: string[][] = []
+  const find = (treeNode: ComponentTreeNode[], linkedList: string[] = []) => {
+    treeNode.forEach((item) => {
+      res.push([...linkedList, item.id])
+      if (item.children?.length)
+        find(item.children, [...linkedList, item.id])
+    })
+  }
+  find(treeNode.value)
+  return res
+})
+
 // selected component file path
 const selectedComponentFilePath = computed(() => selectedComponentTreeNode.value?.file ?? '')
 
@@ -127,9 +141,22 @@ function inspectComponentInspector() {
     selectedComponentTree.value = data.id
     selectComponentTree(data.id)
     const linkedList = componentTreeLinkedList.value[data.id]
-    linkedList.forEach((id) => {
-      componentTreeCollapseMap.value[id] = true
-    })
+    if (linkedList) {
+      linkedList.forEach((id) => {
+        componentTreeCollapseMap.value[id] = true
+      })
+    }
+    else {
+      treeNodeIdLinkedList.value.forEach((item) => {
+        let index = item.indexOf(data.id)
+        if (index > -1) {
+          while (index >= 0) {
+            componentTreeCollapseMap.value[item[index]] = true
+            index--
+          }
+        }
+      })
+    }
   }).finally(() => {
     bridge.value.emit('toggle-panel', true)
   })

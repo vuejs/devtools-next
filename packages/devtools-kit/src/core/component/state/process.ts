@@ -131,7 +131,7 @@ function getStateTypeAndName(info: ReturnType<typeof getSetupStateType>) {
 function processSetupState(instance: VueAppInstance) {
   const raw = instance.devtoolsRawSetupState || {}
   return Object.keys(instance.setupState)
-    .filter(key => !vueBuiltins.includes(key) && key.split(/(?=[A-Z])/)[0] !== 'use')
+    .filter(key => !vueBuiltins.has(key) && key.split(/(?=[A-Z])/)[0] !== 'use')
     .map((key) => {
       const value = returnError(() => toRaw(instance.setupState[key])) as unknown as {
         render: Function

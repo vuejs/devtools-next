@@ -14,6 +14,15 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
   const { app, api } = options
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {
+    if (plugin.packageName === 'vue-query') {
+      /**
+       * Skip it for now because plugin api doesn't support vue-query devtools plugin:
+       * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
+       * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
+       */
+      return
+    }
+
     const appRecord = await getAppRecord(plugin.app)
     // edge case for router plugin
     if (plugin.packageName === 'vue-router') {
@@ -25,7 +34,6 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
         }))
       }
     }
-
     setupFn(api)
   })
 

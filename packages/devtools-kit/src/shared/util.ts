@@ -1,4 +1,4 @@
-import { formatInspectorStateValue, getInspectorStateValueType } from '../core/component/state/format'
+import { formatInspectorStateValue, getInspectorStateValueType, getRawValue } from '../core/component/state/format'
 import { stringifyReplacer } from '../core/component/state/replacer'
 import { reviver } from '../core/component/state/reviver'
 import { parseCircularAutoChunks, stringifyCircularAutoChunks } from './transfer'
@@ -19,4 +19,5 @@ export function parse(data: string, revive = false) {
 export {
   formatInspectorStateValue,
   getInspectorStateValueType,
+  getRawValue,
 }

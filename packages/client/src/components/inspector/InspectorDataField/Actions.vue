@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { getRawValue } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
@@ -28,9 +29,8 @@ const { copy, isSupported } = useClipboard()
 
 const popupVisible = ref(false)
 
-const dataType = computed(() => {
-  return typeof props.data.value
-})
+const rawValue = computed(() => getRawValue(props.data.value).value)
+const dataType = computed(() => typeof rawValue.value)
 
 const iconButtonProps = {
   flat: true,
@@ -77,7 +77,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
           v-tooltip="{
             content: 'Add new value',
           }" v-bind="iconButtonProps" :class="buttonClass" @click.stop="
-            $emit('addNewProp', Array.isArray(data.value) ? 'array' : 'object')"
+            $emit('addNewProp', Array.isArray(rawValue) ? 'array' : 'object')"
         >
           <template #icon>
             <VueIcon icon="i-material-symbols-add-circle-rounded" />
@@ -87,20 +87,20 @@ function quickEdit(v: unknown, remove: boolean = false) {
       <!-- checkbox, button value only -->
       <VueButton
         v-if="dataType === 'boolean'" v-bind="iconButtonProps" :class="buttonClass"
-        @click="quickEdit(!data.value)"
+        @click="quickEdit(!rawValue)"
       >
         <template #icon>
-          <VueIcon :icon="data.value ? 'i-material-symbols-check-box-sharp' : 'i-material-symbols-check-box-outline-blank-sharp'" />
+          <VueIcon :icon="rawValue ? 'i-material-symbols-check-box-sharp' : 'i-material-symbols-check-box-outline-blank-sharp'" />
         </template>
       </VueButton>
       <!-- increment/decrement button, numeric value only -->
       <template v-else-if="dataType === 'number'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((data.value as number) + 1)">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((rawValue as number) + 1)">
           <template #icon>
             <VueIcon icon="i-carbon-add" />
           </template>
         </VueButton>
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((data.value as number) - 1)">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((rawValue as number) - 1)">
           <template #icon>
             <VueIcon icon="i-carbon-subtract" />
           </template>
@@ -108,7 +108,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       </template>
     </template>
     <!-- delete prop, only appear if depth > 0 -->
-    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(data.value, true)">
+    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(rawValue, true)">
       <template #icon>
         <VueIcon icon="i-material-symbols-delete-rounded" />
       </template>
@@ -128,7 +128,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       <template #popper>
         <div class="w160px py5px">
           <VueDropdownButton
-            @click="copy(dataType === 'object' ? JSON.stringify(data.value) : data.value.toString())"
+            @click="copy(dataType === 'object' ? JSON.stringify(rawValue) : rawValue.toString())"
           >
             <template #icon>
               <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />

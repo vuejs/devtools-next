@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { sortByKey } from '@vue/devtools-shared'
-import { formatInspectorStateValue, getInspectorStateValueType } from '@vue/devtools-kit'
+import { formatInspectorStateValue, getInspectorStateValueType, getRawValue } from '@vue/devtools-kit'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
@@ -47,22 +47,7 @@ const normalizedValue = computed(() => {
   }
 })
 
-const rawValue = computed(() => {
-  let value = props.data.value
-  const isCustom = type.value === 'custom'
-  let inherit = {}
-  if (isCustom) {
-    const data = props.data.value as InspectorCustomState
-    inherit = data._custom?.fields || {}
-    value = data._custom?.value as string
-  }
-  // @ts-expect-error @TODO: type
-  if (value && value._isArray)
-    // @ts-expect-error @TODO: type
-    value = value.items
-
-  return { value, inherit }
-})
+const rawValue = computed(() => getRawValue(props.data.value))
 
 const normalizedChildField = computed(() => {
   let { value, inherit } = rawValue.value
@@ -112,12 +97,10 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 
 watch(() => editing.value, (v) => {
   if (v) {
-    const value = props.data.value
-    if (typeof value === 'object') {
-      editingText.value = JSON.stringify(value)
-      return
-    }
-    editingText.value = value.toString()
+    const { value } = rawValue.value
+    editingText.value = typeof value === 'object'
+      ? JSON.stringify(value)
+      : value.toString()
   }
   else {
     editingText.value = ''
@@ -146,7 +129,7 @@ const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEd
 function addNewProp(type: EditorAddNewPropType) {
   if (!isExpanded.value)
     toggleCollapse()
-  addNewPropApi(type, props.data.value)
+  addNewPropApi(type, rawValue.value.value)
 }
 
 function submitDrafting() {

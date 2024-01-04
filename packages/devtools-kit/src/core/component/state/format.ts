@@ -1,3 +1,4 @@
+import { InspectorCustomState, InspectorState } from '../types'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, rawTypeRE, specialTypeRE } from './constants'
 import { isPlainObject } from './is'
 import { escape, internalStateTokenToString } from './util'
@@ -81,4 +82,20 @@ export function formatInspectorStateValue(value, quotes = false) {
       .replace(/\n/g, '<span>\\n</span>')
   }
   return value
+}
+
+export function getRawValue(value: InspectorState['value']) {
+  const isCustom = getInspectorStateValueType(value) === 'custom'
+  let inherit = {}
+  if (isCustom) {
+    const data = value as InspectorCustomState
+    inherit = data._custom?.fields || {}
+    value = data._custom?.value as string
+  }
+  // @ts-expect-error @TODO: type
+  if (value && value._isArray)
+    // @ts-expect-error @TODO: type
+    value = value.items
+
+  return { value, inherit }
 }

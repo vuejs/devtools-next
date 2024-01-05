@@ -1,4 +1,4 @@
-import { resolve as _resolve } from 'node:path'
+import { resolve as _resolve } from 'pathe'
 import type { Options } from 'tsup'
 import { build } from 'tsup'
 import { build as unbuild } from 'unbuild'

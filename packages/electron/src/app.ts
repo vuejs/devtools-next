@@ -21,6 +21,7 @@ function createWindow() {
   })
   const appEntryPath = path.join(__dirname, '../app.html')
   const url = new URL(`file://${appEntryPath}`).toString()
+  mainWindow.setMenu(null)
   mainWindow.loadURL(new URL(url).toString())
 
   mainWindow.on('closed', () => {

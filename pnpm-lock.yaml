@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      pathe:
-        specifier: ^1.1.1
-        version: 1.1.1
     devDependencies:
       '@antfu/eslint-config':
         specifier: 2.4.2
@@ -367,6 +363,9 @@ importers:
       ip:
         specifier: ^1.1.8
         version: 1.1.8
+      pathe:
+        specifier: ^1.1.1
+        version: 1.1.1
       socket.io:
         specifier: ^4.7.2
         version: 4.7.2

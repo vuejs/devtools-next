@@ -57,7 +57,7 @@ const codeSnippets = computed(() => {
   return items
 })
 
-const copy = useCopy()
+const { copy } = useCopy()
 const timeAgo = useTimeAgo(() => asset.value.mtime)
 const fileSize = computed(() => {
   const size = asset.value.size
@@ -159,7 +159,7 @@ const supportsPreview = computed(() => {
                 icon="i-carbon-copy"
                 action mr1 mt--2px flex-none
                 :border="false"
-                @click="copy(asset.publicPath, 'assets-public-path')"
+                @click="copy(asset.publicPath, false, 'assets-public-path')"
               />
               <RouterLink
                 :to="asset.publicPath"

@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const selected = shallowRef<CodeSnippet | undefined>(props.codeSnippets[0])
-const copy = useCopy()
+const { copy } = useCopy()
 
 const selectedLang = computed(() => (selected.value?.lang || 'text') as BuiltinLanguage)
 
@@ -45,7 +45,7 @@ watchEffect(() => {
         w-full of-auto p3
       />
       <div flex="~ gap-2" px3 pb3>
-        <VueButton @click="copy(selected!.code, eventType || `code-snippet-${selected.name}`)">
+        <VueButton @click="copy(selected!.code, false, eventType || `code-snippet-${selected.name}`)">
           Copy
           <template #icon>
             <slot name="i-carbon-copy" />

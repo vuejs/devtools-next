@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueInput } from '@vue/devtools-ui'
+import { VueIcon, VueInput } from '@vue/devtools-ui'
 import AppConnecting from '~/components/AppConnecting.vue'
 
 const props = defineProps<{
@@ -17,7 +17,7 @@ const _network = scriptWrapper(props.network!)
 const local = ref(_local)
 const network = ref(_network)
 
-const copy = useCopy()
+const { copy } = useCopy()
 </script>
 
 <template>
@@ -30,11 +30,13 @@ const copy = useCopy()
         <p class="text-center text-sm op80 text-base">
           Add one of the following to the top of your page 👇:
         </p>
-        <div class="mt-3 $ui-fcc flex-row">
-          <VueInput v-model="local" readonly left-icon="i-carbon-copy" class="op80 w-400px! cursor-pointer! hover:op100" @click="copy(local)" />
+        <div class="mt-3 $ui-fcc flex-row gap3">
+          <VueInput v-model="local" class="w-380px!" />
+          <VueIcon icon="i-carbon-copy" class="cursor-pointer text-primary-300 hover:text-primary-500" @click="copy(local)" />
         </div>
-        <div class="mt-3 $ui-fcc flex-row">
-          <VueInput v-model="network" readonly left-icon="i-carbon-copy" class="op80 w-400px! cursor-pointer! hover:op100" @click="copy(network)" />
+        <div class="mt-3 $ui-fcc flex-row gap3">
+          <VueInput v-model="network" class="w-380px!" />
+          <VueIcon icon="i-carbon-copy" class="cursor-pointer text-primary-300 hover:text-primary-500" @click="copy(network)" />
         </div>
       </div>
     </AppConnecting>

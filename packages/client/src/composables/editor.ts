@@ -1,10 +1,10 @@
 import { showVueNotification } from '@vue/devtools-ui'
 
 export function useCopy() {
-  const clipboard = useClipboard()
+  const { copy: _copy, copied } = useClipboard()
 
-  return (text: string, silent = false) => {
-    clipboard.copy(text).then(() => {
+  const copy = (text: string, silent = false, _type?: string) => {
+    _copy(text).then(() => {
       if (!silent) {
         showVueNotification({
           message: 'Copied to clipboard',
@@ -21,5 +21,10 @@ export function useCopy() {
         })
       }
     })
+  }
+
+  return {
+    copy,
+    copied,
   }
 }

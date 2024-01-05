@@ -16,6 +16,8 @@ const _network = scriptWrapper(props.network!)
 
 const local = ref(_local)
 const network = ref(_network)
+
+const copy = useCopy()
 </script>
 
 <template>
@@ -29,10 +31,10 @@ const network = ref(_network)
           Add one of the following to the top of your page 👇:
         </p>
         <div class="mt-3 $ui-fcc flex-row">
-          <VueInput v-model="local" left-icon="i-carbon-copy" class="w-400px!" />
+          <VueInput v-model="local" readonly left-icon="i-carbon-copy" class="op80 w-400px! cursor-pointer! hover:op100" @click="copy(local)" />
         </div>
         <div class="mt-3 $ui-fcc flex-row">
-          <VueInput v-model="network" left-icon="i-carbon-copy" class="w-400px!" />
+          <VueInput v-model="network" readonly left-icon="i-carbon-copy" class="op80 w-400px! cursor-pointer! hover:op100" @click="copy(network)" />
         </div>
       </div>
     </AppConnecting>

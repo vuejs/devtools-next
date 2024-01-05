@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<{
   loading?: boolean
   autoFocus?: boolean
   loadingDebounceTime?: number
+  readonly?: boolean
 }>(), {
   placeholder: '',
   variant: 'normal',
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<{
   loading: false,
   autoFocus: false,
   loadingDebounceTime: 0,
+  readonly: false,
 })
 
 const emit = defineEmits<{
@@ -42,7 +44,7 @@ const focused = refWithControl(false, {
     emit('updateFocused', value)
   },
 })
-const noFocusAnimation = computed(() => props.variant === 'flat' || props.variant === 'warning')
+const noFocusAnimation = computed(() => props.variant === 'flat' || props.variant === 'warning' || props.disabled || props.readonly)
 
 const disabled = computed(() => props.disabled || loading.value)
 
@@ -100,7 +102,7 @@ watchEffect(() => {
     <input
       ref="inputRef" v-model="value"
       class="$ui-base w-full bg-transparent color-inherit outline-none placeholder-color-gray-500 dark:placeholder-gray-300" :type="props.password ? 'password' : 'text'"
-      :placeholder="placeholder" :disabled="disabled"
+      :placeholder="placeholder" :disabled="disabled || readonly"
       @blur="focused = false"
     >
     <div v-if="loading" :class="iconClasses">

@@ -14,6 +14,17 @@ After cloning the repo, run:
 $ pnpm i # install the dependencies of the project
 ```
 
+:::tip ⚠️
+
+Since `electron` is used in the project, if you are a developer in mainland China, you may not be able to install the dependencies.
+You can use the following command to set up the mirror, and run `pnpm i` again to install the dependencies.
+
+```bash
+pnpm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
+```
+
+:::
+
 ## Git Hooks
 
 The project uses [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks) to enforce the following on each commit:

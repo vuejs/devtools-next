@@ -63,6 +63,9 @@
     "zip": "tsx ./scripts/extension-zip.ts",
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
+  "dependencies": {
+    "pathe": "^1.1.1"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "2.4.2",
     "@antfu/ni": "^0.21.12",

@@ -7,10 +7,14 @@ settings:
 importers:
 
   .:
+    dependencies:
+      pathe:
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
       '@antfu/eslint-config':
         specifier: 2.4.2
-        version: 2.4.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.0)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)(vitest@1.1.1)
+        version: 2.4.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.4)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)(vitest@1.1.1)
       '@antfu/ni':
         specifier: ^0.21.12
         version: 0.21.12
@@ -748,7 +752,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@antfu/eslint-config@2.4.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.0)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)(vitest@1.1.1):
+  /@antfu/eslint-config@2.4.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.4)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)(vitest@1.1.1):
     resolution: {integrity: sha512-19l69ER3GS0yHHTS65tRkuawJKndeGv9wmr5wYV3QNmzBXQeXsmt8CW7hUC1qfQ1eb1nLn/zMa+krqIWqdclbw==}
     hasBin: true
     peerDependencies:
@@ -798,7 +802,7 @@ packages:
       eslint-plugin-vitest: 0.3.10(@typescript-eslint/eslint-plugin@6.13.2)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)(vitest@1.1.1)
       eslint-plugin-vue: 9.19.2(eslint-ts-patch@8.55.0-1)
       eslint-plugin-yml: 1.10.0(eslint-ts-patch@8.55.0-1)
-      eslint-processor-vue-blocks: 0.1.1(@vue/compiler-sfc@3.4.0)(eslint-ts-patch@8.55.0-1)
+      eslint-processor-vue-blocks: 0.1.1(@vue/compiler-sfc@3.4.4)(eslint-ts-patch@8.55.0-1)
       globals: 13.24.0
       jsonc-eslint-parser: 2.4.0
       local-pkg: 0.5.0
@@ -5365,13 +5369,13 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-processor-vue-blocks@0.1.1(@vue/compiler-sfc@3.4.0)(eslint-ts-patch@8.55.0-1):
+  /eslint-processor-vue-blocks@0.1.1(@vue/compiler-sfc@3.4.4)(eslint-ts-patch@8.55.0-1):
     resolution: {integrity: sha512-9+dU5lU881log570oBwpelaJmOfOzSniben7IWEDRYQPPWwlvaV7NhOtsTuUWDqpYT+dtKKWPsgz4OkOi+aZnA==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.3.0
       eslint: ^8.50.0
     dependencies:
-      '@vue/compiler-sfc': 3.4.0
+      '@vue/compiler-sfc': 3.4.4
       eslint: /eslint-ts-patch@8.55.0-1
     dev: true
 

@@ -27,7 +27,8 @@
   "scripts": {
     "build": "tsx scripts/build.ts",
     "dev": "tsx scripts/build.ts --watch",
-    "prepare:type": "tsup src/index.ts --dts-only --format cjs,esm"
+    "prepare:type": "tsup src/index.ts --dts-only --format cjs,esm",
+    "stub": "pnpm dev"
   },
   "dependencies": {
     "@vue/devtools-core": "workspace:^",

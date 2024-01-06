@@ -101,16 +101,16 @@ Then import it directly in your app:
 import { devtools } from '@vue/devtools'
 ```
 
-:::tip Important
-Make sure you import devtools before Vue, otherwise it might not work as expected.
-:::
-
 And connect to host:
 
 ```ts
 if (process.env.NODE_ENV === 'development')
   devtools.connect(/* host, port */)
 ```
+
+:::tip Important
+Make sure to invoke devtools connect function before creating Vue App, otherwise it might not work as expected.
+:::
 
 **host** - is an optional argument that tells your application where devtools middleware server is running, if you debug your app on your computer you don't have to set this (the default is `http://localhost`), but if you want to debug your app on mobile devices, you might want to pass your local IP (e.g. `http://192.168.1.12`).
 

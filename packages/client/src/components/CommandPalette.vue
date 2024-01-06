@@ -55,7 +55,7 @@ async function enterItem(item: CommandItem) {
 }
 
 useEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+  if ((e.altKey || e.metaKey) && e.key === 'k') {
     e.preventDefault()
     overrideItems.value = undefined
     search.value = ''

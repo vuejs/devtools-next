@@ -16,7 +16,7 @@ $ pnpm i # install the dependencies of the project
 
 :::tip ⚠️
 
-Since `electron` is used in the project, if your network environment is unstable, you may not be able to install dependencies.
+Since `electron` is used in the project, if your network environment is unstable, you may be unable to install dependencies.
 You can use the following command to set up the mirror, and run `pnpm i` again to install the dependencies.
 
 ```bash

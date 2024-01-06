@@ -58,6 +58,7 @@
     "prepare": "simple-git-hooks",
     "test": "vitest",
     "play": "nr -C packages/playground dev",
+    "play:webpack": "nr -C packages/webpack-playground dev",
     "docs": "pnpm -C docs run docs:dev",
     "docs:build": "pnpm -C docs run docs:build",
     "zip": "tsx ./scripts/extension-zip.ts",

@@ -159,7 +159,7 @@ const supportsPreview = computed(() => {
                 icon="i-carbon-copy"
                 action mr1 mt--2px flex-none
                 :border="false"
-                @click="copy(asset.publicPath, false, 'assets-public-path')"
+                @click="copy(asset.publicPath, { silent: false, type: 'assets-public-path' })"
               />
               <RouterLink
                 :to="asset.publicPath"

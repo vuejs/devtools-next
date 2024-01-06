@@ -45,7 +45,7 @@ watchEffect(() => {
         w-full of-auto p3
       />
       <div flex="~ gap-2" px3 pb3>
-        <VueButton @click="copy(selected!.code, false, eventType || `code-snippet-${selected.name}`)">
+        <VueButton @click="copy(selected!.code, { silent: false, type: eventType || `code-snippet-${selected.name}` })">
           Copy
           <template #icon>
             <slot name="i-carbon-copy" />

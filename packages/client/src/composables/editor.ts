@@ -1,9 +1,18 @@
 import { showVueNotification } from '@vue/devtools-ui'
 
+interface CopyOptions {
+  silent?: boolean
+  type?: string
+}
+
 export function useCopy() {
   const { copy: _copy, copied } = useClipboard()
 
-  const copy = (text: string, silent = false, _type?: string) => {
+  const copy = (text: string, options: CopyOptions = {}) => {
+    const {
+      silent = false,
+      type = '',
+    } = options
     _copy(text).then(() => {
       if (!silent) {
         showVueNotification({

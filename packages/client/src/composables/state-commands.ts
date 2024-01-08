@@ -12,6 +12,12 @@ export interface CommandItem {
   action: () => void | CommandItem[] | Promise<CommandItem[] | void>
 }
 
+function uniqueById(items: CommandItem[]): CommandItem[] {
+  const unique = new Map<number | string, CommandItem>()
+  items.forEach(item => unique.set(item.id, item))
+  return Array.from(unique.values())
+}
+
 const registeredCommands = reactive(new Map<string, MaybeRefOrGetter<CommandItem[]>>())
 
 // @unocss-include
@@ -68,13 +74,13 @@ export function useCommands() {
     }))
 
   return computed(() => {
-    return [
+    return uniqueById([
       ...fixedCommands,
       ...tabCommands.value,
       ...resolveCustomCommands(customCommands.value),
       ...Array.from(registeredCommands.values())
         .flatMap(i => toValue(i)),
-    ]
+    ])
   })
 }
 

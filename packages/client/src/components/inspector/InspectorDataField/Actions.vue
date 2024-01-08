@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toRaw } from 'vue'
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { getRawValue } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
@@ -49,7 +50,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
     nodeId: state.value.nodeId,
     state: {
       newKey: null!,
-      value: v,
+      value: toRaw(v),
       type: dataType.value,
       remove,
     },
@@ -95,12 +96,12 @@ function quickEdit(v: unknown, remove: boolean = false) {
       </VueButton>
       <!-- increment/decrement button, numeric value only -->
       <template v-else-if="dataType === 'number'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((rawValue as number) + 1)">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit((rawValue as number) + 1)">
           <template #icon>
             <VueIcon icon="i-carbon-add" />
           </template>
         </VueButton>
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit((rawValue as number) - 1)">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit((rawValue as number) - 1)">
           <template #icon>
             <VueIcon icon="i-carbon-subtract" />
           </template>
@@ -108,7 +109,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       </template>
     </template>
     <!-- delete prop, only appear if depth > 0 -->
-    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click="quickEdit(rawValue, true)">
+    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit(rawValue, true)">
       <template #icon>
         <VueIcon icon="i-material-symbols-delete-rounded" />
       </template>

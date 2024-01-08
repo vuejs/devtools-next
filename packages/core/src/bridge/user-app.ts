@@ -89,6 +89,18 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return devtools.api.openInEditor(JSON.parse(payload!))
   })
 
+  // get vue inspector
+  bridgeRpcCore.on(bridgeRpcEvents.isVueInspectorDetected, async () => {
+    return !!await devtools.api.getVueInspector()
+  })
+
+  // enable vue inspector
+  bridgeRpcCore.on(bridgeRpcEvents.enableVueInspector, async () => {
+    const inspector = await devtools.api.getVueInspector()
+    if (inspector)
+      await inspector.enable()
+  })
+
   // route matched
   bridgeRpcCore.on(bridgeRpcEvents.routeMatched, (payload) => {
     const c = console.warn

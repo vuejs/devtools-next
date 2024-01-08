@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
+import { useDevToolsBridge, useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel } from '@vue/devtools-shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -11,6 +11,7 @@ useColorMode()
 const router = useRouter()
 const route = useRoute()
 const { connected, clientConnected } = useDevToolsState()
+const bridgeRpc = useDevToolsBridgeRpc()
 const clientState = devtoolsClientState
 
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -66,6 +67,40 @@ watchEffect(() => {
   activeAppRecords.value = devtoolsState.appRecords.value
   activeAppRecordId.value = devtoolsState.activeAppRecordId.value
 })
+
+// register commands
+const { copy } = useCopy()
+const eyeDropper = useEyeDropper({})
+
+bridgeRpc?.isVueInspectorDetected?.()?.then(({ data }) => {
+  if (data) {
+    registerCommands(() =>
+      [{
+        id: 'action:vue-inspector',
+        title: 'Inspector',
+        icon: 'i-carbon-select-window',
+        action: async () => {
+          bridge.value.emit('toggle-panel', false)
+          await bridgeRpc.enableVueInspector()
+        },
+      }],
+    )
+  }
+})
+registerCommands(() => [
+  ...(eyeDropper.isSupported.value
+    ? [{
+        id: 'action:eye-dropper',
+        title: 'Color Picker',
+        icon: 'i-carbon-eyedropper',
+        action: async () => {
+          const { sRGBHex } = await eyeDropper.open() || {}
+          if (sRGBHex)
+            copy(sRGBHex)
+        },
+      }]
+    : []),
+])
 </script>
 
 <template>

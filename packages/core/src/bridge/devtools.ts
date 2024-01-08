@@ -139,6 +139,14 @@ export class BridgeRpc {
     return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.openInEditor, JSON.stringify(payload))
   }
 
+  static async isVueInspectorDetected() {
+    return devtoolsBridge.rpc.emit<{ data: boolean }>(bridgeRpcEvents.isVueInspectorDetected)
+  }
+
+  static async enableVueInspector() {
+    return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.enableVueInspector)
+  }
+
   static async toggleApp(id: string) {
     return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.toggleApp, id)
   }

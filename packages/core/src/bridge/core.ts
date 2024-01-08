@@ -83,6 +83,8 @@ export const bridgeRpcEvents = {
   editState: 'edit-inspector-state',
   openInEditor: 'open-in-editor',
   toggleApp: 'toggle-app',
+  isVueInspectorDetected: 'vue-inspector:detected',
+  enableVueInspector: 'vue-inspector:enable',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -112,6 +114,8 @@ export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.editState]: InspectorStateEditorPayload
   [bridgeRpcEvents.openInEditor]: string
   [bridgeRpcEvents.toggleApp]: string
+  [bridgeRpcEvents.isVueInspectorDetected]: boolean
+  [bridgeRpcEvents.enableVueInspector]: null
 }
 
 export class BridgeRpcCore {
@@ -122,7 +126,7 @@ export class BridgeRpcCore {
 
   on<E extends BridgeRpcEventName>(
     eventName: E,
-    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<string | void> | string,
+    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<boolean | string | void> | string,
   ) {
     this.bridge.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
       const res = await handler(payload)

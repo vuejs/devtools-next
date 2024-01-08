@@ -52,7 +52,7 @@ watch(activeAppRecordId, (id) => {
       <VueDarkToggle>
         <template #default="{ isDark, toggle }">
           <VueButton outlined type="primary" @click="toggle">
-            <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark.value ? 'Dark' : 'Light' }}
+            <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark ? 'Dark' : 'Light' }}
           </VueButton>
         </template>
       </VueDarkToggle>

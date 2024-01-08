@@ -70,15 +70,10 @@ function toggle(event?: MouseEvent) {
     )
   })
 }
-const context = {
-  mode,
-  isDark,
-  toggle,
-}
 </script>
 
 <template>
   <span class="$ui-dark-toggle-vtr">
-    <slot v-bind="context" />
+    <slot v-bind="{ mode, isDark, toggle }" />
   </span>
 </template>

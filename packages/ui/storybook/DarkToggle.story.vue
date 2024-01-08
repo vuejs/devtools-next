@@ -37,7 +37,7 @@ const dark = computed({
               toggle(e)
             }"
           >
-            <Icon :class="isDark.value ? 'i-carbon-moon' : 'i-carbon-sun'" />
+            <Icon :class="isDark ? 'i-carbon-moon' : 'i-carbon-sun'" />
           </Button>
         </template>
       </DarkToggle>

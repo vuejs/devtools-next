@@ -1,5 +1,5 @@
 import type { MaybeRef, Ref } from 'vue'
-import { isReactive, isRef } from 'vue'
+import { isReactive, isRef, toRaw } from 'vue'
 import { getComponentInstance } from '../general'
 import { devtoolsContext } from '../../general'
 
@@ -70,6 +70,10 @@ export class StateEditor {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))
           object.splice(field as number, 1)
+        else if (toRaw(object) instanceof Map && typeof value === 'object' && value && 'key' in value)
+          object.delete(value.key)
+        else if (toRaw(object) instanceof Set)
+          object.delete(value)
         else
           Reflect.deleteProperty(object, field)
       }

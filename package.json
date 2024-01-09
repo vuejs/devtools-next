@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-monorepo",
   "type": "module",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "private": true,
   "packageManager": "pnpm@8.14.0",
   "description": "DevTools for Vue.js",

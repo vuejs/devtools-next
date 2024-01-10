@@ -1,5 +1,6 @@
-import io from 'socket.io-client/dist/socket.io.js'
-import { target } from '@vue/devtools-shared'
+// import io from 'socket.io-client/dist/socket.io.js'
+import io from 'socket.io-client'
+import { isBrowser, target } from '@vue/devtools-shared'
 import { Bridge } from '../../core/src/bridge'
 import { prepareInjection } from '../../core/src/injection'
 import { devtools } from '../../devtools-kit/src/index'
@@ -41,6 +42,8 @@ socket.on('vue-devtools:disconnect-user-app', () => {
   socket.disconnect()
 })
 
-window.addEventListener('beforeunload', () => {
-  socket.emit('vue-devtools:disconnect')
-})
+if (isBrowser) {
+  window.addEventListener('beforeunload', () => {
+    socket.emit('vue-devtools:disconnect')
+  })
+}

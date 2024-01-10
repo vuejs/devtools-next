@@ -91,12 +91,12 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
 
   // get vue inspector
   bridgeRpcCore.on(bridgeRpcEvents.isVueInspectorDetected, async () => {
-    return !!await devtools.api.getVueInspector()
+    return !!await devtools?.api?.getVueInspector?.()
   })
 
   // enable vue inspector
   bridgeRpcCore.on(bridgeRpcEvents.enableVueInspector, async () => {
-    const inspector = await devtools.api.getVueInspector()
+    const inspector = await devtools?.api?.getVueInspector?.()
     if (inspector)
       await inspector.enable()
   })

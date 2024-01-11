@@ -1,4 +1,7 @@
 import { devtools } from '@vue/devtools'
+import '@vue/devtools/hook'
+import { createApp } from 'vue-termui'
+import App from './App.vue'
 
 globalThis.document = {
   createElement: () => {},
@@ -6,12 +9,6 @@ globalThis.document = {
 } as any
 
 devtools.connect('http://localhost', 8098)
-
-// eslint-disable-next-line import/first
-import { createApp } from 'vue-termui'
-
-// eslint-disable-next-line import/first
-import App from './App.vue'
 
 const app = createApp(App)
 app.mount()

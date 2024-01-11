@@ -46,7 +46,14 @@ async function buildBundle() {
   build({
     entry: [resolve('./src/user-app.ts')],
     ...baseOptions,
-    format: ['cjs', 'esm', 'iife'],
+    format: ['cjs', 'esm'],
+    clean: false,
+  })
+
+  build({
+    entry: [resolve('./src/user-app.iife.ts')],
+    ...baseOptions,
+    format: ['iife'],
     clean: false,
   })
 

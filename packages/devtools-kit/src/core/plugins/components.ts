@@ -28,6 +28,9 @@ export function registerComponentsDevTools(app: VueAppInstance) {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
         if (instance) {
+          if (typeof DOMRect === 'undefined')
+            return
+
           payload.rect = getComponentBoundingRect(instance)
           if (payload.rect instanceof DOMRect) {
             payload.rect = {

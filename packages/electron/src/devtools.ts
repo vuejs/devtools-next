@@ -43,12 +43,15 @@ function init() {
     })
   })
 
-  socket.on('vue-devtools:disconnect', () => {
+  function shutdown() {
     app.unmount()
     reload = null
     socket.close()
     init()
-  })
+  }
+
+  socket.on('vue-devtools:disconnect', shutdown)
+  socket.on('vue-devtools-disconnect-devtools', shutdown)
 }
 
 init()

@@ -13,6 +13,11 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./hook": {
+      "types": "./dist/hook.d.ts",
+      "import": "./dist/hook.mjs",
+      "require": "./dist/hook.cjs"
     }
   },
   "main": "./dist/index.cjs",

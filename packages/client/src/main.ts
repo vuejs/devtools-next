@@ -14,6 +14,7 @@ import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
 import RouterPage from '~/pages/router.vue'
+import I18nPage from '~/pages/i18n.vue'
 import Timeline from '~/pages/timeline.vue'
 import Pages from '~/pages/pages.vue'
 import Assets from '~/pages/assets.vue'
@@ -40,6 +41,7 @@ const routes = [
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },
   { path: '/router', component: RouterPage },
+  { path: '/i18n', component: I18nPage },
   { path: '/timeline', component: Timeline },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },

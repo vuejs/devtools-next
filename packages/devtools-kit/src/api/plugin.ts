@@ -41,11 +41,13 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
     const globalProperties = record.app?.config?.globalProperties
     if (!globalProperties)
       return record
+
     return {
       ...record,
       moduleDetectives: {
         vueRouter: !!globalProperties.$router,
         pinia: !!globalProperties.$pinia,
+        vueI18n: !!globalProperties.$i18n,
       },
     }
   })

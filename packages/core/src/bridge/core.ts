@@ -85,6 +85,7 @@ export const bridgeRpcEvents = {
   toggleApp: 'toggle-app',
   isVueInspectorDetected: 'vue-inspector:detected',
   enableVueInspector: 'vue-inspector:enable',
+  unhighlightElement: 'element:unhighlight',
 } as const
 
 export type BridgeRpcEvents = typeof bridgeRpcEvents
@@ -116,6 +117,7 @@ export interface BridgeRpcEventPayload {
   [bridgeRpcEvents.toggleApp]: string
   [bridgeRpcEvents.isVueInspectorDetected]: boolean
   [bridgeRpcEvents.enableVueInspector]: null
+  [bridgeRpcEvents.unhighlightElement]: null
 }
 
 export class BridgeRpcCore {

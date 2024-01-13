@@ -56,6 +56,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
+    {
+      icon: 'i-carbon-language',
+      name: 'i18n',
+      order: -100,
+      path: 'i18n',
+      title: 'I18n Resources',
+    },
   ]],
   ['advanced', [
     {
@@ -79,6 +86,7 @@ type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 const moduleDetectivesMapping = {
   pinia: 'pinia',
   router: 'vueRouter',
+  i18n: 'vueI18n',
 } satisfies Record<string, keyof Detective>
 
 export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {

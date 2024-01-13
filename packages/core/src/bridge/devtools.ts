@@ -95,6 +95,10 @@ export class BridgeRpc {
     return devtoolsBridge.rpc.emit<{ data: { id: string } }>(bridgeRpcEvents.inspectComponentInspector)
   }
 
+  static unhighlightElement() {
+    return devtoolsBridge.rpc.emit(bridgeRpcEvents.unhighlightElement)
+  }
+
   static scrollToComponent(payload: BridgeRpcEventPayload['scroll-to-component']) {
     return devtoolsBridge.rpc.emit(bridgeRpcEvents.scrollToComponent, payload)
   }

@@ -14,7 +14,7 @@ import { addCustomCommand, removeCustomCommand } from '../core/custom-command'
 import type { CustomCommand } from '../core/custom-command'
 
 import { getVueInspector } from '../core/vue-inspector'
-import { inspectComponentInspector, scrollToComponent, toggleComponentInspector } from '../core/component-inspector'
+import { highlight as highlightElement, inspectComponentInspector, scrollToComponent, toggleComponentInspector, unhighlight as unhighlightElement } from '../core/component-inspector'
 import { clear } from './off'
 import type { DevToolsEvent } from './on'
 import { DevToolsEvents, apiHooks, on } from './on'
@@ -176,6 +176,23 @@ export class DevToolsPluginApi {
 
   openInEditor(payload: OpenInEditorOptions) {
     openInEditor(payload)
+  }
+
+  highlightElement(instance) {
+    highlightElement(instance)
+  }
+
+  unhighlightElement() {
+    unhighlightElement()
+  }
+
+  async getComponentInstances(app) {
+    const appRecord = app.__VUE_DEVTOOLS_APP_RECORD__
+    const appId = appRecord.id.toString()
+    const instances = [...appRecord.instanceMap]
+      .filter(([key]) => key.split(':')[0] === appId)
+      .map(([,instance]) => instance)
+    return instances
   }
 
   // Vite only

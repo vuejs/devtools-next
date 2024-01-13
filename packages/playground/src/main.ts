@@ -12,6 +12,8 @@ import Hello from './pages/Hello.vue'
 import Hey from './pages/Hey.vue'
 import './style.css'
 
+import { install as installI18n } from './modules/i18n'
+
 // connect to remote devtools
 // devtools.connect('http://localhost', 8080)
 
@@ -89,6 +91,7 @@ addCustomCommand({
   ],
 })
 
+installI18n({ app })
 app.use(router)
 app.use(pinia)
 

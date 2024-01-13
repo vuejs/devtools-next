@@ -142,6 +142,19 @@ export function toggleComponentInspector(options: ToggleComponentInspectorOption
   }
 }
 
+export function highlight(instance: VueAppInstance) {
+  const bounds = getComponentBoundingRect(instance)
+  const name = getInstanceName(instance)
+  const container = getCotainerElement()
+  container ? update({ bounds, name }) : create({ bounds, name })
+}
+
+export function unhighlight() {
+  const el = getCotainerElement()
+  if (el)
+    el.style.display = 'none'
+}
+
 let inspectInstance: VueAppInstance = null!
 function inspectFn(e: MouseEvent) {
   const target = e.target as { __vueParentComponent?: VueAppInstance }

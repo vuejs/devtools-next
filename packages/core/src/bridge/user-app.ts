@@ -42,6 +42,12 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
     return devtools.api.inspectComponentInspector()
   })
 
+  // unhighlight element
+  bridgeRpcCore.on(bridgeRpcEvents.unhighlightElement, () => {
+    devtools.api.unhighlightElement()
+    return Promise.resolve(JSON.stringify({}))
+  })
+
   // scroll to component
   bridgeRpcCore.on(bridgeRpcEvents.scrollToComponent, (payload) => {
     devtools.api.scrollToComponent(payload!)

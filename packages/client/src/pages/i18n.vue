@@ -16,19 +16,19 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
-function getPiniaState(nodeId: string) {
+function getI18nState(nodeId: string) {
   bridgeRpc.getInspectorState({ inspectorId: INSPECTOR_ID, nodeId }).then(({ data }) => {
     state.value = data
   })
 }
 
-function clearPiniaState() {
+function clearI18nState() {
   state.value = {}
 }
 
 watch(selected, () => {
-  clearPiniaState()
-  getPiniaState(selected.value)
+  clearI18nState()
+  getI18nState(selected.value)
 })
 
 createCollapseContext('inspector-state')
@@ -38,7 +38,7 @@ onDevToolsClientConnected(() => {
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
-      getPiniaState(data[0].id)
+      getI18nState(data[0].id)
     }
   })
 
@@ -48,7 +48,7 @@ onDevToolsClientConnected(() => {
     tree.value = data.data
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
-      getPiniaState(data.data[0].id)
+      getI18nState(data.data[0].id)
     }
   }, {
     inspectorId: INSPECTOR_ID,

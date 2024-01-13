@@ -5,7 +5,7 @@ export interface InspectorCustomState {
     type?: string
     displayText?: string
     tooltipText?: string
-    value?: string
+    value?: string | InspectorCustomState
     stateTypeName?: string
     fields?: {
       abstract?: boolean

@@ -56,7 +56,9 @@ export function formatInspectorStateValue(value, quotes = false) {
     return result
   }
   else if (type === 'custom') {
-    return value._custom.displayText ?? value._custom.display
+    // For digging out nested custom name.
+    const nestedName = value._custom.value?._custom && formatInspectorStateValue(value._custom.value)
+    return nestedName || value._custom.displayText || value._custom.display
   }
   else if (type === 'array') {
     return `Array[${value.length}]`
@@ -89,8 +91,11 @@ export function getRawValue(value: InspectorState['value']) {
   let inherit = {}
   if (isCustom) {
     const data = value as InspectorCustomState
-    inherit = data._custom?.fields || {}
-    value = data._custom?.value as string
+    const nestedCustom = typeof data._custom?.value === 'object' && '_custom' in data._custom.value
+      ? getRawValue(data._custom?.value)
+      : { inherit: undefined, value: undefined }
+    inherit = nestedCustom.inherit || data._custom?.fields || {}
+    value = nestedCustom.value || data._custom?.value as string
   }
   // @ts-expect-error @TODO: type
   if (value && value._isArray)

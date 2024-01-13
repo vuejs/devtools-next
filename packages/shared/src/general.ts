@@ -53,7 +53,7 @@ export function sortByKey(state: unknown[]) {
  * @copyright [rfdc](https://github.com/davidmarkclements/rfdc)
  * @description A really fast deep clone alternative
  */
-export const deepClone = rfdc()
+export const deepClone = rfdc({ circles: true })
 
 export function randomStr() {
   return Math.random().toString(36).slice(2)

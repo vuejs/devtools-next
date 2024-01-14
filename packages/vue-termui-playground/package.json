@@ -1,7 +1,7 @@
 {
   "name": "vue-termui-playground",
   "type": "module",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "private": true,
   "bin": {
     "vtui-app": "./dist/main.mjs"

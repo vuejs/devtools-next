@@ -1,4 +1,4 @@
-import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, Router } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, RouteRecordNormalized, RouteRecordRaw, Router } from 'vue-router'
 import type { AppRecord } from '@vue/devtools-schema'
 import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
@@ -34,17 +34,39 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
     const routesMap = new Map()
     return (router?.getRoutes() || []).filter(i => !routesMap.has(i.path) && routesMap.set(i.path, 1))
   }
-  function init() {
-    const router = appRecord.app?.config.globalProperties.$router as Router | undefined
-    const currentRoute = router?.currentRoute.value
-    const routes = getRoutes(router).map((item) => {
-      const { path, name, children } = item
+  function filterRoutes(routes: RouteRecordRaw[]) {
+    return routes.map((item) => {
+      let { path, name, children } = item
+      if (children?.length)
+        children = filterRoutes(children)
+
       return {
         path,
         name,
         children,
       }
     })
+  }
+  function filterCurrentRoute(route: RouteLocationNormalizedLoaded & { href?: string } | undefined) {
+    if (route) {
+      const { fullPath, hash, href, path, name, matched, params, query } = route
+      return {
+        fullPath,
+        hash,
+        href,
+        path,
+        name,
+        params,
+        query,
+        matched: filterRoutes(matched),
+      }
+    }
+    return route
+  }
+  function init() {
+    const router = appRecord.app?.config.globalProperties.$router as Router | undefined
+    const currentRoute = filterCurrentRoute(router?.currentRoute.value)
+    const routes = filterRoutes(getRoutes(router))
     const c = console.warn
     console.warn = () => {}
     global[RouterInfoKey] = {

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-playground",
   "type": "module",
-  "version": "7.0.9",
+  "version": "7.0.10",
   "private": true,
   "scripts": {
     "app": "vue-devtools",

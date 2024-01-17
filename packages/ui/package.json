@@ -36,20 +36,20 @@
     "vue": ">=3.0.0-0"
   },
   "dependencies": {
-    "@vueuse/components": "^10.7.1",
-    "@vueuse/core": "^10.7.1",
-    "@vueuse/integrations": "^10.7.1",
+    "@vueuse/components": "^10.7.2",
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/integrations": "^10.7.2",
     "colord": "^2.9.3",
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
-    "@histoire/plugin-vue": "^0.17.6",
-    "@types/node": "^20.10.6",
+    "@histoire/plugin-vue": "^0.17.8",
+    "@types/node": "^20.11.5",
     "@unocss/reset": "^0.58.3",
-    "@vitejs/plugin-vue": "^4.6.2",
+    "@vitejs/plugin-vue": "^5.0.3",
     "floating-vue": "2.0.0-beta.24",
-    "histoire": "^0.17.6",
+    "histoire": "^0.17.8",
     "unocss": "^0.58.3",
-    "vite-plugin-dts": "^3.7.0"
+    "vite-plugin-dts": "^3.7.1"
   }
 }

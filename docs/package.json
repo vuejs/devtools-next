@@ -8,9 +8,9 @@
   },
   "devDependencies": {
     "@unocss/reset": "^0.58.3",
-    "@vueuse/core": "^10.7.1",
+    "@vueuse/core": "^10.7.2",
     "unplugin-vue-components": "^0.26.0",
     "vitepress": "1.0.0-rc.30",
-    "vue": "^3.4.4"
+    "vue": "^3.4.14"
   }
 }

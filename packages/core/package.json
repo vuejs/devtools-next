@@ -34,12 +34,12 @@
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
-    "pathe": "^1.1.1",
+    "pathe": "^1.1.2",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
     "vite-plugin-inspect": "^0.8.1"
   },
   "devDependencies": {
-    "vue": "^3.4.4"
+    "vue": "^3.4.14"
   }
 }

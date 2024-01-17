@@ -73,3 +73,21 @@ Inspector expose the [vite-plugin-vue-inspector](https://github.com/webfansplz/v
 Vue DevTools is able to run as a separate window, it's so helpful when you want to debug your app in a small screen.
 
 ![separate-window](/features/separate-window.png)
+
+## Command Palette
+
+Command Palette is a quick way to access some useful features of the DevTools such as easy navigation, run commands and Vue Documentations. You can open it with `Ctrl+K` or `Cmd+K` shortcut.
+
+![command-palette](/features/command-palette.png)
+
+## Multiple Apps Support
+
+If your app uses multiple Vue instances, you can switch between them in the top left corner of the DevTools.
+
+![multiple-apps](/features/multi-app.png)
+
+## Split Screen
+
+Split Screen is a useful feature to use multiple tabs at the same time. You can open it from Command Palette or by clicking the `Vue Icon` in the top left corner of the DevTools and activate it from there.
+
+![split-screen](/features/split-screen.png)

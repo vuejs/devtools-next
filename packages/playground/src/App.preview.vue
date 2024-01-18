@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import STC from './components/ScrollToComponent.vue'
+import LargeData from './components/LargeData.vue'
 import { useAppStore } from './stores'
 
 import { availableLocales, loadLanguageAsync } from './modules/i18n'
@@ -51,6 +52,7 @@ async function toggleLocales() {
         Hello
       </router-link>
     </p>
+    <LargeData />
     <STC />
   </div>
 </template>

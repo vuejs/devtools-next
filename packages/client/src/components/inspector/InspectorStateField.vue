@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<{
   depth: 0,
 })
 
+const STATE_FIELDS_LIMIT_SIZE = 30
+
 const state = useStateEditorContext()
 const bridgeRpc = useDevToolsBridgeRpc()
 const value = computed(() => formatInspectorStateValue(props.data.value))
@@ -50,7 +52,7 @@ const normalizedValue = computed(() => {
 
 const rawValue = computed(() => getRawValue(props.data.value))
 
-const limit = ref(30)
+const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 
 const normalizedChildField = computed(() => {
   const { value, inherit } = rawValue.value
@@ -207,7 +209,7 @@ const { isHovering } = useHover(() => containerRef.value)
           <InspectorStateField
             v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" :root-id="rootId"
           />
-          <VueButton v-if="fieldsCount > limit" v-tooltip="'Show more'" flat size="mini" class="ml-4" @click="limit += 30">
+          <VueButton v-if="fieldsCount > limit" v-tooltip="'Show more'" flat size="mini" class="ml-4" @click="limit += STATE_FIELDS_LIMIT_SIZE">
             <template #icon>
               <VueIcon icon="i-material-symbols-more-horiz" />
             </template>

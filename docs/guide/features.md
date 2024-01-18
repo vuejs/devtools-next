@@ -58,7 +58,7 @@ Settings tab provides some options to customize the DevTools.
 
 ## Inspect
 
-Inspect expose the [vite-plugin-inspect](https://github.com/webfansplz/vite-plugin-inspect) integration, allowing you to inspect transformation steps of Vite.
+Inspect expose the [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) integration, allowing you to inspect transformation steps of Vite.
 
 ![inspect](/features/inspect.svg)
 

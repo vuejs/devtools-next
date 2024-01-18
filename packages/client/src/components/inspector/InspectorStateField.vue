@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
-import { sortByKey } from '@vue/devtools-shared'
+import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { formatInspectorStateValue, getInspectorStateValueType, getRawValue } from '@vue/devtools-kit'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
 
@@ -14,6 +15,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   depth: 0,
 })
+
+const STATE_FIELDS_LIMIT_SIZE = 30
 
 const state = useStateEditorContext()
 const bridgeRpc = useDevToolsBridgeRpc()
@@ -49,11 +52,13 @@ const normalizedValue = computed(() => {
 
 const rawValue = computed(() => getRawValue(props.data.value))
 
+const limit = ref(STATE_FIELDS_LIMIT_SIZE)
+
 const normalizedChildField = computed(() => {
-  let { value, inherit } = rawValue.value
-  if (Array.isArray(value)) {
-    // @TODO: show more
-    const sliced = value.slice(0, 20)
+  const { value, inherit } = rawValue.value
+  let displayedValue: any[]
+  if (isArray(value)) {
+    const sliced = value.slice(0, limit.value)
     return sliced.map((item, i) => ({
       key: `${props.data.key}.${i}`,
       value: item,
@@ -62,8 +67,8 @@ const normalizedChildField = computed(() => {
       creating: false,
     }))
   }
-  else if (value !== null && typeof value === 'object') {
-    value = Object.keys(value).map(key => ({
+  else if (isObject(value)) {
+    displayedValue = Object.keys(value).slice(0, limit.value).map(key => ({
       key: `${props.data.key}.${key}`,
       value: value[key],
       ...inherit,
@@ -71,13 +76,23 @@ const normalizedChildField = computed(() => {
       creating: false,
     }))
     if (type.value !== 'custom')
-      value = sortByKey(value)
+      displayedValue = sortByKey(displayedValue)
   }
   else {
-    value = []
+    displayedValue = []
   }
 
-  return value === props.data.value ? {} : value
+  return displayedValue === props.data.value ? {} : displayedValue
+})
+
+const fieldsCount = computed(() => {
+  const { value } = rawValue.value
+  if (isArray(value))
+    return value.length
+  else if (isObject(value))
+    return Object.keys(value).length
+  else
+    return 0
 })
 
 const normalizedDisplayedKey = computed(() => {
@@ -150,8 +165,8 @@ function submitDrafting() {
   resetDrafting()
 }
 
-const containerRef = ref()
-const { isHovering } = useHover(containerRef)
+const containerRef = ref<HTMLDivElement>()
+const { isHovering } = useHover(() => containerRef.value)
 </script>
 
 <template>
@@ -194,6 +209,11 @@ const { isHovering } = useHover(containerRef)
           <InspectorStateField
             v-for="(field, index) in normalizedChildField" :key="index" :data="field" :depth="depth + 1" :no="no" :root-id="rootId"
           />
+          <VueButton v-if="fieldsCount > limit" v-tooltip="'Show more'" flat size="mini" class="ml-4" @click="limit += STATE_FIELDS_LIMIT_SIZE">
+            <template #icon>
+              <VueIcon icon="i-material-symbols-more-horiz" />
+            </template>
+          </VueButton>
           <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
             <span overflow-hidden text-ellipsis whitespace-nowrap state-key>
               <EditInput v-model="draftingNewProp.key" type="string" :show-actions="false" />

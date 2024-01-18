@@ -1,5 +1,5 @@
 import { useEventListener } from '@vueuse/core'
-import type { MaybeRef } from '@vueuse/core'
+import type { MaybeRefOrGetter } from '@vueuse/core'
 
 export interface UseHoverOptions {
   enter?: () => void
@@ -7,7 +7,7 @@ export interface UseHoverOptions {
   initital?: boolean
 }
 
-export function useHover(el: MaybeRef<EventTarget | null | undefined>, options: UseHoverOptions = {}) {
+export function useHover(el: MaybeRefOrGetter<HTMLElement | null | undefined>, options: UseHoverOptions = {}) {
   const {
     enter = () => { },
     leave = () => { },
@@ -23,6 +23,7 @@ export function useHover(el: MaybeRef<EventTarget | null | undefined>, options: 
     isHovering.value = false
     leave()
   })
+
   return {
     isHovering,
   }

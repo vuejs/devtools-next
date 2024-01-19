@@ -44,7 +44,7 @@ function guessType(path: string): AssetType {
     return 'audio'
   if (/\.(woff2?|eot|ttf|otf|ttc|pfa|pfb|pfm|afm)/i.test(path))
     return 'font'
-  if (/\.(json[5c]?|te?xt|[mc]?[jt]sx?|md[cx]?|markdown)/i.test(path))
+  if (/\.(json[5c]?|te?xt|[mc]?[jt]sx?|md[cx]?|markdown|ya?ml|toml)/i.test(path))
     return 'text'
   return 'other'
 }
@@ -73,11 +73,17 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
       // font
       '**/*.(woff2?|eot|ttf|otf|ttc|pfa|pfb|pfm|afm)',
       // text
-      '**/*.(json|json5|jsonc|txt|text|tsx|jsx|md|mdx|mdc|markdown)',
+      '**/*.(json|json5|jsonc|txt|text|tsx|jsx|md|mdx|mdc|markdown|yaml|yml|toml)',
     ], {
       cwd: dir,
       onlyFiles: true,
-      ignore: ['**/node_modules/**', '**/dist/**'],
+      ignore: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/package-lock.*',
+        '**/pnpm-lock.*',
+        '**/pnpm-workspace.*',
+      ],
     })
 
     cache = await Promise.all(files.map(async (path) => {

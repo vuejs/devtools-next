@@ -1,7 +1,8 @@
 import { InspectorCustomState, InspectorState } from '../types'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, rawTypeRE, specialTypeRE } from './constants'
 import { isPlainObject } from './is'
-import { escape, internalStateTokenToString } from './util'
+import { escape, internalStateTokenToString, replaceStringToToken, replaceTokenToString } from './util'
+import { reviver } from './reviver'
 
 export function getInspectorStateValueType(value, raw = true) {
   const type = typeof value
@@ -103,4 +104,12 @@ export function getRawValue(value: InspectorState['value']) {
     value = value.items
 
   return { value, inherit }
+}
+
+export function toEdit(value: unknown) {
+  return replaceTokenToString(JSON.stringify(value))
+}
+
+export function toSubmit(value: string) {
+  return JSON.parse(replaceStringToToken(value), reviver)
 }

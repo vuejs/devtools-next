@@ -1,23 +1,38 @@
 import { ESC, INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, fnTypeRE } from './constants'
 import { isComputed, isPlainObject, isPrimitive, isReactive, isReadOnly, isRef } from './is'
 
+export const tokenMap = {
+  [UNDEFINED]: 'undefined',
+  [NAN]: 'NaN',
+  [INFINITY]: 'Infinity',
+  [NEGATIVE_INFINITY]: '-Infinity',
+} as const
+
+export const reversedTokenMap = Object.entries(tokenMap).reduce((acc, [key, value]) => {
+  acc[value] = key
+  return acc
+}, {})
+
 export function internalStateTokenToString(value: unknown) {
   if (value === null)
     return 'null'
 
-  else if (value === UNDEFINED)
-    return 'undefined'
+  return tokenMap[value as string] || false
+}
 
-  else if (value === NAN)
-    return 'NaN'
+export function replaceTokenToString(value: string) {
+  const replaceRegex = new RegExp(`"(${Object.keys(tokenMap).join('|')})"`, 'g')
+  return value.replace(replaceRegex, (_, g1) => tokenMap[g1])
+}
 
-  else if (value === INFINITY)
-    return 'Infinity'
+export function replaceStringToToken(value: string) {
+  const literalValue = reversedTokenMap[value.trim()]
+  if (literalValue)
+    return `"${literalValue}"`
 
-  else if (value === NEGATIVE_INFINITY)
-    return '-Infinity'
-
-  return false
+  // Match the token in value field and replace it with the literal value.
+  const replaceRegex = new RegExp(`:\\s*(${Object.keys(reversedTokenMap).join('|')})`, 'g')
+  return value.replace(replaceRegex, (_, g1) => `:"${reversedTokenMap[g1]}"`)
 }
 
 /**

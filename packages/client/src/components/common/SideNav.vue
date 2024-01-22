@@ -43,7 +43,7 @@ onClickOutside(
 <template>
   <div
     border="r base" flex="~ col items-start"
-    z-100 h-full of-hidden bg-base
+    class="$ui-z-max-override" h-full of-hidden bg-base
   >
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"

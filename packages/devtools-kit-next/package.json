@@ -1,0 +1,37 @@
+{
+  "name": "@vue/devtools-kit-next",
+  "type": "module",
+  "version": "7.0.11",
+  "private": true,
+  "author": "webfansplz",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --clean",
+    "prepare:type": "tsup --dts-only",
+    "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
+  },
+  "dependencies": {
+    "@vue/devtools-schema": "workspace:^",
+    "@vue/devtools-shared": "workspace:^",
+    "hookable": "^5.5.3",
+    "mitt": "^3.0.1",
+    "perfect-debounce": "^1.0.0",
+    "speakingurl": "^14.0.1"
+  },
+  "devDependencies": {
+    "vue": "^3.4.14",
+    "vue-router": "^4.2.5"
+  }
+}

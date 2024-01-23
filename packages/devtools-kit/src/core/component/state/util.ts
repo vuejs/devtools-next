@@ -17,7 +17,7 @@ export function internalStateTokenToString(value: unknown) {
   if (value === null)
     return 'null'
 
-  return tokenMap[value as string] || false
+  return (typeof value === 'string' && tokenMap[value]) || false
 }
 
 export function replaceTokenToString(value: string) {

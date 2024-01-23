@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
-import { formatInspectorStateValue, getInspectorStateValueType, getRawValue } from '@vue/devtools-kit'
+import { formatInspectorStateValue, getInspectorStateValueType, getRawValue, toEdit, toSubmit } from '@vue/devtools-kit'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
@@ -113,9 +113,7 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 watch(() => editing.value, (v) => {
   if (v) {
     const { value } = rawValue.value
-    editingText.value = typeof value === 'object'
-      ? JSON.stringify(value)
-      : value.toString()
+    editingText.value = toEdit(value)
   }
   else {
     editingText.value = ''
@@ -132,7 +130,7 @@ function submit(dataType: string) {
     state: {
       newKey: null!,
       type: dataType,
-      value: editingText.value,
+      value: toSubmit(editingText.value),
     },
   } satisfies InspectorStateEditorPayload)
   toggleEditing()

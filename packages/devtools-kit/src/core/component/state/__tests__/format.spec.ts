@@ -69,3 +69,52 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
     })
   })
 })
+
+describe('format: toEdit', () => {
+  // eslint-disable-next-line test/consistent-test-it
+  test.each([
+    { value: 123, target: '123' },
+    { value: 'string-value', target: '"string-value"' },
+    { value: true, target: 'true' },
+    { value: null, target: 'null' },
+    // Tokenlized values
+    { value: INFINITY, target: 'Infinity' },
+    { value: NAN, target: 'NaN' },
+    { value: NEGATIVE_INFINITY, target: '-Infinity' },
+    { value: UNDEFINED, target: 'undefined' },
+    // Object that has tokenlized values
+    { value: { foo: INFINITY }, target: '{"foo":Infinity}' },
+    { value: { foo: NAN }, target: '{"foo":NaN}' },
+    { value: { foo: NEGATIVE_INFINITY }, target: '{"foo":-Infinity}' },
+    { value: { foo: UNDEFINED }, target: '{"foo":undefined}' },
+  ])('value: $value will be deserialized to target', (value) => {
+    const deserialized = format.toEdit(value.value)
+    expect(deserialized).toBe(value.target)
+  })
+})
+
+describe('format: toSubmit', () => {
+  // eslint-disable-next-line test/consistent-test-it
+  test.each([
+    { value: '123', target: 123 },
+    { value: '"string-value"', target: 'string-value' },
+    { value: 'true', target: true },
+    { value: 'null', target: null },
+    // Tokenlized values
+    { value: 'Infinity', target: Number.POSITIVE_INFINITY },
+    { value: 'NaN', target: Number.NaN },
+    { value: '-Infinity', target: Number.NEGATIVE_INFINITY },
+    { value: 'undefined', target: undefined },
+    // // Object that has tokenlized values
+    { value: '{"foo":Infinity}', target: { foo: Number.POSITIVE_INFINITY } },
+    { value: '{"foo":NaN}', target: { foo: Number.NaN } },
+    { value: '{"foo":-Infinity}', target: { foo: Number.NEGATIVE_INFINITY } },
+    // when serializing { key: undefined }, the key will be removed.
+    { value: '{"foo":undefined}', target: {} },
+    // Regex test: The token in key field kept untouched.
+    { value: '{"undefined": NaN }', target: { undefined: Number.NaN } },
+  ])('value: $value will be serialized to target', (value) => {
+    const serialized = format.toSubmit(value.value)
+    expect(serialized).toStrictEqual(value.target)
+  })
+})

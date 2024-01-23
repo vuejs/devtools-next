@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { debounce } from 'perfect-debounce'
+import { toSubmit } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   modelValue: string
@@ -33,7 +35,7 @@ const value = useVModel(props, 'modelValue', emit)
 
 function tryToParseJSONString(v: unknown) {
   try {
-    JSON.parse(v as string)
+    toSubmit(v as string)
     return true
   }
   catch {
@@ -41,22 +43,11 @@ function tryToParseJSONString(v: unknown) {
   }
 }
 
-const isWarning = computed(() =>
-  // warning if is empty or is NaN if is a numeric value
-  // or is not a valid Object if is an object
-  value.value.trim().length === 0
-  || (
-    props.type === 'number'
-      ? Number.isNaN(Number(value.value))
-      : false
-  )
-  // @TODO: maybe a better way to check? use JSON.parse is not a performance-friendly way
-  || (
-    props.type === 'object'
-      ? !tryToParseJSONString(value.value)
-      : false
-  ),
-)
+const isWarning = ref(false)
+const checkWarning = () => debounce(() => {
+  isWarning.value = !tryToParseJSONString(value.value)
+}, 300)
+watch(value, checkWarning())
 </script>
 
 <template>

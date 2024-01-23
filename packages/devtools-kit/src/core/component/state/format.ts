@@ -92,11 +92,12 @@ export function getRawValue(value: InspectorState['value']) {
   let inherit = {}
   if (isCustom) {
     const data = value as InspectorCustomState
-    const nestedCustom = typeof data._custom?.value === 'object' && '_custom' in data._custom.value
-      ? getRawValue(data._custom?.value)
+    const customValue = data._custom?.value
+    const nestedCustom = typeof customValue === 'object' && customValue !== null && '_custom' in customValue
+      ? getRawValue(customValue)
       : { inherit: undefined, value: undefined }
     inherit = nestedCustom.inherit || data._custom?.fields || {}
-    value = nestedCustom.value || data._custom?.value as string
+    value = nestedCustom.value || customValue as string
   }
   // @ts-expect-error @TODO: type
   if (value && value._isArray)

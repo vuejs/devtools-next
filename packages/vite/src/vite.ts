@@ -153,7 +153,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         tags: [
           {
             tag: 'script',
-            injectTo: 'head',
+            injectTo: 'head-prepend',
             attrs: {
               type: 'module',
               src: `${config.base || '/'}@id/virtual:vue-devtools-path:overlay.js`,
@@ -162,7 +162,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
           // inject inspector script manually to ensure it's loaded after vue-devtools
           {
             tag: 'script',
-            injectTo: 'head',
+            injectTo: 'head-prepend',
             attrs: {
               type: 'module',
               src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,

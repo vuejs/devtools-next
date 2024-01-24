@@ -7,6 +7,7 @@ const GUIDES: DefaultTheme.NavItemWithLink[] = [
   { text: 'Getting Started', link: '/guide/getting-started' },
   { text: 'Features', link: '/guide/features' },
   { text: 'Contributing', link: '/guide/contributing' },
+  { text: 'FAQ', link: '/guide/faq' },
   { text: 'Vite Plugin', link: '/guide/vite-plugin' },
   { text: 'Browser Extension', link: '/guide/browser-extension' },
   { text: 'Standalone App', link: '/guide/standalone' },

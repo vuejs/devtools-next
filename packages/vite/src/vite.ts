@@ -72,9 +72,6 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
 
   let config: ResolvedConfig
 
-  let moduleTotal = 0
-  let urlTotal = 0
-
   function configureServer(server: ViteDevServer) {
     const base = (server.config.base) || '/'
     server.middlewares.use(`${base}__devtools__`, sirv(DIR_CLIENT, {
@@ -90,27 +87,6 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       ...setupGraphRPC({
         rpc: inspect.api.rpc,
       }),
-    })
-
-    server.ws.on('connection', () => {
-      moduleTotal = server.moduleGraph.safeModulesPath.size
-    })
-
-    server.ws.on('close', () => {
-      moduleTotal = 0
-      urlTotal = 0
-    })
-
-    server.middlewares.use((req, res, next) => {
-      urlTotal++
-
-      if (moduleTotal && urlTotal && urlTotal > moduleTotal) {
-        moduleTotal = urlTotal
-        server.ws.send('test-module-update')
-        console.log('server update trigger')
-      }
-
-      next()
     })
 
     const _printUrls = server.printUrls

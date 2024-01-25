@@ -27,7 +27,7 @@ import WaitForConnection from '~/components/WaitForConnection.vue'
 import 'uno.css'
 import '~/assets/styles/main.css'
 
-async function getViteHotContext() {
+export async function getViteHotContext() {
   if (import.meta.url?.includes('chrome-extension://'))
     return
 

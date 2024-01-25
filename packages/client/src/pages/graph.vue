@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { Network } from 'vis-network'
+import { getViteHotContext } from '~/main'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
@@ -37,6 +38,29 @@ function mountNetwork() {
       network.moveTo({ position: { x: 0, y: 0 } })
   })
 }
+
+async function testModuleUpdate() {
+  const hotContext = await getViteHotContext()
+  if (hotContext) {
+    console.log('inner-hot-context')
+    hotContext.on('test-module-update', () => {
+      console.log('inner-client-test-module-update')
+
+      // doesn't work
+      bridgeRpc
+        .root()
+        .then(r => console.log('bridgeRpc root => ', r))
+        .catch(e => console.log('bridgeRpc root error => ', e))
+
+      // work
+      // fetch('http://httpbin.org/get?abc=def')
+      //   .then(r => r.json())
+      //   .then(console.log)
+    })
+  }
+}
+
+testModuleUpdate()
 
 onMounted(() => {
   mountNetwork()

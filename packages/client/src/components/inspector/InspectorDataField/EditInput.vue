@@ -54,16 +54,16 @@ watch(value, checkWarning())
   <span class="flex-inline items-center gap4px">
     <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="h25px w120px px4px" :auto-focus="autoFocus" @click.stop />
     <template v-if="showActions">
+      <VueButton
+        v-tooltip="{
+          content: 'Esc to cancel',
+        }" size="mini" flat class="p2px!" @click.stop="$emit('cancel')"
+      >
+        <template #icon>
+          <VueIcon icon="i-material-symbols-cancel" />
+        </template>
+      </VueButton>
       <template v-if="!isWarning">
-        <VueButton
-          v-tooltip="{
-            content: 'Esc to cancel',
-          }" size="mini" flat class="p2px!" @click.stop="$emit('cancel')"
-        >
-          <template #icon>
-            <VueIcon icon="i-material-symbols-cancel" />
-          </template>
-        </VueButton>
         <VueButton
           v-tooltip="{
             content: 'Enter to submit change',
@@ -74,7 +74,11 @@ watch(value, checkWarning())
           </template>
         </VueButton>
       </template>
-      <VueIcon v-else icon="i-material-symbols-warning" class="color-warning-500 dark:color-warning-300" />
+      <VueIcon
+        v-else v-tooltip="{
+          content: 'Invalid value',
+        }" icon="i-material-symbols-warning" class="color-warning-500 dark:color-warning-300"
+      />
     </template>
   </span>
 </template>

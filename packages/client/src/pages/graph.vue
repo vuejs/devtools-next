@@ -1,31 +1,38 @@
 <script setup lang="ts">
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { Network } from 'vis-network'
-import { createRPCClient } from 'vite-dev-rpc'
-import { getViteHotContext } from '~/main'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-onDevToolsClientConnected(async () => {
+async function fetch() {
   const root = await bridgeRpc.root()
   bridgeRpc.getGraph().then((res) => {
     parseGraphRawData(res, root)
   })
+}
 
-  createRPCClient('vite-plugin-inspect', (await getViteHotContext())!, {
-    async moduleUpdated() {
-      console.log('love from vite-plugin-inspect')
-      try {
-        const root = await bridgeRpc.root()
-        console.log('root => ', root)
-      }
-      catch (error) {
-        console.log('root error => ', error)
-      }
-    },
-  }, {
-    timeout: -1,
+let cleanupModuleUpdatedEffect: Function
+
+onDevToolsClientConnected(() => {
+  fetch()
+  cleanupModuleUpdatedEffect = bridgeRpc.graphModuleUpdated(() => {
+    fetch()
   })
+
+  // createRPCClient('vite-plugin-inspect', (await getViteHotContext())!, {
+  //   async moduleUpdated() {
+  //     console.log('love from vite-plugin-inspect')
+  //     try {
+  //       const root = await bridgeRpc.root()
+  //       console.log('root => ', root)
+  //     }
+  //     catch (error) {
+  //       console.log('root error => ', error)
+  //     }
+  //   },
+  // }, {
+  //   timeout: -1,
+  // })
 })
 
 const container = ref<HTMLDivElement>()
@@ -62,6 +69,7 @@ onMounted(() => {
 onUnmounted(() => {
   cleanupGraphRelatedStates()
   networkRef.value?.destroy()
+  cleanupModuleUpdatedEffect?.()
 })
 
 const navbarRef = ref<HTMLElement>()

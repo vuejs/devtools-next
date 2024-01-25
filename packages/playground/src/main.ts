@@ -8,7 +8,8 @@ import { addCustomCommand, addCustomTab } from '@vue/devtools-api'
 import App2 from './App.vue'
 import App from './App.preview.vue'
 import Home from './pages/Home.vue'
-import Hello from './pages/Hello.vue'
+
+// import Hello from './pages/Hello.vue'
 import Hey from './pages/Hey.vue'
 import './style.css'
 
@@ -33,7 +34,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/hello',
-    component: Hello,
+    // component: Hello,
+    component: () => import('./pages/Hello.vue'),
     name: 'hello',
   },
   {

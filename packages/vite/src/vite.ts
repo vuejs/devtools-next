@@ -78,7 +78,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       single: true,
       dev: true,
     }))
-    setupViteRPCServer(server.ws, {
+    const rpcServer = setupViteRPCServer(server.ws, {
       root: () => config.root,
       ...setupAssetsRPC({
         root: config.root,
@@ -86,6 +86,8 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       }),
       ...setupGraphRPC({
         rpc: inspect.api.rpc,
+        server,
+        getRpcServer: () => rpcServer,
       }),
     })
 

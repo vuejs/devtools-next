@@ -37,9 +37,9 @@
     "pathe": "^1.1.2",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.8.1"
+    "vite-plugin-inspect": "^0.8.2"
   },
   "devDependencies": {
-    "vue": "^3.4.14"
+    "vue": "^3.4.15"
   }
 }

@@ -55,11 +55,11 @@
     "birpc": "^0.2.14",
     "execa": "^8.0.1",
     "sirv": "^2.0.4",
-    "vite-plugin-inspect": "^0.8.1",
+    "vite-plugin-inspect": "^0.8.2",
     "vite-plugin-vue-inspector": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.11.6",
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.0",
     "pathe": "^1.1.2"

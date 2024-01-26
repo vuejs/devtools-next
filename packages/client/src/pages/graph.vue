@@ -4,10 +4,19 @@ import { Network } from 'vis-network'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-onDevToolsClientConnected(async () => {
+async function fetchGraph() {
   const root = await bridgeRpc.root()
   bridgeRpc.getGraph().then((res) => {
     parseGraphRawData(res, root)
+  })
+}
+
+let cleanupModuleUpdatedEffect: Function
+
+onDevToolsClientConnected(() => {
+  fetchGraph()
+  cleanupModuleUpdatedEffect = bridgeRpc.graphModuleUpdated(() => {
+    fetchGraph()
   })
 })
 
@@ -45,6 +54,7 @@ onMounted(() => {
 onUnmounted(() => {
   cleanupGraphRelatedStates()
   networkRef.value?.destroy()
+  cleanupModuleUpdatedEffect?.()
 })
 
 const navbarRef = ref<HTMLElement>()

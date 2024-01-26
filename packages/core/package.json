@@ -35,9 +35,10 @@
     "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
     "pathe": "^1.1.2",
+    "perfect-debounce": "^1.0.0",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.8.2"
+    "vite-plugin-inspect": "^0.8.3"
   },
   "devDependencies": {
     "vue": "^3.4.15"

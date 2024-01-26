@@ -55,7 +55,7 @@
     "birpc": "^0.2.14",
     "execa": "^8.0.1",
     "sirv": "^2.0.4",
-    "vite-plugin-inspect": "^0.8.2",
+    "vite-plugin-inspect": "^0.8.3",
     "vite-plugin-vue-inspector": "^4.0.2"
   },
   "devDependencies": {

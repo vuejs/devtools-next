@@ -13,6 +13,7 @@ describe('hook', () => {
     const app = mount(App, {
       attachTo: document.body,
     })
+
     await new Promise(() => {})
   })
 })

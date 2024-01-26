@@ -4,16 +4,16 @@ import type { MaybeRefOrGetter } from '@vueuse/core'
 export interface UseHoverOptions {
   enter?: () => void
   leave?: () => void
-  initital?: boolean
+  initial?: boolean
 }
 
 export function useHover(el: MaybeRefOrGetter<HTMLElement | null | undefined>, options: UseHoverOptions = {}) {
   const {
     enter = () => { },
     leave = () => { },
-    initital = false,
+    initial = false,
   } = options
-  const isHovering = ref(initital)
+  const isHovering = ref(initial)
 
   useEventListener(el, 'mouseenter', () => {
     isHovering.value = true

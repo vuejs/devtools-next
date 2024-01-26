@@ -39,7 +39,6 @@
     "shikiji": "^0.9.19",
     "splitpanes": "^3.1.5",
     "vis-network": "^9.1.9",
-    "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
     "vue-router": "^4.2.5",
     "vue-virtual-scroller": "2.0.0-beta.8"

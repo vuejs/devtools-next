@@ -4,7 +4,7 @@ import { Network } from 'vis-network'
 
 const bridgeRpc = useDevToolsBridgeRpc()
 
-async function fetch() {
+async function fetchGraph() {
   const root = await bridgeRpc.root()
   bridgeRpc.getGraph().then((res) => {
     parseGraphRawData(res, root)
@@ -14,25 +14,10 @@ async function fetch() {
 let cleanupModuleUpdatedEffect: Function
 
 onDevToolsClientConnected(() => {
-  fetch()
+  fetchGraph()
   cleanupModuleUpdatedEffect = bridgeRpc.graphModuleUpdated(() => {
-    fetch()
+    fetchGraph()
   })
-
-  // createRPCClient('vite-plugin-inspect', (await getViteHotContext())!, {
-  //   async moduleUpdated() {
-  //     console.log('love from vite-plugin-inspect')
-  //     try {
-  //       const root = await bridgeRpc.root()
-  //       console.log('root => ', root)
-  //     }
-  //     catch (error) {
-  //       console.log('root error => ', error)
-  //     }
-  //   },
-  // }, {
-  //   timeout: -1,
-  // })
 })
 
 const container = ref<HTMLDivElement>()

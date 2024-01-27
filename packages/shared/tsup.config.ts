@@ -1,16 +1,12 @@
-import type { Options } from 'tsup'
+import { defineConfig } from 'tsup'
 
-export default <Options>{
+export default defineConfig({
   entryPoints: [
     'src/index.ts',
   ],
-  esbuildOptions(options) {
-    if (options.format === 'esm')
-      options.outExtension = { '.js': '.mjs' }
-  },
   clean: true,
   format: ['esm', 'cjs'],
   dts: true,
   shims: true,
   noExternal: ['rfdc'],
-}
+})

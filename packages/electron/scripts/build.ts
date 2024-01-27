@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises'
 import { resolve as _resolve } from 'pathe'
 import type { Options } from 'tsup'
 import { build } from 'tsup'
@@ -12,9 +13,7 @@ const baseOptions = {
   dts: true,
   format: ['cjs', 'esm'],
   esbuildOptions(options) {
-    if (options.format === 'esm')
-      options.outExtension = { '.js': '.mjs' }
-    else if (options.format === 'iife')
+    if (options.format === 'iife')
       options.outExtension = { '.js': '.js' }
   },
   watch: enableWatch,
@@ -29,6 +28,8 @@ function resolve(path: string) {
 }
 
 async function buildBundle() {
+  await fs.rm(resolve('./dist'), { recursive: true, force: true })
+
   unbuild('', enableWatch, {
     declaration: true,
     clean: false,

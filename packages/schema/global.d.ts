@@ -1,4 +1,3 @@
-import type { BridgeInstanceType } from '../core/src/bridge/core'
 import type { DevToolsContext } from './src/types/context'
 import type { DevtoolsHook } from './src/types/hook'
 import type { AppRecord, DevToolsState } from './src/types/vue'
@@ -7,9 +6,12 @@ import type { AppRecord, DevToolsState } from './src/types/vue'
 declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook
   var __VUE_DEVTOOLS_CLIENT_URL__: string
-  var __VUE_DEVTOOLS_BRIDGE__: BridgeInstanceType
-  var __VUE_DEVTOOLS_OVERLAY_BRIDGE__: BridgeInstanceType
-  var __VUE_DEVTOOLS_PANEL_BRIDGE__: BridgeInstanceType
+
+  // FIXME: the type should be BridgeInstanceType
+  var __VUE_DEVTOOLS_BRIDGE__: any
+  var __VUE_DEVTOOLS_OVERLAY_BRIDGE__: any
+  var __VUE_DEVTOOLS_PANEL_BRIDGE__: any
+
   var __VUE_DEVTOOLS_CLIENT_CONNECTED__: boolean
   // app record info
   var __VUE_DEVTOOLS_APP_RECORDS__: AppRecord[]

@@ -5,6 +5,8 @@ import { createHooks } from 'hookable'
 import type { App } from 'vue'
 import { DevToolsHooks } from './types'
 
+export { DevToolsHooks } from './types'
+
 type HookAppInstance = App & VueAppInstance
 interface DevToolsEvent {
   [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
@@ -122,4 +124,4 @@ export function subscribeDevToolsHook() {
 
 export const hook = {
   on,
-}
+} as const

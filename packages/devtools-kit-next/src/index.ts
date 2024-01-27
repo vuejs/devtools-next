@@ -1,9 +1,10 @@
 import { initDevTools } from './core/index'
+import { hook } from './hook'
 
 export const devtools = {
-  hook: {},
+  hook,
   init: initDevTools,
   get api() {
     return {}
   },
-}
+} as const

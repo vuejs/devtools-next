@@ -51,7 +51,7 @@
     "build:browser-extension": "nr -C packages/browser-extension build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:packages": "pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,schema,shared}' exec publint && pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,schema,shared}' exec attw --pack",
+    "lint:packages": "pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared}' exec publint && pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared}' exec attw --pack",
     "prepublishOnly": "npm run build",
     "release": "bumpp -r && nr build && pnpm -r publish --access public",
     "release:beta": "bumpp -r && nr build && pnpm -r publish --access public --tag beta",

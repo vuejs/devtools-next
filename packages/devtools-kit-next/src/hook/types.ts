@@ -1,5 +1,7 @@
-import type { AppRecord } from '@vue/devtools-schema'
+import type { AppRecord, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue/devtools-schema'
+import type { App } from 'vue'
 
+type HookAppInstance = App & VueAppInstance
 export enum DevToolsHooks {
   // internal
   APP_INIT = 'app:init',
@@ -18,15 +20,35 @@ export enum DevToolsHooks {
   SETUP_DEVTOOLS_PLUGIN = 'devtools-plugin:setup',
 }
 
-export interface DevtoolsHook {
+export interface DevToolsEvent {
+  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
+  [DevToolsHooks.APP_CONNECTED]: () => void
+  [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
+  [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
+  [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
+  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
+}
+
+export interface DevToolsHook {
   id: string
   enabled?: boolean
   events: Map<DevToolsHooks, Function[]>
   emit: (event: DevToolsHooks, ...payload: any[]) => void
-  on: (event: DevToolsHooks, handler: Function) => () => void
-  once: (event: DevToolsHooks, handler: Function) => void
-  off: (event: DevToolsHooks, handler: Function) => void
+  on: <T extends Function>(event: DevToolsHooks, handler: T) => () => void
+  once: <T extends Function>(event: DevToolsHooks, handler: T) => void
+  off: <T extends Function>(event: DevToolsHooks, handler: T) => void
   appRecords: AppRecord[]
   apps: Record<number, { componentCount: number }>
   cleanupBuffer?: (matchArg: unknown) => boolean
+}
+
+export interface VueHooks {
+  on: {
+    vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]): void
+    vueAppConnected(fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]): void
+    componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]): () => void
+    componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]): () => void
+    componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]): () => void
+    setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]): void
+  }
 }

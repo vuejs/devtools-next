@@ -7,4 +7,4 @@ export const devtools = {
   get api() {
     return {}
   },
-} as const
+}

@@ -13,7 +13,9 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "types": "./types.d.ts",
   "files": [
+    "**.d.ts",
     "dist"
   ],
   "scripts": {

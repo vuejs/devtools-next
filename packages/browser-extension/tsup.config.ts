@@ -1,6 +1,6 @@
-import type { Options } from 'tsup'
+import { defineConfig } from 'tsup'
 
-export default <Options>{
+export default defineConfig({
   entryPoints: [
     'src/*.ts',
   ],
@@ -17,4 +17,4 @@ export default <Options>{
   format: ['iife'],
   dts: true,
   shims: true,
-}
+})

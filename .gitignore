@@ -97,3 +97,6 @@ docs/.vitepress/cache/
 
 # for scripts
 clones
+
+.DS_Store
+*.timestamp-*.*

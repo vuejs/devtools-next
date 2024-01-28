@@ -5,7 +5,7 @@ import type { AppRecord, DevToolsState } from './src/types/vue'
 
 /* eslint-disable vars-on-top, no-var */
 declare global {
-  var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook
+  var __VUE_DEVTOOLS_GLOBAL_HOOK__: any
   var __VUE_DEVTOOLS_CLIENT_URL__: string
   var __VUE_DEVTOOLS_BRIDGE__: BridgeInstanceType
   var __VUE_DEVTOOLS_OVERLAY_BRIDGE__: BridgeInstanceType

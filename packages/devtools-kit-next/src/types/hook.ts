@@ -1,5 +1,5 @@
-import type { AppRecord, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue/devtools-schema'
 import type { App } from 'vue'
+import type { AppRecord, PluginDescriptor, PluginSetupFunction, VueAppInstance } from './app'
 
 type HookAppInstance = App & VueAppInstance
 export enum DevToolsHooks {

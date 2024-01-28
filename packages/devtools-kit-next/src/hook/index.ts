@@ -1,9 +1,9 @@
 import { target } from '@vue/devtools-shared'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
-import { DevToolsEvent, DevToolsHook, DevToolsHooks, VueHooks } from './types'
+import { DevToolsEvent, DevToolsHook, DevToolsHooks, VueHooks } from '../types'
 
-export { VueHooks } from './types'
+export { VueHooks } from '../types'
 
 export const devtoolsHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_HOOK ??= createHooks<DevToolsEvent>()
 

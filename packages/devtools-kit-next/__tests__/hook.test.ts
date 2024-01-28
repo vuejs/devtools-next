@@ -18,4 +18,20 @@ describe('hook', () => {
       })
     })
   })
+
+  it('should work w/ component updated hook', async () => {
+    await new Promise<void>((resolve) => {
+      devtools.init()
+
+      devtools.hook.on.componentUpdated((_, __, ___, component) => {
+        expect(component.setupState.count).toBe(10)
+        resolve()
+      })
+
+      const app = mount<{}, { }, { count: number, visible: boolean }>(App, {
+        attachTo: document.body,
+      })
+      app.vm.count = 10
+    })
+  })
 })

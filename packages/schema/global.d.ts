@@ -1,5 +1,4 @@
 import type { DevToolsContext } from './src/types/context'
-import type { DevtoolsHook } from './src/types/hook'
 import type { AppRecord, DevToolsState } from './src/types/vue'
 
 /* eslint-disable vars-on-top, no-var */

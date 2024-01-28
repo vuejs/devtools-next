@@ -1,4 +1,4 @@
-import type { App, ComponentInternalInstance, ComponentOptions, ConcreteComponent, SuspenseBoundary, VNode } from 'vue'
+import type { App, ComponentInternalInstance, ComponentOptions, SuspenseBoundary } from 'vue'
 
 // @TODO
 export type PluginApi = any

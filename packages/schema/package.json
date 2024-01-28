@@ -1,18 +1,18 @@
 {
   "name": "@vue/devtools-schema",
   "type": "module",
-  "version": "7.0.11",
+  "version": "7.0.13",
   "author": "webfansplz",
   "license": "MIT",
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./types.d.ts",
   "files": [
     "**.d.ts",

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { debounce } from 'perfect-debounce'
+import { toSubmit } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   modelValue: string
@@ -33,7 +35,7 @@ const value = useVModel(props, 'modelValue', emit)
 
 function tryToParseJSONString(v: unknown) {
   try {
-    JSON.parse(v as string)
+    toSubmit(v as string)
     return true
   }
   catch {
@@ -41,38 +43,27 @@ function tryToParseJSONString(v: unknown) {
   }
 }
 
-const isWarning = computed(() =>
-  // warning if is empty or is NaN if is a numeric value
-  // or is not a valid Object if is an object
-  value.value.trim().length === 0
-  || (
-    props.type === 'number'
-      ? Number.isNaN(Number(value.value))
-      : false
-  )
-  // @TODO: maybe a better way to check? use JSON.parse is not a performance-friendly way
-  || (
-    props.type === 'object'
-      ? !tryToParseJSONString(value.value)
-      : false
-  ),
-)
+const isWarning = ref(false)
+const checkWarning = () => debounce(() => {
+  isWarning.value = !tryToParseJSONString(value.value)
+}, 300)
+watch(value, checkWarning())
 </script>
 
 <template>
   <span class="flex-inline items-center gap4px">
     <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="h25px w120px px4px" :auto-focus="autoFocus" @click.stop />
     <template v-if="showActions">
+      <VueButton
+        v-tooltip="{
+          content: 'Esc to cancel',
+        }" size="mini" flat class="p2px!" @click.stop="$emit('cancel')"
+      >
+        <template #icon>
+          <VueIcon icon="i-material-symbols-cancel" />
+        </template>
+      </VueButton>
       <template v-if="!isWarning">
-        <VueButton
-          v-tooltip="{
-            content: 'Esc to cancel',
-          }" size="mini" flat class="p2px!" @click.stop="$emit('cancel')"
-        >
-          <template #icon>
-            <VueIcon icon="i-material-symbols-cancel" />
-          </template>
-        </VueButton>
         <VueButton
           v-tooltip="{
             content: 'Enter to submit change',
@@ -83,7 +74,11 @@ const isWarning = computed(() =>
           </template>
         </VueButton>
       </template>
-      <VueIcon v-else icon="i-material-symbols-warning" class="color-warning-500 dark:color-warning-300" />
+      <VueIcon
+        v-else v-tooltip="{
+          content: 'Invalid value',
+        }" icon="i-material-symbols-warning" class="color-warning-500 dark:color-warning-300"
+      />
     </template>
   </span>
 </template>

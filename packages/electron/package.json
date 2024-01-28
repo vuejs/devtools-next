@@ -1,12 +1,12 @@
 {
   "name": "@vue/devtools-electron",
   "type": "module",
-  "version": "7.0.11",
+  "version": "7.0.13",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
     "./*": "./*",
@@ -16,10 +16,10 @@
     }
   },
   "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "module": "dist/index.js",
   "files": [
     "app.html",
+    "cli.d.ts",
     "client",
     "dist",
     "icons"
@@ -33,7 +33,7 @@
   "dependencies": {
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^28.1.4",
+    "electron": "^28.2.0",
     "execa": "^8.0.1",
     "h3": "^1.10.0",
     "ip": "^1.1.8",
@@ -45,6 +45,6 @@
     "@vitejs/plugin-vue": "^5.0.3",
     "tsx": "^4.7.0",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.14"
+    "vue": "^3.4.15"
   }
 }

@@ -1,25 +1,24 @@
 {
   "name": "@vue/devtools-core",
   "type": "module",
-  "version": "7.0.11",
+  "version": "7.0.13",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
     "./server": {
-      "types": "./dist/server/index.d.ts",
-      "import": "./dist/server/index.mjs",
+      "import": "./dist/server/index.js",
       "require": "./dist/server/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "server.d.ts"
   ],
   "scripts": {
     "build": "tsup --clean",
@@ -35,11 +34,12 @@
     "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
     "pathe": "^1.1.2",
+    "perfect-debounce": "^1.0.0",
     "vite-dev-rpc": "^0.1.4",
     "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.8.1"
+    "vite-plugin-inspect": "^0.8.3"
   },
   "devDependencies": {
-    "vue": "^3.4.14"
+    "vue": "^3.4.15"
   }
 }

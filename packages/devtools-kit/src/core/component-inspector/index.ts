@@ -45,7 +45,7 @@ const indicatorStyles = {
   opacity: 0.7,
 }
 
-function getCotainerElement() {
+function getContainerElement() {
   return document.getElementById(CONTAINER_ELEMENT_ID)
 }
 
@@ -108,7 +108,7 @@ function create(options: ToggleComponentInspectorOptions & { elementId?: string,
 }
 
 function update(options: ToggleComponentInspectorOptions) {
-  const containerEl = getCotainerElement()
+  const containerEl = getContainerElement()
   const cardEl = getCardElement()!
   const nameEl = getNameElement()!
   const indicatorEl = getIndicatorElement()!
@@ -131,12 +131,12 @@ export function toggleComponentInspector(options: ToggleComponentInspectorOption
     const instance = getComponentInstance(devtoolsContext.appRecord!, options.id)
     if (instance && (options.bounds.width || options.bounds.height)) {
       const name = getInstanceName(instance)
-      const el = getCotainerElement()
+      const el = getContainerElement()
       el ? update({ ...options, name }) : create({ ...options, name })
     }
   }
   else {
-    const el = getCotainerElement()
+    const el = getContainerElement()
     if (el)
       el.style.display = 'none'
   }
@@ -145,12 +145,12 @@ export function toggleComponentInspector(options: ToggleComponentInspectorOption
 export function highlight(instance: VueAppInstance) {
   const bounds = getComponentBoundingRect(instance)
   const name = getInstanceName(instance)
-  const container = getCotainerElement()
+  const container = getContainerElement()
   container ? update({ bounds, name }) : create({ bounds, name })
 }
 
 export function unhighlight() {
-  const el = getCotainerElement()
+  const el = getContainerElement()
   if (el)
     el.style.display = 'none'
 }
@@ -166,7 +166,7 @@ function inspectFn(e: MouseEvent) {
       if (el) {
         const bounds = getComponentBoundingRect(instance)
         const name = getInstanceName(instance)
-        const container = getCotainerElement()
+        const container = getContainerElement()
         container ? update({ bounds, name }) : create({ bounds, name })
       }
     }
@@ -197,7 +197,7 @@ export function inspectComponentInspector() {
       selectComponentFn(e, (id: string) => {
         window.removeEventListener('click', onSelect)
         window.removeEventListener('mouseover', inspectFn)
-        const el = getCotainerElement()
+        const el = getContainerElement()
         if (el)
           el.style.display = 'none'
         resolve(JSON.stringify({ id }))
@@ -239,7 +239,7 @@ export function scrollToComponent(options: ScrollToComponentOptions) {
       const bounds = getComponentBoundingRect(instance)
       if (bounds.width || bounds.height) {
         const name = getInstanceName(instance)
-        const el = getCotainerElement()
+        const el = getContainerElement()
         el ? update({ ...options, name, bounds }) : create({ ...options, name, bounds })
         setTimeout(() => {
           if (el)

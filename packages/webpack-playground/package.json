@@ -6,15 +6,15 @@
     "not ie 11"
   ],
   "name": "@vue/devtools-webpack-playground",
-  "version": "7.0.11",
+  "version": "7.0.13",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.35.0",
-    "vue": "^3.4.14"
+    "core-js": "^3.35.1",
+    "vue": "^3.4.15"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",

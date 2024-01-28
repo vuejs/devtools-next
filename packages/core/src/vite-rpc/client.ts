@@ -3,9 +3,18 @@ import { createRPCClient } from 'vite-dev-rpc'
 import type { BirpcReturn } from 'birpc'
 import type { ViteRPCFunctions } from './types'
 
-export function setupViteRPCClient(ctx: ViteHotContext | undefined): BirpcReturn<ViteRPCFunctions, unknown> {
+export interface SetupViteRPCClientOptions {
+  moduleUpdated?: () => void
+}
+export function setupViteRPCClient(ctx: ViteHotContext | undefined, options: SetupViteRPCClientOptions = {}): BirpcReturn<ViteRPCFunctions, unknown> {
   if (!ctx)
     return null!
-  const rpcClient = createRPCClient<ViteRPCFunctions>('vite-plugin-vue-devtools', ctx, {})
+
+  const { moduleUpdated = () => {} } = options
+  const rpcClient = createRPCClient<ViteRPCFunctions>('vite-plugin-vue-devtools', ctx, {
+    moduleUpdated,
+  }, {
+    timeout: -1,
+  })
   return rpcClient
 }

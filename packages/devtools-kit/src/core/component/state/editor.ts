@@ -96,9 +96,8 @@ class RefStateEditor {
     else {
       // if is reactive, then it must be object
       // to prevent loss reactivity, we should assign key by key
-      const obj = JSON.parse(value)
       const previousKeys = Object.keys(ref)
-      const currentKeys = Object.keys(obj)
+      const currentKeys = Object.keys(value)
       // we should check the key diffs, if previous key is the longer
       // then remove the needless keys
       // @TODO: performance optimization
@@ -107,7 +106,7 @@ class RefStateEditor {
         diffKeys.forEach(key => Reflect.deleteProperty(ref, key))
       }
       currentKeys.forEach((key) => {
-        Reflect.set(ref, key, Reflect.get(obj, key))
+        Reflect.set(ref, key, Reflect.get(value, key))
       })
     }
   }

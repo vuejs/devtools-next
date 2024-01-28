@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VTooltip as vTooltip } from '@vue/devtools-ui'
+
 const props = defineProps<{
   filepath: string
   lineBreak?: boolean
@@ -7,13 +9,15 @@ const props = defineProps<{
 
 const parsed = computed(() => ({ path: props.filepath }),
 )
+
+const { copy } = useCopy()
 </script>
 
 <template>
   <button
-    font-mono hover:underline
+    v-tooltip="'Copy file path'" font-mono hover:underline
     :class="lineBreak ? '' : 'ws-nowrap of-hidden truncate'"
-    :title="filepath"
+    :title="filepath" @click="copy(filepath)"
   >
     {{ parsed.path }}
   </button>

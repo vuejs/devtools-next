@@ -1,14 +1,10 @@
-import type { Options } from 'tsup'
+import { defineConfig } from 'tsup'
 
-export default <Options>{
+export default defineConfig({
   entryPoints: [
     'src/index.ts',
     'src/server/index.ts',
   ],
-  esbuildOptions(options) {
-    if (options.format === 'esm')
-      options.outExtension = { '.js': '.mjs' }
-  },
   external: [
     'vue',
     'node:fs/promises',
@@ -20,4 +16,4 @@ export default <Options>{
   format: ['esm', 'cjs'],
   dts: true,
   shims: true,
-}
+})

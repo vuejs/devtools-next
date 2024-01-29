@@ -189,9 +189,9 @@ importers:
       minimatch:
         specifier: ^9.0.3
         version: 9.0.3
-      shikiji:
-        specifier: ^0.9.19
-        version: 0.9.19
+      shiki:
+        specifier: 1.0.0-beta.0
+        version: 1.0.0-beta.0
       splitpanes:
         specifier: ^3.1.5
         version: 3.1.5
@@ -3712,6 +3712,10 @@ packages:
       colors: 1.2.5
       string-argv: 0.3.2
     dev: true
+
+  /@shikijs/core@1.0.0-beta.0:
+    resolution: {integrity: sha512-uicyrkx379Q5sxQuGV3kduHPWIAkjxmeA5A4J6syscx8wiEyIV06i/Q6s9GeKLCb857Hi90H8e/FoFSbcjnZsw==}
+    dev: false
 
   /@sideway/address@4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
@@ -13463,8 +13467,10 @@ packages:
     deprecated: Please migrate to https://github.com/antfu/shikiji
     dev: true
 
-  /shikiji-core@0.9.19:
-    resolution: {integrity: sha512-AFJu/vcNT21t0e6YrfadZ+9q86gvPum6iywRyt1OtIPjPFe25RQnYJyxHQPMLKCCWA992TPxmEmbNcOZCAJclw==}
+  /shiki@1.0.0-beta.0:
+    resolution: {integrity: sha512-CcP0IhEDQ3LWfJC44cfxfId9pjJi9Nephl8DxgrL4tKWprI/oz6deZyL0vB+XWxhTx/1uonzWQKaSQPwKx5dTA==}
+    dependencies:
+      '@shikijs/core': 1.0.0-beta.0
     dev: false
 
   /shikiji-transformers@0.7.6:
@@ -13478,12 +13484,6 @@ packages:
     dependencies:
       hast-util-to-html: 9.0.0
     dev: true
-
-  /shikiji@0.9.19:
-    resolution: {integrity: sha512-Kw2NHWktdcdypCj1GkKpXH4o6Vxz8B8TykPlPuLHOGSV8VkhoCLcFOH4k19K4LXAQYRQmxg+0X/eM+m2sLhAkg==}
-    dependencies:
-      shikiji-core: 0.9.19
-    dev: false
 
   /side-channel@1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}

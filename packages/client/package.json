@@ -36,7 +36,7 @@
     "colord": "^2.9.3",
     "fuse.js": "^7.0.0",
     "minimatch": "^9.0.3",
-    "shikiji": "^0.9.19",
+    "shiki": "1.0.0-beta.0",
     "splitpanes": "^3.1.5",
     "vis-network": "^9.1.9",
     "vite-hot-client": "^0.2.3",

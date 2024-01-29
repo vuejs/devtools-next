@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import DarkToggle from './components/DarkToggle.vue'
 </script>
 
 <template>
@@ -26,6 +26,9 @@
           /hey/123123
         </span>
       </RouterLink>
+    </div>
+    <div text-center>
+      <DarkToggle />
     </div>
   </div>
 </template>

@@ -157,17 +157,17 @@ const supportsPreview = computed(() => {
 
                 title="Copy public path"
                 icon="i-carbon-copy"
-                action mr1 mt--2px flex-none
+                action mt--2px flex-none
                 :border="false"
                 @click="copy(asset.publicPath, { type: 'assets-public-path' })"
               />
               <RouterLink
+                v-if="asset.isUnderRoot"
                 :to="asset.publicPath"
                 target="_blank"
               >
                 <VueIcon
                   v-tooltip="'Open in Browser'"
-
                   icon="i-carbon-launch"
                   action flex-none
                   :border="false"
@@ -214,29 +214,31 @@ const supportsPreview = computed(() => {
       </tbody>
     </table>
 
-    <div flex="~ gap2" mb--2 items-center op50>
-      <div x-divider />
-      <div flex-none>
-        Actions
+    <template v-if="asset.isUnderRoot">
+      <div flex="~ gap2" mb--2 items-center op50>
+        <div x-divider />
+        <div flex-none>
+          Actions
+        </div>
+        <div x-divider />
       </div>
-      <div x-divider />
-    </div>
-    <div flex="~ gap2 wrap">
-      <VueButton :to="asset.publicPath" download target="_blank">
-        Download
-        <template #icon>
-          <slot name="i-carbon-download" />
-        </template>
-      </VueButton>
-    </div>
+      <div flex="~ gap2 wrap">
+        <VueButton :to="asset.publicPath" download target="_blank">
+          Download
+          <template #icon>
+            <slot name="i-carbon-download" />
+          </template>
+        </VueButton>
+      </div>
 
-    <div flex-auto />
+      <div flex-auto />
 
-    <CodeSnippets
-      v-if="codeSnippets.length"
-      border="t base"
-      mx--4 mb--4
-      :code-snippets="codeSnippets"
-    />
+      <CodeSnippets
+        v-if="codeSnippets.length"
+        border="t base"
+        mx--4 mb--4
+        :code-snippets="codeSnippets"
+      />
+    </template>
   </div>
 </template>

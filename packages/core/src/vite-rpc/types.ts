@@ -7,6 +7,7 @@ export interface AssetInfo {
   filePath: string
   size: number
   mtime: number
+  isUnderRoot: boolean
 }
 export interface ImageMeta {
   width: number

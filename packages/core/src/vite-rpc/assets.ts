@@ -1,6 +1,7 @@
 import fsp from 'node:fs/promises'
+import { cwd } from 'node:process'
 import fg from 'fast-glob'
-import { join, resolve } from 'pathe'
+import { join, relative, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
 import type { AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from './types'
 
@@ -61,8 +62,11 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
   const extensions = defaultAllowedExtensions
 
   async function scan() {
-    const dir = resolve(config.root)
+    const projectRoot = resolve(cwd())
+    const configRoot = resolve(config.root)
+    const relativeConfigRoot = relative(projectRoot, configRoot)
     const baseURL = config.base
+
     const files = await fg([
       // image
       '**/*.(png|jpg|jpeg|gif|svg|webp|avif|ico|bmp|tiff)',
@@ -75,7 +79,7 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
       // text
       '**/*.(json|json5|jsonc|txt|text|tsx|jsx|md|mdx|mdc|markdown|yaml|yml|toml)',
     ], {
-      cwd: dir,
+      cwd: projectRoot,
       onlyFiles: true,
       ignore: [
         '**/node_modules/**',
@@ -87,17 +91,22 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
     })
 
     cache = await Promise.all(files.map(async (path) => {
-      const filePath = resolve(dir, path)
+      const filePath = resolve(projectRoot, path)
       const stat = await fsp.lstat(filePath)
+      const isUnderRoot = isSubPath(resolve(projectRoot, relativeConfigRoot), filePath)
+
       // remove public prefix to resolve vite assets warning
-      path = path.startsWith('public/') ? path.slice(7) : path
+      const publicDir = join(relativeConfigRoot, 'public')
+      const publicPath = path.startsWith(publicDir) ? path.slice(publicDir.length + 1) : path
+
       return {
         path,
-        publicPath: join(baseURL, path),
+        publicPath: join(baseURL, publicPath),
         filePath,
         type: guessType(path),
         size: stat.size,
         mtime: stat.mtimeMs,
+        isUnderRoot,
       }
     }))
     return cache
@@ -132,4 +141,8 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
       }
     },
   } satisfies Partial<ViteRPCFunctions>
+}
+
+function isSubPath(root: string, sub: string) {
+  return resolve(sub).startsWith(resolve(root))
 }

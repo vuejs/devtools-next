@@ -78,9 +78,18 @@ const byTree = computed(() => {
   return root.children
 })
 
-onDevToolsClientConnected(() => {
+let cleanupAssetsUpdatedEffect: Function
+
+function fetchAssets() {
   bridgeRpc.getStaticAssets().then((res) => {
     assets.value = res
+  })
+}
+
+onDevToolsClientConnected(() => {
+  fetchAssets()
+  cleanupAssetsUpdatedEffect = bridgeRpc.assetsUpdated(() => {
+    fetchAssets()
   })
 })
 function toggleView() {

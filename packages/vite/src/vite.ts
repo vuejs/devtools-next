@@ -83,13 +83,19 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       ...setupAssetsRPC({
         root: config.root,
         base,
+        server,
+        getRpcServer,
       }),
       ...setupGraphRPC({
         rpc: inspect.api.rpc,
         server,
-        getRpcServer: () => rpcServer,
+        getRpcServer,
       }),
     })
+
+    function getRpcServer() {
+      return rpcServer
+    }
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>

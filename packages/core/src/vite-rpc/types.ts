@@ -45,4 +45,5 @@ export interface ViteRPCFunctions {
   getImageMeta(filepath: string): Promise<ImageMeta | undefined>
   getTextAssetContent(filepath: string, limit?: number): Promise<string | undefined>
   moduleUpdated: () => void
+  assetsUpdated: () => void
 }

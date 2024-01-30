@@ -1,5 +1,5 @@
 import type { DevToolsContext } from './src/types/context'
-import type { AppRecord, DevToolsState } from './src/types/vue'
+import type { AppRecord } from './src/types/vue'
 
 /* eslint-disable vars-on-top, no-var */
 declare global {
@@ -20,7 +20,7 @@ declare global {
     appIds: Set<string>
   }
   // devtools global state
-  var __VUE_DEVTOOLS_GLOBAL_STATE__: DevToolsState
+  var __VUE_DEVTOOLS_GLOBAL_STATE__: any
   // devtools context
   var __VUE_DEVTOOLS_CONTEXT__: DevToolsContext
   // router

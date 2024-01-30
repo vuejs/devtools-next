@@ -382,6 +382,9 @@ importers:
         specifier: ^14.0.1
         version: 14.0.1
     devDependencies:
+      '@types/speakingurl':
+        specifier: ^13.0.6
+        version: 13.0.6
       vue:
         specifier: ^3.4.14
         version: 3.4.15(typescript@5.3.3)
@@ -4271,6 +4274,10 @@ packages:
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
     dependencies:
       '@types/node': 20.11.6
+    dev: true
+
+  /@types/speakingurl@13.0.6:
+    resolution: {integrity: sha512-ywkRHNHBwq0mFs/2HRgW6TEBAzH66G8f2Txzh1aGR0UC9ZoAUHfHxLZGDhwMpck4BpSnB61eNFIFmlV+TJ+KUA==}
     dev: true
 
   /@types/splitpanes@2.2.6:

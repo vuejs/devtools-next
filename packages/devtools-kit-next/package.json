@@ -32,6 +32,7 @@
     "speakingurl": "^14.0.1"
   },
   "devDependencies": {
+    "@types/speakingurl": "^13.0.6",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   }

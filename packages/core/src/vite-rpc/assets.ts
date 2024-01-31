@@ -3,7 +3,6 @@ import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
 import { BirpcGroupReturn } from 'birpc'
-import type { ViteDevServer } from 'vite'
 import { debounce } from 'perfect-debounce'
 import type { AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from './types'
 
@@ -60,7 +59,7 @@ interface SetupAssetsOptions {
 }
 
 export function setupAssetsRPC(config: SetupAssetsOptions) {
-  const server = config.server as ViteDevServer
+  const server = config.server
   const getRpcServer = config.getRpcServer
 
   const _imageMetaCache = new Map<string, ImageMeta | undefined>()

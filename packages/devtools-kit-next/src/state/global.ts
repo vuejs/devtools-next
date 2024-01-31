@@ -1,4 +1,7 @@
 import { target as global } from '@vue/devtools-shared'
+import type { DevToolsState } from '../types'
+
+export type { DevToolsState } from '../types'
 
 const STATE_KEY = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 const INITIAL_STATE = {
@@ -20,7 +23,7 @@ export function resetDevToolsState() {
   global[STATE_KEY] = INITIAL_STATE
 }
 
-export const devtoolsState = new Proxy(global[STATE_KEY], {
+export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
   get(target, property) {
     return global[STATE_KEY][property]
   },

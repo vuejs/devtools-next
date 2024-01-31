@@ -5,16 +5,28 @@ import { devtoolsState } from './global'
 
 interface DevToolsAppRecords {
   value: AppRecord[]
+  active: AppRecord
+  activeId: string
 }
 
 export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.appRecords as unknown as DevToolsAppRecords, {
   get(_, property) {
     if (property === 'value')
       return devtoolsState.appRecords
+    else if (property === 'active')
+      return devtoolsState.activeAppRecord
+    else if (property === 'activeId')
+      return devtoolsState.activeAppRecordId
   },
   set(target, property, value) {
     if (property === 'value')
       devtoolsState.appRecords = value
+
+    else if (property === 'active')
+      devtoolsState.activeAppRecord = value
+
+    else if (property === 'activeId')
+      devtoolsState.activeAppRecordId = value
 
     return true
   },
@@ -80,4 +92,17 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
   else {
     return {} as AppRecord
   }
+}
+
+export async function setActiveAppRecord(appRecord: AppRecord) {
+  // @TODO
+  devtoolsAppRecords.active = appRecord
+  devtoolsAppRecords.activeId = `${appRecord.id}`
+}
+
+export async function toggleActiveAppRecord(id: string) {
+  // @TODO
+  const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
+  if (appRecord)
+    setActiveAppRecord(appRecord)
 }

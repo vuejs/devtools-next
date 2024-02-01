@@ -2,6 +2,7 @@ import { devtoolsContext, devtoolsState, hook, initDevTools, onDevToolsClientCon
 import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
 import { setupDevToolsPlugin } from './api/plugin'
+import { toggleComponentInspectorEnabled } from './core/vue-inspector'
 
 export type * from './core/component/types'
 export type * from './core/timeline/types'
@@ -31,4 +32,5 @@ export {
   addCustomCommand,
   removeCustomCommand,
   setupDevToolsPlugin,
+  toggleComponentInspectorEnabled,
 }

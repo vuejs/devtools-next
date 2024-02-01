@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "7.0.13",
+  "version": "7.0.14",
   "private": true,
   "scripts": {
     "docs:build": "vitepress build",

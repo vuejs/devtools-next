@@ -5,14 +5,16 @@ import type { ViteRPCFunctions } from './types'
 
 export interface SetupViteRPCClientOptions {
   moduleUpdated?: () => void
+  assetsUpdated?: () => void
 }
 export function setupViteRPCClient(ctx: ViteHotContext | undefined, options: SetupViteRPCClientOptions = {}): BirpcReturn<ViteRPCFunctions, unknown> {
   if (!ctx)
     return null!
 
-  const { moduleUpdated = () => {} } = options
+  const { moduleUpdated = () => {}, assetsUpdated = () => {} } = options
   const rpcClient = createRPCClient<ViteRPCFunctions>('vite-plugin-vue-devtools', ctx, {
     moduleUpdated,
+    assetsUpdated,
   }, {
     timeout: -1,
   })

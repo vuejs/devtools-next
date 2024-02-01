@@ -19,7 +19,7 @@ export interface VueInspector {
   onUpdated: () => void
 }
 
-target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ = true
+target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ ??= true
 export function toggleComponentInspectorEnabled(enabled: boolean) {
   target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ = enabled
 }

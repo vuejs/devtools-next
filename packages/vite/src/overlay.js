@@ -11,7 +11,7 @@ window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
 const devtoolsClientUrl = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
 
-toggleComponentInspectorEnabled(vueDevToolsOptions.componentInspector !== false)
+toggleComponentInspectorEnabled(!!vueDevToolsOptions.componentInspector)
 
 devtools.init()
 

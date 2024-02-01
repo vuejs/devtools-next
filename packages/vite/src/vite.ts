@@ -171,7 +171,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
             },
           },
           // inject inspector script manually to ensure it's loaded after vue-devtools
-          {
+          pluginOptions.componentInspector && {
             tag: 'script',
             injectTo: 'head-prepend',
             attrs: {
@@ -179,7 +179,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
               src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,
             },
           },
-        ],
+        ].filter(Boolean),
       }
     },
     async buildEnd() {

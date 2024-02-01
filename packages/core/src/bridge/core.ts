@@ -143,7 +143,7 @@ export class BridgeRpcCore {
     return new Promise<S>((resolve) => {
       this.bridge.once(`${eventName}:res`, (payload: string) => {
         const res = {
-          data: parse(payload),
+          data: [true, false].includes(payload as unknown as boolean) ? payload : parse(payload),
         } as S
         resolve(res)
       })

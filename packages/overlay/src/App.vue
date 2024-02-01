@@ -121,7 +121,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
           <path fill="#35495E" d="M50.56 0L128 133.12L204.8 0h-47.36L128 51.2L97.92 0H50.56Z" />
         </svg>
       </div>
-      <template v-if="devtools.state.vitePluginDetected">
+      <template v-if="devtools.state.vitePluginDetected && vueInspectorEnabled">
         <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
         <div
           class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"

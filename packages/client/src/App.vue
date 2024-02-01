@@ -74,6 +74,7 @@ const eyeDropper = useEyeDropper({})
 
 bridgeRpc?.isVueInspectorDetected?.()?.then(({ data }) => {
   if (data) {
+    vueInspectorDetected.value = true
     registerCommands(() =>
       [{
         id: 'action:vue-inspector',

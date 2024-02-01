@@ -7,7 +7,8 @@ export function stringify<T extends object = Record<string, unknown>>(data: T) {
 }
 
 export function parse(data: string, revive = false) {
-  if (!data)
+  // eslint-disable-next-line eqeqeq
+  if (data == undefined)
     return {}
 
   return revive

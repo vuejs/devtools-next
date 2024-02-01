@@ -19,6 +19,11 @@ export interface VueInspector {
   onUpdated: () => void
 }
 
+target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ ??= true
+export function toggleComponentInspectorEnabled(enabled: boolean) {
+  target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ = enabled
+}
+
 function waitForInspectorInit(cb: () => void) {
   let total = 0
   const timer = setInterval(() => {
@@ -41,8 +46,11 @@ function setupInspector() {
   }
 }
 
-export function getVueInspector(): Promise<VueInspector> {
+export function getVueInspector(): Promise<VueInspector | null> {
   return new Promise((resolve) => {
+    if (!target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__)
+      resolve(null)
+
     function setup() {
       setupInspector()
       resolve(target.__VUE_INSPECTOR__)

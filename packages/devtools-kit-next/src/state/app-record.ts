@@ -1,7 +1,10 @@
 import { target } from '@vue/devtools-shared'
 import slug from 'speakingurl'
 import { AppRecord, VueAppInstance } from '../types'
-import { devtoolsState } from './global'
+import { DevToolsPluginApi } from '../api'
+import { registerPlugin } from '../api/plugin'
+import { devtoolsState } from './state'
+import { devtoolsContext } from './context'
 
 interface DevToolsAppRecords {
   value: AppRecord[]
@@ -19,14 +22,24 @@ export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.ap
       return devtoolsState.activeAppRecordId
   },
   set(target, property, value) {
-    if (property === 'value')
+    if (property === 'value') {
       devtoolsState.appRecords = value
+    }
 
-    else if (property === 'active')
-      devtoolsState.activeAppRecord = value
+    else if (property === 'active') {
+      const _value = value as AppRecord
 
-    else if (property === 'activeId')
+      // sync to context
+      devtoolsState.activeAppRecord = _value
+      devtoolsContext.appRecord = _value
+      devtoolsContext.api = _value.api!
+      // @TODO: check ?
+      // devtoolsContext.inspector = _value.inspector ?? []
+    }
+
+    else if (property === 'activeId') {
       devtoolsState.activeAppRecordId = value
+    }
 
     return true
   },
@@ -98,11 +111,15 @@ export async function setActiveAppRecord(appRecord: AppRecord) {
   // @TODO
   devtoolsAppRecords.active = appRecord
   devtoolsAppRecords.activeId = `${appRecord.id}`
+  registerPlugin(appRecord.app as unknown as VueAppInstance, appRecord.api!)
 }
 
 export async function toggleActiveAppRecord(id: string) {
   // @TODO
   const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
-  if (appRecord)
+  if (appRecord) {
+    const api = new DevToolsPluginApi()
+    appRecord.api = api
     setActiveAppRecord(appRecord)
+  }
 }

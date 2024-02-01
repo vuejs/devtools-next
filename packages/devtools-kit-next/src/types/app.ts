@@ -1,7 +1,8 @@
 import type { App, ComponentInternalInstance, ComponentOptions, SuspenseBoundary } from 'vue'
+import type { DevToolsPluginApi } from '../api'
 
 // @TODO
-export type PluginApi = any
+export type PluginApi = DevToolsPluginApi
 
 export declare type PluginSettingsItem = {
   label: string

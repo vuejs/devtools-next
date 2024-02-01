@@ -51,4 +51,5 @@ export interface VueHooks {
     componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]): () => void
     setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]): void
   }
+  setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction): void
 }

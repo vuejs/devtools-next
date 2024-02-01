@@ -112,4 +112,7 @@ export function subscribeDevToolsHook() {
 
 export const hook: VueHooks = {
   on,
+  setupDevToolsPlugin(pluginDescriptor, setupFn) {
+    return devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
+  },
 }

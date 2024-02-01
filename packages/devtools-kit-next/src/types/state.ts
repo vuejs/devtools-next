@@ -1,3 +1,5 @@
+import type { CustomCommand } from '../core/custom-command'
+import type { CustomTab } from '../core/custom-tab'
 import type { AppRecord, PluginDescriptor, PluginSetupFunction } from './app'
 
 export interface DevToolsState {
@@ -8,7 +10,7 @@ export interface DevToolsState {
   activeAppRecord: AppRecord | null
   selectedComponentId: string | null
   pluginBuffer: [PluginDescriptor, PluginSetupFunction][]
-  tabs: unknown[]
-  commands: unknown[]
+  tabs: CustomTab[]
+  commands: CustomCommand[]
   activeAppRecordId: string | null
 }

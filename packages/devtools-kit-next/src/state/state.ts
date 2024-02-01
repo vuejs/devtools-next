@@ -37,6 +37,9 @@ export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
     target[property] = value
     // sync to global to ensure the state is consistent
     global[STATE_KEY][property] = value
+
+    // @TODO
+
     return true
   },
 })

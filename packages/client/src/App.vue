@@ -73,7 +73,8 @@ const { copy } = useCopy()
 const eyeDropper = useEyeDropper({})
 
 bridgeRpc?.isVueInspectorDetected?.()?.then(({ data }) => {
-  if (data) {
+  if (data === true) {
+    vueInspectorDetected.value = true
     registerCommands(() =>
       [{
         id: 'action:vue-inspector',

@@ -8,6 +8,7 @@ const body = document.getElementsByTagName('body')[0]
 const head = document.getElementsByTagName('head')[0]
 
 window.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__ = true
+window.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_DISABLED__ = vueDevToolsOptions.componentInspector === false
 const devtoolsClientUrl = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
 

@@ -12,7 +12,7 @@ const filterId = graphFilterNodeId
 const state = useDevToolsState()
 
 const _openInEditor = (path: string) => {
-  if (state.vitePluginDetected.value) {
+  if (state.vitePluginDetected.value && vueInspectorDetected.value) {
     openInEditor(path)
     return
   }

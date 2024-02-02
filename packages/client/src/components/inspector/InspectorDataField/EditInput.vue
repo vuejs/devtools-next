@@ -5,7 +5,7 @@ import { customTypeEnums, toSubmit } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   modelValue: string
-  rawType?: customTypeEnums
+  customType?: customTypeEnums
   showActions?: boolean
   autoFocus?: boolean
 }>(), {
@@ -35,7 +35,7 @@ const value = useVModel(props, 'modelValue', emit)
 
 function tryToParseJSONString(v: unknown) {
   try {
-    toSubmit(v as string, props.rawType)
+    toSubmit(v as string, props.customType)
     return true
   }
   catch {

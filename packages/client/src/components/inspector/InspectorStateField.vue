@@ -50,12 +50,12 @@ const normalizedValue = computed(() => {
   }
 })
 
-const rawValue = computed(() => getRaw(props.data.value))
+const raw = computed(() => getRaw(props.data.value))
 
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 
 const normalizedChildField = computed(() => {
-  const { value, inherit } = rawValue.value
+  const { value, inherit } = raw.value
   let displayedValue: any[]
   if (isArray(value)) {
     const sliced = value.slice(0, limit.value)
@@ -86,7 +86,7 @@ const normalizedChildField = computed(() => {
 })
 
 const fieldsCount = computed(() => {
-  const { value } = rawValue.value
+  const { value } = raw.value
   if (isArray(value))
     return value.length
   else if (isObject(value))
@@ -112,8 +112,8 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 
 watch(() => editing.value, (v) => {
   if (v) {
-    const { value } = rawValue.value
-    editingText.value = toEdit(value, rawValue.value.customType)
+    const { value } = raw.value
+    editingText.value = toEdit(value, raw.value.customType)
   }
   else {
     editingText.value = ''
@@ -130,7 +130,7 @@ function submit() {
     state: {
       newKey: null!,
       type: editingType.value,
-      value: toSubmit(editingText.value, rawValue.value.customType),
+      value: toSubmit(editingText.value, raw.value.customType),
     },
   } satisfies InspectorStateEditorPayload)
   toggleEditing()
@@ -142,7 +142,7 @@ const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEd
 function addNewProp(type: EditorAddNewPropType) {
   if (!isExpanded.value)
     toggleCollapse()
-  addNewPropApi(type, rawValue.value.value)
+  addNewPropApi(type, raw.value.value)
 }
 
 function submitDrafting() {
@@ -173,7 +173,7 @@ const { isHovering } = useHover(() => containerRef.value)
       <div>
         <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
         <span mx-1>:</span>
-        <EditInput v-if="editing" v-model="editingText" :raw-type="rawValue.customType" @cancel="toggleEditing" @submit="submit" />
+        <EditInput v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
         <template v-else>
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
@@ -191,7 +191,7 @@ const { isHovering } = useHover(() => containerRef.value)
           <ExpandIcon :value="isExpanded" absolute left--6 group-hover:text-white />
           <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
           <span mx-1>:</span>
-          <EditInput v-if="editing" v-model="editingText" :raw-type="rawValue.customType" @cancel="toggleEditing" @submit="submit" />
+          <EditInput v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
           <template v-else>
             <span :class="stateFormatClass">
               <span v-html="normalizedValue" />

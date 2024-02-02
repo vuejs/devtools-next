@@ -44,7 +44,7 @@ export class DevToolsPluginApi {
   addInspector(payload: InspectorApiPayload) {
     addInspector({
       id: payload.id,
-      nodeId: payload.id,
+      nodeId: '',
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder || '',
     })

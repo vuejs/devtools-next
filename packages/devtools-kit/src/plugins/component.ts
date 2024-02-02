@@ -1,6 +1,6 @@
 import { debounce } from 'perfect-debounce'
 import { VueAppInstance } from '../types'
-import { DevToolsEvents, setupDevToolsPlugin } from '../api'
+import { DevToolsEvents, apiHooks, setupDevToolsPlugin } from '../api'
 import { devtoolsContext } from '../state'
 import { hook } from '../hook'
 import { getAppRecord, getComponentId, getComponentInstance } from '../core/component/utils'
@@ -9,7 +9,7 @@ import { ComponentWalker } from '../core/component/tree/walker'
 import { editState } from '../core/component/state/editor'
 import { getInstanceState } from '../core/component/state'
 
-const INSPECTOR_ID = '__vue-devtools-component-plugin__'
+const INSPECTOR_ID = 'components'
 
 export function registerComponentDevToolsPlugin(app: VueAppInstance) {
   setupDevToolsPlugin({

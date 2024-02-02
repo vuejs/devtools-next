@@ -1,7 +1,8 @@
 import * as format from '../format'
+import { customTypeEnums } from '../../types'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED } from '../constants'
 
-describe('format: displayText and rawValue can be calculated by formatInspectorStateValue, getRawValue', () => {
+describe('format: displayText and rawValue can be calculated by formatInspectorStateValue, getRaw', () => {
   describe('type: literals', () => {
     // eslint-disable-next-line test/consistent-test-it
     test.each([
@@ -16,7 +17,7 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
       { literal: UNDEFINED, displayText: 'undefined' },
     ])('type: %s', (value) => {
       const displayText = format.formatInspectorStateValue(value.literal)
-      const rawValue = format.getRawValue(value.literal).value
+      const rawValue = format.getRaw(value.literal).value
 
       expect(displayText).toBe(value.displayText)
       expect(rawValue).toBe(value.literal)
@@ -26,7 +27,7 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
   it('type: plain object', () => {
     const value = { foo: 'bar' }
     const displayText = format.formatInspectorStateValue(value)
-    const rawValue = format.getRawValue(value).value
+    const rawValue = format.getRaw(value).value
 
     expect(displayText).toBe('Object')
     expect(rawValue).toEqual(value)
@@ -35,7 +36,7 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
   it('type: array', () => {
     const value = ['foo', { bar: 'baz' }]
     const displayText = format.formatInspectorStateValue(value)
-    const rawValue = format.getRawValue(value).value
+    const rawValue = format.getRaw(value).value
 
     expect(displayText).toBe('Array[2]')
     expect(rawValue).toEqual(value)
@@ -45,7 +46,7 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
     it('type: common custom', () => {
       const value = { _custom: { displayText: 'custom-display', value: Symbol(123) } }
       const displayText = format.formatInspectorStateValue(value)
-      const rawValue = format.getRawValue(value).value
+      const rawValue = format.getRaw(value).value
 
       expect(displayText).toBe(value._custom.displayText)
       expect(rawValue).toEqual(value._custom.value)
@@ -62,7 +63,7 @@ describe('format: displayText and rawValue can be calculated by formatInspectorS
       }
 
       const displayText = format.formatInspectorStateValue(value)
-      const rawValue = format.getRawValue(value).value
+      const rawValue = format.getRaw(value).value
 
       expect(displayText).toBe(value._custom.value._custom.displayText)
       expect(rawValue).toEqual(value._custom.value._custom.value)
@@ -87,8 +88,9 @@ describe('format: toEdit', () => {
     { value: { foo: NAN }, target: '{"foo":NaN}' },
     { value: { foo: NEGATIVE_INFINITY }, target: '{"foo":-Infinity}' },
     { value: { foo: UNDEFINED }, target: '{"foo":undefined}' },
+    { value: '123', customType: 'bigint' as customTypeEnums, target: '123' },
   ])('value: $value will be deserialized to target', (value) => {
-    const deserialized = format.toEdit(value.value)
+    const deserialized = format.toEdit(value.value, value.customType)
     expect(deserialized).toBe(value.target)
   })
 })
@@ -113,8 +115,9 @@ describe('format: toSubmit', () => {
     { value: '{"foo":undefined}', target: {} },
     // Regex test: The token in key field kept untouched.
     { value: '{"undefined": NaN }', target: { undefined: Number.NaN } },
+    { value: '123', customType: 'bigint' as customTypeEnums, target: BigInt(123) },
   ])('value: $value will be serialized to target', (value) => {
-    const serialized = format.toSubmit(value.value)
+    const serialized = format.toSubmit(value.value, value.customType)
     expect(serialized).toStrictEqual(value.target)
   })
 })

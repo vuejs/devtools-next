@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { debounce } from 'perfect-debounce'
-import { toSubmit } from '@vue/devtools-kit'
+import { customTypeEnums, toSubmit } from '@vue/devtools-kit'
 
 const props = withDefaults(defineProps<{
   modelValue: string
-  type: string // typeof value
+  rawType?: customTypeEnums
   showActions?: boolean
   autoFocus?: boolean
 }>(), {
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   'cancel': []
-  'submit': [dataType: string]
+  'submit': []
   'update:modelValue': [value: string]
 }>()
 
@@ -28,14 +28,14 @@ watchEffect(() => {
   if (escape.value)
     emit('cancel')
   else if (enter.value)
-    emit('submit', props.type)
+    emit('submit')
 })
 
 const value = useVModel(props, 'modelValue', emit)
 
 function tryToParseJSONString(v: unknown) {
   try {
-    toSubmit(v as string)
+    toSubmit(v as string, props.rawType)
     return true
   }
   catch {
@@ -67,7 +67,7 @@ watch(value, checkWarning())
         <VueButton
           v-tooltip="{
             content: 'Enter to submit change',
-          }" size="mini" flat class="p2px!" @click.stop="$emit('submit', type)"
+          }" size="mini" flat class="p2px!" @click.stop="$emit('submit')"
         >
           <template #icon>
             <VueIcon icon="i-material-symbols-save" />

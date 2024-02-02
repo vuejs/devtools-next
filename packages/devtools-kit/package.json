@@ -21,7 +21,7 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "peerDependencies": {
-    "vue": "^3.4.15",
+    "vue": "^3.0.0",
   },
   "dependencies": {
     "@vue/devtools-schema": "workspace:^",

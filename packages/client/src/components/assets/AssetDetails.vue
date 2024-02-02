@@ -162,7 +162,7 @@ const supportsPreview = computed(() => {
                 @click="copy(asset.publicPath, { type: 'assets-public-path' })"
               />
               <RouterLink
-                v-if="asset.isUnderRoot"
+                v-if="asset.atRoot"
                 :to="asset.publicPath"
                 target="_blank"
               >
@@ -214,7 +214,7 @@ const supportsPreview = computed(() => {
       </tbody>
     </table>
 
-    <template v-if="asset.isUnderRoot">
+    <template v-if="asset.atRoot">
       <div flex="~ gap2" mb--2 items-center op50>
         <div x-divider />
         <div flex-none>

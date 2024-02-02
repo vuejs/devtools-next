@@ -93,7 +93,7 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
     cache = await Promise.all(files.map(async (path) => {
       const filePath = resolve(projectRoot, path)
       const stat = await fsp.lstat(filePath)
-      const isUnderRoot = isSubPath(resolve(projectRoot, relativeConfigRoot), filePath)
+      const atRoot = isSubPath(resolve(projectRoot, relativeConfigRoot), filePath)
 
       // remove public prefix to resolve vite assets warning
       const publicDir = join(relativeConfigRoot, 'public')
@@ -106,7 +106,7 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
         type: guessType(path),
         size: stat.size,
         mtime: stat.mtimeMs,
-        isUnderRoot,
+        atRoot,
       }
     }))
     return cache

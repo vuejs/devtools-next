@@ -1,7 +1,7 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
 import { camelize } from '@vue/devtools-shared'
+import type { VueAppInstance } from '../../../types'
 import type { InspectorState } from '../types'
-import { returnError } from '../general/util'
+import { returnError } from '../utils'
 import { vueBuiltins } from './constants'
 import { getPropType, getSetupStateType, toRaw } from './util'
 

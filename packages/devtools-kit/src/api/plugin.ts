@@ -1,17 +1,18 @@
-import { DevToolsHooks } from '@vue/devtools-schema'
-import type { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue/devtools-schema'
-import { getAppRecord } from '../core/component/general'
-import { devtoolsState } from '../core/general/state'
-import { devtoolsHooks } from '../core/general/hook'
+import { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '../types'
+import { devtoolsAppRecords, devtoolsState } from '../state'
+import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
-import type { DevToolsPluginApi } from './index'
+import type { DevToolsPluginApi } from './api'
 
-export function collectRegisteredPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
+export function collectDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
 }
 
-export async function registerPlugin(options: { app: VueAppInstance, api: DevToolsPluginApi }) {
-  const { app, api } = options
+export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
+  return hook.setupDevToolsPlugin(pluginDescriptor, setupFn)
+}
+
+export function registerPlugin(app: VueAppInstance, api: DevToolsPluginApi) {
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {
     if (plugin.packageName === 'vue-query') {
@@ -23,12 +24,11 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
       return
     }
 
-    const appRecord = await getAppRecord(plugin.app)
     // edge case for router plugin
     if (plugin.packageName === 'vue-router') {
       const id = getRouterDevToolsId(`${plugin.id}`)
       if (plugin.app === app) {
-        devtoolsState.appRecords = devtoolsState.appRecords.map(item => ({
+        devtoolsAppRecords.value = devtoolsAppRecords.value.map(item => ({
           ...item,
           routerId: id,
         }))
@@ -37,7 +37,7 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
     setupFn(api)
   })
 
-  devtoolsState.appRecords = devtoolsState.appRecords.map((record) => {
+  devtoolsAppRecords.value = devtoolsAppRecords.value.map((record) => {
     const globalProperties = record.app?.config?.globalProperties
     if (!globalProperties)
       return record
@@ -51,8 +51,4 @@ export async function registerPlugin(options: { app: VueAppInstance, api: DevToo
       },
     }
   })
-}
-
-export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
-  return devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
 }

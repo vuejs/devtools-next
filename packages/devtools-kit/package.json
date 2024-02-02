@@ -1,7 +1,8 @@
 {
   "name": "@vue/devtools-kit",
   "type": "module",
-  "version": "7.0.13",
+  "version": "7.0.11",
+  "private": true,
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -12,7 +13,9 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "types": "./types.d.ts",
   "files": [
+    "**.d.ts",
     "dist"
   ],
   "scripts": {
@@ -21,7 +24,6 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "dependencies": {
-    "@vue/devtools-schema": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "hookable": "^5.5.3",
     "mitt": "^3.0.1",
@@ -29,7 +31,8 @@
     "speakingurl": "^14.0.1"
   },
   "devDependencies": {
-    "vue": "^3.4.15",
+    "@types/speakingurl": "^13.0.6",
+    "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   }
 }

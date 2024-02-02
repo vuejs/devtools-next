@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
+import type { VueAppInstance } from '../../../types'
 
 export interface ComponentBoundingRect {
   left: number
@@ -8,6 +8,7 @@ export interface ComponentBoundingRect {
   width: number
   height: number
 }
+
 export interface ComponentBoundingRectApiPayload {
   app?: VueAppInstance
   inspectorId?: string

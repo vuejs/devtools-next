@@ -1,5 +1,5 @@
 import type { InspectorState } from '../types'
-import { getComponentName, getInstanceName } from '../general/util'
+import { getComponentName, getInstanceName } from '../utils'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'
 

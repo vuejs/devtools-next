@@ -1,6 +1,6 @@
-import type { AppRecord } from '@vue/devtools-schema'
-import { devtoolsContext } from '../../general/state'
-import { getComponentInstance } from '../general'
+import type { AppRecord } from '../../../types'
+import { devtoolsContext } from '../../../state'
+import { getComponentInstance } from '../utils'
 import { ComponentWalker } from './walker'
 
 export async function getComponentTree(options: { appRecord?: AppRecord, instanceId?: string, filterText?: string, maxDepth?: number, recursively?: boolean }) {

@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
+import type { VueAppInstance } from '../../../types'
 
 export interface InspectorNodeTag {
   label: string

@@ -1,4 +1,5 @@
 import { target } from '@vue/devtools-shared'
+import { devtoolsState } from '../../state'
 
 export interface OpenInEditorOptions {
   file?: string
@@ -10,7 +11,7 @@ export function openInEditor(options: OpenInEditorOptions = {}) {
   const { file, line = 0, column = 0 } = options
   if (file) {
     const baseUrl = window.location.origin
-    if (target.__VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__) {
+    if (devtoolsState.vitePluginDetected) {
       target.__VUE_INSPECTOR__.openInEditor(baseUrl, file, line, column)
     }
     else {

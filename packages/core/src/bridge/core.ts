@@ -2,7 +2,7 @@ import { NOOP } from '@vue/devtools-shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
 import { parse } from '@vue/devtools-kit'
-import type { InspectorStateEditorPayload, ScrollToComponentOptions, ToggleComponentInspectorOptions } from '@vue/devtools-kit'
+import type { ComponentHighLighterOptions, InspectorStateEditorPayload, ScrollToComponentOptions } from '@vue/devtools-kit'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -91,7 +91,7 @@ export const bridgeRpcEvents = {
 export type BridgeRpcEvents = typeof bridgeRpcEvents
 export type BridgeRpcEventName = BridgeRpcEvents[keyof BridgeRpcEvents]
 export interface BridgeRpcEventPayload {
-  [bridgeRpcEvents.toggleComponentInspector]: ToggleComponentInspectorOptions
+  [bridgeRpcEvents.toggleComponentInspector]: ComponentHighLighterOptions
   [bridgeRpcEvents.scrollToComponent]: ScrollToComponentOptions
   [bridgeRpcEvents.inspectComponentInspector]: string
   [bridgeRpcEvents.componentBoundingRect]: {

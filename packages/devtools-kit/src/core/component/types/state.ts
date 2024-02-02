@@ -1,4 +1,4 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
+import type { VueAppInstance } from '../../../types'
 
 export interface InspectorCustomState {
   _custom?: {
@@ -33,6 +33,13 @@ export interface InspectorStateApiPayload {
   app: VueAppInstance
   inspectorId: string
   nodeId: string
+  state: {
+    id: string
+    name: string
+    file: string | undefined
+    state: InspectorState[]
+    instance: VueAppInstance | undefined
+  }
 }
 
 export interface AddInspectorApiPayload {

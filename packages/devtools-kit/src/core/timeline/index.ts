@@ -1,9 +1,24 @@
-import type { DevToolsContext } from '@vue/devtools-schema'
-import { devtoolsContext } from '../general/state'
+import { devtoolsContext } from '../../state'
 
-export type * from './types'
+export interface TimelineEvent {
+  event: {
+    groupId: number
+    time: number
+    title: string
+    subtitle: string
+    // @TODO: InspectorCustomState type
+    data: Record<string, unknown>
+  }
+  layerId: string
+}
 
-export function addTimelineLayer(payload: DevToolsContext['timelineLayer'][0]) {
+export interface TimelineLayerItem {
+  id: string
+  label: string
+  color: number
+}
+
+export function addTimelineLayer(payload: TimelineLayerItem) {
   devtoolsContext.timelineLayer.push(payload)
 }
 

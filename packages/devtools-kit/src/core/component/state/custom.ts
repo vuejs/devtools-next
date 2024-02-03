@@ -40,12 +40,11 @@ export function getBigIntDetails(val: bigint | bigint) {
 }
 
 export function getMapDetails(val: Map<string, unknown>) {
-  const list: Array<Record<string, unknown>> = []
+  const list: Record<string, unknown> = {}
   val.forEach(
-    (value, key) => list.push({
-      key,
-      value,
-    }),
+    (value, key) => {
+      list[key] = value
+    },
   )
   return {
     _custom: {

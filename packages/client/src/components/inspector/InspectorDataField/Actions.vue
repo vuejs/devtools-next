@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRaw } from 'vue'
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
-import { getRawValue } from '@vue/devtools-kit'
+import { getRaw } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
@@ -30,7 +30,9 @@ const { copy, isSupported } = useClipboard()
 
 const popupVisible = ref(false)
 
-const rawValue = computed(() => getRawValue(props.data.value).value)
+const raw = computed(() => getRaw(props.data.value))
+const rawValue = computed(() => raw.value.value)
+const customType = computed(() => raw.value.customType)
 const dataType = computed(() => typeof rawValue.value)
 
 const iconButtonProps = {
@@ -55,6 +57,13 @@ function quickEdit(v: unknown, remove: boolean = false) {
       remove,
     },
   } satisfies InspectorStateEditorPayload)
+}
+
+function quickEditNum(v: number | string, offset: 1 | -1) {
+  const target = typeof v === 'number'
+    ? v + offset
+    : BigInt(v) + BigInt(offset)
+  quickEdit(target)
 }
 </script>
 
@@ -94,14 +103,14 @@ function quickEdit(v: unknown, remove: boolean = false) {
           <VueIcon :icon="rawValue ? 'i-material-symbols-check-box-sharp' : 'i-material-symbols-check-box-outline-blank-sharp'" />
         </template>
       </VueButton>
-      <!-- increment/decrement button, numeric value only -->
-      <template v-else-if="dataType === 'number'">
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit((rawValue as number) + 1)">
+      <!-- increment/decrement button, numeric/bigint -->
+      <template v-else-if="dataType === 'number' || customType === 'bigint'">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEditNum(rawValue as number | string, 1)">
           <template #icon>
             <VueIcon icon="i-carbon-add" />
           </template>
         </VueButton>
-        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit((rawValue as number) - 1)">
+        <VueButton v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEditNum(rawValue as number | string, -1)">
           <template #icon>
             <VueIcon icon="i-carbon-subtract" />
           </template>
@@ -129,7 +138,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       <template #popper>
         <div class="w160px py5px">
           <VueDropdownButton
-            @click="copy(dataType === 'object' ? JSON.stringify(rawValue) : rawValue.toString())"
+            @click="copy(typeof rawValue === 'object' ? JSON.stringify(rawValue) : rawValue.toString())"
           >
             <template #icon>
               <VueIcon icon="i-material-symbols-copy-all-rounded" class="mt4px" />

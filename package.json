@@ -75,7 +75,7 @@
     "@types/node": "^20.11.10",
     "@unocss/eslint-plugin": "^0.58.4",
     "@vue/devtools-core": "workspace:^",
-    "@vue/devtools-schema": "workspace:^",
+    "@vue/devtools-kit": "workspace:^",
     "@vue/test-utils": "^2.4.4",
     "archiver": "^6.0.1",
     "bumpp": "^9.3.0",

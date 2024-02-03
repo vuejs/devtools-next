@@ -35,9 +35,9 @@ importers:
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:packages/core
-      '@vue/devtools-schema':
+      '@vue/devtools-kit':
         specifier: workspace:^
-        version: link:packages/schema
+        version: link:packages/devtools-kit
       '@vue/test-utils':
         specifier: ^2.4.4
         version: 2.4.4(vue@3.4.15)

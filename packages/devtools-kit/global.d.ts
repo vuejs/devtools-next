@@ -13,6 +13,8 @@ declare global {
   var __VUE_DEVTOOLS_ROUTER_INFO__: RouterInfo
   var __VUE_DEVTOOLS_ENV__: DevToolsEnv
   var __VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__: boolean
+  var __VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__: boolean
+  var __VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__: string
 }
 
 export { }

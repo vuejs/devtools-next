@@ -8,6 +8,7 @@ import VueInspector from 'vite-plugin-vue-inspector'
 import { setupViteRPCServer } from '@vue/devtools-core'
 import { setupAssetsRPC, setupGraphRPC } from '@vue/devtools-core/server'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
+import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
 
 type DeepRequired<T> = {
@@ -50,12 +51,20 @@ export interface VitePluginVueDevToolsOptions {
    * @default false
    */
   clientHost?: string | false
+
+  /**
+   * Enable Vue Component Inspector
+   *
+   * @default true
+   */
+  componentInspector?: boolean | VitePluginInspectorOptions
 }
 
 const defaultOptions: DeepRequired<VitePluginVueDevToolsOptions> = {
   appendTo: '',
   openInEditorHost: false,
   clientHost: false,
+  componentInspector: true,
 }
 
 function mergeOptions(options: VitePluginVueDevToolsOptions): DeepRequired<VitePluginVueDevToolsOptions> {
@@ -83,13 +92,19 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       ...setupAssetsRPC({
         root: config.root,
         base,
+        server,
+        getRpcServer,
       }),
       ...setupGraphRPC({
         rpc: inspect.api.rpc,
         server,
-        getRpcServer: () => rpcServer,
+        getRpcServer,
       }),
     })
+
+    function getRpcServer() {
+      return rpcServer
+    }
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>
@@ -125,7 +140,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     },
     async load(id) {
       if (id === 'virtual:vue-devtools-options')
-        return `export default ${JSON.stringify({ base: config.base, clientHost: pluginOptions.clientHost })}`
+        return `export default ${JSON.stringify({ base: config.base, clientHost: pluginOptions.clientHost, componentInspector: pluginOptions.componentInspector })}`
     },
     transform(code, id) {
       const { root, base } = config
@@ -162,7 +177,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
             },
           },
           // inject inspector script manually to ensure it's loaded after vue-devtools
-          {
+          pluginOptions.componentInspector && {
             tag: 'script',
             injectTo: 'head-prepend',
             attrs: {
@@ -170,7 +185,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
               src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,
             },
           },
-        ],
+        ].filter(Boolean),
       }
     },
     async buildEnd() {
@@ -179,12 +194,15 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
 
   return [
     inspect as PluginOption,
-    VueInspector({
+    pluginOptions.componentInspector && VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
+      ...typeof pluginOptions.componentInspector === 'boolean'
+        ? {}
+        : pluginOptions.componentInspector,
       openInEditorHost: pluginOptions.openInEditorHost,
       appendTo: pluginOptions.appendTo || 'manually',
     }) as PluginOption,
     plugin,
-  ]
+  ].filter(Boolean)
 }

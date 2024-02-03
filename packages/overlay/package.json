@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-overlay",
   "type": "module",
-  "version": "7.0.13",
+  "version": "7.0.14",
   "private": true,
   "author": "webfansplz",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "@vueuse/core": "^10.7.2"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.174",
-    "@types/node": "^20.11.6",
+    "@iconify/json": "^2.2.176",
+    "@types/node": "^20.11.10",
     "@vitejs/plugin-vue": "^5.0.3",
     "sass": "^1.70.0",
     "vite": "^5.0.12",

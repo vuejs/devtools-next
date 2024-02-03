@@ -18,6 +18,7 @@ const sorted = computed(() => {
 })
 
 const _openInEditor = openInEditor
+const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const state = useDevToolsState()
 </script>
 
@@ -63,7 +64,7 @@ const state = useDevToolsState()
               />
               <div op0 group-hover:op100 flex="~ gap1">
                 <button
-                  v-if="(item.file || item.meta?.file) && state.vitePluginDetected.value"
+                  v-if="(item.file || item.meta?.file) && state.vitePluginDetected.value && _vueInspectorDetected"
                   text-sm op40 hover="op100 text-primary-400"
                   title="Open in editor"
                   @click="_openInEditor((item.file || item.meta?.file) as string)"

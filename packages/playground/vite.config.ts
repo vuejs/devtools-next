@@ -9,7 +9,9 @@ import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 export default defineConfig({
   plugins: [
     vue(),
-    VueDevtools(),
+    VueDevtools({
+      // componentInspector: false,
+    }),
     // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
     VueI18n({
       runtimeOnly: true,

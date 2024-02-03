@@ -11,6 +11,7 @@ const treeNode = ref<ComponentTreeNode[]>([])
 const activeComponentId = ref('')
 
 const _openInEditor = openInEditor
+const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 
 // UX related state
 const loaded = ref(false)
@@ -281,7 +282,7 @@ const devtoolsState = useDevToolsState()
             />
 
             <VueIcon
-              v-if="selectedComponentFilePath && devtoolsState.vitePluginDetected.value"
+              v-if="selectedComponentFilePath && devtoolsState.vitePluginDetected.value && _vueInspectorDetected"
               v-tooltip="'Open in Editor'"
               title="Open in Editor"
               icon="i-carbon-launch"

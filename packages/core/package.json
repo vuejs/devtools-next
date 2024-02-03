@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-core",
   "type": "module",
-  "version": "7.0.13",
+  "version": "7.0.14",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "birpc": "^0.2.14",
+    "birpc": "^0.2.15",
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.0",
     "mitt": "^3.0.1",

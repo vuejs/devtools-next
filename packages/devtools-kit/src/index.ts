@@ -4,6 +4,7 @@ import { devtoolsContext, devtoolsState, setDevToolsEnv } from './state'
 import { setupDevToolsPlugin } from './api'
 import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
+import { toggleComponentInspectorEnabled } from './core/component-inspector'
 
 export type * from './core/custom-tab'
 export type * from './core/custom-command'
@@ -37,4 +38,5 @@ export {
   removeCustomCommand,
   setupDevToolsPlugin,
   setDevToolsEnv,
+  toggleComponentInspectorEnabled,
 }

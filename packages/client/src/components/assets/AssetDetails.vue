@@ -16,7 +16,7 @@ const state = useDevToolsState()
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
 const _openInEditor = openInEditor
-
+const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
     return undefined
@@ -132,7 +132,7 @@ const supportsPreview = computed(() => {
             <div flex="~ gap-1" w-full items-center>
               <FilepathItem :filepath="asset.filePath" text-left />
               <VueIcon
-                v-if="state.vitePluginDetected.value"
+                v-if="state.vitePluginDetected.value && _vueInspectorDetected"
                 v-tooltip="'Open in Editor'"
                 title="Open in Editor"
                 icon="i-carbon-launch"

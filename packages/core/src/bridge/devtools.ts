@@ -14,9 +14,11 @@ const devtoolsBridge: {
     api: ReturnType<typeof setupViteRPCClient>
     on: {
       moduleUpdated: (fn: Function) => void
+      assetsUpdated: (fn: Function) => void
     }
     off: {
       moduleUpdated: () => void
+      assetsUpdated: () => void
     }
   }
   rpc: InstanceType<typeof BridgeRpcCore>
@@ -27,9 +29,11 @@ const devtoolsBridge: {
     api: null!,
     on: {
       moduleUpdated() {},
+      assetsUpdated() {},
     },
     off: {
       moduleUpdated() {},
+      assetsUpdated() {},
     },
   },
   rpc: null!,
@@ -44,9 +48,14 @@ export function registerBridgeRpc(options: BridgeRpcOptions) {
   devtoolsBridge.rpc = new BridgeRpcCore(options.bridge)
 
   const moduleUpdatedFn: Function[] = []
+  const assetsUpdatedFn: Function[] = []
+
   const rpc = setupViteRPCClient(options.viteRPCContext, {
     moduleUpdated: () => {
       moduleUpdatedFn.forEach(fn => fn())
+    },
+    assetsUpdated: () => {
+      assetsUpdatedFn.forEach(fn => fn())
     },
   })
 
@@ -58,10 +67,16 @@ export function registerBridgeRpc(options: BridgeRpcOptions) {
         moduleUpdated(fn: Function) {
           moduleUpdatedFn.push(fn)
         },
+        assetsUpdated(fn) {
+          assetsUpdatedFn.push(fn)
+        },
       },
       off: {
         moduleUpdated() {
           moduleUpdatedFn.length = 0
+        },
+        assetsUpdated() {
+          assetsUpdatedFn.length = 0
         },
       },
     }
@@ -210,5 +225,11 @@ export class BridgeRpc {
   static graphModuleUpdated(fn: Function) {
     devtoolsBridge.viteRpc!.on.moduleUpdated(fn)
     return () => devtoolsBridge.viteRpc!.off.moduleUpdated()
+  }
+
+  // assets updated
+  static assetsUpdated(fn: Function) {
+    devtoolsBridge.viteRpc!.on.assetsUpdated(fn)
+    return () => devtoolsBridge.viteRpc!.off.assetsUpdated()
   }
 }

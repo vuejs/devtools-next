@@ -1,7 +1,7 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
 import { Bridge, prepareInjection, setDevToolsClientUrl } from '@vue/devtools-core'
 import { BROADCAST_CHANNEL_NAME } from '@vue/devtools-shared'
-import { addCustomTab, devtools, setDevToolsEnv } from '@vue/devtools-kit'
+import { addCustomTab, devtools, setDevToolsEnv, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 const overlayDir = `${vueDevToolsOptions.base || '/'}@id/virtual:vue-devtools-path:overlay`
 const body = document.getElementsByTagName('body')[0]
@@ -12,6 +12,8 @@ setDevToolsEnv({
 })
 const devtoolsClientUrl = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
+
+toggleComponentInspectorEnabled(!!vueDevToolsOptions.componentInspector)
 
 devtools.init()
 

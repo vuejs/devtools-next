@@ -2,6 +2,8 @@ import fsp from 'node:fs/promises'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
+import { BirpcGroupReturn } from 'birpc'
+import { debounce } from 'perfect-debounce'
 import type { AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from './types'
 
 const defaultAllowedExtensions = [
@@ -52,9 +54,14 @@ function guessType(path: string): AssetType {
 interface SetupAssetsOptions {
   root: string
   base: string
+  server: any
+  getRpcServer: () => BirpcGroupReturn<ViteRPCFunctions>
 }
 
 export function setupAssetsRPC(config: SetupAssetsOptions) {
+  const server = config.server
+  const getRpcServer = config.getRpcServer
+
   const _imageMetaCache = new Map<string, ImageMeta | undefined>()
   let cache: AssetInfo[] | null = null
 
@@ -103,6 +110,19 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
     return cache
   }
 
+  function watchAssets() {
+    const debouncedAssetsUpdated = debounce(() => {
+      getRpcServer().assetsUpdated()
+    }, 100)
+
+    server.watcher.on('all', (event) => {
+      if (event !== 'change')
+        debouncedAssetsUpdated()
+    })
+  }
+
+  watchAssets()
+
   return {
     async getStaticAssets() {
       return await scan()
@@ -131,5 +151,6 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
         return undefined
       }
     },
+    assetsUpdated() {},
   } satisfies Partial<ViteRPCFunctions>
 }

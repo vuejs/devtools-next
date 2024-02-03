@@ -6,7 +6,7 @@
     "not ie 11"
   ],
   "name": "@vue/devtools-webpack-playground",
-  "version": "7.0.13",
+  "version": "7.0.14",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -17,8 +17,8 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/eslint-parser": "^7.23.3",
+    "@babel/core": "^7.23.9",
+    "@babel/eslint-parser": "^7.23.9",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",

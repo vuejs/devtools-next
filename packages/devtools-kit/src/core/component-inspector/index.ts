@@ -19,6 +19,11 @@ export interface ComponentInspector {
   onUpdated: () => void
 }
 
+target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ ??= true
+export function toggleComponentInspectorEnabled(enabled: boolean) {
+  target.__VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__ = enabled
+}
+
 function waitForInspectorInit(cb: () => void) {
   let total = 0
   const timer = setInterval(() => {

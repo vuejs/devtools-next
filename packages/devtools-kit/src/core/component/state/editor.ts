@@ -88,7 +88,7 @@ export class StateEditor {
   }
 }
 
-class RefStateEditor {
+export class RefStateEditor {
   set(ref: Ref<any>, value: any): void {
     if (isRef(ref)) {
       ref.value = value

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
-import { formatInspectorStateValue, getInspectorStateValueType, getRawValue, toEdit, toSubmit } from '@vue/devtools-kit'
+import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
@@ -50,12 +50,12 @@ const normalizedValue = computed(() => {
   }
 })
 
-const rawValue = computed(() => getRawValue(props.data.value))
+const raw = computed(() => getRaw(props.data.value))
 
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 
 const normalizedChildField = computed(() => {
-  const { value, inherit } = rawValue.value
+  const { value, inherit } = raw.value
   let displayedValue: any[]
   if (isArray(value)) {
     const sliced = value.slice(0, limit.value)
@@ -86,7 +86,7 @@ const normalizedChildField = computed(() => {
 })
 
 const fieldsCount = computed(() => {
-  const { value } = rawValue.value
+  const { value } = raw.value
   if (isArray(value))
     return value.length
   else if (isObject(value))
@@ -112,15 +112,15 @@ const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEdi
 
 watch(() => editing.value, (v) => {
   if (v) {
-    const { value } = rawValue.value
-    editingText.value = toEdit(value)
+    const { value } = raw.value
+    editingText.value = toEdit(value, raw.value.customType)
   }
   else {
     editingText.value = ''
   }
 })
 
-function submit(dataType: string) {
+function submit() {
   const data = props.data
   bridgeRpc.editInspectorState({
     path: data.key.split('.'),
@@ -129,8 +129,8 @@ function submit(dataType: string) {
     nodeId,
     state: {
       newKey: null!,
-      type: dataType,
-      value: toSubmit(editingText.value),
+      type: editingType.value,
+      value: toSubmit(editingText.value, raw.value.customType),
     },
   } satisfies InspectorStateEditorPayload)
   toggleEditing()
@@ -142,7 +142,7 @@ const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEd
 function addNewProp(type: EditorAddNewPropType) {
   if (!isExpanded.value)
     toggleCollapse()
-  addNewPropApi(type, rawValue.value.value)
+  addNewPropApi(type, raw.value.value)
 }
 
 function submitDrafting() {
@@ -173,7 +173,7 @@ const { isHovering } = useHover(() => containerRef.value)
       <div>
         <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
         <span mx-1>:</span>
-        <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
+        <EditInput v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
         <template v-else>
           <span :class="stateFormatClass">
             <span v-html="normalizedValue" />
@@ -191,7 +191,7 @@ const { isHovering } = useHover(() => containerRef.value)
           <ExpandIcon :value="isExpanded" absolute left--6 group-hover:text-white />
           <span overflow-hidden text-ellipsis whitespace-nowrap state-key>{{ normalizedDisplayedKey }}</span>
           <span mx-1>:</span>
-          <EditInput v-if="editing" v-model="editingText" :type="editingType" @cancel="toggleEditing" @submit="submit" />
+          <EditInput v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
           <template v-else>
             <span :class="stateFormatClass">
               <span v-html="normalizedValue" />
@@ -214,10 +214,10 @@ const { isHovering } = useHover(() => containerRef.value)
           </VueButton>
           <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
             <span overflow-hidden text-ellipsis whitespace-nowrap state-key>
-              <EditInput v-model="draftingNewProp.key" type="string" :show-actions="false" />
+              <EditInput v-model="draftingNewProp.key" :show-actions="false" />
             </span>
             <span mx-1>:</span>
-            <EditInput v-model="draftingNewProp.value" type="string" :auto-focus="false" @cancel="resetDrafting" @submit="submitDrafting" />
+            <EditInput v-model="draftingNewProp.value" :auto-focus="false" @cancel="resetDrafting" @submit="submitDrafting" />
           </div>
         </div>
       </div>

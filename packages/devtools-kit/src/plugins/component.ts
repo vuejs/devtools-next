@@ -1,18 +1,17 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
 import { debounce } from 'perfect-debounce'
-import { setupDevToolsPlugin } from '../../api/plugin'
-import { getAppRecord, getComponentId, getComponentInstance } from '../component/general'
-import { devtoolsContext } from '../general/state'
-import { ComponentWalker } from '../component/tree/walker'
-import { getInstanceState } from '../component/state'
-import { editState } from '../component/state/editor'
-import { getComponentBoundingRect } from '../component/state/bounding-rect'
-import { DevToolsEvents, apiHooks } from '../../api/on'
-import { hook } from '../general/hook'
+import { VueAppInstance } from '../types'
+import { DevToolsEvents, apiHooks, setupDevToolsPlugin } from '../api'
+import { devtoolsContext } from '../state'
+import { hook } from '../hook'
+import { getAppRecord, getComponentId, getComponentInstance } from '../core/component/utils'
+import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
+import { ComponentWalker } from '../core/component/tree/walker'
+import { editState } from '../core/component/state/editor'
+import { getInstanceState } from '../core/component/state'
 
 const INSPECTOR_ID = 'components'
 
-export function registerComponentsDevTools(app: VueAppInstance) {
+export function registerComponentDevToolsPlugin(app: VueAppInstance) {
   setupDevToolsPlugin({
     id: INSPECTOR_ID,
     label: 'Components',
@@ -82,6 +81,7 @@ export function registerComponentsDevTools(app: VueAppInstance) {
     })
 
     api.on.editInspectorState(async (payload) => {
+      // @ts-expect-error expected type
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         editState(payload)
         await api.sendInspectorState('components')

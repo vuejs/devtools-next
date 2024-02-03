@@ -1,6 +1,6 @@
-import type { VueAppInstance } from '@vue/devtools-schema'
+import type { VueAppInstance } from '../../../types'
 import type { ComponentBoundingRect } from '../types'
-import { isFragment } from '../general/util'
+import { isFragment } from '../utils'
 
 // #region rect util
 function createRect() {

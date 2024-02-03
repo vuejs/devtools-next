@@ -1,11 +1,9 @@
-import type { AppRecord, VueAppInstance } from '@vue/devtools-schema'
-import { target } from '@vue/devtools-shared'
 import slug from 'speakingurl'
-
-const appRecordInfo = target.__VUE_DEVTOOLS_APP_RECROD_INFO__ ??= {
-  id: 0,
-  appIds: new Set<string>(),
-}
+import { AppRecord, VueAppInstance } from '../../types'
+import { DevToolsPluginApi } from '../../api'
+import { registerPlugin } from '../../api/plugin'
+import { registerComponentDevToolsPlugin } from '../../plugins'
+import { appRecordInfo, devtoolsAppRecords, devtoolsContext, devtoolsState } from '../../state'
 
 function getAppRecordName(app: VueAppInstance['appContext']['app'], fallbackName: string) {
   return app?._component?.name || `App ${fallbackName}`
@@ -61,5 +59,31 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
   }
   else {
     return {} as AppRecord
+  }
+}
+
+export async function setActiveAppRecord(appRecord: AppRecord) {
+  await registerComponentDevToolsPlugin(appRecord?.app as unknown as VueAppInstance)
+  devtoolsAppRecords.active = appRecord
+  devtoolsAppRecords.activeId = `${appRecord.id}`
+  registerPlugin(appRecord.app as unknown as VueAppInstance, appRecord.api!)
+}
+
+export async function toggleActiveAppRecord(id: string) {
+  devtoolsContext.componentPluginHookBuffer.forEach(cleanup => cleanup())
+  devtoolsContext.api.clear()
+  devtoolsContext.clear()
+  const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
+  if (appRecord) {
+    devtoolsState.pluginBuffer = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.id !== 'components')
+    const api = new DevToolsPluginApi()
+    appRecord.api = api
+    setActiveAppRecord(appRecord)
+
+    // @TODO: find a better way to handle it
+    window.postMessage({
+      event: 'toggle-app-record',
+      target: 'vue-devtools',
+    })
   }
 }

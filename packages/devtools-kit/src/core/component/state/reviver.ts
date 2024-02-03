@@ -1,5 +1,5 @@
 import { target } from '@vue/devtools-shared'
-import { devtoolsContext } from '../../general/state'
+import { devtoolsContext } from '../../../state'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, specialTypeRE, symbolRE } from './constants'
 
 export function reviveSet(val) {

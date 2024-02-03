@@ -1,5 +1,5 @@
-import { apiHooks } from './on'
+import { apiHooks } from './hook'
 
-export function clear() {
+export function remove() {
   apiHooks.removeAllHooks()
 }

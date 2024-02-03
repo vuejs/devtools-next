@@ -1,44 +1,34 @@
-import type { DevtoolsHook, PluginDescriptor, PluginSetupFunction, VueAppInstance } from '@vue/devtools-schema'
-import { DevToolsHooks } from '@vue/devtools-schema'
 import { target } from '@vue/devtools-shared'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
-import type { App } from 'vue'
+import { DevToolsEvent, DevToolsHook, DevToolsHooks, VueHooks } from '../types'
 
-type HookAppInstance = App & VueAppInstance
-interface DevToolsEvent {
-  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
-  [DevToolsHooks.APP_CONNECTED]: () => void
-  [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
-  [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
-  [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
-  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
-}
+export { VueHooks } from '../types'
 
 export const devtoolsHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_HOOK ??= createHooks<DevToolsEvent>()
 
-const on = {
-  vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]) {
+const on: VueHooks['on'] = {
+  vueAppInit(fn) {
     devtoolsHooks.hook(DevToolsHooks.APP_INIT, fn)
   },
-  vueAppConnected(fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) {
+  vueAppConnected(fn) {
     devtoolsHooks.hook(DevToolsHooks.APP_CONNECTED, fn)
   },
-  componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) {
+  componentAdded(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
   },
-  componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) {
+  componentUpdated(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
   },
-  componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) {
+  componentRemoved(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_REMOVED, fn)
   },
-  setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) {
+  setupDevtoolsPlugin(fn) {
     devtoolsHooks.hook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
   },
 }
 
-export function createDevToolsHook(): DevtoolsHook {
+export function createDevToolsHook(): DevToolsHook {
   return {
     id: 'vue-devtools-next',
     enabled: false,
@@ -78,24 +68,17 @@ export function createDevToolsHook(): DevtoolsHook {
 }
 
 export function subscribeDevToolsHook() {
-  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__ as DevToolsHook
   // app init hook
-  hook.on(DevToolsHooks.APP_INIT, (app: VueAppInstance['appContext']['app'], version: string) => {
+  hook.on<DevToolsEvent[DevToolsHooks.APP_INIT]>(DevToolsHooks.APP_INIT, (app, version) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
     devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version)
-    // const record = createAppRecord(app)
-
-    // hook.appRecords.push({
-    //   ...record,
-    //   app,
-    //   version,
-    // })
   })
 
   // component added hook
-  hook.on(DevToolsHooks.COMPONENT_ADDED, async (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
+  hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]>(DevToolsHooks.COMPONENT_ADDED, async (app, uid, parentUid, component) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
@@ -106,7 +89,7 @@ export function subscribeDevToolsHook() {
   })
 
   // component updated hook
-  hook.on(DevToolsHooks.COMPONENT_UPDATED, (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
+  hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]>(DevToolsHooks.COMPONENT_UPDATED, (app, uid, parentUid, component) => {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
@@ -114,7 +97,7 @@ export function subscribeDevToolsHook() {
   })
 
   // component removed hook
-  hook.on(DevToolsHooks.COMPONENT_REMOVED, async (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => {
+  hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]>(DevToolsHooks.COMPONENT_REMOVED, async (app, uid, parentUid, component) => {
     if (!app || (typeof uid !== 'number' && !uid) || !component)
       return
 
@@ -122,11 +105,14 @@ export function subscribeDevToolsHook() {
   })
 
   // devtools plugin setup
-  hook.on(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => {
+  hook.on<DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]>(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor, setupFn) => {
     devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
   })
 }
 
-export const hook = {
+export const hook: VueHooks = {
   on,
+  setupDevToolsPlugin(pluginDescriptor, setupFn) {
+    return devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
+  },
 }

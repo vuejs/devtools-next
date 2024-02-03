@@ -1,6 +1,6 @@
 import type { ComponentBoundingRect } from '../component/types'
 
-export interface ToggleComponentInspectorOptions {
+export interface ComponentHighLighterOptions {
   bounds: ComponentBoundingRect
   name?: string
   id?: string

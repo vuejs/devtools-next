@@ -1,6 +1,7 @@
-import * as format from '../format'
-import { customTypeEnums } from '../../types'
-import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED } from '../constants'
+import * as format from '../../src/core/component/state/format'
+import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED } from '../../src/core/component/state/constants'
+
+import { customTypeEnums } from '../../src/core/component/types'
 
 describe('format: displayText and rawValue can be calculated by formatInspectorStateValue, getRaw', () => {
   describe('type: literals', () => {

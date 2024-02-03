@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@vue/devtools-kit": "workspace:^",
-    "@vue/devtools-schema": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "birpc": "^0.2.14",
     "fast-glob": "^3.3.2",

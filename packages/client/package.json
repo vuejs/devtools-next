@@ -28,7 +28,6 @@
     "@unocss/runtime": "^0.58.3",
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
-    "@vue/devtools-schema": "workspace:*",
     "@vue/devtools-shared": "workspace:^",
     "@vue/devtools-ui": "workspace:*",
     "@vueuse/core": "^10.7.2",

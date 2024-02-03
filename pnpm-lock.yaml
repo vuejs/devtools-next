@@ -481,8 +481,6 @@ importers:
         specifier: workspace:*
         version: link:../vite
 
-  packages/schema: {}
-
   packages/shared:
     dependencies:
       rfdc:

@@ -22,6 +22,9 @@
     "prepare:type": "tsup --dts-only",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
   "dependencies": {
     "@vue/devtools-shared": "workspace:^",
     "hookable": "^5.5.3",

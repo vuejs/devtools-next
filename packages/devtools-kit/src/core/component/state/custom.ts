@@ -1,4 +1,4 @@
-import type { InspectorState } from '../types'
+import type { InspectorState, customTypeEnums } from '../types'
 import { getComponentName, getInstanceName } from '../utils'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'
@@ -21,7 +21,7 @@ export function getFunctionDetails(func: Function) {
   const name = typeof func.name === 'string' ? func.name : ''
   return {
     _custom: {
-      type: 'function',
+      type: 'function' satisfies customTypeEnums,
       displayText: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
       tooltipText: string.trim() ? `<pre>${string}</pre>` : null,
     },
@@ -64,7 +64,7 @@ export function getSetDetails(val: Set<unknown>) {
   const list = Array.from(val)
   return {
     _custom: {
-      type: 'set',
+      type: 'set' satisfies customTypeEnums,
       displayText: `Set[${list.length}]`,
       value: list,
       readOnly: true,
@@ -120,7 +120,7 @@ function namedNodeMapToObject(map: NamedNodeMap) {
 export function getStoreDetails(store) {
   return {
     _custom: {
-      type: 'store',
+      type: 'store' satisfies customTypeEnums,
       displayText: 'Store',
       value: {
         state: store.state,
@@ -179,7 +179,7 @@ export function getComponentDefinitionDetails(definition) {
   }
   return {
     _custom: {
-      type: 'component-definition',
+      type: 'component-definition' satisfies customTypeEnums,
       displayText: display,
       tooltipText: 'Component definition',
       ...definition.__file
@@ -195,7 +195,7 @@ export function getHTMLElementDetails(value: HTMLElement) {
   try {
     return {
       _custom: {
-        type: 'HTMLElement',
+        type: 'HTMLElement' satisfies customTypeEnums,
         displayText: `<span class="opacity-30">&lt;</span><span class="text-blue-500">${value.tagName.toLowerCase()}</span><span class="opacity-30">&gt;</span>`,
         value: namedNodeMapToObject(value.attributes),
       },
@@ -204,7 +204,7 @@ export function getHTMLElementDetails(value: HTMLElement) {
   catch (e) {
     return {
       _custom: {
-        type: 'HTMLElement',
+        type: 'HTMLElement' satisfies customTypeEnums,
         displayText: `<span class="text-blue-500">${String(value)}</span>`,
       },
     }
@@ -232,7 +232,7 @@ export function getObjectDetails(object: Record<string, any>) {
   if (typeof object.__asyncLoader === 'function') {
     return {
       _custom: {
-        type: 'component-definition',
+        type: 'component-definition' satisfies customTypeEnums,
         display: 'Async component definition',
       },
     }

@@ -17,7 +17,7 @@ export type * from './core/inspector'
 export type * from './types'
 
 export { parse, stringify } from './shared'
-export { formatInspectorStateValue, getInspectorStateValueType, getRawValue, toEdit, toSubmit } from './core/component/state/format'
+export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
 export { UNDEFINED } from './core/component/state/constants'
 
 export const devtools = {

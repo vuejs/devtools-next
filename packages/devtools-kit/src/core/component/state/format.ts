@@ -1,4 +1,4 @@
-import { InspectorCustomState, InspectorState } from '../types'
+import { InspectorCustomState, InspectorState, customTypeEnums } from '../types'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, rawTypeRE, specialTypeRE } from './constants'
 import { isPlainObject } from './is'
 import { escape, internalStateTokenToString, replaceStringToToken, replaceTokenToString } from './util'
@@ -87,30 +87,44 @@ export function formatInspectorStateValue(value, quotes = false) {
   return value
 }
 
-export function getRawValue(value: InspectorState['value']) {
+export function getRaw(value: InspectorState['value']): {
+  value: object | string | number | boolean | null
+  inherit: {} | { abstract: true }
+  customType?: customTypeEnums
+} {
+  let customType: customTypeEnums
   const isCustom = getInspectorStateValueType(value) === 'custom'
   let inherit = {}
   if (isCustom) {
     const data = value as InspectorCustomState
     const customValue = data._custom?.value
+    const currentCustomType = data._custom?.type
     const nestedCustom = typeof customValue === 'object' && customValue !== null && '_custom' in customValue
-      ? getRawValue(customValue)
-      : { inherit: undefined, value: undefined }
+      ? getRaw(customValue)
+      : { inherit: undefined, value: undefined, customType: undefined }
     inherit = nestedCustom.inherit || data._custom?.fields || {}
     value = nestedCustom.value || customValue as string
+    customType = nestedCustom.customType || currentCustomType as customTypeEnums
   }
   // @ts-expect-error @TODO: type
   if (value && value._isArray)
     // @ts-expect-error @TODO: type
     value = value.items
 
-  return { value, inherit }
+  // @ts-expect-error customType map be assigned as undefined.
+  return { value, inherit, customType }
 }
 
-export function toEdit(value: unknown) {
+export function toEdit(value: unknown, customType?: customTypeEnums) {
+  if (customType === 'bigint')
+    return value as string
+
   return replaceTokenToString(JSON.stringify(value))
 }
 
-export function toSubmit(value: string) {
+export function toSubmit(value: string, customType?: customTypeEnums) {
+  if (customType === 'bigint')
+    return BigInt(value)
+
   return JSON.parse(replaceStringToToken(value), reviver)
 }

@@ -21,7 +21,7 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "peerDependencies": {
-    "vue": "^3.0.0",
+    "vue": "^3.0.0"
   },
   "dependencies": {
     "@vue/devtools-schema": "workspace:^",
@@ -32,6 +32,7 @@
     "speakingurl": "^14.0.1"
   },
   "devDependencies": {
+    "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   }
 }

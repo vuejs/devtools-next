@@ -15,6 +15,7 @@ declare global {
   var __VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__: boolean
   var __VUE_DEVTOOLS_VITE_PLUGIN_DETECTED__: boolean
   var __VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__: string
+  var __VUE_DEVTOOLS_BROWSER_EXTENSION_DETECTED__: boolean
 }
 
 export { }

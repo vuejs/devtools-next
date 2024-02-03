@@ -18,8 +18,7 @@
     "types": [
       "chrome",
       "vite/client",
-      "vitest/globals",
-      "@vue/devtools-schema"
+      "vitest/globals"
     ],
     "allowJs": true,
     "strict": true,

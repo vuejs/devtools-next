@@ -1,23 +1,26 @@
-import { deepClone, target as global } from '@vue/devtools-shared'
+import { target as global } from '@vue/devtools-shared'
 import type { DevToolsContext } from '../types'
 import { ROUTER_KEY } from './router'
 
 const CONTEXT_KEY = '__VUE_DEVTOOLS_CONTEXT__'
-const INITIAL_CONTEXT = {
-  appRecord: null,
-  api: null,
-  inspector: [],
-  timelineLayer: [],
-  routerInfo: {},
-  router: null,
-  activeInspectorTreeId: '',
-  componentPluginHookBuffer: [],
-} as unknown as DevToolsContext
 
-global[CONTEXT_KEY] ??= deepClone(INITIAL_CONTEXT)
+function initContextFactory() {
+  return {
+    appRecord: null,
+    api: null,
+    inspector: [],
+    timelineLayer: [],
+    routerInfo: {},
+    router: null,
+    activeInspectorTreeId: '',
+    componentPluginHookBuffer: [],
+  } as unknown as DevToolsContext
+}
 
-function resetDevToolsContext() {
-  global[CONTEXT_KEY] = deepClone(INITIAL_CONTEXT)
+global[CONTEXT_KEY] ??= initContextFactory()
+
+export function resetDevToolsContext() {
+  global[CONTEXT_KEY] = initContextFactory()
 }
 
 export const devtoolsContext = new Proxy(global[CONTEXT_KEY], {

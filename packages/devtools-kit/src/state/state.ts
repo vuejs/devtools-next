@@ -6,23 +6,26 @@ import { DevToolsEvents, apiHooks } from '../api'
 export type { DevToolsState } from '../types'
 
 const STATE_KEY = '__VUE_DEVTOOLS_GLOBAL_STATE__'
-const INITIAL_STATE = {
-  connected: false,
-  clientConnected: false,
-  appRecords: [],
-  activeAppRecord: null,
-  selectedComponentId: null,
-  pluginBuffer: [],
-  tabs: [],
-  commands: [],
-  vitePluginDetected: false,
-  activeAppRecordId: null,
+
+function initStateFactory() {
+  return {
+    connected: false,
+    clientConnected: false,
+    appRecords: [],
+    activeAppRecord: null,
+    selectedComponentId: null,
+    pluginBuffer: [],
+    tabs: [],
+    commands: [],
+    vitePluginDetected: false,
+    activeAppRecordId: null,
+  }
 }
 
-global[STATE_KEY] ??= INITIAL_STATE
+global[STATE_KEY] ??= initStateFactory()
 
 export function resetDevToolsState() {
-  global[STATE_KEY] = INITIAL_STATE
+  global[STATE_KEY] = initStateFactory()
 }
 
 export const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {

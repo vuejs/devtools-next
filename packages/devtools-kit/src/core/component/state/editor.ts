@@ -95,7 +95,7 @@ export class StateEditor {
   }
 }
 
-class RefStateEditor {
+export class RefStateEditor {
   set(ref: Ref<any>, value: any): void {
     if (isRef(ref)) {
       ref.value = value
@@ -103,18 +103,15 @@ class RefStateEditor {
     else {
       // if is reactive, then it must be object
       // to prevent loss reactivity, we should assign key by key
-      const previousKeys = Object.keys(ref)
+      const previousKeysSet = new Set(Object.keys(ref))
       const currentKeys = Object.keys(value)
       // we should check the key diffs, if previous key is the longer
       // then remove the needless keys
-      // @TODO: performance optimization
-      if (previousKeys.length > currentKeys.length) {
-        const diffKeys = previousKeys.filter(key => !currentKeys.includes(key))
-        diffKeys.forEach(key => Reflect.deleteProperty(ref, key))
-      }
       currentKeys.forEach((key) => {
         Reflect.set(ref, key, Reflect.get(value, key))
+        previousKeysSet.delete(key)
       })
+      previousKeysSet.forEach(key => Reflect.deleteProperty(ref, key))
     }
   }
 

@@ -20,7 +20,10 @@ export class StateEditor {
     const markRef = false
     while (sections.length > 1) {
       const section = sections.shift()!
-      object = object[section] as Recordable
+      if (object instanceof Map)
+        object = object.get(section) as Recordable
+      else
+        object = object[section] as Recordable
       if (this.refEditor.isRef(object))
         object = this.refEditor.get(object)
     }
@@ -42,7 +45,10 @@ export class StateEditor {
   get(object: Recordable, path: PropPath) {
     const sections = Array.isArray(path) ? path : path.split('.')
     for (let i = 0; i < sections.length; i++) {
-      object = object[sections[i]] as Recordable
+      if (object instanceof Map)
+        object = object.get(sections[i]) as Recordable
+      else
+        object = object[sections[i]] as Recordable
       if (this.refEditor.isRef(object))
         object = this.refEditor.get(object)
       if (!object)
@@ -70,17 +76,18 @@ export class StateEditor {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))
           object.splice(field as number, 1)
-        else if (toRaw(object) instanceof Map && typeof value === 'object' && value && 'key' in value)
-          object.delete(value.key)
+        else if (toRaw(object) instanceof Map)
+          object.delete(field)
         else if (toRaw(object) instanceof Set)
           object.delete(value)
-        else
-          Reflect.deleteProperty(object, field)
+        else Reflect.deleteProperty(object, field)
       }
       if (!state.remove) {
         const target = object[state.newKey || field]
         if (this.refEditor.isRef(target))
           this.refEditor.set(target, value)
+        else if (toRaw(object) instanceof Map)
+          object.set(state.newKey || field, value)
         else
           object[state.newKey || field] = value
       }

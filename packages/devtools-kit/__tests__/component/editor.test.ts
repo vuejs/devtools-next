@@ -1,4 +1,4 @@
-import { RefStateEditor } from '../editor'
+import { RefStateEditor } from '../../src/core/component/state/editor'
 
 describe('editor: RefStateEditor', () => {
   const editor = new RefStateEditor()

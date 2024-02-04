@@ -156,8 +156,8 @@ function submitDrafting() {
     nodeId,
     state: {
       newKey: draftingNewProp.value.key,
-      type: typeof draftingNewProp.value.value,
-      value: draftingNewProp.value.value,
+      type: typeof toSubmit(draftingNewProp.value.value),
+      value: toSubmit(draftingNewProp.value.value),
     },
   } satisfies InspectorStateEditorPayload)
   resetDrafting()

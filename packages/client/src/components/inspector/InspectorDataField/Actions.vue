@@ -33,7 +33,7 @@ const popupVisible = ref(false)
 const raw = computed(() => getRaw(props.data.value))
 const rawValue = computed(() => raw.value.value)
 const customType = computed(() => raw.value.customType)
-const dataType = computed(() => typeof rawValue.value)
+const dataType = computed(() => rawValue.value === null ? 'null' : typeof rawValue.value)
 
 const iconButtonProps = {
   flat: true,
@@ -72,7 +72,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
     <!-- only editable will show operate actions -->
     <template v-if="!props.disableEdit && data.editable">
       <!-- input edit, number/string/object -->
-      <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object'">
+      <template v-if="dataType === 'string' || dataType === 'number' || dataType === 'object' || dataType === 'null'">
         <VueButton
           v-tooltip="{
             content: 'Edit value',

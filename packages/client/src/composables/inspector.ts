@@ -20,7 +20,7 @@ export function useStateEditorContext() {
   return context
 }
 
-export type EditorInputValidType = 'number' | 'string' | 'object'
+export type EditorInputValidType = 'number' | 'string' | 'object' | 'null'
 export type EditorAddNewPropType = 'object' | 'array'
 
 export function useStateEditor() {

@@ -1,4 +1,5 @@
-import { PluginDescriptor, PluginSetupFunction, VueAppInstance } from '../types'
+import type { App } from 'vue'
+import { PluginDescriptor, PluginSetupFunction } from '../types'
 import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
@@ -12,7 +13,7 @@ export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn:
   return hook.setupDevToolsPlugin(pluginDescriptor, setupFn)
 }
 
-export function registerPlugin(app: VueAppInstance, api: DevToolsPluginApi) {
+export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
   const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
   plugins.forEach(async ([plugin, setupFn]) => {
     if (plugin.packageName === 'vue-query') {

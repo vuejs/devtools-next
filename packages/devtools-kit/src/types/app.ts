@@ -25,7 +25,7 @@ export declare type PluginSettingsItem = {
 export interface PluginDescriptor {
   id: string
   label: string
-  app: VueAppInstance
+  app: App<any>
   packageName?: string
   homepage?: string
   componentStateTypes?: string[]
@@ -82,7 +82,7 @@ export type VueAppInstance = ComponentInternalInstance & {
   setupState: Record<string, unknown>
   provides: Record<string | symbol, unknown>
   ctx: Record<string, unknown>
-}
+} & App<any>
 export interface AppRecord {
   id: string | number
   name: string

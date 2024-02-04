@@ -63,10 +63,10 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
 }
 
 export async function setActiveAppRecord(appRecord: AppRecord) {
-  await registerComponentDevToolsPlugin(appRecord?.app as unknown as VueAppInstance)
+  registerComponentDevToolsPlugin(appRecord?.app as unknown as VueAppInstance)
   devtoolsAppRecords.active = appRecord
   devtoolsAppRecords.activeId = `${appRecord.id}`
-  registerPlugin(appRecord.app as unknown as VueAppInstance, appRecord.api!)
+  registerPlugin(appRecord.app!, appRecord.api!)
 }
 
 export async function toggleActiveAppRecord(id: string) {

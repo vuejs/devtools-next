@@ -81,7 +81,6 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
     })
 
     api.on.editInspectorState(async (payload) => {
-      // @ts-expect-error expected type
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         editState(payload)
         await api.sendInspectorState('components')

@@ -103,10 +103,6 @@ const normalizedDisplayedKey = computed(() => {
   return key.slice(lastDotIndex + 1)
 })
 
-const hasChildren = computed(() => {
-  return Object.keys(normalizedChildField.value).length > 0
-})
-
 // ---------------------------- edit ----------------------------
 const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEditor()
 
@@ -163,6 +159,12 @@ function submitDrafting() {
   resetDrafting()
 }
 
+const hasChildren = computed(() => {
+  return Object.keys(normalizedChildField.value).length > 0
+  // Regard empty object has children When drafting a new property.
+    || draftingNewProp.value.enable
+})
+
 const containerRef = ref<HTMLDivElement>()
 const { isHovering } = useHover(() => containerRef.value)
 </script>
@@ -181,6 +183,7 @@ const { isHovering } = useHover(() => containerRef.value)
           <Actions
             :hovering="isHovering" :disable-edit="state.disableEdit"
             :data="data" :depth="depth" @enable-edit-input="toggleEditing"
+            @add-new-prop="addNewProp"
           />
         </template>
       </div>

@@ -1,6 +1,6 @@
 import { devtools } from '@vue/devtools-kit'
 import { mount } from '@vue/test-utils'
-import { resetDevToolsState } from '../src/state'
+import { resetDevToolsContext, resetDevToolsState } from '../src/state'
 import App from './fixtures/App.vue'
 
 describe('app record', () => {
@@ -9,6 +9,7 @@ describe('app record', () => {
   })
   afterEach(() => {
     resetDevToolsState()
+    resetDevToolsContext()
   })
   it('should work', async () => {
     await new Promise<void>((resolve) => {

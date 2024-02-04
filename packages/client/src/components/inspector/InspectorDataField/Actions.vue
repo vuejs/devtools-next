@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
-import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
-import { getRaw } from '@vue/devtools-kit'
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
-import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
 import { toRaw } from 'vue'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { getRaw } from '@vue/devtools-kit'
+import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
+import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
+import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import type { EditorAddNewPropType, EditorInputValidType } from '../../../composables/inspector'
 
 const props = withDefaults(defineProps<{

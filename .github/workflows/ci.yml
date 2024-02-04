@@ -34,3 +34,6 @@ jobs:
 
       - name: Lint
         run: nr lint
+
+      - name: Test
+        run: nr test

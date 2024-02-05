@@ -181,7 +181,7 @@ const { isHovering } = useHover(() => containerRef.value)
             <span v-html="normalizedValue" />
           </span>
           <Actions
-            :hovering="isHovering" :disable-edit="state.disableEdit"
+            :hovering="isHovering" :disable-edit="state.disableEdit" :root-id="rootId"
             :data="data" :depth="depth" @enable-edit-input="toggleEditing"
             @add-new-prop="addNewProp"
           />
@@ -200,7 +200,7 @@ const { isHovering } = useHover(() => containerRef.value)
               <span v-html="normalizedValue" />
             </span>
             <Actions
-              :show-add-if-needed="!draftingNewProp.enable"
+              :show-add-if-needed="!draftingNewProp.enable" :root-id="rootId"
               :hovering="isHovering" :data="data" :disable-edit="state.disableEdit"
               :depth="depth" @enable-edit-input="toggleEditing" @add-new-prop="addNewProp"
             />

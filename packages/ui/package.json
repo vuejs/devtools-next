@@ -47,7 +47,7 @@
     "@types/node": "^20.11.10",
     "@unocss/reset": "^0.58.4",
     "@vitejs/plugin-vue": "^5.0.3",
-    "floating-vue": "2.0.0",
+    "floating-vue": "5.2.2",
     "histoire": "^0.17.9",
     "unocss": "^0.58.4",
     "vite-plugin-dts": "^3.7.2"

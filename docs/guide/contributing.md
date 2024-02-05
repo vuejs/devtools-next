@@ -11,7 +11,7 @@ We also recommend installing [@antfu/ni](https://github.com/antfu/ni) to help sw
 After cloning the repo, run:
 
 ```bash
-$ pnpm i # install the dependencies of the project
+pnpm i # install the dependencies of the project
 ```
 
 :::tip ⚠️

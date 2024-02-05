@@ -30,8 +30,8 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  item(props: { item: { label: Label, value: Value }, active: boolean, disabled: boolean }): any
-  button(): any
+  item: (props: { item: { label: Label, value: Value }, active: boolean, disabled: boolean }) => any
+  button: () => any
 }>()
 const slots = useSlots()
 

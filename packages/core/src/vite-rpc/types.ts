@@ -39,11 +39,11 @@ export interface ModuleInfo {
 }
 
 export interface ViteRPCFunctions {
-  root(): string
-  getGraph(): Promise<ModuleInfo[]>
-  getStaticAssets(): Promise<AssetInfo[]>
-  getImageMeta(filepath: string): Promise<ImageMeta | undefined>
-  getTextAssetContent(filepath: string, limit?: number): Promise<string | undefined>
+  root: () => string
+  getGraph: () => Promise<ModuleInfo[]>
+  getStaticAssets: () => Promise<AssetInfo[]>
+  getImageMeta: (filepath: string) => Promise<ImageMeta | undefined>
+  getTextAssetContent: (filepath: string, limit?: number) => Promise<string | undefined>
   moduleUpdated: () => void
   assetsUpdated: () => void
 }

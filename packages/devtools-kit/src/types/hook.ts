@@ -44,12 +44,12 @@ export interface DevToolsHook {
 
 export interface VueHooks {
   on: {
-    vueAppInit(fn: DevToolsEvent[DevToolsHooks.APP_INIT]): void
-    vueAppConnected(fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]): void
-    componentAdded(fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]): () => void
-    componentUpdated(fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]): () => void
-    componentRemoved(fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]): () => void
-    setupDevtoolsPlugin(fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]): void
+    vueAppInit: (fn: DevToolsEvent[DevToolsHooks.APP_INIT]) => void
+    vueAppConnected: (fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) => void
+    componentAdded: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) => () => void
+    componentUpdated: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) => () => void
+    componentRemoved: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) => () => void
+    setupDevtoolsPlugin: (fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) => void
   }
-  setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction): void
+  setupDevToolsPlugin: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
 }

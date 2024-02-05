@@ -21,10 +21,10 @@ defineEmits<{
   'update:visible': [value: boolean]
 }>()
 defineSlots<{
-  default(): any
-  popper(props: { hide: () => void }): any
-  'button-icon'(): any
-  'button-icon-right'(): any
+  default: () => any
+  popper: (props: { hide: () => void }) => any
+  'button-icon': () => any
+  'button-icon-right': () => any
 }>()
 provide('$ui-dropdown-disabled', computed(() => props.disabled))
 </script>

@@ -61,7 +61,7 @@ async function buildBundle() {
   build({
     entry: [resolve('./src/index.ts'), resolve('./src/app.ts')],
     ...baseOptions,
-    external: ['./user-app.mjs', './user-app.js', ...ExternalModules],
+    external: ['./user-app.js', ...ExternalModules],
     clean: false,
   })
 

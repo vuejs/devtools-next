@@ -84,6 +84,7 @@
     "eslint": "npm:eslint-ts-patch@8.55.0-1",
     "eslint-plugin-format": "^0.1.0",
     "eslint-ts-patch": "8.55.0-1",
+    "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "jsdom": "^24.0.0",

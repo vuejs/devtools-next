@@ -8,6 +8,11 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./applet": {
+      "types": "./applet.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -18,9 +23,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --clean",
-    "prepare:type": "tsup --dts-only",
-    "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
+    "build": "tsx scripts/build.ts",
+    "prepare:type": "tsx scripts/build.ts --dts-only",
+    "stub": "tsx scripts/build.ts --watch & pnpm types",
+    "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.applet.json --watch"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -34,7 +40,9 @@
   },
   "devDependencies": {
     "@types/speakingurl": "^13.0.6",
+    "unplugin-vue": "^5.0.3",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.27"
   }
 }

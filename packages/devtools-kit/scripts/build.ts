@@ -38,7 +38,7 @@ async function buildKitTypes() {
 }
 
 export async function build() {
-  fse.removeSync('./dist')
+  !watch && fse.removeSync('./dist')
   await Promise.all([
     tsup({
       ...baseOptions,

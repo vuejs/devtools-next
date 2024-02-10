@@ -1,6 +1,5 @@
 {
   "name": "playground-basic",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite"

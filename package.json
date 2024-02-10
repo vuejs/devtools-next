@@ -56,6 +56,7 @@
     "prepare": "simple-git-hooks",
     "test": "vitest --environment jsdom",
     "play": "nr -C packages/playground/basic dev",
+    "play:applet": "nr -C packages/playground/applet dev",
     "play:ui": "nr -C packages/playground/ui dev",
     "play:multi-app": "nr -C packages/playground/multi-app dev",
     "play:webpack": "nr -C packages/playground/webpack dev",

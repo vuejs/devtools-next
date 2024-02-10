@@ -11,8 +11,8 @@
     },
     "./applet": {
       "types": "./applet.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/applet.js",
+      "require": "./dist/applet.cjs"
     }
   },
   "main": "./dist/index.cjs",

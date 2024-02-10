@@ -3,7 +3,7 @@ import Tree from './components/Tree.vue'
 </script>
 
 <template>
-  <div>
+  <div class="h100 w100 text-blue">
     Hello Pinia
     <Tree />
   </div>

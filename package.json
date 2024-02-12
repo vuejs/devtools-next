@@ -88,7 +88,7 @@
     "fs-extra": "^11.2.0",
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.1",
-    "npm-run-all2": "^5.0.2",
+    "npm-run-all2": "^6.1.2",
     "pnpm": "^8.15.0",
     "progress": "^2.0.3",
     "publint": "^0.2.7",

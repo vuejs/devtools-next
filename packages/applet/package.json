@@ -1,0 +1,43 @@
+{
+  "name": "@vue/devtools-applet",
+  "type": "module",
+  "version": "7.0.14",
+  "author": "webfansplz",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./types.d.ts",
+  "files": [
+    "**.d.ts",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup & pnpm types",
+    "prepare:type": "tsup --dts-only",
+    "stub": "tsup --watch & pnpm types --watch",
+    "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "dependencies": {
+    "@vue/devtools-shared": "workspace:^",
+    "hookable": "^5.5.3",
+    "mitt": "^3.0.1",
+    "perfect-debounce": "^1.0.0",
+    "speakingurl": "^14.0.1"
+  },
+  "devDependencies": {
+    "@types/speakingurl": "^13.0.6",
+    "unplugin-vue": "^5.0.3",
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.27"
+  }
+}

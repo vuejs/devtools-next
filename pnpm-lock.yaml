@@ -496,6 +496,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0.3
         version: 5.0.3(vite@5.0.12)(vue@3.4.15)
+      '@vue/devtools-applet':
+        specifier: workspace:*
+        version: link:../../applet
       '@vue/devtools-kit':
         specifier: workspace:*
         version: link:../../devtools-kit

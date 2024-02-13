@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "tsup & pnpm types",
-    "prepare:type": "tsup --dts-only",
+    "prepare:type": "pnpm types",
     "stub": "tsup --watch & pnpm types --watch",
     "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.json"
   },

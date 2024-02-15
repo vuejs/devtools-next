@@ -39,7 +39,7 @@
     "overlay"
   ],
   "engines": {
-    "node": ">=v14.21.3"
+    "node": ">=20.11.1"
   },
   "scripts": {
     "build": "unbuild",

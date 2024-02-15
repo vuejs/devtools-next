@@ -20,7 +20,7 @@
     "dx"
   ],
   "engines": {
-    "node": ">=18.19.0"
+    "node": ">=20.11.1"
   },
   "scripts": {
     "stub:shared": "nr -C packages/shared stub",

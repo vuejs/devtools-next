@@ -39,6 +39,6 @@
     "vite-plugin-inspect": "^0.8.3"
   },
   "devDependencies": {
-    "vue": "^3.4.15"
+    "vue": "^3.4.19"
   }
 }

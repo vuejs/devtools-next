@@ -11,8 +11,8 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "core-js": "^3.35.1",
-    "vue": "^3.4.15"
+    "core-js": "^3.36.0",
+    "vue": "^3.4.19"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",

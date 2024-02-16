@@ -5,6 +5,9 @@
     "group:allNonMajor",
     ":disableDependencyDashboard"
   ],
+  "ignoreDeps": [
+    "node"
+  ],
   "labels": [
     "dependencies"
   ],

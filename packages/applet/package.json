@@ -8,7 +8,8 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./style": "./dist/index.css"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -18,9 +19,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup & pnpm types",
+    "build": "vite build",
     "prepare:type": "pnpm types",
-    "stub": "tsup --watch & pnpm types --watch",
+    "stub": "vite build --watch",
     "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.json"
   },
   "peerDependencies": {

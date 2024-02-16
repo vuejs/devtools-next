@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { Pinia } from '@vue/devtools-applet'
-
-import('./setup/unocss-runtime')
 </script>
 
 <template>

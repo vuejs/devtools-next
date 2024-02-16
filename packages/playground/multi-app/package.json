@@ -1,5 +1,6 @@
 {
   "name": "playground-basic",
+  "version": "7.0.15",
   "private": true,
   "scripts": {
     "dev": "vite"

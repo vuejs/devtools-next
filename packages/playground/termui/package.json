@@ -16,7 +16,7 @@
     "vue-termui": "*"
   },
   "devDependencies": {
-    "@types/node": "^18.19.17",
+    "@types/node": "^20.11.19",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue-termui/cli": "*",
     "@vue/compiler-sfc": "^3.4.19",

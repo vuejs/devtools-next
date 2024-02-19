@@ -528,14 +528,14 @@ importers:
         version: 0.0.19(@vue/runtime-core@3.4.19)
     devDependencies:
       '@types/node':
-        specifier: ^18.19.17
-        version: 18.19.17
+        specifier: ^20.11.19
+        version: 20.11.19
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
         version: 5.0.4(vite@5.1.3)(vue@3.4.19)
       '@vue-termui/cli':
         specifier: '*'
-        version: 0.0.17(@types/node@18.19.17)(vite-plugin-vue-termui@0.0.12)(vite@5.1.3)(vue-termui@0.0.19)
+        version: 0.0.17(@types/node@20.11.19)(vite-plugin-vue-termui@0.0.12)(vite@5.1.3)(vue-termui@0.0.19)
       '@vue/compiler-sfc':
         specifier: ^3.4.19
         version: 3.4.19
@@ -550,7 +550,7 @@ importers:
         version: 0.26.0(rollup@3.28.1)(vue@3.4.19)
       vite:
         specifier: ^5.1.3
-        version: 5.1.3(@types/node@18.19.17)
+        version: 5.1.3(@types/node@20.11.19)(sass@1.71.0)
       vite-plugin-vue-termui:
         specifier: '*'
         version: 0.0.12(@vitejs/plugin-vue@5.0.4)(unplugin-auto-import@0.17.5)(unplugin-vue-components@0.26.0)(vue-termui@0.0.19)(vue@3.4.19)
@@ -3920,6 +3920,7 @@ packages:
     resolution: {integrity: sha512-SzyGKgwPzuWp2SHhlpXKzCX0pIOfcI4V2eF37nNBJOhwlegQ83omtVQ1XxZpDE06V/d6AQvfQdPfnw0tRC//Ng==}
     dependencies:
       undici-types: 5.26.5
+    dev: false
 
   /@types/node@20.11.19:
     resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
@@ -4455,7 +4456,7 @@ packages:
       path-browserify: 1.0.1
     dev: true
 
-  /@vue-termui/cli@0.0.17(@types/node@18.19.17)(vite-plugin-vue-termui@0.0.12)(vite@5.1.3)(vue-termui@0.0.19):
+  /@vue-termui/cli@0.0.17(@types/node@20.11.19)(vite-plugin-vue-termui@0.0.12)(vite@5.1.3)(vue-termui@0.0.19):
     resolution: {integrity: sha512-VkY7OVb/UVhHMP6exAwidnb+HgC1/PHdvXJxXrpTOparNI59sD6ByLv5F3MDcx6mCKbkMVAE5P1syTFF88vJNg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
@@ -4465,8 +4466,8 @@ packages:
       vue-termui: '>=0.0.14'
     dependencies:
       picocolors: 1.0.0
-      vite: 5.1.3(@types/node@18.19.17)
-      vite-node: 0.24.5(@types/node@18.19.17)
+      vite: 5.1.3(@types/node@20.11.19)(sass@1.71.0)
+      vite-node: 0.24.5(@types/node@20.11.19)
       vite-plugin-vue-termui: 0.0.12(@vitejs/plugin-vue@5.0.4)(unplugin-auto-import@0.17.5)(unplugin-vue-components@0.26.0)(vue-termui@0.0.19)(vue@3.4.19)
       vue-termui: 0.0.19(@vue/runtime-core@3.4.19)
       ws: 8.16.0
@@ -13887,7 +13888,7 @@ packages:
       vite: 5.1.3(@types/node@20.11.19)(sass@1.71.0)
     dev: false
 
-  /vite-node@0.24.5(@types/node@18.19.17):
+  /vite-node@0.24.5(@types/node@20.11.19):
     resolution: {integrity: sha512-+xnJaYu1i+2eCsycRO2QF1vxne13b2nL6nF+O8EzdF/X+ohPujysjwij3ZbX3AZ+j8HWYzjlRlKPdlHVyaNzwQ==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
@@ -13895,7 +13896,7 @@ packages:
       debug: 4.3.4
       mlly: 0.5.17
       pathe: 0.2.0
-      vite: 3.2.7(@types/node@18.19.17)
+      vite: 3.2.7(@types/node@20.11.19)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -14032,7 +14033,7 @@ packages:
       vue-termui: 0.0.19(@vue/runtime-core@3.4.19)
     dev: true
 
-  /vite@3.2.7(@types/node@18.19.17):
+  /vite@3.2.7(@types/node@20.11.19):
     resolution: {integrity: sha512-29pdXjk49xAP0QBr0xXqu2s5jiQIXNvE/xwd0vUizYT2Hzqe4BksNNoWllFVXJf4eLZ+UlVQmXfB4lWrc+t18g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -14057,47 +14058,11 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.19.17
+      '@types/node': 20.11.19
       esbuild: 0.15.18
       postcss: 8.4.35
       resolve: 1.22.8
       rollup: 2.79.1
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
-
-  /vite@5.1.3(@types/node@18.19.17):
-    resolution: {integrity: sha512-UfmUD36DKkqhi/F75RrxvPpry+9+tTkrXfMNZD+SboZqBCMsxKtO52XeGzzuh7ioz+Eo/SYDBbdb0Z7vgcDJew==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.19.17
-      esbuild: 0.19.10
-      postcss: 8.4.35
-      rollup: 4.7.0
     optionalDependencies:
       fsevents: 2.3.3
     dev: true

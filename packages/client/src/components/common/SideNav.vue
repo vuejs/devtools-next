@@ -53,10 +53,10 @@ onClickOutside(
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"
           hover="bg-active"
-          text-secondary relative h-10 select-none p2
+          text-secondary relative h-10 w-full select-none p2
           exact-active-class="!text-primary bg-active"
           :class="[
-            sidebarExpanded ? 'w-full rounded pl2.5' : 'w-10 rounded-xl',
+            sidebarExpanded ? 'rounded pl2.5' : 'rounded-xl',
           ]"
         >
           <div i-logos-vue h-6 w-6 />
@@ -75,8 +75,7 @@ onClickOutside(
     </div>
 
     <div
-      flex="~ auto col gap-0.5 items-center" w-full p1 class="no-scrollbar"
-      :class="sidebarExpanded ? '' : 'of-x-hidden of-y-auto'"
+      flex="~ auto col gap-0.5 items-center" w-full of-x-hidden of-y-auto p1 class="no-scrollbar"
     >
       <template v-for="[name, tabs], idx of displayedTabs" :key="name">
         <!-- if is not the first nonempty list, render the top divider -->

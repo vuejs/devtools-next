@@ -17,6 +17,7 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
       ],
+      ignore: ['h'],
     }),
   ],
   server: {

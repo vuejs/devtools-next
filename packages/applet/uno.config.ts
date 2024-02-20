@@ -17,7 +17,10 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: [
-    [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`],
-  ],
+  shortcuts: [{
+    'bg-base': 'bg-white dark:bg-black',
+    'text-base': 'text-black dark:text-white',
+    'bg-active': 'bg-gray:5',
+    'border-base': 'border-gray/20',
+  }, [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border border-base bg-base items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`]],
 })

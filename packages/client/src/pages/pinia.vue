@@ -33,12 +33,22 @@ watch(selected, () => {
 createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
-  bridgeRpc.getInspectorTree({ inspectorId: 'pinia', filter: '' }).then(({ data }) => {
-    tree.value = data
-    if (!selected.value && data.length) {
-      selected.value = data[0].id
+  const getPiniaInspectorTree = () => {
+    bridgeRpc.getInspectorTree({ inspectorId: 'pinia', filter: '' }).then(({ data }) => {
+      tree.value = data
+      if (!selected.value && data.length)
+        selected.value = data[0].id
       getPiniaState(data[0].id)
-    }
+    })
+  }
+  getPiniaInspectorTree()
+
+  bridgeRpc.on.componentUpdated((id) => {
+    if (id !== 'pinia')
+      return
+    getPiniaInspectorTree()
+  }, {
+    inspectorId: 'pinia',
   })
 
   bridgeRpc.on.inspectorTreeUpdated((data) => {

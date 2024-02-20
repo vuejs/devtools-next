@@ -35,8 +35,8 @@
     "@vue/devtools-shared": "workspace:^",
     "electron": "^28.2.3",
     "execa": "^8.0.1",
-    "h3": "^1.10.1",
-    "ip": "^1.1.8",
+    "h3": "^1.10.2",
+    "ip": "^1.1.9",
     "pathe": "^1.1.2",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4"

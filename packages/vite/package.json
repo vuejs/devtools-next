@@ -52,7 +52,7 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "birpc": "^0.2.15",
+    "birpc": "^0.2.16",
     "execa": "^8.0.1",
     "sirv": "^2.0.4",
     "vite-plugin-inspect": "^0.8.3",

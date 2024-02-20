@@ -5,6 +5,7 @@ import { useDevToolsBridgeRpc } from '@vue/devtools-core'
 import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
+const inspectorId = 'pinia'
 const bridgeRpc = useDevToolsBridgeRpc()
 
 const selected = ref('')
@@ -16,7 +17,7 @@ const state = ref<{
 }>({})
 
 function getPiniaState(nodeId: string) {
-  bridgeRpc.getInspectorState({ inspectorId: 'pinia', nodeId }).then(({ data }) => {
+  bridgeRpc.getInspectorState({ inspectorId, nodeId }).then(({ data }) => {
     state.value = data
   })
 }
@@ -34,7 +35,7 @@ createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
   const getPiniaInspectorTree = () => {
-    bridgeRpc.getInspectorTree({ inspectorId: 'pinia', filter: '' }).then(({ data }) => {
+    bridgeRpc.getInspectorTree({ inspectorId, filter: '' }).then(({ data }) => {
       tree.value = data
       if (!selected.value && data.length)
         selected.value = data[0].id
@@ -44,11 +45,11 @@ onDevToolsClientConnected(() => {
   getPiniaInspectorTree()
 
   bridgeRpc.on.componentUpdated((id) => {
-    if (id !== 'pinia')
+    if (id !== inspectorId)
       return
     getPiniaInspectorTree()
   }, {
-    inspectorId: 'pinia',
+    inspectorId,
   })
 
   bridgeRpc.on.inspectorTreeUpdated((data) => {
@@ -60,7 +61,7 @@ onDevToolsClientConnected(() => {
       getPiniaState(data.data[0].id)
     }
   }, {
-    inspectorId: 'pinia',
+    inspectorId,
   })
 
   bridgeRpc.on.inspectorStateUpdated((data) => {
@@ -69,7 +70,7 @@ onDevToolsClientConnected(() => {
 
     state.value = data
   }, {
-    inspectorId: 'pinia',
+    inspectorId,
   })
 })
 </script>
@@ -87,7 +88,7 @@ onDevToolsClientConnected(() => {
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key"
-            inspector-id="pinia"
+            :inspector-id="inspectorId"
             :node-id="selected" :data="item" :name="`${key}`"
           />
         </div>

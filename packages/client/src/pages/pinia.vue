@@ -16,10 +16,6 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
-const hasRegisteredModule = computed(
-  () => state.value?.state?.length || state.value?.getters?.length,
-)
-
 function getPiniaState(nodeId: string) {
   bridgeRpc.getInspectorState({ inspectorId, nodeId }).then(({ data }) => {
     state.value = data
@@ -88,7 +84,7 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div v-if="hasRegisteredModule" :key="selected" h-0 grow overflow-auto p-2 class="no-scrollbar">
+        <div :key="selected" h-0 grow overflow-auto p-2 class="no-scrollbar">
           <InspectorState
             v-for="(item, key) in state" :id="key"
             :key="key"
@@ -96,9 +92,6 @@ onDevToolsClientConnected(() => {
             :node-id="selected" :data="item" :name="`${key}`"
           />
         </div>
-        <p v-else p-3>
-          No module registered
-        </p>
       </Pane>
     </Splitpanes>
   </PanelGrids>

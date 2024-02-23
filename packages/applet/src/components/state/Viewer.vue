@@ -34,16 +34,29 @@ const { expanded, toggleExpanded } = useToggleExpanded()
 
 <template>
   <div>
-    <div v-for="(item, index) in data" :key="index" :style="{ paddingLeft: `${depth * 15}px` }">
-      <div class="flex items-center" :class="[item?.children?.length && 'cursor-pointer hover:(bg-active)']" @click="toggleExpanded(`${depth}-${index}`)">
-        <ToggleExpanded v-if="item?.children?.length" :value="expanded.includes(`${depth}-${index}`)" />
+    <div
+      v-for="(item, index) in data"
+      :key="index"
+      :style="{ paddingLeft: `${depth * 15}px` }"
+    >
+      <div
+        class="flex items-center"
+        :class="[item?.children?.length && 'cursor-pointer hover:(bg-active)']"
+        @click="toggleExpanded(`${depth}-${index}`)"
+      >
+        <ToggleExpanded
+          v-if="item?.children?.length"
+          :value="expanded.includes(`${depth}-${index}`)"
+        />
         <!-- placeholder -->
         <span v-else pl5 />
         {{ item.key }}
         <span mx1>:</span>
         <span :class="`${item.type}-state-type`">{{ normalizeDisplay(item) }}</span>
       </div>
-      <div v-if="item?.children?.length && expanded.includes(`${depth}-${index}`)">
+      <div
+        v-if="item?.children?.length && expanded.includes(`${depth}-${index}`)"
+      >
         <StateViewer :data="item.children" :depth="depth + 1" />
       </div>
     </div>

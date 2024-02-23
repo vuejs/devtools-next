@@ -8,6 +8,9 @@
     "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "node",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "declaration": true,

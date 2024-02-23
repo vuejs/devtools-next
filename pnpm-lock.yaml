@@ -161,6 +161,9 @@ importers:
       speakingurl:
         specifier: ^14.0.1
         version: 14.0.1
+      splitpanes:
+        specifier: ^3.1.5
+        version: 3.1.5
     devDependencies:
       '@types/speakingurl':
         specifier: ^13.0.6

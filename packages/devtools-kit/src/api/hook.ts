@@ -13,6 +13,7 @@ export enum DevToolsEvents {
   DEVTOOLS_CONNECTED_UPDATED = 'devtools:connected-updated',
   ROUTER_INFO_UPDATED = 'router-info:updated',
   COMPONENT_STATE_INSPECT = 'component-state:inspect',
+  COMPONENT_UPDATED = 'component:updated',
   TOGGLE_COMPONENT_HIGHLIGHTER = 'component-highlighter:toggle',
   GET_COMPONENT_BOUNDING_RECT = 'component-bounding-rect:get',
   SCROLL_TO_COMPONENT = 'scroll-to-component',
@@ -60,6 +61,7 @@ export interface DevToolsEvent {
   [DevToolsEvents.CUSTOM_TABS_UPDATED]: (payload: CustomTab[]) => void
   // custom command
   [DevToolsEvents.CUSTOM_COMMANDS_UPDATED]: (payload: CustomCommand[]) => void
+  [DevToolsEvents.COMPONENT_UPDATED]: () => void
 }
 
 export type DevToolsEventParams<T extends keyof DevToolsEvent> = Parameters<DevToolsEvent[T]>

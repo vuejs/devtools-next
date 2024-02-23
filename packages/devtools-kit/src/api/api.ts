@@ -156,7 +156,10 @@ export class DevToolsPluginApi {
     apiHooks.callHook(DevToolsEvents.VISIT_COMPONENT_TREE, ...params)
   }
 
-  notifyComponentUpdate() {}
+  notifyComponentUpdate() {
+    apiHooks.callHook(DevToolsEvents.COMPONENT_UPDATED)
+  }
+
   now() {
     return nowFn()
   }

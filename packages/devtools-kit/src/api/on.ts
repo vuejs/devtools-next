@@ -28,6 +28,9 @@ export const on = {
     apiHooks.hook(DevToolsEvents.EDIT_INSPECTOR_STATE, fn)
   },
   editComponentState() {},
+  componentUpdated(fn: DevToolsEvent[DevToolsEvents.COMPONENT_UPDATED]) {
+    apiHooks.hook(DevToolsEvents.COMPONENT_UPDATED, fn)
+  },
   // #endregion compatible with old devtools
 
   // router

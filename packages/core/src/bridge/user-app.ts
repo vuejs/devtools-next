@@ -175,6 +175,11 @@ export function registerBridgeRpc(bridge: BridgeInstanceType) {
       bridge.emit(BridgeEvents.SEND_INSPECTOR_TREE, payload)
     })
 
+    // component updated
+    devtools.api.on.componentUpdated(() => {
+      bridge.emit(BridgeEvents.COMPONENT_UPDATED)
+    })
+
     // inspector state updated
     devtools.api.on.sendInspectorState((payload) => {
       bridge.emit(BridgeEvents.SEND_INSPECTOR_STATE, payload)

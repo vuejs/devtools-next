@@ -100,6 +100,11 @@ export class BridgeRpc {
         } as T)
       })
     },
+    componentUpdated(cb: (id?: string) => void, options: { inspectorId: string }) {
+      devtoolsBridge.value.on(BridgeEvents.COMPONENT_UPDATED, () => {
+        cb(options?.inspectorId)
+      })
+    },
     devtoolsStateUpdated(cb) {
       devtoolsBridge.value.on(BridgeEvents.DEVTOOLS_STATE_UPDATED, (payload) => {
         cb(parse(payload))

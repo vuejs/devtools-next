@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import DevToolsLogo from './DevToolsLogo.vue'
+import { useVirtualRouter } from '~/composables/virtual-router'
+
+const virtualRouter = useVirtualRouter()
 </script>
 
 <template>
@@ -28,9 +31,9 @@ import DevToolsLogo from './DevToolsLogo.vue'
         </div>
         <div flex="~ col auto" min-w-40 p4 theme-card-lime>
           <div i-carbon-tree-view-alt text-3xl />
-          <code>State</code>
+          <code>Store</code>
         </div>
-        <div flex="~ col auto" min-w-40 p4 theme-card-lime>
+        <div flex="~ col auto" min-w-40 p4 theme-card-lime @click="virtualRouter.push('/timeline')">
           <div i-mdi:timeline-clock-outline text-3xl />
           <div>Timeline</div>
         </div>

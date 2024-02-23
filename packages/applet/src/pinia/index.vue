@@ -5,7 +5,7 @@ import Timeline from './components/timeline/Index.vue'
 import Home from './components/Home.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
-const { router, VirtualRouterView } = registerVirtualRouter([{
+const { VirtualRouterView } = registerVirtualRouter([{
   path: '/',
   component: Home,
 }, {

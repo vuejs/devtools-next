@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-self-import
 import StateViewer from './Viewer.vue'
 
-import ToggleExpanded from '~/components/common/ToggleExpanded.vue'
+import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 
 import { useToggleExpanded } from '~/composables/toggle-expanded'
 

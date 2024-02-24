@@ -1,6 +1,7 @@
-import { defineConfig, presetAttributify, presetIcons, presetTypography, presetUno, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, mergeConfigs, presetAttributify, presetIcons, presetTypography, presetUno, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { unoConfig } from '@vue/devtools-ui/theme'
 
-export default defineConfig({
+export default defineConfig(mergeConfigs([unoConfig, {
   transformers: [transformerVariantGroup(), transformerDirectives()],
   presets: [
     presetUno(),
@@ -17,12 +18,30 @@ export default defineConfig({
       },
     }),
   ],
+  variants: [
+    {
+      name: '@active',
+      match(matcher) {
+        if (!matcher.startsWith('@active'))
+          return matcher
+
+        return {
+          matcher: matcher.slice(8),
+          selector: s => `${s}.active`,
+        }
+      },
+    },
+  ],
   shortcuts: [{
     // general
     'bg-base': 'bg-white dark:bg-black',
     'text-base': 'text-black dark:text-white',
     'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
+    'transition-base': 'transition-all duration-200',
+
+    // selective list
+    'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
 
     // state
     'string-state-type': 'text-#e74c3c dark:(text-#c41a16)',
@@ -34,4 +53,4 @@ export default defineConfig({
     'literal-state-type',
     'boolean-state-type',
   ],
-})
+}]))

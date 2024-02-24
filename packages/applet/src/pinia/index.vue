@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import Timeline from './components/timeline/Index.vue'
 import Home from './components/Home.vue'
+import Store from './components/Store/Index.vue'
+import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
-const { VirtualRouterView } = registerVirtualRouter([{
-  path: '/',
-  component: Home,
-}, {
-  path: '/timeline',
-  component: Timeline,
-}])
+const { VirtualRouterView } = registerVirtualRouter([
+  {
+    path: '/',
+    component: Home,
+  },
+  {
+    path: '/store',
+    component: Store,
+  },
+  {
+    path: '/timeline',
+    component: Timeline,
+  },
+])
 
 const routePath = ref('/')
 

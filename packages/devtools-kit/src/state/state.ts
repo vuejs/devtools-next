@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import { target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
 import type { DevToolsState } from '../types'
@@ -14,7 +15,7 @@ function initStateFactory() {
     appRecords: [],
     activeAppRecord: null,
     selectedComponentId: null,
-    pluginBuffer: [],
+    pluginBuffer: ref([]),
     tabs: [],
     commands: [],
     vitePluginDetected: false,

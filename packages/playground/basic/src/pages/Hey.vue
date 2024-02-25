@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { useCounterStore } from '../stores'
+
 const route = useRoute()
+const counterStore = useCounterStore()
 </script>
 
 <template>
   <div class="container">
     Hey: {{ route.params.id }}
+    Counter: {{ counterStore.count }}
   </div>
 </template>
 

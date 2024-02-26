@@ -75,7 +75,7 @@ export async function toggleActiveAppRecord(id: string) {
   devtoolsContext.clear()
   const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
   if (appRecord) {
-    devtoolsState.pluginBuffer.value = devtoolsState.pluginBuffer.value.filter(([plugin]) => plugin.id !== 'components')
+    devtoolsState.pluginBuffer = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.id !== 'components')
     const api = new DevToolsPluginApi()
     appRecord.api = api
     setActiveAppRecord(appRecord)

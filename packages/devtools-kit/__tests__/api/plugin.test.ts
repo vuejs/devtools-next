@@ -31,7 +31,7 @@ describe('vue plugin', () => {
     await new Promise<void>((resolve) => {
       devtools.hook.on.vueAppInit(() => {
         const [appRecord] = devtoolsAppRecords.value
-        expect(devtools.state.pluginBuffer.value.findIndex(([descriptor]) => descriptor.packageName === 'vue-router')).toBeGreaterThanOrEqual(0)
+        expect(devtools.state.pluginBuffer.findIndex(([descriptor]) => descriptor.packageName === 'vue-router')).toBeGreaterThanOrEqual(0)
         expect(appRecord.moduleDetectives?.vueRouter).toBe(true)
         resolve()
       })

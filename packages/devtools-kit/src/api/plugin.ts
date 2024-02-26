@@ -13,31 +13,35 @@ export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn:
   return hook.setupDevToolsPlugin(pluginDescriptor, setupFn)
 }
 
+export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFunction], app: App<any>, api: DevToolsPluginApi) {
+  const [pluginDescriptor, setupFn] = plugin
+  if (pluginDescriptor.app !== app)
+    return
+
+  if (pluginDescriptor.packageName === 'vue-query') {
+    /**
+     * Skip it for now because plugin api doesn't support vue-query devtools plugin:
+     * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
+     * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
+     */
+    return
+  }
+
+  // edge case for router plugin
+  if (pluginDescriptor.packageName === 'vue-router') {
+    const id = getRouterDevToolsId(`${pluginDescriptor.id}`)
+    if (pluginDescriptor.app === app) {
+      devtoolsAppRecords.value = devtoolsAppRecords.value.map(item => ({
+        ...item,
+        routerId: id,
+      }))
+    }
+  }
+  setupFn(api)
+}
+
 export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
-  const plugins = devtoolsState.pluginBuffer.filter(([plugin]) => plugin.app === app)
-  plugins.forEach(async ([plugin, setupFn]) => {
-    if (plugin.packageName === 'vue-query') {
-      /**
-       * Skip it for now because plugin api doesn't support vue-query devtools plugin:
-       * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
-       * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
-       */
-      return
-    }
-
-    // edge case for router plugin
-    if (plugin.packageName === 'vue-router') {
-      const id = getRouterDevToolsId(`${plugin.id}`)
-      if (plugin.app === app) {
-        devtoolsAppRecords.value = devtoolsAppRecords.value.map(item => ({
-          ...item,
-          routerId: id,
-        }))
-      }
-    }
-    setupFn(api)
-  })
-
+  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
   devtoolsAppRecords.value = devtoolsAppRecords.value.map((record) => {
     const globalProperties = record.app?.config?.globalProperties
     if (!globalProperties)

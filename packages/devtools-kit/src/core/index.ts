@@ -2,7 +2,7 @@ import { target } from '@vue/devtools-shared'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from '../hook'
 import { DevToolsHooks } from '../types'
 import { devtoolsAppRecords, devtoolsState, getDevToolsEnv } from '../state'
-import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectDevToolsPlugin } from '../api'
+import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectDevToolsPlugin, setupExternalPlugin } from '../api'
 import { createAppRecord, setActiveAppRecord } from './app-record'
 
 export function initDevTools() {
@@ -22,7 +22,13 @@ export function initDevTools() {
     target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
 
   // setup old devtools plugin (compatible with pinia, router, etc)
-  hook.on.setupDevtoolsPlugin(collectDevToolsPlugin)
+  hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
+    collectDevToolsPlugin(pluginDescriptor, setupFn)
+    const { app, api } = devtoolsAppRecords.active || {}
+    if (!app || !api)
+      return
+    setupExternalPlugin([pluginDescriptor, setupFn], app, api)
+  })
 
   // create app record
   hook.on.vueAppInit(async (app, version) => {

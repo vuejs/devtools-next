@@ -3,6 +3,8 @@ import { parse } from '@vue/devtools-kit'
 import type { ViteHotContext } from 'vite-hot-client'
 import { setupViteRPCClient } from '../vite-rpc'
 import type { DevtoolsBridgeAppRecord } from '../vue-plugin'
+
+// import { defineDevToolsListener } from '../bridge-next'
 import { BridgeEvents } from './types'
 import type { BridgeInstanceType, BridgeRpcEventPayload } from './core'
 import { BridgeRpcCore, bridgeRpcEvents } from './core'
@@ -49,6 +51,16 @@ export function registerBridgeRpc(options: BridgeRpcOptions) {
 
   const moduleUpdatedFn: Function[] = []
   const assetsUpdatedFn: Function[] = []
+
+  // const onUpdated = defineDevToolsListener((devtools, callback) => {
+  //   devtools.hook.on.componentUpdated(() => {
+  //     callback([1, 2, 3])
+  //   })
+  // })
+
+  // onUpdated((res) => {
+  //   console.log('updated????', res)
+  // })
 
   const rpc = setupViteRPCClient(options.viteRPCContext, {
     moduleUpdated: () => {

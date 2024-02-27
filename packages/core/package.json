@@ -32,6 +32,7 @@
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
+    "nanoid": "^5.0.6",
     "pathe": "^1.1.2",
     "perfect-debounce": "^1.0.0",
     "vite-dev-rpc": "^0.1.4",

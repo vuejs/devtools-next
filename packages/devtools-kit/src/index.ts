@@ -16,6 +16,15 @@ export type * from './core/component-inspector'
 export type * from './core/inspector'
 export type * from './types'
 
+export interface DevToolsType {
+  state: typeof devtoolsState
+  context: typeof devtoolsContext
+  hook: typeof hook
+  init: typeof initDevTools
+  get api(): typeof devtoolsContext.api
+
+}
+
 export { parse, stringify } from './shared'
 export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
 export { UNDEFINED } from './core/component/state/constants'

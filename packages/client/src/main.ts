@@ -3,7 +3,7 @@ import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue/devtools-core'
+import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, initDevToolsBridge, registerBridgeRpc } from '@vue/devtools-core'
 
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
@@ -65,6 +65,7 @@ async function reload(app, shell) {
       viteRPCContext: await getViteHotContext(),
       bridge: devtoolsBridge.value,
     })
+    initDevToolsBridge(devtoolsBridge.value)
     new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
       devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
@@ -87,6 +88,7 @@ async function connectApp(app, shell) {
 export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'panel' } = { viewMode: 'overlay' }) {
   const app = createApp(App)
   await connectApp(app, shell)
+  initDevToolsBridge(devtoolsBridge.value)
   registerBridgeRpc('devtools', {
     viteRPCContext: await getViteHotContext(),
     bridge: devtoolsBridge.value,

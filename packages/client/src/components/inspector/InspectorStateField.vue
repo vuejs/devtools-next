@@ -2,7 +2,7 @@
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { defineDevToolsAction } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<{
 const STATE_FIELDS_LIMIT_SIZE = 30
 
 const state = useStateEditorContext()
-const bridgeRpc = useDevToolsBridgeRpc()
 const value = computed(() => formatInspectorStateValue(props.data.value))
 const type = computed(() => getInspectorStateValueType(props.data.value))
 const stateFormatClass = computed(() => {
@@ -116,9 +115,13 @@ watch(() => editing.value, (v) => {
   }
 })
 
+const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
+  devtools.api.editInspectorState(payload)
+})
+
 function submit() {
   const data = props.data
-  bridgeRpc.editInspectorState({
+  editInspectorState({
     path: data.key.split('.'),
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
@@ -145,7 +148,7 @@ function submitDrafting() {
   const data = props.data
   const path = data.key.split('.')
   path.push(draftingNewProp.value.key)
-  bridgeRpc.editInspectorState({
+  editInspectorState({
     path,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,

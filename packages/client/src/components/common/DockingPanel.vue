@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { isInChromePanel } from '@vue/devtools-shared'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { defineDevToolsAction, useDevToolsState } from '@vue/devtools-core'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -9,7 +9,6 @@ const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInC
 const { toggle: toggleViewMode } = useToggleViewMode()
 // #endregion
 
-const bridgeRpc = useDevToolsBridgeRpc()
 const router = useRouter()
 
 const expandSidebar = computed({
@@ -36,8 +35,12 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
 const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
 const activeAppRecordName = computed(() => appRecords.value.find(app => app.value === activeAppRecordId.value)?.label ?? '')
 
+const toggleApp = defineDevToolsAction('devtools:toggle-app', async (devtools, id: string) => {
+  await devtools.api.toggleApp(id)
+})
+
 watch(activeAppRecordId, (id) => {
-  bridgeRpc.toggleApp(`${id}`).then(() => {
+  toggleApp(`${id}`).then(() => {
     router.push('/overview').then(() => {
       refreshCurrentPageData()
     })

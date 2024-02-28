@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 
-// eslint-disable-next-line ts/no-import-type-side-effects
-import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-kit'
+import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
+import { parse } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const inspectorId = 'pinia'
-const bridgeRpc = useDevToolsBridgeRpc()
 
 const selected = ref('')
 const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
@@ -16,9 +15,35 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
+const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
+  return devtools.api.getInspectorTree(payload)
+})
+
+const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
+  return devtools.api.getInspectorState(payload)
+})
+
+const onComponentUpdated = defineDevToolsListener((devtools, callback) => {
+  devtools.api.on.componentUpdated(() => {
+    callback()
+  })
+})
+
+const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
+  devtools.api.on.sendInspectorTree((payload) => {
+    callback(payload)
+  })
+})
+
+const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
+  devtools.api.on.sendInspectorState((payload) => {
+    callback(payload)
+  })
+})
+
 function getPiniaState(nodeId: string) {
-  bridgeRpc.getInspectorState({ inspectorId, nodeId }).then(({ data }) => {
-    state.value = data
+  getInspectorState({ inspectorId, nodeId }).then((data) => {
+    state.value = parse(data)
   })
 }
 
@@ -35,7 +60,8 @@ createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
   const getPiniaInspectorTree = () => {
-    bridgeRpc.getInspectorTree({ inspectorId, filter: '' }).then(({ data }) => {
+    getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
+      const data = parse(_data)
       tree.value = data
       if (!selected.value && data.length)
         selected.value = data[0].id
@@ -44,33 +70,30 @@ onDevToolsClientConnected(() => {
   }
   getPiniaInspectorTree()
 
-  bridgeRpc.on.componentUpdated((id) => {
-    if (id !== inspectorId)
-      return
+  onComponentUpdated(() => {
     getPiniaInspectorTree()
-  }, {
-    inspectorId,
   })
 
-  bridgeRpc.on.inspectorTreeUpdated((data) => {
-    if (!data?.data.length)
+  onInspectorTreeUpdated((_data) => {
+    const data = parse(_data)
+    if (!data?.data.length || data.inspectorId !== inspectorId)
       return
     tree.value = data.data
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getPiniaState(data.data[0].id)
     }
-  }, {
-    inspectorId,
   })
 
-  bridgeRpc.on.inspectorStateUpdated((data) => {
-    if (!data || !data.state.length)
+  onInspectorStateUpdated((_data) => {
+    const data = parse(_data)
+    if (!data || !data.state.length || data.inspectorId !== inspectorId)
       return
 
-    state.value = data
-  }, {
-    inspectorId,
+    state.value = {
+      state: data.state,
+      getters: data.getters,
+    }
   })
 })
 </script>

@@ -1,8 +1,9 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import type { AppRecord, CustomCommand, CustomTab } from '@vue/devtools-kit'
+import type { AppRecord, CustomCommand, CustomTab, DevToolsState } from '@vue/devtools-kit'
 import type { BridgeInstanceType } from './bridge/core'
 import { DevToolsRpc } from './bridge'
+import { defineDevToolsAction, defineDevToolsListener } from './bridge-next/api'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -23,7 +24,44 @@ function initDevToolsState() {
   const activeAppRecordId = ref('')
 
   function init() {
-    DevToolsRpc.getDevToolsState().then(({ data }) => {
+    const getDevToolsState = defineDevToolsAction('devtools:get-state', (devtools) => {
+      return {
+        connected: devtools.state.connected,
+        clientConnected: devtools.state.clientConnected,
+        vueVersion: devtools.state?.activeAppRecord?.version || '',
+        tabs: devtools.state.tabs,
+        commands: devtools.state.commands,
+        vitePluginDetected: devtools.state.vitePluginDetected,
+        appRecords: devtools.state.appRecords.map(item => ({
+          id: item.id,
+          name: item.name,
+          version: item.version,
+          routerId: item.routerId,
+          moduleDetectives: item.moduleDetectives,
+        })),
+        activeAppRecordId: devtools.state.activeAppRecordId,
+      }
+    })
+
+    const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>((devtools, callback) => {
+      devtools.api.on.devtoolsStateUpdated((payload) => {
+        callback({
+          vueVersion: payload?.activeAppRecord?.version || '',
+          connected: payload.connected,
+          clientConnected: payload.clientConnected,
+          appRecords: payload.appRecords.map(item => ({
+            id: item.id,
+            name: item.name,
+            version: item.version,
+            routerId: item.routerId,
+            moduleDetectives: item.moduleDetectives,
+          })),
+          activeAppRecordId: payload.activeAppRecordId,
+        })
+      })
+    })
+
+    getDevToolsState().then((data) => {
       connected.value = data.connected
       clientConnected.value = data.clientConnected
       vueVersion.value = data.vueVersion || ''
@@ -31,14 +69,15 @@ function initDevToolsState() {
       commands.value = data.commands
       vitePluginDetected.value = data.vitePluginDetected
       appRecords.value = data.appRecords
-      activeAppRecordId.value = data.activeAppRecordId
+      activeAppRecordId.value = data.activeAppRecordId!
     })
-    DevToolsRpc.on.devtoolsStateUpdated((payload) => {
-      connected.value = payload.connected
-      clientConnected.value = payload.clientConnected
-      vueVersion.value = payload.vueVersion || ''
-      appRecords.value = payload.appRecords
-      activeAppRecordId.value = payload.activeAppRecordId
+
+    onDevToolsStateUpdated((data) => {
+      connected.value = data.connected
+      clientConnected.value = data.clientConnected
+      vueVersion.value = data.vueVersion || ''
+      appRecords.value = data.appRecords
+      activeAppRecordId.value = data.activeAppRecordId!
     })
   }
 

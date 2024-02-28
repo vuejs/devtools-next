@@ -1,14 +1,56 @@
 <script setup lang="ts">
-import { useDevToolsBridge, useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { defineDevToolsAction, defineDevToolsListener, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
 
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
+import { parse } from '@vue/devtools-kit'
+
 import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
-const bridgeRpc = useDevToolsBridgeRpc()
+const inspectorId = 'components'
 const bridge = useDevToolsBridge()
 const treeNode = ref<ComponentTreeNode[]>([])
 const activeComponentId = ref('')
+
+const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
+  return devtools.api.getInspectorTree(payload)
+})
+
+const getComponentBoundingRectAction = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
+  return devtools.api.getComponentBoundingRect(payload)
+})
+
+const inspectComponentInspectorAction = defineDevToolsAction('devtools:inspect-component-inspector', (devtools) => {
+  return devtools.api.inspectComponentInspector()
+})
+
+const toggleComponentInspectorAction = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
+  return devtools.api.toggleComponentInspector(payload)
+})
+
+const scrollToComponentAction = defineDevToolsAction('devtools:scroll-to-component', (devtools, payload) => {
+  return devtools.api.scrollToComponent(payload)
+})
+
+const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
+  return devtools.api.getInspectorState(payload)
+})
+
+const updateInspectorTreeId = defineDevToolsAction('devtools:update-inspector-tree-id', (devtools, payload) => {
+  devtools.context.activeInspectorTreeId = payload
+})
+
+const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
+  devtools.api.on.sendInspectorTree((payload) => {
+    callback(payload)
+  })
+})
+
+const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
+  devtools.api.on.sendInspectorState((payload) => {
+    callback(payload)
+  })
+})
 
 const _openInEditor = openInEditor
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
@@ -82,8 +124,8 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 // #region bounding react start
 function getComponentBoundingRect(id: string) {
   return new Promise<ComponentBoundingRect>((resolve) => {
-    bridgeRpc.getComponentBoundingRect<{ data: ComponentBoundingRect }>({ inspectorId: 'components', instanceId: id }).then(({ data }) => {
-      resolve(data)
+    getComponentBoundingRectAction({ inspectorId: 'components', instanceId: id }).then((data) => {
+      resolve(parse(data))
     })
   })
 }
@@ -103,8 +145,9 @@ function normalizeComponentTreeCollapsed(treeNode: ComponentTreeNode[]) {
 
 function getComponentTree(filterText?: string) {
   return new Promise<void>((resolve) => {
-    bridgeRpc.getInspectorTree<{ data: ComponentTreeNode[] }>({ inspectorId: 'components', filter: filterText }).then(({ data }) => {
+    getInspectorTree({ inspectorId: 'components', filter: filterText }).then((_data) => {
       const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
+      const data = parse(_data)
       treeNode.value = data
       isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
       initSelectedComponent(data)
@@ -121,7 +164,7 @@ async function toggleComponentInspector(id: string, visible: boolean) {
   isPending.value = true
 
   getComponentBoundingRect(id).then((rect) => {
-    bridgeRpc.toggleComponentInspector({
+    toggleComponentInspectorAction({
       id,
       visible,
       bounds: rect,
@@ -131,14 +174,15 @@ async function toggleComponentInspector(id: string, visible: boolean) {
 }
 
 function scrollToComponent(id: string) {
-  bridgeRpc.scrollToComponent({
+  scrollToComponentAction({
     id,
   })
 }
 
 function inspectComponentInspector() {
   bridge.value.emit('toggle-panel', false)
-  bridgeRpc.inspectComponentInspector().then(({ data }) => {
+  inspectComponentInspectorAction().then((_data) => {
+    const data = JSON.parse(_data)
     selectedComponentTree.value = data.id
     selectComponentTree(data.id)
     const linkedList = componentTreeLinkedList.value[data.id]
@@ -172,7 +216,7 @@ function selectComponentTree(id: string) {
 }
 
 watch(selectedComponentTree, (id) => {
-  bridgeRpc.updateInspectorTreeId(id)
+  updateInspectorTreeId(id)
 })
 
 // #endregion
@@ -194,8 +238,8 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 }
 
 function getComponentState(id: string) {
-  bridgeRpc.getInspectorState({ inspectorId: 'components', nodeId: id }).then(({ data }) => {
-    activeComponentState.value = normalizeComponentState(data)
+  getInspectorState({ inspectorId: 'components', nodeId: id }).then((data) => {
+    activeComponentState.value = normalizeComponentState(parse(data))
   })
 }
 
@@ -210,8 +254,9 @@ onDevToolsClientConnected(() => {
   getComponentTree().then(() => {
     loaded.value = true
   })
-  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[], inspectorId: string }>((data) => {
-    if (!data?.data?.length)
+  onInspectorTreeUpdated((_data) => {
+    const data = parse(_data)
+    if (!data?.data.length || data.inspectorId !== inspectorId)
       return
 
     treeNode.value = data.data
@@ -220,15 +265,15 @@ onDevToolsClientConnected(() => {
       ...componentTreeCollapseMap.value,
     }
     initSelectedComponent(data.data)
-  }, {
-    inspectorId: 'components',
   })
 
   // state
-  bridgeRpc.on.inspectorStateUpdated((data) => {
-    activeComponentState.value = normalizeComponentState(data)
-  }, {
-    inspectorId: 'components',
+  onInspectorStateUpdated((_data) => {
+    const data = parse(_data)
+    if (data.inspectorId !== inspectorId)
+      return
+
+    activeComponentState.value = normalizeComponentState({ state: data.state })
   })
 })
 

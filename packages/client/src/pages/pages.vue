@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
 
-const bridgeRpc = useDevToolsBridgeRpc()
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)
 const matchedRoutes = ref<RouteRecordNormalized[]>([])
@@ -19,7 +18,7 @@ const routes = ref<RouteRecordNormalized[]>([])
 
 function init(data: RouterInfo) {
   routes.value = data.routes
-  currentRoute.value = data.currentRoute
+  currentRoute.value = data.currentRoute as RouteLocationNormalizedLoaded
   // router.value = data.router as Router
   routeInput.value = currentRoute.value?.path ?? '/'
 }
@@ -29,17 +28,41 @@ function navigate() {
     navigateToRoute(routeInput.value)
 }
 
+const navigateAction = defineDevToolsAction('devtools:router-navigate', (devtools, payload) => {
+  devtools.context.router?.push(payload).catch(e => e)
+})
+
+const getRouterInfo = defineDevToolsAction('devtools:router-info', (devtools) => {
+  return JSON.stringify(devtools.context.routerInfo)
+})
+
+const getMatchedRoutes = defineDevToolsAction('devtools:matched-routes', (devtools, path) => {
+  const c = console.warn
+  console.warn = () => {}
+  const matched = devtools.context.router?.resolve({
+    path: path || '/',
+  }).matched ?? []
+  console.warn = c
+  return JSON.stringify(matched)
+})
+
+const onRouterInfoUpdated = defineDevToolsListener<RouterInfo>((devtools, callback) => {
+  devtools.api.on.routerInfoUpdated((payload) => {
+    callback(payload)
+  })
+}, { parser: 'json' })
+
 function navigateToRoute(path: string) {
-  bridgeRpc.navigate({
+  navigateAction({
     path,
   })
 }
 
 onDevToolsClientConnected(() => {
-  bridgeRpc.getRouterInfo().then(({ data }) => {
-    init(data)
+  getRouterInfo().then((data) => {
+    init(JSON.parse(data))
   })
-  bridgeRpc.on.routerInfoUpdated((data) => {
+  onRouterInfoUpdated((data) => {
     init(data)
   })
 })
@@ -47,8 +70,8 @@ onDevToolsClientConnected(() => {
 watchDebounced(routeInput, () => {
   if (routeInput.value === currentRoute.value?.path)
     return
-  bridgeRpc.getMatchedRoutes(routeInput.value).then((res) => {
-    matchedRoutes.value = res.data as RouteRecordNormalized[]
+  getMatchedRoutes(routeInput.value).then((data) => {
+    matchedRoutes.value = JSON.parse(data)
   })
 })
 </script>

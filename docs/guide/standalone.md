@@ -105,7 +105,7 @@ And connect to host:
 
 ```ts
 if (process.env.NODE_ENV === 'development')
-  devtools.connect(/* host, port */)
+  devtools.connect(/* host (the default is "http://localhost"), port (the default is 8090) */)
 ```
 
 :::tip Important

@@ -1,98 +1,25 @@
 import type { CustomCommand, CustomTab, InspectorNodeTag, InspectorState, OpenInEditorOptions, RouterInfo, TimelineEvent } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
-import type { ViteHotContext } from 'vite-hot-client'
-import { setupViteRPCClient } from '../vite-rpc'
 import type { DevtoolsBridgeAppRecord } from '../vue-plugin'
 
-// import { defineDevToolsListener } from '../bridge-next'
 import { BridgeEvents } from './types'
 import type { BridgeInstanceType, BridgeRpcEventPayload } from './core'
 import { BridgeRpcCore, bridgeRpcEvents } from './core'
 
 const devtoolsBridge: {
   value: BridgeInstanceType
-  viteRpc: {
-    enabled: boolean
-    api: ReturnType<typeof setupViteRPCClient>
-    on: {
-      moduleUpdated: (fn: Function) => void
-      assetsUpdated: (fn: Function) => void
-    }
-    off: {
-      moduleUpdated: () => void
-      assetsUpdated: () => void
-    }
-  }
   rpc: InstanceType<typeof BridgeRpcCore>
 } = {
   value: null!,
-  viteRpc: {
-    enabled: false,
-    api: null!,
-    on: {
-      moduleUpdated() {},
-      assetsUpdated() {},
-    },
-    off: {
-      moduleUpdated() {},
-      assetsUpdated() {},
-    },
-  },
   rpc: null!,
 }
 
 export interface BridgeRpcOptions {
-  viteRPCContext?: ViteHotContext | undefined
   bridge: BridgeInstanceType
 }
 export function registerBridgeRpc(options: BridgeRpcOptions) {
   devtoolsBridge.value = options.bridge
   devtoolsBridge.rpc = new BridgeRpcCore(options.bridge)
-
-  const moduleUpdatedFn: Function[] = []
-  const assetsUpdatedFn: Function[] = []
-
-  // const onUpdated = defineDevToolsListener((devtools, callback) => {
-  //   devtools.hook.on.componentUpdated(() => {
-  //     callback([1, 2, 3])
-  //   })
-  // })
-
-  // onUpdated((res) => {
-  //   console.log('updated????', res)
-  // })
-
-  const rpc = setupViteRPCClient(options.viteRPCContext, {
-    moduleUpdated: () => {
-      moduleUpdatedFn.forEach(fn => fn())
-    },
-    assetsUpdated: () => {
-      assetsUpdatedFn.forEach(fn => fn())
-    },
-  })
-
-  if (rpc) {
-    devtoolsBridge.viteRpc = {
-      enabled: true,
-      api: rpc,
-      on: {
-        moduleUpdated(fn: Function) {
-          moduleUpdatedFn.push(fn)
-        },
-        assetsUpdated(fn) {
-          assetsUpdatedFn.push(fn)
-        },
-      },
-      off: {
-        moduleUpdated() {
-          moduleUpdatedFn.length = 0
-        },
-        assetsUpdated() {
-          assetsUpdatedFn.length = 0
-        },
-      },
-    }
-  }
 }
 
 export class BridgeRpc {
@@ -214,39 +141,5 @@ export class BridgeRpc {
 
   static async toggleApp(id: string) {
     return devtoolsBridge.rpc.emit<void>(bridgeRpcEvents.toggleApp, id)
-  }
-
-  // assets
-  static getStaticAssets() {
-    return devtoolsBridge.viteRpc!.api!.getStaticAssets()
-  }
-
-  static getImageMeta(filepath: string) {
-    return devtoolsBridge.viteRpc!.api!.getImageMeta(filepath)
-  }
-
-  static getTextAssetContent(filepath: string, limit = 300) {
-    return devtoolsBridge.viteRpc!.api!.getTextAssetContent(filepath, limit)
-  }
-
-  static root() {
-    return devtoolsBridge.viteRpc.api.root()
-  }
-
-  // graph
-  static getGraph() {
-    return devtoolsBridge.viteRpc!.api!.getGraph()
-  }
-
-  // graph module udpated
-  static graphModuleUpdated(fn: Function) {
-    devtoolsBridge.viteRpc!.on.moduleUpdated(fn)
-    return () => devtoolsBridge.viteRpc!.off.moduleUpdated()
-  }
-
-  // assets updated
-  static assetsUpdated(fn: Function) {
-    devtoolsBridge.viteRpc!.on.assetsUpdated(fn)
-    return () => devtoolsBridge.viteRpc!.off.assetsUpdated()
   }
 }

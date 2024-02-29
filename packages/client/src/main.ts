@@ -8,7 +8,6 @@ import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, initDev
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { getViteClient } from 'vite-hot-client'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
@@ -26,14 +25,6 @@ import WaitForConnection from '~/components/WaitForConnection.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
-
-async function getViteHotContext() {
-  if (import.meta.url?.includes('chrome-extension://'))
-    return
-
-  const viteCLient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
-  return viteCLient?.createHotContext('/____')
-}
 
 const routes = [
   { path: '/', component: Index },
@@ -62,7 +53,6 @@ async function reload(app, shell) {
   shell.connect(async (bridge) => {
     devtoolsBridge.value = bridge
     registerBridgeRpc('devtools', {
-      viteRPCContext: await getViteHotContext(),
       bridge: devtoolsBridge.value,
     })
     initDevToolsBridge(devtoolsBridge.value)
@@ -91,7 +81,6 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   await initViteClientHotContext()
   initDevToolsBridge(devtoolsBridge.value)
   registerBridgeRpc('devtools', {
-    viteRPCContext: await getViteHotContext(),
     bridge: devtoolsBridge.value,
   })
   new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {

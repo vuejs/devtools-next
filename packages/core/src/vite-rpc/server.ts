@@ -1,11 +1,26 @@
-import type { WebSocketServer } from 'vite'
-import type { BirpcGroupReturn } from 'birpc'
-import { createRPCServer } from 'vite-dev-rpc'
-import type { ViteRPCFunctions } from './types'
+import type { ViteDevServer } from 'vite'
+import { getViteServerContext, setViteServerContext } from './shared'
 
-export function setupViteRPCServer(ws: WebSocketServer, functions: ViteRPCFunctions): BirpcGroupReturn<ViteRPCFunctions> {
-  const rpcServer = createRPCServer<ViteRPCFunctions>('vite-plugin-vue-devtools', ws, functions, {
-    timeout: -1,
+export function initViteServerContext(context: ViteDevServer) {
+  setViteServerContext(context)
+}
+
+export function defineViteServerAction(name: string, action: (...args: any[]) => void) {
+  const viteServer = getViteServerContext()
+  // `server.hot` (Vite 5.1+) > `server.ws`
+  const ws = viteServer.hot ?? viteServer.ws
+  ws.on(name, async ({ key, payload }) => {
+    const res = await action(...payload)
+    ws.send(key, res)
   })
-  return rpcServer
+}
+
+export function callViteClientListener(name: string) {
+  return async (...args: any[]) => {
+    const viteServer = getViteServerContext()
+    // `server.hot` (Vite 5.1+) > `server.ws`
+    const ws = viteServer.hot ?? viteServer.ws
+
+    ws.send(name, ...args)
+  }
 }

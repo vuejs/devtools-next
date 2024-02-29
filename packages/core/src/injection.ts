@@ -1,21 +1,16 @@
-import { onDevToolsConnected } from '@vue/devtools-kit'
-import { BridgeEvents, registerBridgeRpc } from './bridge'
+import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 
-import { initAppBridge } from './bridge-next'
+import { initAppBridge } from './bridge'
 
-import type { BridgeInstanceType } from './bridge/core'
+import type { BridgeInstanceType } from './bridge'
 import { HandShakeClient } from './handshake'
 
 export function prepareInjection(bridge: BridgeInstanceType) {
-  registerBridgeRpc('user-app', {
-    bridge,
-  })
-
   initAppBridge(bridge)
   new HandShakeClient(bridge).onnConnect().then(() => {
-    bridge.on(BridgeEvents.CLIENT_READY, () => {
+    bridge.on('devtools:client-ready', () => {
       onDevToolsConnected(() => {
-        bridge.emit(BridgeEvents.APP_CONNECTED)
+        devtools.state.connected = true
       })
     })
   })

@@ -38,10 +38,11 @@ const router = createRouter({
   routes,
 })
 
+// setTimeout(() => {
 app.use(router)
 app.use(pinia)
-
 app.mount('#app')
+// }, 2000)
 
 // setTimeout(() => {
 //   addCustomCommand({

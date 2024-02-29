@@ -1,5 +1,5 @@
 import { target } from '@vue/devtools-shared'
-import { BridgeInstanceType } from '../bridge/core'
+import { BridgeInstanceType } from './core'
 
 export const BRIDGE_DEVTOOLS_ACTION_KEY = 'devtools:bridge-action'
 export const BRIDGE_DEVTOOLS_LISTENER_KEY = 'devtools:bridge-listener'

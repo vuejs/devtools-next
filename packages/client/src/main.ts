@@ -3,7 +3,7 @@ import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, initDevToolsBridge, initViteClientHotContext, registerBridgeRpc } from '@vue/devtools-core'
+import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsBridge, initViteClientHotContext } from '@vue/devtools-core'
 
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
@@ -52,13 +52,10 @@ async function reload(app, shell) {
   devtoolsBridge.value.removeAllListeners()
   shell.connect(async (bridge) => {
     devtoolsBridge.value = bridge
-    registerBridgeRpc('devtools', {
-      bridge: devtoolsBridge.value,
-    })
     initDevToolsBridge(devtoolsBridge.value)
     new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
-      devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
+      devtoolsBridge.value.emit('devtools:client-ready')
     })
   })
 }
@@ -80,9 +77,6 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   await connectApp(app, shell)
   await initViteClientHotContext()
   initDevToolsBridge(devtoolsBridge.value)
-  registerBridgeRpc('devtools', {
-    bridge: devtoolsBridge.value,
-  })
   new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
     const router = createRouter({
       history: createMemoryHistory(),
@@ -95,7 +89,7 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
       viewMode: options.viewMode!,
     }))
     app.mount('#app')
-    devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
+    devtoolsBridge.value.emit('devtools:client-ready')
   })
 }
 

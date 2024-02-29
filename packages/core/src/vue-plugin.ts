@@ -1,9 +1,8 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
 import type { AppRecord, CustomCommand, CustomTab, DevToolsState } from '@vue/devtools-kit'
-import type { BridgeInstanceType } from './bridge/core'
-import { DevToolsRpc } from './bridge'
-import { defineDevToolsAction, defineDevToolsListener } from './bridge-next/api'
+import type { BridgeInstanceType } from './bridge'
+import { defineDevToolsAction, defineDevToolsListener } from './bridge/api'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -24,6 +23,7 @@ function initDevToolsState() {
   const activeAppRecordId = ref('')
 
   function init() {
+    // @TODO: refactor
     const getDevToolsState = defineDevToolsAction('devtools:get-state', (devtools) => {
       return {
         connected: devtools.state.connected,
@@ -44,21 +44,54 @@ function initDevToolsState() {
     })
 
     const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>((devtools, callback) => {
-      devtools.api.on.devtoolsStateUpdated((payload) => {
-        callback({
-          vueVersion: payload?.activeAppRecord?.version || '',
-          connected: payload.connected,
-          clientConnected: payload.clientConnected,
-          appRecords: payload.appRecords.map(item => ({
-            id: item.id,
-            name: item.name,
-            version: item.version,
-            routerId: item.routerId,
-            moduleDetectives: item.moduleDetectives,
-          })),
-          activeAppRecordId: payload.activeAppRecordId,
+      function subscribe() {
+        devtools.api.on.devtoolsStateUpdated((payload) => {
+          callback({
+            vueVersion: payload?.activeAppRecord?.version || '',
+            connected: payload.connected,
+            clientConnected: payload.clientConnected,
+            tabs: payload.tabs,
+            commands: payload.commands,
+            vitePluginDetected: payload.vitePluginDetected,
+            appRecords: payload.appRecords.map(item => ({
+              id: item.id,
+              name: item.name,
+              version: item.version,
+              routerId: item.routerId,
+              moduleDetectives: item.moduleDetectives,
+            })),
+            activeAppRecordId: payload.activeAppRecordId,
+          })
         })
-      })
+      }
+      if (devtools?.api) {
+        subscribe()
+      }
+      else {
+        const timer = setInterval(() => {
+          if (devtools.state.connected) {
+            const payload = devtools.state
+            callback({
+              vueVersion: payload?.activeAppRecord?.version || '',
+              connected: payload.connected,
+              clientConnected: payload.clientConnected,
+              tabs: payload.tabs,
+              commands: payload.commands,
+              vitePluginDetected: payload.vitePluginDetected,
+              appRecords: payload.appRecords.map(item => ({
+                id: item.id,
+                name: item.name,
+                version: item.version,
+                routerId: item.routerId,
+                moduleDetectives: item.moduleDetectives,
+              })),
+              activeAppRecordId: payload.activeAppRecordId,
+            })
+            subscribe()
+            clearInterval(timer)
+          }
+        }, 10)
+      }
     })
 
     getDevToolsState().then((data) => {
@@ -76,6 +109,9 @@ function initDevToolsState() {
       connected.value = data.connected
       clientConnected.value = data.clientConnected
       vueVersion.value = data.vueVersion || ''
+      tabs.value = data.tabs
+      commands.value = data.commands
+      vitePluginDetected.value = data.vitePluginDetected
       appRecords.value = data.appRecords
       activeAppRecordId.value = data.activeAppRecordId!
     })
@@ -145,10 +181,6 @@ export function createDevToolsVuePlugin(pluginOptions: DevToolsPluginOptions): P
 
 export function useDevToolsBridge() {
   return inject(VueDevToolsBridgeSymbol)!
-}
-
-export function useDevToolsBridgeRpc() {
-  return DevToolsRpc
 }
 
 export function useDevToolsState() {

@@ -1,5 +1,5 @@
 import { devtools, stringify } from '@vue/devtools-kit'
-import { BridgeInstanceType } from '../bridge/core'
+import { BridgeInstanceType } from './core'
 import { BRIDGE_DEVTOOLS_ACTION_KEY, BRIDGE_DEVTOOLS_LISTENER_KEY } from './shared'
 
 export function initAppBridge(bridge: BridgeInstanceType) {

@@ -13,7 +13,7 @@ const emit = defineEmits<{ (...args: any): void }>()
 
 const state = useDevToolsState()
 const getImageMeta = callViteServerAction<ImageMeta>('assets:get-image-meta')
-const getTextAssetContent = callViteServerAction<string>('assets:assets:get-text-asset-content')
+const getTextAssetContent = callViteServerAction<string>('assets:get-text-asset-content')
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
 const _openInEditor = openInEditor

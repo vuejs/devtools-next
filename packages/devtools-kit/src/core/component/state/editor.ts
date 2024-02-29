@@ -101,10 +101,30 @@ export class RefStateEditor {
       ref.value = value
     }
     else {
+      // Edit on native type Set
+      if (ref instanceof Set && Array.isArray(value)) {
+        ref.clear()
+        value.forEach((v: unknown) => ref.add(v))
+        return
+      }
+
+      const currentKeys = Object.keys(value)
+
+      // Edit on native type Map
+      if (ref instanceof Map) {
+        const previousKeysSet = new Set(ref.keys())
+        currentKeys.forEach((key) => {
+          ref.set(key, Reflect.get(value, key))
+          previousKeysSet.delete(key)
+        })
+        previousKeysSet.forEach(key => ref.delete(key))
+        return
+      }
+
       // if is reactive, then it must be object
       // to prevent loss reactivity, we should assign key by key
       const previousKeysSet = new Set(Object.keys(ref))
-      const currentKeys = Object.keys(value)
+
       // we should check the key diffs, if previous key is the longer
       // then remove the needless keys
       currentKeys.forEach((key) => {

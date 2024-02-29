@@ -44,11 +44,3 @@ export function defineDevToolsListener<T>(fn: (devtools: DevToolsType, callback:
     return off
   }
 }
-
-export function defineViteRPCClientAction() {
-  return {}
-}
-
-export function defineViteRPCServerAction() {}
-
-export function defineViteRPCClientListener() {}

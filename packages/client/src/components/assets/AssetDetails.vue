@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import type { ImageMeta } from 'vite-plugin-vue-devtools'
 
 const props = defineProps<{
   modelValue: AssetInfo
@@ -10,9 +11,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (...args: any): void }>()
 
-const bridgeRpc = useDevToolsBridgeRpc()
 const state = useDevToolsState()
-
+const getImageMeta = callViteServerAction<ImageMeta>('assets:get-image-meta')
+const getTextAssetContent = callViteServerAction<string>('assets:assets:get-text-asset-content')
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
 const _openInEditor = openInEditor
@@ -20,7 +21,8 @@ const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
     return undefined
-  return bridgeRpc.getImageMeta(asset.value.filePath)
+
+  return getImageMeta(asset.value.filePath)
 })
 
 const newTextContent = ref()
@@ -32,7 +34,7 @@ const textContent = computedAsync(async () => {
   // eslint-disable-next-line no-unused-expressions
   textContentCounter.value
 
-  const content = await bridgeRpc.getTextAssetContent(asset.value.filePath)
+  const content = await getTextAssetContent(asset.value.filePath)
   newTextContent.value = content
   return content
 })

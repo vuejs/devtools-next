@@ -11,6 +11,7 @@
     "@unocss/reset": "^0.58.5",
     "@vueuse/core": "^10.9.0",
     "unplugin-vue-components": "^0.26.0",
+    "vite-plugin-vue-devtools": "workspace:*",
     "vitepress": "1.0.0-rc.44",
     "vue": "^3.4.21"
   }

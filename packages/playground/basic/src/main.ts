@@ -13,6 +13,8 @@ const pinia = createPinia()
 
 const app = createApp(App)
 
+// devtools.connect()
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',

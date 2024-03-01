@@ -30,6 +30,6 @@
     "vite-hot-client": "^0.2.3"
   },
   "devDependencies": {
-    "vue": "^3.4.19"
+    "vue": "^3.4.21"
   }
 }

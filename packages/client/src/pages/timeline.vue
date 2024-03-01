@@ -3,9 +3,8 @@ import { UNDEFINED } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 
-const bridgeRpc = useDevToolsBridgeRpc()
 const layers = ref<{
   color: number
   id: string
@@ -67,8 +66,18 @@ function normalizeGroupInfo(layerId: string, event: TimelineEvent['event']) {
   }
 }
 
+const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
+  return devtools.context.timelineLayer
+})
+
+const onAddTimelineEvent = defineDevToolsListener<TimelineEvent>((devtools, callback) => {
+  devtools.api.on.addTimelineEvent((payload) => {
+    callback(payload)
+  })
+})
+
 onDevToolsClientConnected(() => {
-  bridgeRpc.getTimelineLayer().then(({ data }) => {
+  getTimelineLayer().then((data) => {
     layers.value = data
     layers.value.forEach((layer) => {
       timelineEvent.value[layer.id] = []
@@ -77,9 +86,10 @@ onDevToolsClientConnected(() => {
     if (!selectedLayer.value)
       selectedLayer.value = data.length ? data[0].id : ''
   })
-  bridgeRpc.on.addTimelineEvent((payload) => {
+  onAddTimelineEvent((payload) => {
     if (!payload)
       return
+
     const { layerId, event } = payload
     timelineEvent.value[layerId].push(event)
     normalizeGroupInfo(layerId, event)

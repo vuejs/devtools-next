@@ -79,11 +79,5 @@ export async function toggleActiveAppRecord(id: string) {
     const api = new DevToolsPluginApi()
     appRecord.api = api
     setActiveAppRecord(appRecord)
-
-    // @TODO: find a better way to handle it
-    window.postMessage({
-      event: 'toggle-app-record',
-      target: 'vue-devtools',
-    })
   }
 }

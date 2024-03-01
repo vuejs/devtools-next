@@ -3,12 +3,11 @@ import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, BridgeEvents, HandShakeServer, createDevToolsVuePlugin, registerBridgeRpc } from '@vue/devtools-core'
+import { Bridge, HandShakeServer, createDevToolsVuePlugin, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
 
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { getViteClient } from 'vite-hot-client'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
@@ -26,14 +25,6 @@ import WaitForConnection from '~/components/WaitForConnection.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
-
-async function getViteHotContext() {
-  if (import.meta.url?.includes('chrome-extension://'))
-    return
-
-  const viteCLient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
-  return viteCLient?.createHotContext('/____')
-}
 
 const routes = [
   { path: '/', component: Index },
@@ -61,13 +52,10 @@ async function reload(app, shell) {
   devtoolsBridge.value.removeAllListeners()
   shell.connect(async (bridge) => {
     devtoolsBridge.value = bridge
-    registerBridgeRpc('devtools', {
-      viteRPCContext: await getViteHotContext(),
-      bridge: devtoolsBridge.value,
-    })
+    setupDevToolsBridge(devtoolsBridge.value)
     new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
-      devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
+      devtoolsBridge.value.emit('devtools:client-ready')
     })
   })
 }
@@ -87,10 +75,8 @@ async function connectApp(app, shell) {
 export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'panel' } = { viewMode: 'overlay' }) {
   const app = createApp(App)
   await connectApp(app, shell)
-  registerBridgeRpc('devtools', {
-    viteRPCContext: await getViteHotContext(),
-    bridge: devtoolsBridge.value,
-  })
+  await initViteClientHotContext()
+  setupDevToolsBridge(devtoolsBridge.value)
   new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
     const router = createRouter({
       history: createMemoryHistory(),
@@ -103,7 +89,7 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
       viewMode: options.viewMode!,
     }))
     app.mount('#app')
-    devtoolsBridge.value.emit(BridgeEvents.CLIENT_READY)
+    devtoolsBridge.value.emit('devtools:client-ready')
   })
 }
 

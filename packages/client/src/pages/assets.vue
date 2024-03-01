@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { AssetInfo } from '@vue/devtools-core'
 import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
+import type { AssetInfo } from 'vite-plugin-vue-devtools'
 import Fuse from 'fuse.js'
 
 const DETAILS_MAX_ITEMS = 50
@@ -10,7 +10,9 @@ const navbar = ref<HTMLElement>()
 // const dropzone = ref(false)
 const view = ref('grid')
 const assets = ref<AssetInfo[]>([])
-const bridgeRpc = useDevToolsBridgeRpc()
+const getStaticAssets = callViteServerAction<AssetInfo[]>('assets:get-static-assets')
+const onAssetsUpdated = defineViteClientListener('assets:updated')
+
 const uniqAssetsTypes = computed(() => {
   const results: { label: string, value: string }[] = []
   for (const asset of assets.value || []) {
@@ -81,20 +83,24 @@ const byTree = computed(() => {
 let cleanupAssetsUpdatedEffect: Function
 
 function fetchAssets() {
-  bridgeRpc.getStaticAssets().then((res) => {
+  getStaticAssets().then((res) => {
     assets.value = res
   })
 }
 
 onDevToolsClientConnected(() => {
   fetchAssets()
-  cleanupAssetsUpdatedEffect = bridgeRpc.assetsUpdated(() => {
+  cleanupAssetsUpdatedEffect = onAssetsUpdated(() => {
     fetchAssets()
   })
 })
 function toggleView() {
   view.value = view.value === 'list' ? 'grid' : 'list'
 }
+
+onUnmounted(() => {
+  cleanupAssetsUpdatedEffect?.()
+})
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 import { devtools } from '@vue/devtools-kit'
-import type { BridgeInstanceType } from './bridge/core'
+import type { BridgeInstanceType } from './bridge'
 
 export enum HandShakeEvents {
   SYN = 'syn',

@@ -1,4 +1,4 @@
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { defineDevToolsListener, useDevToolsState } from '@vue/devtools-core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInElectron } from '@vue/devtools-shared'
@@ -21,6 +21,13 @@ export interface CategorizedCategory {
 }
 
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
+
+const onCustomTabsUpdated = defineDevToolsListener<CustomTab[]>((devtools, callback) => {
+  devtools.api.on.customTabsUpdated((payload) => {
+    callback(payload)
+  })
+})
+let removeTabsUpdatedListener: (() => void) | null = null
 
 export function useAllTabs() {
   const state = useDevToolsState()
@@ -105,9 +112,9 @@ export function useAllTabs() {
     }, [] as Array<ModuleBuiltinTab | CustomTab>)
   })
 
-  const bridgeRpc = useDevToolsBridgeRpc()
   onDevToolsClientConnected(() => {
-    bridgeRpc.on.customTabsUpdated((data) => {
+    removeTabsUpdatedListener?.()
+    removeTabsUpdatedListener = onCustomTabsUpdated((data) => {
       customTabs.value = data
     })
   })

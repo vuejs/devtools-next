@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useDevToolsBridge, useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
+import { defineDevToolsAction, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel } from '@vue/devtools-shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -11,12 +11,10 @@ useColorMode()
 const router = useRouter()
 const route = useRoute()
 const { connected, clientConnected } = useDevToolsState()
-const bridgeRpc = useDevToolsBridgeRpc()
 const clientState = devtoolsClientState
 
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
 const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)
-const { toggle } = useToggleViewMode()
 const bridge = useDevToolsBridge()
 
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
@@ -72,8 +70,18 @@ watchEffect(() => {
 const { copy } = useCopy()
 const eyeDropper = useEyeDropper({})
 
-bridgeRpc?.isVueInspectorDetected?.()?.then(({ data }) => {
-  if (data) {
+const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
+  return !!await devtools?.api?.getVueInspector?.()
+})
+
+const enableVueInspector = defineDevToolsAction('devtools:enable-vue-inspector', async (devtools) => {
+  const inspector = await devtools?.api?.getVueInspector?.()
+  if (inspector)
+    await inspector.enable()
+})
+
+checkVueInspectorDetected().then((detected) => {
+  if (detected) {
     vueInspectorDetected.value = true
     registerCommands(() =>
       [{
@@ -82,12 +90,13 @@ bridgeRpc?.isVueInspectorDetected?.()?.then(({ data }) => {
         icon: 'i-carbon-select-window',
         action: async () => {
           bridge.value.emit('toggle-panel', false)
-          await bridgeRpc.enableVueInspector()
+          await enableVueInspector()
         },
       }],
     )
   }
 })
+
 registerCommands(() => [
   ...(eyeDropper.isSupported.value
     ? [{

@@ -5,11 +5,13 @@ import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
 import VueInspector from 'vite-plugin-vue-inspector'
-import { setupViteRPCServer } from '@vue/devtools-core'
-import { setupAssetsRPC, setupGraphRPC } from '@vue/devtools-core/server'
+import { initViteServerContext } from '@vue/devtools-core'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
+import { getViteConfig, setupAssetsModule, setupGraphModule } from './modules'
+
+export type * from './modules'
 
 type DeepRequired<T> = {
   [P in keyof T]-?: T[P] extends object ? DeepRequired<T[P]> : Required<T[P]>;
@@ -87,24 +89,19 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       single: true,
       dev: true,
     }))
-    const rpcServer = setupViteRPCServer(server.ws, {
-      root: () => config.root,
-      ...setupAssetsRPC({
-        root: config.root,
-        base,
-        server,
-        getRpcServer,
-      }),
-      ...setupGraphRPC({
-        rpc: inspect.api.rpc,
-        server,
-        getRpcServer,
-      }),
-    })
 
-    function getRpcServer() {
-      return rpcServer
-    }
+    // vite client <-> server messaging
+    initViteServerContext(server)
+    getViteConfig(config)
+    setupGraphModule({
+      rpc: inspect.api.rpc,
+      server,
+    })
+    setupAssetsModule({
+      rpc: inspect.api.rpc,
+      server,
+      config,
+    })
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>

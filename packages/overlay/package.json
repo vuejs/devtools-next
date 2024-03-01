@@ -24,14 +24,14 @@
     "@vue/devtools-kit": "workspace:*",
     "@vue/devtools-shared": "workspace:^",
     "@vue/devtools-ui": "workspace:*",
-    "@vueuse/core": "^10.9.0"
+    "@vueuse/core": "^10.7.2"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.188",
-    "@types/node": "^20.11.24",
+    "@iconify/json": "^2.2.184",
+    "@types/node": "^20.11.19",
     "@vitejs/plugin-vue": "^5.0.4",
-    "sass": "^1.71.1",
-    "vite": "^5.1.4",
-    "vue": "^3.4.21"
+    "sass": "^1.71.0",
+    "vite": "^5.1.3",
+    "vue": "^3.4.19"
   }
 }

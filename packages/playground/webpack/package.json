@@ -13,18 +13,18 @@
   },
   "dependencies": {
     "core-js": "^3.36.0",
-    "vue": "^3.4.21"
+    "vue": "^3.4.19"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
+    "@babel/core": "^7.23.9",
     "@babel/eslint-parser": "^7.23.10",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/devtools": "workspace:*",
     "@vue/devtools-api": "workspace:*",
-    "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.22.0"
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.21.1"
   },
   "eslintConfig": {
     "env": {

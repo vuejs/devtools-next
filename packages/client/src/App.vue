@@ -3,15 +3,13 @@ import type { Ref } from 'vue'
 import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel } from '@vue/devtools-shared'
 import { Pane, Splitpanes } from 'splitpanes'
-import { getThemeKey } from './utils'
+import { useTheme } from '@vue/devtools-ui'
 
 import('./setup/unocss-runtime')
 
 // @TODO: fix browser extension cross-origin localStorage issue
 
-useColorMode({
-  storageKey: getThemeKey(),
-})
+useTheme()
 const router = useRouter()
 const route = useRoute()
 const { connected, clientConnected } = useDevToolsState()

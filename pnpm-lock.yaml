@@ -284,8 +284,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       nanoid:
-        specifier: ^5.0.6
-        version: 5.0.6
+        specifier: ^3.3.4
+        version: 3.3.7
       pathe:
         specifier: ^1.1.2
         version: 1.1.2
@@ -441,6 +441,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
         version: 5.0.4(vite@5.1.4)(vue@3.4.21)
+      '@vue/devtools':
+        specifier: workspace:^
+        version: link:../../devtools
       sass:
         specifier: ^1.71.1
         version: 1.71.1
@@ -10657,12 +10660,6 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  /nanoid@5.0.6:
-    resolution: {integrity: sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}

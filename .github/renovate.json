@@ -6,7 +6,8 @@
     ":disableDependencyDashboard"
   ],
   "ignoreDeps": [
-    "node"
+    "node",
+    "nanoid"
   ],
   "labels": [
     "dependencies"

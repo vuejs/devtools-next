@@ -87,7 +87,7 @@ onDevToolsClientConnected(() => {
 
   onInspectorStateUpdated((_data) => {
     const data = parse(_data)
-    if (!data || !data.state.length || data.inspectorId !== inspectorId)
+    if (!data || !data?.state?.length || data.inspectorId !== inspectorId)
       return
 
     state.value = {

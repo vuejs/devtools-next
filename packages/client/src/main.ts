@@ -3,7 +3,7 @@ import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsBridge, initViteClientHotContext } from '@vue/devtools-core'
+import { Bridge, HandShakeServer, createDevToolsVuePlugin, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
 
 import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
@@ -52,7 +52,7 @@ async function reload(app, shell) {
   devtoolsBridge.value.removeAllListeners()
   shell.connect(async (bridge) => {
     devtoolsBridge.value = bridge
-    initDevToolsBridge(devtoolsBridge.value)
+    setupDevToolsBridge(devtoolsBridge.value)
     new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
       app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
       devtoolsBridge.value.emit('devtools:client-ready')
@@ -76,7 +76,7 @@ export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'pan
   const app = createApp(App)
   await connectApp(app, shell)
   await initViteClientHotContext()
-  initDevToolsBridge(devtoolsBridge.value)
+  setupDevToolsBridge(devtoolsBridge.value)
   new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
     const router = createRouter({
       history: createMemoryHistory(),

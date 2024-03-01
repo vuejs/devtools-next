@@ -2,7 +2,7 @@ import { devtools, stringify } from '@vue/devtools-kit'
 import { BridgeInstanceType } from './core'
 import { BRIDGE_DEVTOOLS_ACTION_KEY, BRIDGE_DEVTOOLS_LISTENER_KEY } from './shared'
 
-export function initAppBridge(bridge: BridgeInstanceType) {
+export function setupAppBridge(bridge: BridgeInstanceType) {
   bridge.on(BRIDGE_DEVTOOLS_ACTION_KEY, async (payload) => {
   // eslint-disable-next-line no-new-func
     const action = new Function('devtools', '...args', `return (${payload.action})(devtools, ...args)`)

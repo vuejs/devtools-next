@@ -678,9 +678,6 @@ importers:
       '@vue/devtools-shared':
         specifier: workspace:^
         version: link:../shared
-      birpc:
-        specifier: ^0.2.16
-        version: 0.2.16
       execa:
         specifier: ^8.0.1
         version: 8.0.1
@@ -5737,10 +5734,6 @@ packages:
   /birpc@0.1.1:
     resolution: {integrity: sha512-B64AGL4ug2IS2jvV/zjTYDD1L+2gOJTT7Rv+VaK7KVQtQOo/xZbCDsh7g727ipckmU+QJYRqo5RcifVr0Kgcmg==}
     dev: true
-
-  /birpc@0.2.16:
-    resolution: {integrity: sha512-OtdZMBUZK0iZmWwD9aQXmtdUXtOHXz676T+cAX4lStFO3u5pQoKjMJtFfQzNzlzRC6ZHPRBvtFB6ATllNl7YKg==}
-    dev: false
 
   /bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}

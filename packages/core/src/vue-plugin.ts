@@ -44,24 +44,27 @@ function initDevToolsState() {
     })
 
     const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>((devtools, callback) => {
+      function setPayload(payload: DevToolsState & { vueVersion?: string }) {
+        return {
+          vueVersion: payload?.activeAppRecord?.version || '',
+          connected: payload.connected,
+          clientConnected: payload.clientConnected,
+          tabs: payload.tabs,
+          commands: payload.commands,
+          vitePluginDetected: payload.vitePluginDetected,
+          appRecords: payload.appRecords.map(item => ({
+            id: item.id,
+            name: item.name,
+            version: item.version,
+            routerId: item.routerId,
+            moduleDetectives: item.moduleDetectives,
+          })),
+          activeAppRecordId: payload.activeAppRecordId,
+        }
+      }
       function subscribe() {
         devtools.api.on.devtoolsStateUpdated((payload) => {
-          callback({
-            vueVersion: payload?.activeAppRecord?.version || '',
-            connected: payload.connected,
-            clientConnected: payload.clientConnected,
-            tabs: payload.tabs,
-            commands: payload.commands,
-            vitePluginDetected: payload.vitePluginDetected,
-            appRecords: payload.appRecords.map(item => ({
-              id: item.id,
-              name: item.name,
-              version: item.version,
-              routerId: item.routerId,
-              moduleDetectives: item.moduleDetectives,
-            })),
-            activeAppRecordId: payload.activeAppRecordId,
-          })
+          callback(setPayload(payload))
         })
       }
       if (devtools?.api) {
@@ -71,22 +74,7 @@ function initDevToolsState() {
         const timer = setInterval(() => {
           if (devtools.state.connected) {
             const payload = devtools.state
-            callback({
-              vueVersion: payload?.activeAppRecord?.version || '',
-              connected: payload.connected,
-              clientConnected: payload.clientConnected,
-              tabs: payload.tabs,
-              commands: payload.commands,
-              vitePluginDetected: payload.vitePluginDetected,
-              appRecords: payload.appRecords.map(item => ({
-                id: item.id,
-                name: item.name,
-                version: item.version,
-                routerId: item.routerId,
-                moduleDetectives: item.moduleDetectives,
-              })),
-              activeAppRecordId: payload.activeAppRecordId,
-            })
+            callback(setPayload(payload))
             subscribe()
             clearInterval(timer)
           }

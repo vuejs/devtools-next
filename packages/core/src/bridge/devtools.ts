@@ -1,6 +1,6 @@
 import { BridgeInstanceType } from './core'
 import { setBridgeInstance } from './shared'
 
-export function initDevToolsBridge(bridge: BridgeInstanceType) {
+export function setupDevToolsBridge(bridge: BridgeInstanceType) {
   setBridgeInstance(bridge)
 }

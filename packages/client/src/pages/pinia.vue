@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 import { Pinia } from '@vue/devtools-applet'
-import '@vue/devtools-applet/style'
+import '@vue/devtools-applet/style.css'
 
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'

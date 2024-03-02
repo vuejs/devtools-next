@@ -9,17 +9,17 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./style": "./dist/index.css"
+    "./style.css": "./dist/index.css"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./types.d.ts",
+  "types": "./dist/src/index.d.ts",
   "files": [
     "**.d.ts",
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && pnpm types",
     "prepare:type": "pnpm types",
     "stub": "vite build --watch",
     "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.json"

@@ -10,7 +10,12 @@ interface State {
   key: string
   editable: boolean
   type: string
-  display: unknown
+  customType: string
+  values: {
+    value: string
+    extraValue: string | null
+    withStyles: boolean
+  }
   children?: State[]
 }
 
@@ -22,11 +27,13 @@ const props = withDefaults(defineProps<{
 })
 
 function normalizeDisplay(item: State) {
+  // @TODO: handle with Styles
+  // console.log('x', item)
   if (item.type === 'string')
-    return `"${item.display}"`
+    return `"${item.values.value}"`
 
   else
-    return item.display
+    return item.values.value
 }
 
 const { expanded, toggleExpanded } = useToggleExpanded()

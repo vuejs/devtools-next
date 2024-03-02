@@ -3,7 +3,7 @@ import StateViewer from '~/components/state/Viewer.vue'
 
 import { createExpandedContext } from '~/composables/toggle-expanded'
 
-const state = [
+const state: any = [
   {
     key: 'name',
     editable: false,

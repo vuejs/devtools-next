@@ -2,6 +2,9 @@ import { resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
 
+const argv = process.argv.slice(2)
+const enableWatch = argv.includes('--watch')
+
 export default {
   resolve: {
     alias: {
@@ -13,7 +16,7 @@ export default {
     Vue(),
   ],
   build: {
-    emptyOutDir: true,
+    emptyOutDir: !enableWatch,
     lib: {
       entry: resolve(__dirname, './src/index.ts'),
       name: 'devtoolsApplet',

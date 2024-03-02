@@ -250,6 +250,7 @@ export class ComponentWalker {
   }
 
   private getKeepAliveCachedInstances(instance: VueAppInstance): VueAppInstance[] {
+    // @ts-expect-error skip type check
     return Array.from(instance.__v_cache.values()).map((vnode: VNode) => vnode.component).filter(Boolean) as VueAppInstance[]
   }
 }

@@ -13,6 +13,7 @@
     },
     "resolveJsonModule": true,
     "strict": true,
+    "noImplicitAny": false,
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
@@ -21,5 +22,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules"
+  ]
 }

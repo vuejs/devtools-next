@@ -35,10 +35,15 @@ describe('devtools api', () => {
         color: 0x92A2BF,
       }
       devtools.hook.on.vueAppInit(() => {
-        setTimeout(() => {
-          expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
-          resolve()
-        }, 300)
+        vi.waitFor(
+          () => {
+            if (!devtools.context.timelineLayer.length)
+              throw new Error('Not ready')
+
+            expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
+            resolve()
+          },
+        )
       })
       mount(App, {
         attachTo: document.body,
@@ -88,6 +93,13 @@ describe('devtools api', () => {
 
   it('should work w/ addInspector api', async () => {
     await new Promise<void>((resolve) => {
+      // Originated from https://github.com/vuejs/devtools-next/blob/main/packages/devtools-kit/src/plugins/component.ts#L20-L24
+      const componentInspector = {
+        id: 'components',
+        nodeId: '',
+        filter: '',
+        treeFilterPlaceholder: 'Search components',
+      }
       const inspectorData = {
         id: 'vueuse',
         label: 'VueUse',
@@ -96,10 +108,15 @@ describe('devtools api', () => {
         treeFilterPlaceholder: 'Search',
       }
       devtools.hook.on.vueAppInit(() => {
-        setTimeout(() => {
-          expect(devtools.context.inspector).toEqual([inspectorData])
-        }, 100)
-        resolve()
+        vi.waitFor(
+          () => {
+            if (!devtools.context.inspector.length)
+              throw new Error('Not ready')
+            const { label, ...inspectorDataWithoutLabel } = inspectorData
+            expect(devtools.context.inspector).toEqual([inspectorDataWithoutLabel, componentInspector])
+            resolve()
+          },
+        )
       })
       mount(App, {
         attachTo: document.body,

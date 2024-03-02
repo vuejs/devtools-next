@@ -1,10 +1,43 @@
 import fsp from 'node:fs/promises'
+import type { ViteInspectAPI } from 'vite-plugin-inspect'
+import { debounce } from 'perfect-debounce'
+import type { ResolvedConfig, ViteDevServer } from 'vite'
+import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
-import { BirpcGroupReturn } from 'birpc'
-import { debounce } from 'perfect-debounce'
-import type { AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from './types'
+
+// assets
+export type AssetType = 'image' | 'font' | 'video' | 'audio' | 'text' | 'json' | 'other'
+export interface AssetInfo {
+  path: string
+  type: AssetType
+  publicPath: string
+  filePath: string
+  size: number
+  mtime: number
+}
+export interface ImageMeta {
+  width: number
+  height: number
+  orientation?: number
+  type?: string
+  mimeType?: string
+}
+
+export interface AssetEntry {
+  path: string
+  content: string
+  encoding?: BufferEncoding
+  override?: boolean
+}
+
+export interface CodeSnippet {
+  code: string
+  lang: string
+  name: string
+  docs?: string
+}
 
 const defaultAllowedExtensions = [
   'png',
@@ -51,21 +84,11 @@ function guessType(path: string): AssetType {
   return 'other'
 }
 
-interface SetupAssetsOptions {
-  root: string
-  base: string
-  server: any
-  getRpcServer: () => BirpcGroupReturn<ViteRPCFunctions>
-}
-
-export function setupAssetsRPC(config: SetupAssetsOptions) {
-  const server = config.server
-  const getRpcServer = config.getRpcServer
+export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer, config: ResolvedConfig }) {
+  const { rpc, server, config } = options
 
   const _imageMetaCache = new Map<string, ImageMeta | undefined>()
   let cache: AssetInfo[] | null = null
-
-  const extensions = defaultAllowedExtensions
 
   async function scan() {
     const dir = resolve(config.root)
@@ -110,47 +133,44 @@ export function setupAssetsRPC(config: SetupAssetsOptions) {
     return cache
   }
 
-  function watchAssets() {
-    const debouncedAssetsUpdated = debounce(() => {
-      getRpcServer().assetsUpdated()
-    }, 100)
+  defineViteServerAction('assets:get-static-assets', async () => {
+    return await scan()
+  })
 
-    server.watcher.on('all', (event) => {
-      if (event !== 'change')
-        debouncedAssetsUpdated()
-    })
-  }
+  defineViteServerAction('assets:get-image-meta', async (filepath: string) => {
+    if (_imageMetaCache.has(filepath))
+      return _imageMetaCache.get(filepath)
+    try {
+      const meta = imageMeta(await fsp.readFile(filepath)) as ImageMeta
+      _imageMetaCache.set(filepath, meta)
+      return meta
+    }
+    catch (e) {
+      _imageMetaCache.set(filepath, undefined)
+      console.error(e)
+      return undefined
+    }
+  })
 
-  watchAssets()
+  defineViteServerAction('assets:get-text-asset-content', async (filepath: string, limit = 300) => {
+    try {
+      const content = await fsp.readFile(filepath, 'utf-8')
+      return content.slice(0, limit)
+    }
+    catch (e) {
+      console.error(e)
+      return undefined
+    }
+  })
 
-  return {
-    async getStaticAssets() {
-      return await scan()
-    },
-    async getImageMeta(filepath: string) {
-      if (_imageMetaCache.has(filepath))
-        return _imageMetaCache.get(filepath)
-      try {
-        const meta = imageMeta(await fsp.readFile(filepath)) as ImageMeta
-        _imageMetaCache.set(filepath, meta)
-        return meta
-      }
-      catch (e) {
-        _imageMetaCache.set(filepath, undefined)
-        console.error(e)
-        return undefined
-      }
-    },
-    async getTextAssetContent(filepath: string, limit = 300) {
-      try {
-        const content = await fsp.readFile(filepath, 'utf-8')
-        return content.slice(0, limit)
-      }
-      catch (e) {
-        console.error(e)
-        return undefined
-      }
-    },
-    assetsUpdated() {},
-  } satisfies Partial<ViteRPCFunctions>
+  const triggerAssetsUpdated = callViteClientListener('assets:updated')
+
+  const debouncedAssetsUpdated = debounce(() => {
+    triggerAssetsUpdated()
+  }, 100)
+
+  server.watcher.on('all', (event) => {
+    if (event !== 'change')
+      debouncedAssetsUpdated()
+  })
 }

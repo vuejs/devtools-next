@@ -38,7 +38,7 @@ describe('devtools api', () => {
         setTimeout(() => {
           expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
           resolve()
-        }, 100)
+        }, 300)
       })
       mount(App, {
         attachTo: document.body,

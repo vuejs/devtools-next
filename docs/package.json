@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "7.0.14",
+  "version": "7.0.16",
   "private": true,
   "scripts": {
     "docs:build": "vitepress build",
@@ -9,9 +9,9 @@
   },
   "devDependencies": {
     "@unocss/reset": "^0.58.5",
-    "@vueuse/core": "^10.7.2",
+    "@vueuse/core": "^10.9.0",
     "unplugin-vue-components": "^0.26.0",
-    "vitepress": "1.0.0-rc.41",
-    "vue": "^3.4.15"
+    "vitepress": "1.0.0-rc.44",
+    "vue": "^3.4.21"
   }
 }

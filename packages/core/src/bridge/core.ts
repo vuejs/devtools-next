@@ -1,8 +1,6 @@
 import { NOOP } from '@vue/devtools-shared'
 import type { Emitter, EventType, Handler } from 'mitt'
 import mitt from 'mitt'
-import { parse } from '@vue/devtools-kit'
-import type { ComponentHighLighterOptions, InspectorStateEditorPayload, ScrollToComponentOptions } from '@vue/devtools-kit'
 
 export interface BridgeAdapterOptions {
   tracker: (fn: Function) => void
@@ -64,90 +62,5 @@ export class Bridge<Events extends Record<EventType, any>, Key extends keyof Eve
 
   public removeAllListeners(): void {
     this.emitter.all.clear()
-  }
-}
-
-export const bridgeRpcEvents = {
-  toggleComponentInspector: 'toggle-component-inspector',
-  inspectComponentInspector: 'inspect-component-inspector',
-  scrollToComponent: 'scroll-to-component',
-  componentBoundingRect: 'component-bounding-rect',
-  inspectorTree: 'inspector-tree',
-  inspectorState: 'inspector-state',
-  updateInspectorTreeId: 'inspector-tree:update-id',
-  state: 'state',
-  timelineLayer: 'timeline-layer',
-  routerInfo: 'router-info',
-  router: 'router',
-  routeMatched: 'route-matched',
-  editState: 'edit-inspector-state',
-  openInEditor: 'open-in-editor',
-  toggleApp: 'toggle-app',
-  isVueInspectorDetected: 'vue-inspector:detected',
-  enableVueInspector: 'vue-inspector:enable',
-  unhighlightElement: 'element:unhighlight',
-} as const
-
-export type BridgeRpcEvents = typeof bridgeRpcEvents
-export type BridgeRpcEventName = BridgeRpcEvents[keyof BridgeRpcEvents]
-export interface BridgeRpcEventPayload {
-  [bridgeRpcEvents.toggleComponentInspector]: ComponentHighLighterOptions
-  [bridgeRpcEvents.scrollToComponent]: ScrollToComponentOptions
-  [bridgeRpcEvents.inspectComponentInspector]: string
-  [bridgeRpcEvents.componentBoundingRect]: {
-    inspectorId: string
-    instanceId: string
-  }
-  [bridgeRpcEvents.inspectorTree]: {
-    inspectorId?: string
-    filter?: string
-  }
-  [bridgeRpcEvents.updateInspectorTreeId]: string
-  [bridgeRpcEvents.inspectorState]: {
-    inspectorId: string
-    nodeId: string
-  }
-  [bridgeRpcEvents.state]: null
-  [bridgeRpcEvents.timelineLayer]: null
-  [bridgeRpcEvents.routerInfo]: null
-  [bridgeRpcEvents.router]: string
-  [bridgeRpcEvents.routeMatched]: string
-  [bridgeRpcEvents.editState]: InspectorStateEditorPayload
-  [bridgeRpcEvents.openInEditor]: string
-  [bridgeRpcEvents.toggleApp]: string
-  [bridgeRpcEvents.isVueInspectorDetected]: boolean
-  [bridgeRpcEvents.enableVueInspector]: null
-  [bridgeRpcEvents.unhighlightElement]: null
-}
-
-export class BridgeRpcCore {
-  bridge: BridgeInstanceType
-  constructor(_bridge: BridgeInstanceType) {
-    this.bridge = _bridge
-  }
-
-  on<E extends BridgeRpcEventName>(
-    eventName: E,
-    handler: (payload?: BridgeRpcEventPayload[E]) => Promise<boolean | string | void> | string,
-  ) {
-    this.bridge.on(`${eventName}:req`, async (payload?: BridgeRpcEventPayload[E]) => {
-      const res = await handler(payload)
-      this.bridge.emit(`${eventName}:res`, res)
-    })
-  }
-
-  emit<S, E extends BridgeRpcEventName = BridgeRpcEventName>(
-    eventName: E,
-    payload?: BridgeRpcEventPayload[E],
-  ) {
-    return new Promise<S>((resolve) => {
-      this.bridge.once(`${eventName}:res`, (payload: string) => {
-        const res = {
-          data: parse(payload),
-        } as S
-        resolve(res)
-      })
-      this.bridge.emit(`${eventName}:req`, payload)
-    })
   }
 }

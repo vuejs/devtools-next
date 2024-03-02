@@ -1,5 +1,7 @@
 import antfu from '@antfu/eslint-config'
 
+// We temporarily disable `eslint.config.ts` which given by `eslint-ts-patch`
+// Related: https://github.com/antfu/eslint-ts-patch/issues/5
 export default antfu({
   // force enable vue and typescript rules
   vue: true,
@@ -17,7 +19,7 @@ export default antfu({
     'vue/no-v-text-v-html-on-component': 'off',
 
     'no-console': 'off',
-    'antfu/top-level-function': 'off' as any, // type error from @antfu/eslint-config
+    'antfu/top-level-function': 'off',
     'unused-imports/no-unused-vars': 'off',
 
     'node/prefer-global/process': 'off',

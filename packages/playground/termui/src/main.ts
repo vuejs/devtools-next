@@ -8,7 +8,7 @@ globalThis.document = {
   getElementById: () => {},
 } as any
 
-devtools.connect('http://localhost', 8098)
+devtools.connect()
 
 const app = createApp(App)
 app.mount()

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-kit",
   "type": "module",
-  "version": "7.0.14",
+  "version": "7.0.16",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@types/speakingurl": "^13.0.6",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   }
 }

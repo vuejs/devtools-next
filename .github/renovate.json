@@ -5,6 +5,10 @@
     "group:allNonMajor",
     ":disableDependencyDashboard"
   ],
+  "ignoreDeps": [
+    "node",
+    "nanoid"
+  ],
   "labels": [
     "dependencies"
   ],

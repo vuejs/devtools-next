@@ -1,17 +1,13 @@
 {
   "name": "@vue/devtools-core",
   "type": "module",
-  "version": "7.0.14",
+  "version": "7.0.16",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./server": {
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -28,17 +24,12 @@
   "dependencies": {
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "birpc": "^0.2.15",
-    "fast-glob": "^3.3.2",
-    "image-meta": "^0.2.0",
     "mitt": "^3.0.1",
+    "nanoid": "^3.3.4",
     "pathe": "^1.1.2",
-    "perfect-debounce": "^1.0.0",
-    "vite-dev-rpc": "^0.1.4",
-    "vite-hot-client": "^0.2.3",
-    "vite-plugin-inspect": "^0.8.3"
+    "vite-hot-client": "^0.2.3"
   },
   "devDependencies": {
-    "vue": "^3.4.15"
+    "vue": "^3.4.21"
   }
 }

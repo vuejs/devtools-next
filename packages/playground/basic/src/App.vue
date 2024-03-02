@@ -20,6 +20,12 @@
           /hello
         </span>
       </RouterLink>
+      |
+      <RouterLink to="/hey/123123">
+        <span>
+          /hey/123123
+        </span>
+      </RouterLink>
     </div>
   </div>
 </template>

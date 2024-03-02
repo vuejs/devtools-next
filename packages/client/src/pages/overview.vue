@@ -1,16 +1,35 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue/devtools-shared'
-import { useDevToolsBridgeRpc, useDevToolsState } from '@vue/devtools-core'
-import type { ComponentTreeNode } from '@vue/devtools-kit'
+import { defineDevToolsAction, defineDevToolsListener, useDevToolsState } from '@vue/devtools-core'
+import type { ComponentTreeNode, RouterInfo } from '@vue/devtools-kit'
+import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
 
 import { version } from '../../../core/package.json'
 
-const bridgeRpc = useDevToolsBridgeRpc()
-
 const { vueVersion } = useDevToolsState()
 const pageCount = ref(1)
 const componentCount = ref(0)
+
+const getRouterInfo = defineDevToolsAction('devtools:router-info', (devtools) => {
+  return JSON.stringify(devtools.context.routerInfo)
+})
+
+const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
+  return devtools.api.getInspectorTree(payload)
+})
+
+const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
+  devtools.api.on.sendInspectorTree((payload) => {
+    callback(payload)
+  })
+})
+
+const onRouterInfoUpdated = defineDevToolsListener<RouterInfo>((devtools, callback) => {
+  devtools.api.on.routerInfoUpdated((payload) => {
+    callback(payload)
+  })
+}, { parser: 'json' })
 
 function normalizeComponentCount(data: ComponentTreeNode[]) {
   let count = 0
@@ -24,23 +43,24 @@ function normalizeComponentCount(data: ComponentTreeNode[]) {
 
 onDevToolsClientConnected(() => {
   // page count getter
-  bridgeRpc.getRouterInfo().then(({ data }) => {
+  getRouterInfo().then((_data) => {
+    const data = JSON.parse(_data)
     pageCount.value = data?.routes?.length || 1
   })
-  bridgeRpc.on.routerInfoUpdated((data) => {
+  onRouterInfoUpdated((data) => {
     pageCount.value = data?.routes?.length || 1
   })
 
   // component count getter
-  bridgeRpc.getInspectorTree<{ data: ComponentTreeNode[] }>({ inspectorId: 'components', filter: '' }).then(({ data }) => {
+  getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
+    const data = parse(_data)
     componentCount.value = normalizeComponentCount(data)
   })
-  bridgeRpc.on.inspectorTreeUpdated<{ data: ComponentTreeNode[], inspectorId: string }>((data) => {
-    if (!data?.data?.length)
+  onInspectorTreeUpdated((_data) => {
+    const data = parse(_data)
+    if (!data?.data?.length || data.inspectorId !== 'components')
       return
     componentCount.value = normalizeComponentCount(data.data)
-  }, {
-    inspectorId: 'components',
   })
 })
 </script>

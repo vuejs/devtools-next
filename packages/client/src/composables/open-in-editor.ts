@@ -1,9 +1,6 @@
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { defineDevToolsAction } from '@vue/devtools-core'
 
 export const vueInspectorDetected = ref(false)
-export function openInEditor(file: string) {
-  const bridgeRpc = useDevToolsBridgeRpc()
-  return bridgeRpc.openInEditor({
-    file,
-  })
-}
+export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (devtools, file: string) => {
+  devtools.api.openInEditor({ file })
+})

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-electron",
   "type": "module",
-  "version": "7.0.14",
+  "version": "7.0.16",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -33,18 +33,18 @@
   "dependencies": {
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^28.2.1",
+    "electron": "^29.1.0",
     "execa": "^8.0.1",
-    "h3": "^1.10.1",
-    "ip": "^1.1.8",
+    "h3": "^1.11.1",
+    "ip": "^2.0.1",
     "pathe": "^1.1.2",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.3",
-    "tsx": "^4.7.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "tsx": "^4.7.1",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.15"
+    "vue": "^3.4.21"
   }
 }

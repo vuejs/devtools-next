@@ -2,6 +2,8 @@ export {
   onDevToolsConnected,
   onDevToolsClientConnected,
   setupDevToolsPlugin,
+  // compatible with v6.x
+  setupDevToolsPlugin as setupDevtoolsPlugin,
   addCustomTab,
   addCustomCommand,
   removeCustomCommand,

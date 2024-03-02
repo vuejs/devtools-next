@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { useDevToolsBridgeRpc } from '@vue/devtools-core'
+import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
 import { Network } from 'vis-network'
+import type { ModuleInfo } from 'vite-plugin-vue-devtools'
 
-const bridgeRpc = useDevToolsBridgeRpc()
+const getRoot = callViteServerAction<string>('get-vite-root')
+const getGraph = callViteServerAction<ModuleInfo[]>('graph:get-modules')
+
+const onModuleUpdated = defineViteClientListener('graph:module-updated')
 
 async function fetchGraph() {
-  const root = await bridgeRpc.root()
-  bridgeRpc.getGraph().then((res) => {
+  const root = await getRoot()
+  getGraph().then((res) => {
     parseGraphRawData(res, root)
   })
 }
@@ -15,7 +19,7 @@ let cleanupModuleUpdatedEffect: Function
 
 onDevToolsClientConnected(() => {
   fetchGraph()
-  cleanupModuleUpdatedEffect = bridgeRpc.graphModuleUpdated(() => {
+  cleanupModuleUpdatedEffect = onModuleUpdated(() => {
     fetchGraph()
   })
 })

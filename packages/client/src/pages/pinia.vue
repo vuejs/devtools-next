@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import { Pinia } from '@vue/devtools-applet'
+import '@vue/devtools-applet/style'
 
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
-import { Pane, Splitpanes } from 'splitpanes'
 
 const inspectorId = 'pinia'
 
@@ -99,23 +100,7 @@ onDevToolsClientConnected(() => {
 </script>
 
 <template>
-  <PanelGrids h-screen>
-    <Splitpanes>
-      <Pane flex flex-col border="r base">
-        <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <InspectorTree v-model="selected" :data="tree" />
-        </div>
-      </Pane>
-      <Pane flex flex-col>
-        <div :key="selected" h-0 grow overflow-auto p-2 class="no-scrollbar">
-          <InspectorState
-            v-for="(item, key) in state" :id="key"
-            :key="key"
-            :inspector-id="inspectorId"
-            :node-id="selected" :data="item" :name="`${key}`"
-          />
-        </div>
-      </Pane>
-    </Splitpanes>
-  </PanelGrids>
+  <!-- <PanelGrids h-screen> -->
+  <Pinia />
+  <!-- </PanelGrids> -->
 </template>

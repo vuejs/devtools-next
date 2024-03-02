@@ -28,6 +28,7 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
+    "@vue/devtools-core": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "@vue/devtools-ui": "^7.0.15",
     "hookable": "^5.5.3",

@@ -146,6 +146,9 @@ importers:
 
   packages/applet:
     dependencies:
+      '@vue/devtools-core':
+        specifier: workspace:^
+        version: link:../core
       '@vue/devtools-shared':
         specifier: workspace:^
         version: link:../shared
@@ -208,6 +211,9 @@ importers:
       '@unocss/runtime':
         specifier: ^0.58.5
         version: 0.58.5
+      '@vue/devtools-applet':
+        specifier: workspace:^
+        version: link:../applet
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core

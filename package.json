@@ -45,7 +45,7 @@
     "dev:ui-story": "turbo dev --filter=./packages/ui-story",
     "prepare:type": "turbo prepare:type --filter='./packages/*'",
     "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" nr prepare:type && nr build:ui && turbo stub",
-    "build": "nr build:client && turbo build",
+    "build": "turbo build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:packages": "pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared}' exec publint && pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared}' exec attw --pack",

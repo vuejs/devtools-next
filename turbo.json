@@ -9,9 +9,12 @@
       "cache": true,
       "persistent": false
     },
-    "prepare:type": {},
+    "prepare:type": {
+      "outputs": ["dist/**/*.d.ts"]
+    },
     "build": {
-      "outputs": ["dist"]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**/*.?{c|m}js"]
     }
   }
 }

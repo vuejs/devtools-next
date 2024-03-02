@@ -57,7 +57,9 @@ const { expanded, toggleExpanded } = useToggleExpanded()
         />
         <!-- placeholder -->
         <span v-else pl5 />
-        {{ item.key }}
+        <span op70>
+          {{ item.key }}
+        </span>
         <span mx1>:</span>
         <span :class="`${item.type}-state-type`">{{ normalizeDisplay(item) }}</span>
       </div>

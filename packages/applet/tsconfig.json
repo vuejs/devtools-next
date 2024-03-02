@@ -1,29 +1,15 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
     "lib": ["esnext", "dom"],
-    "baseUrl": ".",
-    "rootDir": ".",
     "module": "esnext",
-    "moduleResolution": "node",
     "paths": {
       "~/*": ["./src/*"]
     },
-    "resolveJsonModule": true,
-    "strict": true,
-    "noImplicitAny": false,
-    "declaration": true,
-    "declarationDir": "./dist",
-    "emitDeclarationOnly": true,
-    "removeComments": true,
-    "sourceMap": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "types": [
+      "vite/client"
+    ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]
 }

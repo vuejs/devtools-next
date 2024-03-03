@@ -33,6 +33,10 @@
       "dependsOn": ["@vue/devtools-client#build", "^build"],
       "outputs": ["dist/**"]
     },
+    "vite-plugin-vue-devtools#build": {
+      "dependsOn": ["@vue/devtools-client#build", "^build"],
+      "outputs": ["dist/**", "!dist/client/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**/*.?{c|m}js"]

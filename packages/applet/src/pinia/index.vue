@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { defineDevToolsAction } from '@vue/devtools-core'
 
 import Home from './components/Home.vue'
-import Store from './components/Store/Index.vue'
+import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 

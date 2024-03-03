@@ -53,4 +53,4 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'literal-state-type',
     'boolean-state-type',
   ],
-}]))
+}])) as any

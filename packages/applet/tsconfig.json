@@ -9,7 +9,8 @@
     },
     "types": [
       "vite/client"
-    ]
+    ],
+    "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]
+  "include": ["**/*.vue", "**/*.d.ts", "**/*.ts"]
 }

@@ -1,10 +1,11 @@
 import { devtools } from '@vue/devtools-kit'
 import { mount } from '@vue/test-utils'
 import type { Plugin } from 'vue'
-import { resetDevToolsContext, resetDevToolsState } from '../../src/state'
+import { devtoolsAppRecords, resetDevToolsContext, resetDevToolsState } from '../../src/state'
 
 import { DevToolsPluginApi } from '../../src/api'
 import { onDevToolsConnected, setupDevToolsPlugin } from '../../src'
+import { DevToolsHooks } from '../../src/types'
 import App from '../fixtures/App.vue'
 
 function createDevToolsPlugin(fn: (api: DevToolsPluginApi) => void): Plugin {
@@ -37,9 +38,6 @@ describe('devtools api', () => {
       devtools.hook.on.vueAppInit(() => {
         vi.waitFor(
           () => {
-            if (!devtools.context.timelineLayer.length)
-              throw new Error('Not ready')
-
             expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
             resolve()
           },
@@ -110,8 +108,6 @@ describe('devtools api', () => {
       devtools.hook.on.vueAppInit(() => {
         vi.waitFor(
           () => {
-            if (!devtools.context.inspector.length)
-              throw new Error('Not ready')
             const { label, ...inspectorDataWithoutLabel } = inspectorData
             expect(devtools.context.inspector).toEqual([inspectorDataWithoutLabel, componentInspector])
             resolve()
@@ -125,6 +121,29 @@ describe('devtools api', () => {
             api.addInspector(inspectorData)
           })],
         },
+      })
+    })
+  })
+
+  it('legacy plugin can be registered after app is created', async () => {
+    // Refs: #247
+    await new Promise<void>((resolve) => {
+      const setupFn = vitest.fn()
+      const globalHook = __VUE_DEVTOOLS_GLOBAL_HOOK__
+
+      mount(App, {
+        attachTo: document.body,
+      })
+
+      onDevToolsConnected(() => {
+        const { app, api } = devtoolsAppRecords.active
+        expect(setupFn).not.toHaveBeenCalled()
+        globalHook.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, { app }, setupFn)
+
+        vi.waitFor(() => {
+          expect(setupFn).toBeCalledWith(api)
+          resolve()
+        })
       })
     })
   })

@@ -3,14 +3,6 @@ import { debounce } from 'perfect-debounce'
 import type { ViteDevServer } from 'vite'
 import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
 
-// graph
-export interface ModuleInfo {
-  id: string
-  plugins: { name: string, transform?: number, resolveId?: number }[]
-  deps: string[]
-  virtual: boolean
-}
-
 export function setupGraphModule(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer }) {
   const { rpc, server } = options
 

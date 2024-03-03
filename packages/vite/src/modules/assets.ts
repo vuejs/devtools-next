@@ -3,41 +3,10 @@ import type { ViteInspectAPI } from 'vite-plugin-inspect'
 import { debounce } from 'perfect-debounce'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
+import type { AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
-
-// assets
-export type AssetType = 'image' | 'font' | 'video' | 'audio' | 'text' | 'json' | 'other'
-export interface AssetInfo {
-  path: string
-  type: AssetType
-  publicPath: string
-  filePath: string
-  size: number
-  mtime: number
-}
-export interface ImageMeta {
-  width: number
-  height: number
-  orientation?: number
-  type?: string
-  mimeType?: string
-}
-
-export interface AssetEntry {
-  path: string
-  content: string
-  encoding?: BufferEncoding
-  override?: boolean
-}
-
-export interface CodeSnippet {
-  code: string
-  lang: string
-  name: string
-  docs?: string
-}
 
 const defaultAllowedExtensions = [
   'png',

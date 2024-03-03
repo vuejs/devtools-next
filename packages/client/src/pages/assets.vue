@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
-import type { AssetInfo } from 'vite-plugin-vue-devtools'
+import type { AssetInfo } from '@vue/devtools-core'
 import Fuse from 'fuse.js'
 
 const DETAILS_MAX_ITEMS = 50

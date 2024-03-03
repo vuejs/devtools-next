@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
+import type { AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
 import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
-import type { ImageMeta } from 'vite-plugin-vue-devtools'
 
 const props = defineProps<{
   modelValue: AssetInfo

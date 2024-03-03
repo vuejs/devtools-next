@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
 import { Network } from 'vis-network'
-import type { ModuleInfo } from 'vite-plugin-vue-devtools'
+import type { ModuleInfo } from '@vue/devtools-core'
 
 const getRoot = callViteServerAction<string>('get-vite-root')
 const getGraph = callViteServerAction<ModuleInfo[]>('graph:get-modules')

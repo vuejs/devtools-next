@@ -265,9 +265,6 @@ importers:
       vite:
         specifier: ^5.1.4
         version: 5.1.4(@types/node@20.11.24)(sass@1.71.1)
-      vite-plugin-vue-devtools:
-        specifier: workspace:^
-        version: link:../vite
       vue:
         specifier: ^3.4.21
         version: 3.4.21(typescript@5.3.3)

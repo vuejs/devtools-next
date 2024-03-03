@@ -23,8 +23,8 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": false,
-    // We build packages by using tsup/vite instead of tsc, so this option we do not care about it.
-    // This is prevent tsconfig error on monorepo.
+    // We use tsup/vite instead of tsc to build the package, so we don't need to care about this option.
+    // Add outDir option to avoid tsconfig error in monorepo.
     "outDir": "dist",
     "esModuleInterop": true
   },

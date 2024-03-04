@@ -1,10 +1,11 @@
 import { devtools } from '@vue/devtools-kit'
 import { mount } from '@vue/test-utils'
 import type { Plugin } from 'vue'
-import { resetDevToolsContext, resetDevToolsState } from '../../src/state'
+import { devtoolsAppRecords, resetDevToolsContext, resetDevToolsState } from '../../src/state'
 
 import { DevToolsPluginApi } from '../../src/api'
 import { onDevToolsConnected, setupDevToolsPlugin } from '../../src'
+import { DevToolsHooks } from '../../src/types'
 import App from '../fixtures/App.vue'
 
 function createDevToolsPlugin(fn: (api: DevToolsPluginApi) => void): Plugin {
@@ -35,10 +36,12 @@ describe('devtools api', () => {
         color: 0x92A2BF,
       }
       devtools.hook.on.vueAppInit(() => {
-        setTimeout(() => {
-          expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
-          resolve()
-        }, 300)
+        vi.waitFor(
+          () => {
+            expect(devtools.context.timelineLayer).toEqual([timelineLayerData])
+            resolve()
+          },
+        )
       })
       mount(App, {
         attachTo: document.body,
@@ -88,6 +91,13 @@ describe('devtools api', () => {
 
   it('should work w/ addInspector api', async () => {
     await new Promise<void>((resolve) => {
+      // Originated from https://github.com/vuejs/devtools-next/blob/main/packages/devtools-kit/src/plugins/component.ts#L20-L24
+      const componentInspector = {
+        id: 'components',
+        nodeId: '',
+        filter: '',
+        treeFilterPlaceholder: 'Search components',
+      }
       const inspectorData = {
         id: 'vueuse',
         label: 'VueUse',
@@ -96,10 +106,13 @@ describe('devtools api', () => {
         treeFilterPlaceholder: 'Search',
       }
       devtools.hook.on.vueAppInit(() => {
-        setTimeout(() => {
-          expect(devtools.context.inspector).toEqual([inspectorData])
-        }, 100)
-        resolve()
+        vi.waitFor(
+          () => {
+            const { label, ...inspectorDataWithoutLabel } = inspectorData
+            expect(devtools.context.inspector).toEqual([inspectorDataWithoutLabel, componentInspector])
+            resolve()
+          },
+        )
       })
       mount(App, {
         attachTo: document.body,
@@ -108,6 +121,29 @@ describe('devtools api', () => {
             api.addInspector(inspectorData)
           })],
         },
+      })
+    })
+  })
+
+  it('legacy plugin can be registered after app is created', async () => {
+    // Refs: #247
+    await new Promise<void>((resolve) => {
+      const setupFn = vitest.fn()
+      const globalHook = __VUE_DEVTOOLS_GLOBAL_HOOK__
+
+      mount(App, {
+        attachTo: document.body,
+      })
+
+      onDevToolsConnected(() => {
+        const { app, api } = devtoolsAppRecords.active
+        expect(setupFn).not.toHaveBeenCalled()
+        globalHook.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, { app }, setupFn)
+
+        vi.waitFor(() => {
+          expect(setupFn).toBeCalledWith(api)
+          resolve()
+        })
       })
     })
   })

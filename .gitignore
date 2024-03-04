@@ -93,6 +93,7 @@ packages/browser-extension/overlay/**/*
 packages/browser-extension/client/**/*
 packages/electron/client/**/*
 packages/vite/src/overlay/**/*
+packages/vite/client/**/*
 docs/.vitepress/cache/
 
 # for scripts

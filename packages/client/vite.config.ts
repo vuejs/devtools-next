@@ -14,7 +14,7 @@ export default defineConfig(mergeConfig(baseConfig, {
         // copy
         const clientFile = resolve(__dirname, './dist')
 
-        ;['../browser-extension/client', '../electron/client', '../vite/dist/client'].forEach((dir) => {
+        ;['../browser-extension/client', '../electron/client', '../vite/client'].forEach((dir) => {
           fse.copySync(clientFile, resolve(__dirname, dir))
         })
       },

@@ -35,6 +35,7 @@
     "*.d.ts",
     "./src/overlay.js",
     "./src/overlay/**",
+    "client",
     "dist",
     "overlay"
   ],

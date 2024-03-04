@@ -21,8 +21,8 @@ defineEmits<{
   'update:visible': [value: boolean]
 }>()
 defineSlots<{
-  default: () => any
-  popper: (props: { hide: () => void }) => any
+  'default': () => any
+  'popper': (props: { hide: () => void }) => any
   'button-icon': () => any
   'button-icon-right': () => any
 }>()

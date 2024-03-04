@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<{
 })
 
 defineEmits<{
-  'enableEditInput': [type: EditorInputValidType]
-  'addNewProp': [type: EditorAddNewPropType]
+  enableEditInput: [type: EditorInputValidType]
+  addNewProp: [type: EditorAddNewPropType]
 }>()
 
 const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {

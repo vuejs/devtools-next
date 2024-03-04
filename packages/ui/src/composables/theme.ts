@@ -1,4 +1,4 @@
-import { BasicColorMode, UseColorModeOptions, useColorMode, useLocalStorage } from '@vueuse/core'
+import { BasicColorMode, UseColorModeOptions, useColorMode } from '@vueuse/core'
 
 /**
  * priorites following the desc order
@@ -13,7 +13,7 @@ export function useTheme<T extends string = BasicColorMode>(options?: UseColorMo
 
   if (!options?.storageKey) {
     const keys = Object.values(ThemeStroageKeys)
-    options.storageKey = keys.find(k => !!useLocalStorage(k, undefined).value)
+    options.storageKey = keys.find(k => !!localStorage.getItem(k))
   }
 
   const colorMode = useColorMode(options)

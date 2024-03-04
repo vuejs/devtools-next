@@ -5,6 +5,8 @@ import { defineDevToolsAction } from '@vue/devtools-core'
 import Home from './components/Home.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
+import RootStateViewer from '~/components/state/RootStateViewer.vue'
+import { helloComponentState } from '~/utils/data'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
 const { VirtualRouterView } = registerVirtualRouter([
@@ -39,6 +41,7 @@ function toggleRoute(route: string) {
 
 <template>
   <div h-full w-full>
-    <VirtualRouterView />
+    <!-- <VirtualRouterView /> -->
+    <RootStateViewer :data="{ state: [helloComponentState[0]] }" />
   </div>
 </template>

@@ -18,6 +18,11 @@ export default defineConfig(mergeConfigs([unoConfig, {
       },
     }),
   ],
+  theme: {
+    fontFamily: {
+      'state-field': 'Roboto Mono, Menlo, Consolas, monospace',
+    },
+  },
   variants: [
     {
       name: '@active',

@@ -1,4 +1,4 @@
-const mockState = [
+export const mockState = [
   {
     key: 'app',
     editable: true,
@@ -19,16 +19,19 @@ const mockState = [
               type: 'ref',
               stateTypeName: 'Ref',
               value: {
-                displayText: 'Map',
-                fields: {
-                  abstract: true,
+                _custom: {
+                  displayText: 'Map',
+                  fields: {
+                    abstract: true,
+                  },
+                  readonly: true,
+                  type: 'map',
+                  value: {
+                    a: 1,
+                    b: 2,
+                  },
                 },
-                readonly: true,
-                type: 'map',
-                value: {
-                  a: 1,
-                  b: 2,
-                },
+
               },
             },
           },
@@ -37,13 +40,16 @@ const mockState = [
               type: 'ref',
               stateTypeName: 'Ref',
               value: {
-                displayText: 'Set[3]',
-                fields: {
-                  abstract: true,
+                _custom: {
+
+                  displayText: 'Set[3]',
+                  fields: {
+                    abstract: true,
+                  },
+                  readonly: true,
+                  type: 'set',
+                  value: [1, 2, 3],
                 },
-                readonly: true,
-                type: 'set',
-                value: [1, 2, 3],
               },
             },
           },
@@ -60,7 +66,7 @@ const mockState = [
   },
 ]
 
-const routingState = [
+export const routingState = [
   {
     key: '$route',
     editable: false,
@@ -91,7 +97,7 @@ const routingState = [
   },
 ]
 
-const helloComponentState = [
+export const helloComponentState = [
   {
     editable: true,
     key: 'app',
@@ -126,16 +132,19 @@ const helloComponentState = [
           type: 'ref',
           stateTypeName: 'Ref',
           value: {
-            displayText: 'Map',
-            fields: {
-              abstract: true,
+            _custom: {
+              displayText: 'Map',
+              fields: {
+                abstract: true,
+              },
+              readonly: true,
+              type: 'map',
+              value: {
+                a: 1,
+                b: 2,
+              },
             },
-            readonly: true,
-            type: 'map',
-            value: {
-              a: 1,
-              b: 2,
-            },
+
           },
         },
       },
@@ -144,13 +153,16 @@ const helloComponentState = [
           type: 'ref',
           stateTypeName: 'Ref',
           value: {
-            displayText: 'Set[3]',
-            fields: {
-              abstract: true,
+            _custom: {
+
+              displayText: 'Set[3]',
+              fields: {
+                abstract: true,
+              },
+              readonly: true,
+              type: 'set',
+              value: [1, 2, 3],
             },
-            readonly: true,
-            type: 'set',
-            value: [1, 2, 3],
           },
         },
       },

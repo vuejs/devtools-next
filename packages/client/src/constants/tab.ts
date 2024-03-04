@@ -56,6 +56,7 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
+
     {
       icon: 'i-carbon-language',
       name: 'i18n',
@@ -65,6 +66,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
     },
   ]],
   ['advanced', [
+    {
+      icon: 'i-logos-pinia',
+      name: 'pinia2',
+      order: -100,
+      path: 'pinia2',
+      title: 'Pinia2',
+    },
     {
       icon: 'i-carbon-network-4',
       name: 'graph',

@@ -8,7 +8,6 @@ import { useTheme } from '@vue/devtools-ui'
 import('./setup/unocss-runtime')
 
 // @TODO: fix browser extension cross-origin localStorage issue
-
 useTheme()
 const router = useRouter()
 const route = useRoute()

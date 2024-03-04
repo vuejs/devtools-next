@@ -19,7 +19,7 @@
         "dist/**",
         "../electron/client/**",
         "../browser-extension/client/**",
-        "../vite/dist/client/**"
+        "../vite/client/**"
       ]
     },
     "@vue/devtools-electron#build": {
@@ -35,7 +35,7 @@
     },
     "vite-plugin-vue-devtools#build": {
       "dependsOn": ["@vue/devtools-client#build", "^build"],
-      "outputs": ["dist/**", "!dist/client/**"]
+      "outputs": ["dist/**"]
     },
     "build": {
       "dependsOn": ["^build"],

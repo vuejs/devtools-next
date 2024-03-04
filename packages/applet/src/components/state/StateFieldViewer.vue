@@ -132,7 +132,7 @@ const hasChildren = computed(() => {
 }
 
 // component-definition
-:deep(.state-format-component-definition) {
+:deep(.component-definition-custom-state) {
   --at-apply: text-primary-500;
   & > span {
     --at-apply: 'text-#aaa';
@@ -140,7 +140,7 @@ const hasChildren = computed(() => {
 }
 
 // component
-:deep(.state-format-component) {
+:deep(.component-custom-state) {
   --at-apply: text-primary-500;
   &::before {
     content: '<';

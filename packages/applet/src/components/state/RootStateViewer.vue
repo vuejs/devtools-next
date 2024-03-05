@@ -15,10 +15,17 @@ const props = withDefaults(defineProps<{
   disableEdit: false,
 })
 
-createStateEditorContext({
-  nodeId: props.nodeId,
-  inspectorId: props.inspectorId,
-  disableEdit: props.disableEdit,
+function initEditorContext() {
+  return {
+    nodeId: props.nodeId,
+    inspectorId: props.inspectorId,
+    disableEdit: props.disableEdit,
+  }
+}
+
+const { context } = createStateEditorContext(initEditorContext())
+watchEffect(() => {
+  context.value = initEditorContext()
 })
 
 const { expanded, toggleExpanded } = useToggleExpanded()

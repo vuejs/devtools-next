@@ -23,12 +23,6 @@ const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devt
   return devtools.api.getInspectorState(payload)
 })
 
-const onComponentUpdated = defineDevToolsListener((devtools, callback) => {
-  devtools.api.on.componentUpdated(() => {
-    callback()
-  })
-})
-
 const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
   devtools.api.on.sendInspectorTree((payload) => {
     callback(payload)
@@ -69,10 +63,6 @@ onDevToolsClientConnected(() => {
     })
   }
   getPiniaInspectorTree()
-
-  onComponentUpdated(() => {
-    getPiniaInspectorTree()
-  })
 
   onInspectorTreeUpdated((_data) => {
     const data = parse(_data)

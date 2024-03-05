@@ -7,6 +7,7 @@ import { computed, ref } from 'vue'
 import EventList from './EventList.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
+import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
 // const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
 //   return devtools.context.timelineLayer
@@ -93,20 +94,23 @@ onAddTimelineEvent((payload) => {
 </script>
 
 <template>
-  <div class="h-full">
+  <div class="h-full flex flex-col">
+    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia" />
     <template v-if="eventList.length">
-      <Splitpanes class="h-full">
-        <Pane border="r base" size="40" h-full>
-          <div h-full select-none overflow-scroll class="no-scrollbar">
-            <EventList v-model="selectedEventIndex" :data="eventList" />
-          </div>
-        </Pane>
-        <Pane size="60">
-          <div h-full select-none overflow-scroll class="no-scrollbar">
-            <RootStateViewer class="p3" :data="displayedInfo" node-id="" inspector-id="" :disable-edit="true" />
-          </div>
-        </Pane>
-      </Splitpanes>
+      <div class="flex-1 overflow-hidden">
+        <Splitpanes class="h-full">
+          <Pane border="r base" size="40" h-full>
+            <div h-full select-none overflow-scroll class="no-scrollbar">
+              <EventList v-model="selectedEventIndex" :data="eventList" />
+            </div>
+          </Pane>
+          <Pane size="60">
+            <div h-full select-none overflow-scroll class="no-scrollbar">
+              <RootStateViewer class="p3" :data="displayedInfo" node-id="" inspector-id="" :disable-edit="true" />
+            </div>
+          </Pane>
+        </Splitpanes>
+      </div>
     </template>
     <div v-else class="h-full flex flex-col items-center justify-center op50">
       <i class="i-lets-icons:blank-light" />

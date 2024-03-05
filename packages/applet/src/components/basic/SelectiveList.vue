@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineModel } from 'vue'
 
-defineProps<{ data: { id: string, name: string }[] }>()
+defineProps<{ data: { id: string, label: string }[] }>()
 
 const selected = defineModel()
 
@@ -18,7 +18,7 @@ function select(id: string) {
       :class="{ active: item.id === selected }"
       @click="select(item.id)"
     >
-      {{ item.name }}
+      {{ item.label }}
     </li>
   </ul>
 </template>

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "@vue/devtools-browser-extension#build": {
+      "dependsOn": [
+        "@vue/devtools-client#build",
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@vue/devtools-client#build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "../electron/client/**",
+        "../browser-extension/client/**",
+        "../vite/client/**"
+      ]
+    },
+    "@vue/devtools-electron#build": {
+      "dependsOn": [
+        "@vue/devtools-client#build",
+        "^build"
+      ],
+      "outputs": [
+        "dist/{app|cli|index|devtools|user-app}.?{c|m}js",
+        "dist/{app|cli|index|devtools|user-app}.d.ts"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**/*.?{c|m}js"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "prepare:type": {
+      "dependsOn": [
+        "^prepare:type"
+      ],
+      "outputs": [
+        "dist/**/*.d.ts"
+      ]
+    },
+    "stub": {
+      "cache": false,
+      "persistent": true
+    },
+    "vite-plugin-vue-devtools#build": {
+      "dependsOn": [
+        "@vue/devtools-client#build",
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    }
+  }
+}

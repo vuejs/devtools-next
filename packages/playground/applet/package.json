@@ -1,5 +1,5 @@
 {
-  "name": "playground-basic",
+  "name": "playground-applet",
   "private": true,
   "scripts": {
     "dev": "vite"

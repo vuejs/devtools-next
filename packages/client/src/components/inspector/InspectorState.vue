@@ -22,8 +22,6 @@ createStateEditorContext({
   inspectorId: props.inspectorId!,
   disableEdit: props.disableEdit,
 })
-
-console.log('---', props.data)
 </script>
 
 <template>

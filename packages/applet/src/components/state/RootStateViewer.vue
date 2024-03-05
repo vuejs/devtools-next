@@ -1,20 +1,34 @@
 <script setup lang="ts">
+import { watchEffect } from 'vue'
+import type { InspectorState } from '@vue/devtools-kit'
 import ChildStateViewer from './ChildStateViewer.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useToggleExpanded } from '~/composables/toggle-expanded'
 import { createStateEditorContext } from '~/composables/state-editor'
 
-const props = defineProps<{
-  data: Record<string, any>
-}>()
+const props = withDefaults(defineProps<{
+  data: Record<string, InspectorState[]>
+  nodeId: string
+  inspectorId: string
+  disableEdit?: boolean
+}>(), {
+  disableEdit: false,
+})
+
+createStateEditorContext({
+  nodeId: props.nodeId,
+  inspectorId: props.inspectorId,
+  disableEdit: props.disableEdit,
+})
 
 const { expanded, toggleExpanded } = useToggleExpanded()
 
-toggleExpanded('0')
-createStateEditorContext({
-  nodeId: 'props.nodeId!',
-  inspectorId: 'props.inspectorId!',
-  disableEdit: false,
+watchEffect(() => {
+  // Expand the root level by default
+  Object.keys(props.data).forEach((_, index) => {
+    if (!expanded.value.includes(`${index}`))
+      toggleExpanded(`${index}`)
+  })
 })
 </script>
 
@@ -35,7 +49,7 @@ createStateEditorContext({
         />
         <!-- placeholder -->
         <span v-else pl5 />
-        <span op70>
+        <span font-state-field text-4>
           {{ key }}
         </span>
       </div>

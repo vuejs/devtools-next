@@ -29,7 +29,7 @@ const { expanded, toggleExpanded } = useToggleExpanded()
 // custom state format class
 const stateFormatClass = computed(() => {
   if (type.value === 'custom')
-    return `${(props.data.value as InspectorCustomState)._custom?.type}-custom-state`
+    return `${(props.data.value as InspectorCustomState)._custom?.type ?? 'string'}-custom-state`
   else
     return ``
 })
@@ -56,7 +56,8 @@ const normalizedDisplayedValue = computed(() => {
   }
 
   else {
-    const result = `<span class="${type.value}-state-type">${displayedValue.value}</span>`
+    const _value = type.value === 'custom' && !(props.data.value as InspectorCustomState)._custom?.type ? `"${displayedValue.value}"` : displayedValue.value
+    const result = `<span class="${type.value}-state-type">${_value}</span>`
 
     if (extraDisplayedValue)
       return `${result} <span class="text-gray-500">(${extraDisplayedValue})</span>`
@@ -199,6 +200,11 @@ function submitDrafting() {
 </template>
 
 <style lang="scss" scoped>
+// string
+:deep(.string-custom-state) {
+  --at-apply: string-state-type;
+}
+
 // function
 :deep(.function-custom-state) {
   --at-apply: font-italic;

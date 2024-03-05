@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import { defineDevToolsListener } from '@vue/devtools-core'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
 import { computed, ref } from 'vue'
 import EventList from './EventList.vue'
-import EventInfo from './EventInfo.vue'
+import RootStateViewer from '~/components/state/RootStateViewer.vue'
+import { createExpandedContext } from '~/composables/toggle-expanded'
 
-const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
-  return devtools.context.timelineLayer
-})
+// const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
+//   return devtools.context.timelineLayer
+// })
+
+createExpandedContext()
 
 const onAddTimelineEvent = defineDevToolsListener<TimelineEvent>((devtools, callback) => {
   devtools.api.on.addTimelineEvent((payload) => {
@@ -19,11 +22,13 @@ const onAddTimelineEvent = defineDevToolsListener<TimelineEvent>((devtools, call
 
 const LAYER_ID = 'pinia:mutations'
 const eventList = ref<TimelineEvent['event'][]>([])
-const selectedEventIndex = ref(1)
+const groupList = ref<Map<number, TimelineEvent['event'][]>>(new Map())
+const selectedEventIndex = ref(0)
 const selectedEventInfo = computed(() => eventList.value[selectedEventIndex.value] ?? null)
+// event info
 const normalizedEventInfo = computed(() => {
   const info: InspectorState[] = []
-  for (const key in selectedEventInfo.value.data) {
+  for (const key in selectedEventInfo.value?.data) {
     info.push({
       key,
       type: key,
@@ -33,6 +38,39 @@ const normalizedEventInfo = computed(() => {
   }
   return info
 })
+// group info
+const normalizedGroupInfo = computed(() => {
+  const groupId = selectedEventInfo.value?.groupId
+  const groupInfo = groupList.value.get(groupId)!
+  if (groupInfo) {
+    const duration = groupInfo[groupInfo.length - 1]?.time - groupInfo[0]?.time ?? 0
+    return [{
+      key: 'events',
+      type: 'events',
+      editable: false,
+      value: groupInfo.length,
+    }, duration && {
+      key: 'duration',
+      type: 'duration',
+      editable: false,
+      value: `${duration}ms`,
+    }].filter(Boolean)
+  }
+  return undefined
+})
+
+// normalize display info
+const displayedInfo = computed(() => {
+  return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, InspectorState[]>
+})
+
+function normalizeGroupList(event: TimelineEvent['event']) {
+  const groupId = event.groupId
+  if (groupId !== undefined) {
+    groupList.value.set(groupId, groupList.value.get(groupId) ?? [])
+    groupList.value.get(groupId)?.push(event)
+  }
+}
 
 // @TODO: call this after connected
 // getTimelineLayer().then((data) => {
@@ -50,6 +88,7 @@ onAddTimelineEvent((payload) => {
     return
 
   eventList.value.push(event)
+  normalizeGroupList(event)
 })
 </script>
 
@@ -64,7 +103,7 @@ onAddTimelineEvent((payload) => {
         </Pane>
         <Pane size="60">
           <div h-full select-none overflow-scroll class="no-scrollbar">
-            <EventInfo :data="selectedEventInfo" />
+            <RootStateViewer class="p3" :data="displayedInfo" node-id="" inspector-id="" :disable-edit="true" />
           </div>
         </Pane>
       </Splitpanes>

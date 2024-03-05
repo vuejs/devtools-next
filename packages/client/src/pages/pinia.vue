@@ -24,12 +24,6 @@ const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devt
   return devtools.api.getInspectorState(payload)
 })
 
-const onComponentUpdated = defineDevToolsListener((devtools, callback) => {
-  devtools.api.on.componentUpdated(() => {
-    callback()
-  })
-})
-
 const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
   devtools.api.on.sendInspectorTree((payload) => {
     callback(payload)
@@ -60,19 +54,13 @@ watch(selected, () => {
 createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
-  const getPiniaInspectorTree = () => {
-    getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
-      const data = parse(_data)
-      tree.value = data
-      if (!selected.value && data.length)
-        selected.value = data[0].id
+  getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
+    const data = parse(_data)
+    tree.value = data
+    if (!selected.value && data.length) {
+      selected.value = data[0].id
       getPiniaState(data[0].id)
-    })
-  }
-  getPiniaInspectorTree()
-
-  onComponentUpdated(() => {
-    getPiniaInspectorTree()
+    }
   })
 
   onInspectorTreeUpdated((_data) => {

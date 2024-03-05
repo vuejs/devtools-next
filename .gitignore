@@ -101,3 +101,6 @@ clones
 
 .DS_Store
 *.timestamp-*.*
+
+# turborepo
+.turbo

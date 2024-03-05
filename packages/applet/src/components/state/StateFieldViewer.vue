@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState } from '@vue/devtools-kit'
-import { formatInspectorStateValue, getInspectorStateValueType, getRaw } from '@vue/devtools-kit'
-import { computed, ref } from 'vue'
+import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
+import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
+import { computed, ref, watch } from 'vue'
+import { defineDevToolsAction } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import ChildStateViewer from './ChildStateViewer.vue'
+import StateFieldEditor from './StateFieldEditor.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useToggleExpanded } from '~/composables/toggle-expanded'
+import { useStateEditor, useStateEditorContext, useStateEditorDrafting } from '~/composables/state-editor'
+import type { EditorAddNewPropType } from '~/composables/state-editor'
+import { useHover } from '~/composables/hover'
 
 const props = defineProps<{
   data: InspectorState
@@ -93,11 +98,78 @@ const normalizedDisplayedChildren = computed(() => {
 const hasChildren = computed(() => {
   return normalizedDisplayedChildren.value.length > 0
 })
+
+// #region editor
+const containerRef = ref<HTMLDivElement>()
+const state = useStateEditorContext()
+const { isHovering } = useHover(() => containerRef.value)
+
+const { editingType, editing, editingText, toggleEditing, nodeId } = useStateEditor()
+
+watch(() => editing.value, (v) => {
+  if (v) {
+    const { value } = raw.value
+    editingText.value = toEdit(value, raw.value.customType)
+  }
+  else {
+    editingText.value = ''
+  }
+})
+
+const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
+  devtools.api.editInspectorState(payload)
+})
+
+function submit() {
+  const data = props.data
+  editInspectorState({
+    path: data.key.split('.'),
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: null!,
+      type: editingType.value,
+      value: toSubmit(editingText.value, raw.value.customType),
+    },
+  } satisfies InspectorStateEditorPayload)
+  toggleEditing()
+}
+
+// ------ add new prop ------
+const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEditorDrafting()
+
+function addNewProp(type: EditorAddNewPropType) {
+  if (!expanded.value)
+    // toggleExpanded()
+    addNewPropApi(type, raw.value.value)
+}
+
+function submitDrafting() {
+  const data = props.data
+  const path = data.key.split('.')
+  path.push(draftingNewProp.value.key)
+  editInspectorState({
+    path,
+    inspectorId: state.value.inspectorId,
+    type: data.stateType!,
+    nodeId,
+    state: {
+      newKey: draftingNewProp.value.key,
+      type: typeof toSubmit(draftingNewProp.value.value),
+      value: toSubmit(draftingNewProp.value.value),
+    },
+  } satisfies InspectorStateEditorPayload)
+  resetDrafting()
+}
+
+// #endregion
 </script>
 
 <template>
   <div>
     <div
+      ref="containerRef"
       class="font-state-field flex items-center"
       :class="[hasChildren && 'cursor-pointer hover:(bg-active)']"
       :style="{ paddingLeft: `${depth * 15 + 4}px` }"
@@ -116,6 +188,11 @@ const hasChildren = computed(() => {
       <span :class="stateFormatClass">
         <span v-html="normalizedDisplayedValue" />
       </span>
+      <StateFieldEditor
+        :hovering="isHovering" :disable-edit="state.disableEdit"
+        :data="data" :depth="depth" @enable-edit-input="toggleEditing"
+        @add-new-prop="addNewProp"
+      />
     </div>
     <ChildStateViewer v-if="hasChildren && expanded.includes(`${depth}-${index}`)" :data="normalizedDisplayedChildren" :depth="depth" :index="index" />
   </div>

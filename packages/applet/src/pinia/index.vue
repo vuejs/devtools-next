@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { defineDevToolsAction } from '@vue/devtools-core'
 
 import Home from './components/Home.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
-import RootStateViewer from '~/components/state/RootStateViewer.vue'
-import { helloComponentState } from '~/utils/data'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
 const { VirtualRouterView } = registerVirtualRouter([
@@ -26,14 +23,6 @@ const { VirtualRouterView } = registerVirtualRouter([
 
 const routePath = ref('/')
 
-const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
-})
-const inspectorId = 'pinia'
-
-getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
-  console.log('data', _data)
-})
 function toggleRoute(route: string) {
   routePath.value = route
 }
@@ -41,7 +30,6 @@ function toggleRoute(route: string) {
 
 <template>
   <div h-full w-full>
-    <!-- <VirtualRouterView /> -->
-    <RootStateViewer :data="{ state: [helloComponentState[0]] }" />
+    <VirtualRouterView />
   </div>
 </template>

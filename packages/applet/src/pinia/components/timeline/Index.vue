@@ -2,7 +2,7 @@
 import { Pane, Splitpanes } from 'splitpanes'
 import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 
-import type { TimelineEvent } from '@vue/devtools-kit'
+import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
 import { computed, ref } from 'vue'
 import EventList from './EventList.vue'
 import EventInfo from './EventInfo.vue'
@@ -21,6 +21,18 @@ const LAYER_ID = 'pinia:mutations'
 const eventList = ref<TimelineEvent['event'][]>([])
 const selectedEventIndex = ref(1)
 const selectedEventInfo = computed(() => eventList.value[selectedEventIndex.value] ?? null)
+const normalizedEventInfo = computed(() => {
+  const info: InspectorState[] = []
+  for (const key in selectedEventInfo.value.data) {
+    info.push({
+      key,
+      type: key,
+      editable: false,
+      value: selectedEventInfo.value.data[key]!,
+    })
+  }
+  return info
+})
 
 // @TODO: call this after connected
 // getTimelineLayer().then((data) => {

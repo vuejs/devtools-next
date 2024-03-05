@@ -2,6 +2,7 @@
 import ChildStateViewer from './ChildStateViewer.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useToggleExpanded } from '~/composables/toggle-expanded'
+import { createStateEditorContext } from '~/composables/state-editor'
 
 const props = defineProps<{
   data: Record<string, any>
@@ -10,6 +11,11 @@ const props = defineProps<{
 const { expanded, toggleExpanded } = useToggleExpanded()
 
 toggleExpanded('0')
+createStateEditorContext({
+  nodeId: 'props.nodeId!',
+  inspectorId: 'props.inspectorId!',
+  disableEdit: false,
+})
 </script>
 
 <template>

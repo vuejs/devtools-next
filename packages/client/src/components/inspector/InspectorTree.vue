@@ -30,7 +30,7 @@ function select(id: string) {
     page-mode
   >
     <div class="selectable-item" :class="{ active: modelValue === item.id }" @click="select(item.id)">
-      <span>
+      <span class="selectable-item-label">
         {{ item.label }}
       </span>
       <InspectorNodeTag v-for="(childItem, index) in item.tags" :key="index" :tag="childItem" />

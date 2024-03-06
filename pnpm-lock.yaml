@@ -152,11 +152,14 @@ importers:
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core
+      '@vue/devtools-kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
       '@vue/devtools-shared':
         specifier: workspace:^
         version: link:../shared
       '@vue/devtools-ui':
-        specifier: ^7.0.15
+        specifier: workspace:^
         version: link:../ui
       hookable:
         specifier: ^5.5.3

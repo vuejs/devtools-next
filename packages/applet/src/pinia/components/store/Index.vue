@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
+import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 
 const inspectorId = 'pinia'
@@ -16,6 +17,8 @@ const state = ref<{
   state?: InspectorState[]
   getters?: InspectorState[]
 }>({})
+
+const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
 const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
   return devtools.api.getInspectorTree(payload)
@@ -97,7 +100,10 @@ onInspectorStateUpdated((_data) => {
       </Pane>
       <Pane size="60">
         <div h-full select-none overflow-scroll class="no-scrollbar">
-          <RootStateViewer v-if="selected" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" />
+          <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" />
+          <Empty v-else>
+            No Data
+          </Empty>
         </div>
       </Pane>
     </Splitpanes>

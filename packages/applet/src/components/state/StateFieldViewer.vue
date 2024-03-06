@@ -6,6 +6,7 @@ import { defineDevToolsAction } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import ChildStateViewer from './ChildStateViewer.vue'
 import StateFieldEditor from './StateFieldEditor.vue'
+import StateFieldInputEditor from './StateFieldInputEditor.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useToggleExpanded } from '~/composables/toggle-expanded'
 import { useStateEditor, useStateEditorContext, useStateEditorDrafting } from '~/composables/state-editor'
@@ -32,6 +33,16 @@ const stateFormatClass = computed(() => {
     return `${(props.data.value as InspectorCustomState)._custom?.type ?? 'string'}-custom-state`
   else
     return ``
+})
+
+const fieldsCount = computed(() => {
+  const { value } = raw.value
+  if (isArray(value))
+    return value.length
+  else if (isObject(value))
+    return Object.keys(value).length
+  else
+    return 0
 })
 
 // normalized display key
@@ -141,9 +152,11 @@ function submit() {
 const { addNewProp: addNewPropApi, draftingNewProp, resetDrafting } = useStateEditorDrafting()
 
 function addNewProp(type: EditorAddNewPropType) {
-  if (!expanded.value)
-    // toggleExpanded()
-    addNewPropApi(type, raw.value.value)
+  const index = `${props.depth}-${props.index}`
+  if (!expanded.value.includes(index))
+    toggleExpanded(index)
+
+  addNewPropApi(type, raw.value.value)
 }
 
 function submitDrafting() {
@@ -186,6 +199,7 @@ function submitDrafting() {
         {{ normalizedDisplayedKey }}
       </span>
       <span mx1>:</span>
+      <StateFieldInputEditor v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
       <span :class="stateFormatClass">
         <span v-html="normalizedDisplayedValue" />
       </span>
@@ -195,7 +209,21 @@ function submitDrafting() {
         @add-new-prop="addNewProp"
       />
     </div>
-    <ChildStateViewer v-if="hasChildren && expanded.includes(`${depth}-${index}`)" :data="normalizedDisplayedChildren" :depth="depth" :index="index" />
+    <div v-if="hasChildren && expanded.includes(`${depth}-${index}`)">
+      <ChildStateViewer :data="normalizedDisplayedChildren" :depth="depth" :index="index" />
+      <VueButton v-if="fieldsCount > limit" v-tooltip="'Show more'" flat size="mini" class="ml-4" @click="limit += STATE_FIELDS_LIMIT_SIZE">
+        <template #icon>
+          <VueIcon icon="i-material-symbols-more-horiz" />
+        </template>
+      </VueButton>
+      <div v-if="draftingNewProp.enable" :style="{ paddingLeft: `${(depth + 1) * 15 + 4}px` }">
+        <span overflow-hidden text-ellipsis whitespace-nowrap state-key>
+          <StateFieldInputEditor v-model="draftingNewProp.key" :show-actions="false" />
+        </span>
+        <span mx-1>:</span>
+        <StateFieldInputEditor v-model="draftingNewProp.value" :auto-focus="false" @cancel="resetDrafting" @submit="submitDrafting" />
+      </div>
+    </div>
   </div>
 </template>
 

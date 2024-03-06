@@ -5,6 +5,7 @@ import { defineDevToolsListener } from '@vue/devtools-core'
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
 import { computed, ref } from 'vue'
 import EventList from './EventList.vue'
+import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
@@ -112,11 +113,8 @@ onAddTimelineEvent((payload) => {
         </Splitpanes>
       </div>
     </template>
-    <div v-else class="h-full flex flex-col items-center justify-center op50">
-      <i class="i-lets-icons:blank-light" />
-      <span>
-        No events
-      </span>
-    </div>
+    <Empty v-else class="flex-1">
+      No events
+    </Empty>
   </div>
 </template>

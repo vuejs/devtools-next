@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "@vue/devtools#stub": {
+      "dependsOn": [
+        "^@vue/devtools-electron#stub"
+      ]
+    },
     "@vue/devtools-browser-extension#build": {
       "dependsOn": [
         "@vue/devtools-client#build",
@@ -52,8 +57,7 @@
       ]
     },
     "stub": {
-      "cache": false,
-      "persistent": true
+      "cache": false
     },
     "vite-plugin-vue-devtools#build": {
       "dependsOn": [

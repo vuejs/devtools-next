@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import { defineDevToolsAction, defineDevToolsListener, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
+import {
+  getComponentBoundingRect as getComponentBoundingRectAction,
+  getInspectorState,
+  getInspectorTree,
+  inspectComponentInspector as inspectComponentInspectorAction,
+  onInspectorStateUpdated,
+  onInspectorTreeUpdated,
+  openInEditor,
+  scrollToComponent as scrollToComponentAction,
+  toggleComponentInspector as toggleComponentInspectorAction,
+  updateInspectorTreeId,
+  useDevToolsBridge,
+  useDevToolsState,
+} from '@vue/devtools-core'
 
 import type { ComponentBoundingRect, ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
@@ -12,47 +25,6 @@ const bridge = useDevToolsBridge()
 const treeNode = ref<ComponentTreeNode[]>([])
 const activeComponentId = ref('')
 
-const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
-})
-
-const getComponentBoundingRectAction = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
-  return devtools.api.getComponentBoundingRect(payload)
-})
-
-const inspectComponentInspectorAction = defineDevToolsAction('devtools:inspect-component-inspector', (devtools) => {
-  return devtools.api.inspectComponentInspector()
-})
-
-const toggleComponentInspectorAction = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
-  return devtools.api.toggleComponentInspector(payload)
-})
-
-const scrollToComponentAction = defineDevToolsAction('devtools:scroll-to-component', (devtools, payload) => {
-  return devtools.api.scrollToComponent(payload)
-})
-
-const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
-  return devtools.api.getInspectorState(payload)
-})
-
-const updateInspectorTreeId = defineDevToolsAction('devtools:update-inspector-tree-id', (devtools, payload) => {
-  devtools.context.activeInspectorTreeId = payload
-})
-
-const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorTree((payload) => {
-    callback(payload)
-  })
-})
-
-const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorState((payload) => {
-    callback(payload)
-  })
-})
-
-const _openInEditor = openInEditor
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 
 // UX related state
@@ -125,7 +97,7 @@ function initSelectedComponent(treeNode: ComponentTreeNode[]) {
 function getComponentBoundingRect(id: string) {
   return new Promise<ComponentBoundingRect>((resolve) => {
     getComponentBoundingRectAction({ inspectorId: 'components', instanceId: id }).then((data) => {
-      resolve(parse(data))
+      resolve(parse(data!))
     })
   })
 }
@@ -147,7 +119,7 @@ function getComponentTree(filterText?: string) {
   return new Promise<void>((resolve) => {
     getInspectorTree({ inspectorId: 'components', filter: filterText }).then((_data) => {
       const isNoComponentTreeCollapsed = !Object.keys(componentTreeCollapseMap.value).length
-      const data = parse(_data)
+      const data = parse(_data!)
       treeNode.value = data
       isNoComponentTreeCollapsed && (componentTreeCollapseMap.value = normalizeComponentTreeCollapsed(data))
       initSelectedComponent(data)
@@ -182,7 +154,7 @@ function scrollToComponent(id: string) {
 function inspectComponentInspector() {
   bridge.value.emit('toggle-panel', false)
   inspectComponentInspectorAction().then((_data) => {
-    const data = JSON.parse(_data)
+    const data = JSON.parse(_data!)
     selectedComponentTree.value = data.id
     selectComponentTree(data.id)
     const linkedList = componentTreeLinkedList.value[data.id]
@@ -333,7 +305,7 @@ const devtoolsState = useDevToolsState()
               icon="i-carbon-launch"
               action flex-none
               :border="false"
-              @click="_openInEditor(selectedComponentFilePath)"
+              @click="openInEditor(selectedComponentFilePath)"
             />
           </div>
         </div>

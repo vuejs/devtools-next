@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import {
+  getInspectorState,
+  getInspectorTree,
+  onInspectorStateUpdated,
+  onInspectorTreeUpdated,
+  unhighlightElement,
+} from '@vue/devtools-core'
 
 // eslint-disable-next-line ts/no-import-type-side-effects
 import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-kit'
@@ -16,35 +22,11 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
-const unhighlightElement = defineDevToolsAction('devtools:unhighlight-element', (devtools, payload) => {
-  return devtools.api.unhighlightElement()
-})
-
-const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
-})
-
-const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
-  return devtools.api.getInspectorState(payload)
-})
-
 function getI18nState(nodeId: string) {
   getInspectorState({ inspectorId: INSPECTOR_ID, nodeId }).then((data) => {
-    state.value = parse(data)
+    state.value = parse(data!)
   })
 }
-
-const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorTree((payload) => {
-    callback(payload)
-  })
-})
-
-const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorState((payload) => {
-    callback(payload)
-  })
-})
 
 function clearI18nState() {
   state.value = {}
@@ -59,7 +41,7 @@ createCollapseContext('inspector-state')
 
 onDevToolsClientConnected(() => {
   getInspectorTree({ inspectorId: INSPECTOR_ID, filter: '' }).then((_data) => {
-    const data = parse(_data)
+    const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id

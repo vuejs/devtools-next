@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineDevToolsAction, defineDevToolsListener, useDevToolsState } from '@vue/devtools-core'
+import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated, useDevToolsState } from '@vue/devtools-core'
 
 import type { InspectorState } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
@@ -18,31 +18,11 @@ const inspectorId = computed(() => {
 })
 createCollapseContext('inspector-state')
 
-const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
-})
-
-const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
-  return devtools.api.getInspectorState(payload)
-})
-
 function getRouterState(nodeId: string) {
   getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
-    state.value = parse(data)
+    state.value = parse(data!)
   })
 }
-
-const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorTree((payload) => {
-    callback(payload)
-  })
-})
-
-const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorState((payload) => {
-    callback(payload)
-  })
-})
 
 function clearRouterState() {
   state.value = {}
@@ -55,7 +35,7 @@ watch(selected, () => {
 
 onDevToolsClientConnected(() => {
   getInspectorTree({ inspectorId: inspectorId.value, filter: '' }).then((_data) => {
-    const data = parse(_data)
+    const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id

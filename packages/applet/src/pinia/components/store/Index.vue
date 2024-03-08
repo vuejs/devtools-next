@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
@@ -20,29 +20,9 @@ const state = ref<{
 
 const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
-const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
-})
-
-const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
-  return devtools.api.getInspectorState(payload)
-})
-
-const onInspectorTreeUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorTree((payload) => {
-    callback(payload)
-  })
-})
-
-const onInspectorStateUpdated = defineDevToolsListener<string>((devtools, callback) => {
-  devtools.api.on.sendInspectorState((payload) => {
-    callback(payload)
-  })
-})
-
 function getPiniaState(nodeId: string) {
   getInspectorState({ inspectorId, nodeId }).then((data) => {
-    state.value = parse(data)
+    state.value = parse(data!)
   })
 }
 
@@ -57,7 +37,7 @@ watch(selected, () => {
 
 const getPiniaInspectorTree = () => {
   getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
-    const data = parse(_data)
+    const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length)
       selected.value = data[0].id

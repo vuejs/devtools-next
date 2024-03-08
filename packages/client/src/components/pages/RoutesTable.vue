@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueBadge } from '@vue/devtools-ui'
 import type { RouteRecordNormalized } from 'vue-router'
-import { useDevToolsState } from '@vue/devtools-core'
+import { openInEditor, useDevToolsState } from '@vue/devtools-core'
 
 const props = defineProps<{
   pages: RouteRecordNormalized[]
@@ -17,7 +17,6 @@ const sorted = computed(() => {
   return [...props.pages].sort((a, b) => a.path.localeCompare(b.path))
 })
 
-const _openInEditor = openInEditor
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const state = useDevToolsState()
 </script>
@@ -67,7 +66,7 @@ const state = useDevToolsState()
                   v-if="(item.file || item.meta?.file) && state.vitePluginDetected.value && _vueInspectorDetected"
                   text-sm op40 hover="op100 text-primary-400"
                   title="Open in editor"
-                  @click="_openInEditor((item.file || item.meta?.file) as string)"
+                  @click="openInEditor((item.file || item.meta?.file) as string)"
                 >
                   <div i-carbon-script-reference />
                 </button>

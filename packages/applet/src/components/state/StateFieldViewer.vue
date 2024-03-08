@@ -2,7 +2,7 @@
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { computed, ref, watch } from 'vue'
-import { defineDevToolsAction } from '@vue/devtools-core'
+import { editInspectorState } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import ChildStateViewer from './ChildStateViewer.vue'
 import StateFieldEditor from './StateFieldEditor.vue'
@@ -126,10 +126,6 @@ watch(() => editing.value, (v) => {
   else {
     editingText.value = ''
   }
-})
-
-const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
-  devtools.api.editInspectorState(payload)
 })
 
 function submit() {

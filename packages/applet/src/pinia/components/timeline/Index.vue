@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import { defineDevToolsListener } from '@vue/devtools-core'
+import { onAddTimelineEvent } from '@vue/devtools-core'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
 import { computed, ref } from 'vue'
@@ -10,17 +10,7 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
-// const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
-//   return devtools.context.timelineLayer
-// })
-
 createExpandedContext()
-
-const onAddTimelineEvent = defineDevToolsListener<TimelineEvent>((devtools, callback) => {
-  devtools.api.on.addTimelineEvent((payload) => {
-    callback(payload)
-  })
-})
 
 const LAYER_ID = 'pinia:mutations'
 const eventList = ref<TimelineEvent['event'][]>([])

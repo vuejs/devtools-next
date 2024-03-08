@@ -1,4 +1,4 @@
-import { defineDevToolsListener, useDevToolsState } from '@vue/devtools-core'
+import { onCustomTabsUpdated, useDevToolsState } from '@vue/devtools-core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInElectron } from '@vue/devtools-shared'
@@ -22,11 +22,6 @@ export interface CategorizedCategory {
 
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
 
-const onCustomTabsUpdated = defineDevToolsListener<CustomTab[]>((devtools, callback) => {
-  devtools.api.on.customTabsUpdated((payload) => {
-    callback(payload)
-  })
-})
 let removeTabsUpdatedListener: (() => void) | null = null
 
 export function useAllTabs() {

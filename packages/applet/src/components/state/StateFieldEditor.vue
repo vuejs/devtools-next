@@ -4,7 +4,7 @@ import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vToolti
 import { getRaw } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
-import { defineDevToolsAction } from '@vue/devtools-core'
+import { editInspectorState } from '@vue/devtools-core'
 import { useClipboard } from '@vueuse/core'
 import { useStateEditorContext } from '~/composables/state-editor'
 import type { EditorAddNewPropType, EditorInputValidType } from '~/composables/state-editor'
@@ -23,10 +23,6 @@ defineEmits<{
   enableEditInput: [type: EditorInputValidType]
   addNewProp: [type: EditorAddNewPropType]
 }>()
-
-const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
-  devtools.api.editInspectorState(payload)
-})
 
 const state = useStateEditorContext()
 

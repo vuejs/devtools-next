@@ -1,4 +1,4 @@
-import { RefStateEditor } from '../../src/core/component/state/editor'
+import { RefStateEditor, StateEditor } from '../../src/core/component/state/editor'
 
 describe('editor: RefStateEditor', () => {
   const editor = new RefStateEditor()
@@ -53,5 +53,128 @@ describe('editor: RefStateEditor', () => {
   ])('%o can be modified to $newValue by RefStateEditor.set', ({ refValue, newValue, targetValue }) => {
     editor.set(refValue as any, newValue)
     expect(refValue).toEqual(targetValue || newValue)
+  })
+})
+
+describe('editor: StateEditor.set', () => {
+  const stateEditor = new StateEditor()
+
+  describe('editComponentState: plain object', () => {
+    it('modify value', () => {
+      const target = { foo: 'bar' }
+      const newValue = 'baz'
+      const state = { newKey: '', type: '', value: 'baz' }
+      const path = 'foo'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, newValue, defaultCallback)
+      expect(target).toEqual({ foo: 'baz' })
+    })
+
+    it('add new value', () => {
+      const target = { foo: 'bar' }
+      const newValue = 'baz'
+      const state = { newKey: 'bar', type: '', value: 'baz' }
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, '', newValue, defaultCallback)
+      expect(target).toEqual({ foo: 'bar', bar: 'baz' })
+    })
+
+    it('remove value', () => {
+      const target = { foo: 'bar', bar: 'baz' }
+      const state = { newKey: '', type: '', value: '', remove: true }
+      const path = 'foo'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, '', defaultCallback)
+      expect(target).toEqual({ bar: 'baz' })
+    })
+  })
+
+  describe('editComponentState: array', () => {
+    it('modify value', () => {
+      const target = ['foo', 'bar']
+      const state = { newKey: '', type: '', value: 'baz' }
+      const newValue = 'baz'
+      const path = '0'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, newValue, defaultCallback)
+      expect(target).toEqual(['baz', 'bar'])
+    })
+
+    it('add new value', () => {
+      const target = ['foo', 'bar']
+      const newValue = 'baz'
+      const state = { newKey: '2', type: '', value: newValue }
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, '2', newValue, defaultCallback)
+      expect(target).toEqual(['foo', 'bar', 'baz'])
+    })
+
+    it('remove value', () => {
+      const target = ['foo', 'bar', 'baz']
+      const state = { newKey: '', type: '', value: '', remove: true }
+      const path = '0'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, '', defaultCallback)
+      expect(target).toEqual(['bar', 'baz'])
+    })
+  })
+
+  describe('editComponentState: set', () => {
+    it('add new value', () => {
+      const target = new Set(['foo', 'bar'])
+      const newValue = 'baz'
+      const state = { newKey: '2', type: '', value: newValue }
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, '2', newValue, defaultCallback)
+      expect(target).toEqual(new Set(['foo', 'bar', 'baz']))
+    })
+
+    it('remove value', () => {
+      const target = new Set(['foo', 'bar', 'baz'])
+      const state = { newKey: '', type: '', value: 'foo', remove: true }
+      const path = '0'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, '', defaultCallback)
+      expect(target).toEqual(new Set(['bar', 'baz']))
+    })
+
+    it('remove object type member', () => {
+      const target = new Set(['foo', { bar: 'baz' }])
+      const state = { newKey: '', type: '', value: { bar: 'baz' }, remove: true }
+      const path = '1'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, '', defaultCallback)
+      expect(target).toEqual(new Set(['foo']))
+    })
+  })
+
+  describe('editComponentState: map', () => {
+    it('modify value', () => {
+      const target = new Map([['foo', 'bar']])
+      const state = { newKey: '', type: '', value: 'baz' }
+      const newValue = 'baz'
+      const path = 'foo'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, newValue, defaultCallback)
+      expect(target).toEqual(new Map([['foo', 'baz']]))
+    })
+
+    it('add new value', () => {
+      const target = new Map([['foo', 'bar']])
+      const newValue = 'baz'
+      const state = { newKey: 'bar', type: '', value: newValue }
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, 'bar', newValue, defaultCallback)
+      expect(target).toEqual(new Map([['foo', 'bar'], ['bar', 'baz']]))
+    })
+
+    it('remove value', () => {
+      const target = new Map([['foo', 'bar'], ['bar', 'baz']])
+      const state = { newKey: '', type: '', value: '', remove: true }
+      const path = 'foo'
+      const defaultCallback = stateEditor.createDefaultSetCallback(state)
+      stateEditor.set(target, path, '', defaultCallback)
+      expect(target).toEqual(new Map([['bar', 'baz']]))
+    })
   })
 })

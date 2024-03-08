@@ -1,8 +1,10 @@
 import type { App, InjectionKey, Plugin, Ref } from 'vue'
 import { inject, ref } from 'vue'
-import type { AppRecord, CustomCommand, CustomTab, DevToolsState } from '@vue/devtools-kit'
+import type { AppRecord, CustomCommand, CustomTab } from '@vue/devtools-kit'
 import type { BridgeInstanceType } from './bridge'
-import { defineDevToolsAction, defineDevToolsListener } from './bridge/api'
+
+import { onDevToolsStateUpdated } from './bridge-events/devtools-listeners'
+import { getDevToolsState } from './bridge-events/devtools-actions'
 
 export interface DevToolsPluginOptions {
   bridge: BridgeInstanceType
@@ -23,66 +25,8 @@ function initDevToolsState() {
   const activeAppRecordId = ref('')
 
   function init() {
-    // @TODO: refactor
-    const getDevToolsState = defineDevToolsAction('devtools:get-state', (devtools) => {
-      return {
-        connected: devtools.state.connected,
-        clientConnected: devtools.state.clientConnected,
-        vueVersion: devtools.state?.activeAppRecord?.version || '',
-        tabs: devtools.state.tabs,
-        commands: devtools.state.commands,
-        vitePluginDetected: devtools.state.vitePluginDetected,
-        appRecords: devtools.state.appRecords.map(item => ({
-          id: item.id,
-          name: item.name,
-          version: item.version,
-          routerId: item.routerId,
-          moduleDetectives: item.moduleDetectives,
-        })),
-        activeAppRecordId: devtools.state.activeAppRecordId,
-      }
-    })
-
-    const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>((devtools, callback) => {
-      function setPayload(payload: DevToolsState & { vueVersion?: string }) {
-        return {
-          vueVersion: payload?.activeAppRecord?.version || '',
-          connected: payload.connected,
-          clientConnected: payload.clientConnected,
-          tabs: payload.tabs,
-          commands: payload.commands,
-          vitePluginDetected: payload.vitePluginDetected,
-          appRecords: payload.appRecords.map(item => ({
-            id: item.id,
-            name: item.name,
-            version: item.version,
-            routerId: item.routerId,
-            moduleDetectives: item.moduleDetectives,
-          })),
-          activeAppRecordId: payload.activeAppRecordId,
-        }
-      }
-      function subscribe() {
-        devtools.api.on.devtoolsStateUpdated((payload) => {
-          callback(setPayload(payload))
-        })
-      }
-      if (devtools?.api) {
-        subscribe()
-      }
-      else {
-        const timer = setInterval(() => {
-          if (devtools.state.connected) {
-            const payload = devtools.state
-            callback(setPayload(payload))
-            subscribe()
-            clearInterval(timer)
-          }
-        }, 10)
-      }
-    })
-
-    getDevToolsState().then((data) => {
+    getDevToolsState().then((_data) => {
+      const data = _data!
       connected.value = data.connected
       clientConnected.value = data.clientConnected
       vueVersion.value = data.vueVersion || ''

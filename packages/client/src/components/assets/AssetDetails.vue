@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
-import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
+import { callViteServerAction, openInEditor, useDevToolsState } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 
 const props = defineProps<{
@@ -15,7 +15,6 @@ const getImageMeta = callViteServerAction<ImageMeta>('assets:get-image-meta')
 const getTextAssetContent = callViteServerAction<string>('assets:get-text-asset-content')
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 
-const _openInEditor = openInEditor
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
@@ -139,7 +138,7 @@ const supportsPreview = computed(() => {
                 icon="i-carbon-launch"
                 action flex-none
                 :border="false"
-                @click="_openInEditor(asset.filePath)"
+                @click="openInEditor(asset.filePath)"
               />
             </div>
           </td>

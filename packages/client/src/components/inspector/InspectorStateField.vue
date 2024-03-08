@@ -2,7 +2,7 @@
 import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
-import { defineDevToolsAction } from '@vue/devtools-core'
+import { editInspectorState } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
@@ -113,10 +113,6 @@ watch(() => editing.value, (v) => {
   else {
     editingText.value = ''
   }
-})
-
-const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
-  devtools.api.editInspectorState(payload)
 })
 
 function submit() {

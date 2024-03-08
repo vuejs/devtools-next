@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { defineDevToolsAction, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
+import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel } from '@vue/devtools-shared'
 import { Pane, Splitpanes } from 'splitpanes'
 
@@ -69,16 +69,6 @@ watchEffect(() => {
 // register commands
 const { copy } = useCopy()
 const eyeDropper = useEyeDropper({})
-
-const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
-  return !!await devtools?.api?.getVueInspector?.()
-})
-
-const enableVueInspector = defineDevToolsAction('devtools:enable-vue-inspector', async (devtools) => {
-  const inspector = await devtools?.api?.getVueInspector?.()
-  if (inspector)
-    await inspector.enable()
-})
 
 checkVueInspectorDetected().then((detected) => {
   if (detected) {

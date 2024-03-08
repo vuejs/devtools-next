@@ -4,7 +4,7 @@ import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vToolti
 import { getRaw } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
-import { defineDevToolsAction } from '@vue/devtools-core'
+import { editInspectorState } from '@vue/devtools-core'
 import type { EditorAddNewPropType, EditorInputValidType } from '../../../composables/inspector'
 
 const props = withDefaults(defineProps<{
@@ -21,10 +21,6 @@ defineEmits<{
   enableEditInput: [type: EditorInputValidType]
   addNewProp: [type: EditorAddNewPropType]
 }>()
-
-const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
-  devtools.api.editInspectorState(payload)
-})
 
 const state = useStateEditorContext()
 

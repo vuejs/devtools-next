@@ -53,8 +53,13 @@ const raw = computed(() => getRaw(props.data.value))
 
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 
-const normalizedChildField = computed(() => {
-  const { value, inherit } = raw.value
+const normalizedChildField = computed<
+  Record<string, InspectorState>
+>(() => {
+  const { value, inherit, customType } = raw.value
+  // The member in native set can only be added or removed.
+  // It cannot be modified.
+  const isUneditableType = customType === 'set'
   let displayedValue: any[]
   if (isArray(value)) {
     const sliced = value.slice(0, limit.value)
@@ -62,7 +67,7 @@ const normalizedChildField = computed(() => {
       key: `${props.data.key}.${i}`,
       value: item,
       ...inherit,
-      editable: props.data.editable,
+      editable: props.data.editable && !isUneditableType,
       creating: false,
     }))
   }
@@ -71,7 +76,7 @@ const normalizedChildField = computed(() => {
       key: `${props.data.key}.${key}`,
       value: value[key],
       ...inherit,
-      editable: props.data.editable,
+      editable: props.data.editable && !isUneditableType,
       creating: false,
     }))
     if (type.value !== 'custom')

@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import DevToolsLogo from './DevToolsLogo.vue'
 import { useVirtualRouter } from '~/composables/virtual-router'
+import { onDevToolsClientConnected } from '~/composables/connect-state'
 
 const virtualRouter = useVirtualRouter()
+
+onDevToolsClientConnected(() => {
+  // console.log('client connected')
+})
 </script>
 
 <template>

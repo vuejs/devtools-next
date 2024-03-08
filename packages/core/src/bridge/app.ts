@@ -1,22 +1,29 @@
 import { devtools, stringify } from '@vue/devtools-kit'
+import { initDevToolsAEvent } from '../bridge-events'
 import { BridgeInstanceType } from './core'
-import { BRIDGE_DEVTOOLS_ACTION_KEY, BRIDGE_DEVTOOLS_LISTENER_KEY } from './shared'
+import { BRIDGE_DEVTOOLS_ACTION_KEY, BRIDGE_DEVTOOLS_LISTENER_KEY, devtoolsActionEvents, devtoolsListenerEvents, setBridgeTarget } from './shared'
 
 export function setupAppBridge(bridge: BridgeInstanceType) {
+  setBridgeTarget('app')
+
+  initDevToolsAEvent()
+
   bridge.on(BRIDGE_DEVTOOLS_ACTION_KEY, async (payload) => {
-  // eslint-disable-next-line no-new-func
-    const action = new Function('devtools', '...args', `return (${payload.action})(devtools, ...args)`)
-    const result = await action(devtools, ...payload.args)
-    bridge.emit(payload.key, result)
+    const action = devtoolsActionEvents.get(payload.name)!
+    if (action) {
+      const result = await action(devtools, ...payload.args)
+      bridge.emit(payload.key, result)
+    }
   })
 
   bridge.on(BRIDGE_DEVTOOLS_LISTENER_KEY, async (payload) => {
-  // eslint-disable-next-line no-new-func
-    const action = new Function(`return ${payload.action}`)
-    const callback = action()
-    callback(devtools, (res) => {
-      const stringifyFn = payload.parser === 'devtools' ? stringify : JSON.stringify
-      bridge.emit(payload.key, stringifyFn(res))
-    })
+    const listener = devtoolsListenerEvents.get(payload.name)!
+
+    if (listener) {
+      listener(devtools, (res: any) => {
+        const stringifyFn = payload.parser === 'devtools' ? stringify : JSON.stringify
+        bridge.emit(payload.key, stringifyFn(res))
+      })
+    }
   })
 }

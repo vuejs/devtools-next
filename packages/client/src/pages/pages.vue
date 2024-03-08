@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
-import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import { getMatchedRoutes, getRouterInfo, navigateAction, onRouterInfoUpdated } from '@vue/devtools-core'
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
 
 const routeInput = ref('')
@@ -28,30 +28,6 @@ function navigate() {
     navigateToRoute(routeInput.value)
 }
 
-const navigateAction = defineDevToolsAction('devtools:router-navigate', (devtools, payload) => {
-  devtools.context.router?.push(payload).catch(e => e)
-})
-
-const getRouterInfo = defineDevToolsAction('devtools:router-info', (devtools) => {
-  return JSON.stringify(devtools.context.routerInfo)
-})
-
-const getMatchedRoutes = defineDevToolsAction('devtools:matched-routes', (devtools, path) => {
-  const c = console.warn
-  console.warn = () => {}
-  const matched = devtools.context.router?.resolve({
-    path: path || '/',
-  }).matched ?? []
-  console.warn = c
-  return JSON.stringify(matched)
-})
-
-const onRouterInfoUpdated = defineDevToolsListener<RouterInfo>((devtools, callback) => {
-  devtools.api.on.routerInfoUpdated((payload) => {
-    callback(payload)
-  })
-}, { parser: 'json' })
-
 function navigateToRoute(path: string) {
   navigateAction({
     path,
@@ -60,7 +36,7 @@ function navigateToRoute(path: string) {
 
 onDevToolsClientConnected(() => {
   getRouterInfo().then((data) => {
-    init(JSON.parse(data))
+    init(JSON.parse(data!))
   })
   onRouterInfoUpdated((data) => {
     init(data)
@@ -71,7 +47,7 @@ watchDebounced(routeInput, () => {
   if (routeInput.value === currentRoute.value?.path)
     return
   getMatchedRoutes(routeInput.value).then((data) => {
-    matchedRoutes.value = JSON.parse(data)
+    matchedRoutes.value = JSON.parse(data!)
   })
 })
 </script>

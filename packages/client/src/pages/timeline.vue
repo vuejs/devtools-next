@@ -3,7 +3,7 @@ import { UNDEFINED } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
-import { defineDevToolsAction, defineDevToolsListener } from '@vue/devtools-core'
+import { getTimelineLayer, onAddTimelineEvent } from '@vue/devtools-core'
 
 const layers = ref<{
   color: number
@@ -25,7 +25,7 @@ const normalizedEventInfo = computed(() => {
       key,
       type: key,
       editable: false,
-      value: selectedEventInfo.value[key],
+      value: selectedEventInfo.value[key]!,
     })
   }
   return info
@@ -66,25 +66,15 @@ function normalizeGroupInfo(layerId: string, event: TimelineEvent['event']) {
   }
 }
 
-const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
-  return devtools.context.timelineLayer
-})
-
-const onAddTimelineEvent = defineDevToolsListener<TimelineEvent>((devtools, callback) => {
-  devtools.api.on.addTimelineEvent((payload) => {
-    callback(payload)
-  })
-})
-
 onDevToolsClientConnected(() => {
   getTimelineLayer().then((data) => {
-    layers.value = data
+    layers.value = data!
     layers.value.forEach((layer) => {
       timelineEvent.value[layer.id] = []
       layer.groups = {}
     })
     if (!selectedLayer.value)
-      selectedLayer.value = data.length ? data[0].id : ''
+      selectedLayer.value = data?.length ? data[0].id : ''
   })
   onAddTimelineEvent((payload) => {
     if (!payload)

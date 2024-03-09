@@ -44,7 +44,10 @@ watchEffect(() => {
       <Input v-model="value" :loading="loading" :disabled="disable" placeholder="Flat Input" variant="flat" />
     </Variant>
     <Variant title="password">
-      <Input v-model="value" :loading="loading" :disabled="disable" placeholder="Flat Input" password />
+      <Input v-model="value" :loading="loading" :disabled="disable" placeholder="Flat Input" type="password" />
+    </Variant>
+    <Variant title="datetime-local">
+      <Input v-model="value" :loading="loading" :disabled="disable" placeholder="Flat Input" type="datetime-local" />
     </Variant>
     <Variant title="icon">
       <Input

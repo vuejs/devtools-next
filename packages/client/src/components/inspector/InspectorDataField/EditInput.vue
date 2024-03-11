@@ -22,8 +22,7 @@ const emit = defineEmits<{
 const inputType = computed(() => {
   if (props.customType === 'date')
     return 'datetime-local'
-  else
-    return ''
+  return ''
 })
 
 // TODO: keyboard shortcut, esc to cancel, enter to submit

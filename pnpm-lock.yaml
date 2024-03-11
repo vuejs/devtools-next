@@ -626,6 +626,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@vue/devtools-shared':
+        specifier: workspace:^
+        version: link:../shared
       '@vueuse/components':
         specifier: ^10.9.0
         version: 10.9.0(vue@3.4.21)

@@ -10,14 +10,15 @@ import Frame from '~/components/FrameBox.vue'
 
 type ViewMode = 'xs' | 'default' | 'fullscreen'
 const panelEle = ref<HTMLDivElement>()
-const mode = useTheme()
+const modeValue = ref('light')
+const isConnected = ref(false)
 const panelState = ref<{
   viewMode: ViewMode
 }>({
   viewMode: 'default',
 })
 const cssVars = computed(() => {
-  const dark = mode.value === 'dark'
+  const dark = modeValue.value === 'dark'
   return {
     '--vue-devtools-widget-bg': dark ? '#111' : '#ffffff',
     '--vue-devtools-widget-fg': dark ? '#F5F5F5' : '#111',
@@ -76,6 +77,11 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
 const vueInspector = ref()
 
 onDevToolsConnected(() => {
+  useTheme({
+    onChanged: v => modeValue.value = v,
+  })
+  isConnected.value = true
+
   devtools.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector
   })
@@ -97,7 +103,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 
 <template>
   <div
-    v-show="state.preferShowFloatingPanel ? overlayVisible : panelVisible"
+    v-show="(state.preferShowFloatingPanel ? overlayVisible : panelVisible) && isConnected"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,

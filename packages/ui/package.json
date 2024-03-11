@@ -36,6 +36,7 @@
     "vue": ">=3.0.0-0"
   },
   "dependencies": {
+    "@vue/devtools-shared": "workspace:^",
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",

@@ -42,25 +42,23 @@ onDevToolsClientConnected(() => {
     }
   })
 
-  onInspectorTreeUpdated((_data) => {
-    const data = parse(_data)
+  onInspectorTreeUpdated((data) => {
     if (!data?.data.length || data.inspectorId !== inspectorId)
       return
-    tree.value = data.data
+    tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getPiniaState(data.data[0].id)
     }
   })
 
-  onInspectorStateUpdated((_data) => {
-    const data = parse(_data)
+  onInspectorStateUpdated((data) => {
     if (!data || !data?.state?.length || data.inspectorId !== inspectorId)
       return
 
     state.value = {
       state: data.state,
-      getters: data.getters,
+      getters: data.getters!,
     }
   })
 })

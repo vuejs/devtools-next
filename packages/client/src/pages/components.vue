@@ -211,7 +211,7 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 
 function getComponentState(id: string) {
   getInspectorState({ inspectorId: 'components', nodeId: id }).then((data) => {
-    activeComponentState.value = normalizeComponentState(parse(data))
+    activeComponentState.value = normalizeComponentState(parse(data!))
   })
 }
 
@@ -226,8 +226,7 @@ onDevToolsClientConnected(() => {
   getComponentTree().then(() => {
     loaded.value = true
   })
-  onInspectorTreeUpdated((_data) => {
-    const data = parse(_data)
+  onInspectorTreeUpdated((data) => {
     if (!data?.data.length || data.inspectorId !== inspectorId)
       return
 
@@ -240,8 +239,7 @@ onDevToolsClientConnected(() => {
   })
 
   // state
-  onInspectorStateUpdated((_data) => {
-    const data = parse(_data)
+  onInspectorStateUpdated((data) => {
     if (data.inspectorId !== inspectorId)
       return
 

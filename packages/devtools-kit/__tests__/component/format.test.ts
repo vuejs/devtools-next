@@ -90,6 +90,7 @@ describe('format: toEdit', () => {
     { value: { foo: NEGATIVE_INFINITY }, target: '{"foo":-Infinity}' },
     { value: { foo: UNDEFINED }, target: '{"foo":undefined}' },
     { value: '123', customType: 'bigint' as customTypeEnums, target: '123' },
+    { value: '2024-03-12T00:00:55.666', customType: 'date' as customTypeEnums, target: '2024-03-12T00:00:55.666' },
   ])('value: $value will be deserialized to target', (value) => {
     const deserialized = format.toEdit(value.value, value.customType)
     expect(deserialized).toBe(value.target)
@@ -117,6 +118,7 @@ describe('format: toSubmit', () => {
     // Regex test: The token in key field kept untouched.
     { value: '{"undefined": NaN }', target: { undefined: Number.NaN } },
     { value: '123', customType: 'bigint' as customTypeEnums, target: BigInt(123) },
+    { value: '2024-03-12T00:00:55.666', customType: 'date' as customTypeEnums, target: new Date('2024-03-12T00:00:55.666') },
   ])('value: $value will be serialized to target', (value) => {
     const serialized = format.toSubmit(value.value, value.customType)
     expect(serialized).toStrictEqual(value.target)

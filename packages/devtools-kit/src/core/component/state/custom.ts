@@ -39,6 +39,19 @@ export function getBigIntDetails(val: bigint | bigint) {
   }
 }
 
+export function getDateDetails(val: Date) {
+  const date = new Date(val.getTime())
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+
+  return {
+    _custom: {
+      type: 'date',
+      displayText: Date.prototype.toString.call(val),
+      value: date.toISOString().slice(0, -1),
+    },
+  }
+}
+
 export function getMapDetails(val: Map<string, unknown>) {
   const list: Record<string, unknown> = Object.fromEntries(val)
   return {

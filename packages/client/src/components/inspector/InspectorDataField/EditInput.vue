@@ -19,6 +19,12 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
+const inputType = computed(() => {
+  if (props.customType === 'date')
+    return 'datetime-local'
+  return ''
+})
+
 // TODO: keyboard shortcut, esc to cancel, enter to submit
 //       and show tooltip on button when hovering
 
@@ -52,7 +58,7 @@ watch(value, checkWarning())
 
 <template>
   <span class="flex-inline items-center gap4px">
-    <VueInput v-model="value" :variant="isWarning ? 'warning' : 'normal'" class="h25px w120px px4px" :auto-focus="autoFocus" @click.stop />
+    <VueInput v-model="value" :type="inputType" :variant="isWarning ? 'warning' : 'normal'" class="h25px px4px" :class="customType === 'date' ? 'w240px' : 'w120px'" :auto-focus="autoFocus" @click.stop />
     <template v-if="showActions">
       <VueButton
         v-tooltip="{

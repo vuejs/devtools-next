@@ -4,9 +4,9 @@ import { toggleActiveAppRecord } from '../core/app-record'
 import type { VueAppInstance } from '../types'
 import { highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
 import { devtoolsContext } from '../state'
-import { now as nowFn, parse, stringify } from '../shared'
+import { now as nowFn, stringify } from '../shared'
 import { StateEditor } from '../core/component/state/editor'
-import type { InspectorStateEditorPayload } from '../core/component/types'
+import type { ComponentTreeNode, InspectorStateEditorPayload } from '../core/component/types'
 import { addCustomTab } from '../core/custom-tab'
 import type { CustomTab } from '../core/custom-tab/types'
 import { addCustomCommand, removeCustomCommand } from '../core/custom-command'
@@ -82,7 +82,7 @@ export class DevToolsPluginApi {
       }, DevToolsEvents.GET_INSPECTOR_TREE)
     })
 
-    return stringify(_payload.rootNodes) as string
+    return _payload.rootNodes as ComponentTreeNode[]
   }
 
   getInspectorState(payload: { inspectorId?: string, nodeId?: string } = {}) {
@@ -105,7 +105,7 @@ export class DevToolsPluginApi {
     const state = _payload.state
 
     delete state.instance
-    return stringify(state) as string
+    return state
   }
 
   async editInspectorState(payload: InspectorStateEditorPayload) {
@@ -125,10 +125,11 @@ export class DevToolsPluginApi {
       const res = await this.getInspectorTree({
         inspectorId,
       })
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, stringify({
+
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_TREE, {
         inspectorId,
-        data: parse(res),
-      }) as string)
+        data: res,
+      })
     }
   }
 
@@ -139,7 +140,7 @@ export class DevToolsPluginApi {
         inspectorId,
         nodeId: inspector.nodeId,
       })
-      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, stringify({ ...parse(res), inspectorId }) as string)
+      apiHooks.callHook(DevToolsEvents.SEND_INSPECTOR_STATE, { ...res, inspectorId })
     }
   }
 

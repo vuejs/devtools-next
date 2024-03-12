@@ -43,21 +43,17 @@ onDevToolsClientConnected(() => {
     }
   })
 
-  onInspectorTreeUpdated((_data) => {
-    const data = parse(_data)
-
-    if (!data?.data?.length || data.inspectorId !== inspectorId)
+  onInspectorTreeUpdated((data) => {
+    if (!data?.data?.length || data.inspectorId !== inspectorId.value)
       return
-    tree.value = data.data
+    tree.value = data.data as unknown as { id: string, label: string }[]
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getRouterState(data.data[0].id)
     }
   })
 
-  onInspectorStateUpdated((_data) => {
-    const data = parse(_data)
-
+  onInspectorStateUpdated((data) => {
     if (!data || !data.state || data.inspectorId !== inspectorId.value)
       return
 

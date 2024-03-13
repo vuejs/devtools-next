@@ -47,7 +47,7 @@ export interface DevToolsEvent {
     instanceData: InspectorStateApiPayload['state']
   }) => void
   [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => void
-  [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: string) => void
+  [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: { inspectorId: string, data: InspectorTreeApiPayload['rootNodes'] }) => void
   [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => void
   [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => void
   [DevToolsEvents.SEND_INSPECTOR_STATE]: (payload: string) => void

@@ -1,5 +1,5 @@
 import { INFINITY, MAX_ARRAY_SIZE, MAX_STRING_SIZE, NAN, NEGATIVE_INFINITY, UNDEFINED } from './constants'
-import { getBigIntDetails, getComponentDefinitionDetails, getFunctionDetails, getHTMLElementDetails, getInstanceDetails, getMapDetails, getObjectDetails, getRouterDetails, getSetDetails, getStoreDetails } from './custom'
+import { getBigIntDetails, getComponentDefinitionDetails, getDateDetails, getFunctionDetails, getHTMLElementDetails, getInstanceDetails, getMapDetails, getObjectDetails, getRouterDetails, getSetDetails, getStoreDetails } from './custom'
 import { isVueInstance } from './is'
 import { sanitize } from './util'
 
@@ -62,7 +62,7 @@ export function stringifyReplacer(key: string) {
       return `[native RegExp ${RegExp.prototype.toString.call(val)}]`
     }
     else if (proto === '[object Date]') {
-      return `[native Date ${Date.prototype.toString.call(val)}]`
+      return getDateDetails(val as Date)
     }
     else if (proto === '[object Error]') {
       return `[native Error ${(val as Error).message}<>${(val as Error).stack}]`

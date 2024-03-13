@@ -9,18 +9,18 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   variant?: 'normal' | 'accent' | 'flat' | 'warning'
   disabled?: boolean
-  password?: boolean
   leftIcon?: string
   rightIcon?: string
   loading?: boolean
   autoFocus?: boolean
   loadingDebounceTime?: number
   readonly?: boolean
+  type?: string
 }>(), {
   placeholder: '',
   variant: 'normal',
   disabled: false,
-  password: false,
+  type: 'text',
   /**
    * loading will auto enable disabled
    */
@@ -101,7 +101,7 @@ watchEffect(() => {
     </div>
     <input
       ref="inputRef" v-model="value"
-      class="$ui-base w-full bg-transparent color-inherit outline-none placeholder-color-gray-500 dark:placeholder-gray-300" :type="props.password ? 'password' : 'text'"
+      class="$ui-base w-full bg-transparent color-inherit outline-none placeholder-color-gray-500 dark:placeholder-gray-300" :type="type"
       :placeholder="placeholder" :disabled="disabled || readonly"
       @blur="focused = false"
     >

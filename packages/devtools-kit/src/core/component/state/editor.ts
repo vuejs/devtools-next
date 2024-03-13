@@ -22,8 +22,9 @@ export class StateEditor {
       const section = sections.shift()!
       if (object instanceof Map)
         object = object.get(section) as Recordable
-      else
-        object = object[section] as Recordable
+      if (object instanceof Set)
+        object = Array.from(object.values())[section] as Recordable
+      else object = object[section] as Recordable
       if (this.refEditor.isRef(object))
         object = this.refEditor.get(object)
     }
@@ -79,7 +80,7 @@ export class StateEditor {
         else if (toRaw(object) instanceof Map)
           object.delete(field)
         else if (toRaw(object) instanceof Set)
-          object.delete(value)
+          object.delete(Array.from(object.values())[field as number])
         else Reflect.deleteProperty(object, field)
       }
       if (!state.remove) {
@@ -88,6 +89,8 @@ export class StateEditor {
           this.refEditor.set(target, value)
         else if (toRaw(object) instanceof Map)
           object.set(state.newKey || field, value)
+        else if (toRaw(object) instanceof Set)
+          object.add(value)
         else
           object[state.newKey || field] = value
       }

@@ -118,6 +118,8 @@ export function getRaw(value: InspectorState['value']): {
 export function toEdit(value: unknown, customType?: customTypeEnums) {
   if (customType === 'bigint')
     return value as string
+  if (customType === 'date')
+    return value as string
 
   return replaceTokenToString(JSON.stringify(value))
 }
@@ -125,6 +127,8 @@ export function toEdit(value: unknown, customType?: customTypeEnums) {
 export function toSubmit(value: string, customType?: customTypeEnums) {
   if (customType === 'bigint')
     return BigInt(value)
+  if (customType === 'date')
+    return new Date(value)
 
   return JSON.parse(replaceStringToToken(value), reviver)
 }

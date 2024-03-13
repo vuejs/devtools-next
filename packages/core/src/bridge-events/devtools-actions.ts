@@ -1,4 +1,5 @@
 import type { InspectorStateEditorPayload } from '@vue/devtools-kit'
+import { stringify } from '@vue/devtools-kit'
 import { defineDevToolsAction } from '../bridge'
 
 export const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
@@ -23,8 +24,9 @@ export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (dev
   devtools.api.openInEditor({ file })
 })
 
-export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', (devtools, payload) => {
-  return devtools.api.getInspectorTree(payload)
+export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', async (devtools, payload) => {
+  const res = await devtools.api.getInspectorTree(payload)
+  return stringify(res) as string
 })
 
 export const getComponentBoundingRect = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
@@ -43,8 +45,9 @@ export const scrollToComponent = defineDevToolsAction('devtools:scroll-to-compon
   return devtools.api.scrollToComponent(payload)
 })
 
-export const getInspectorState = defineDevToolsAction('devtools:inspector-state', (devtools, payload) => {
-  return devtools.api.getInspectorState(payload)
+export const getInspectorState = defineDevToolsAction('devtools:inspector-state', async (devtools, payload) => {
+  const res = await devtools.api.getInspectorState(payload)
+  return stringify(res) as string
 })
 
 export const updateInspectorTreeId = defineDevToolsAction('devtools:update-inspector-tree-id', (devtools, payload) => {

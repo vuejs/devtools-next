@@ -4,6 +4,7 @@ import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, 
 import { computed, ref, watch } from 'vue'
 import { editInspectorState } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
+import { VueButton, VueIcon } from '@vue/devtools-ui'
 import ChildStateViewer from './ChildStateViewer.vue'
 import StateFieldEditor from './StateFieldEditor.vue'
 import StateFieldInputEditor from './StateFieldInputEditor.vue'

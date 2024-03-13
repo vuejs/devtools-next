@@ -36,8 +36,7 @@ onDevToolsClientConnected(() => {
     const data = parse(_data!)
     componentCount.value = normalizeComponentCount(data)
   })
-  onInspectorTreeUpdated((_data) => {
-    const data = parse(_data)
+  onInspectorTreeUpdated((data) => {
     if (!data?.data?.length || data.inspectorId !== 'components')
       return
     componentCount.value = normalizeComponentCount(data.data)

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-ui",
   "type": "module",
-  "version": "7.0.16",
+  "version": "7.0.17",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.12",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.11.25",
     "@unocss/reset": "^0.58.5",
     "@vitejs/plugin-vue": "^5.0.4",
     "floating-vue": "5.2.2",

@@ -1,4 +1,4 @@
-import type { CustomCommand, CustomTab, DevToolsState, RouterInfo, TimelineEvent } from '@vue/devtools-kit'
+import type { ComponentTreeNode, CustomCommand, CustomTab, DevToolsState, InspectorState, RouterInfo, TimelineEvent } from '@vue/devtools-kit'
 import { defineDevToolsListener } from '../bridge'
 
 export const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>('devtools:on-state-updated', (devtools, callback) => {
@@ -52,13 +52,13 @@ export const onCustomCommandsUpdated = defineDevToolsListener<CustomCommand[]>('
   })
 })
 
-export const onInspectorTreeUpdated = defineDevToolsListener<string>('devtools:on-inspector-tree-updated', (devtools, callback) => {
+export const onInspectorTreeUpdated = defineDevToolsListener<{ inspectorId: string, data: ComponentTreeNode[] }>('devtools:on-inspector-tree-updated', (devtools, callback) => {
   devtools.api.on.sendInspectorTree((payload) => {
     callback(payload)
   })
 })
 
-export const onInspectorStateUpdated = defineDevToolsListener<string>('devtools:on-inspector-state-updated', (devtools, callback) => {
+export const onInspectorStateUpdated = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-inspector-state-updated', (devtools, callback) => {
   devtools.api.on.sendInspectorState((payload) => {
     callback(payload)
   })

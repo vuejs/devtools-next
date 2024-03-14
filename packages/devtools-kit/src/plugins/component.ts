@@ -1,7 +1,7 @@
 import { debounce } from 'perfect-debounce'
 import { VueAppInstance } from '../types'
 import { DevToolsEvents, apiHooks, setupDevToolsPlugin } from '../api'
-import { devtoolsContext } from '../state'
+import { devtoolsContext, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getAppRecord, getComponentId, getComponentInstance } from '../core/component/utils'
 import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
@@ -96,6 +96,11 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
     }, 120)
 
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
+      if (devtoolsState.highPerfModeEnabled)
+        return
+
+      console.log('added')
+
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -124,6 +129,11 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
     })
 
     const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
+      if (devtoolsState.highPerfModeEnabled)
+        return
+
+      console.log('updated')
+
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -152,6 +162,9 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
       debounceSendInspectorState()
     })
     const componentRemovedCleanup = hook.on.componentRemoved(async (app, uid, parentUid, component) => {
+      if (devtoolsState.highPerfModeEnabled)
+        return
+
       if (app?._instance?.type?.devtools?.hide)
         return
 

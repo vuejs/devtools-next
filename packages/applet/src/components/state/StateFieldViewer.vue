@@ -80,7 +80,10 @@ const normalizedDisplayedValue = computed(() => {
 
 // normalized display children
 const normalizedDisplayedChildren = computed(() => {
-  const { value, inherit } = raw.value
+  const { value, inherit, customType } = raw.value
+  // The member in native set can only be added or removed.
+  // It cannot be modified.
+  const isUneditableType = customType === 'set'
   let displayedChildren: unknown[] = []
   if (isArray(value)) {
     const sliced = value.slice(0, limit.value)
@@ -88,7 +91,7 @@ const normalizedDisplayedChildren = computed(() => {
       key: `${props.data.key}.${i}`,
       value: item,
       ...inherit,
-      editable: props.data.editable,
+      editable: props.data.editable && !isUneditableType,
       creating: false,
     })) as unknown as InspectorState[]
   }
@@ -97,7 +100,7 @@ const normalizedDisplayedChildren = computed(() => {
       key: `${props.data.key}.${key}`,
       value: value[key],
       ...inherit,
-      editable: props.data.editable,
+      editable: props.data.editable && !isUneditableType,
       creating: false,
     }))
     if (type.value !== 'custom')

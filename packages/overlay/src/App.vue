@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
@@ -28,11 +28,6 @@ const cssVars = computed(() => {
 
 const { onPointerDown, bringUp, anchorStyle, iframeStyle, isDragging, isVertical, isHidden, panelStyle } = usePosition(panelEle)
 const { togglePanelVisible, closePanel, panelVisible } = usePanelVisible()
-
-watchEffect(() => {
-  // @TODO: should not enable high-performance mode when separate window/electron-app is connected or browser extension panel is opened
-  devtools.state.highPerfModeEnabled = !panelVisible.value
-})
 
 const clientUrl = getDevToolsClientUrl()
 const overlayVisible = ref(true)

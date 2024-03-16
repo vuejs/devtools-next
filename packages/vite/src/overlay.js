@@ -16,7 +16,6 @@ setDevToolsClientUrl(devtoolsClientUrl)
 
 toggleComponentInspectorEnabled(!!vueDevToolsOptions.componentInspector)
 
-// devtools.state.highPerfModeEnabled = true
 devtools.init()
 
 // create vite inspect tab

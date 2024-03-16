@@ -7,7 +7,6 @@ const MESSAGING_APP_TARGET = '__VUE_DEVTOOLS_USER_APP__'
 const MESSAGING_DEVTOOLS_TARGET = '__VUE_DEVTOOLS_CLIENT__'
 const CHECK_CONNECTION_EVENT = '__VUE_DEVTOOLS_CHECK_CONNECTION__'
 const CONNECTED_EVENT = '__VUE_DEVTOOLS_CONNECTED__'
-const DISCONNECTED_EVENT = '__VUE_DEVTOOLS_DISCONNECTED__'
 
 // used in user app side
 export function initAppSeparateWindow() {
@@ -36,7 +35,7 @@ export function initAppSeparateWindow() {
     }, 200)
 
     window.addEventListener('beforeunload', () => {
-      bridge.emit(DISCONNECTED_EVENT)
+      bridge.emit('disconnect')
     })
   })
 }
@@ -56,6 +55,7 @@ export function initDevToolsSeparateWindowBridge(channel: BroadcastChannel) {
       })
     },
   })
+
   return bridge
 }
 
@@ -63,10 +63,9 @@ export function initDevToolsSeparateWindowBridge(channel: BroadcastChannel) {
 export function initDevToolsSeparateWindow(
   options: {
     onConnected?: (channel: BroadcastChannel) => void
-    onDisconnected?: (channel: BroadcastChannel) => void
   } = {},
 ) {
-  const { onConnected = () => {}, onDisconnected = () => {} } = options
+  const { onConnected = () => {} } = options
   let connectionTimer: NodeJS.Timeout | null = null
   const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
 
@@ -82,14 +81,9 @@ export function initDevToolsSeparateWindow(
   }
 
   channel.onmessage = (event) => {
-    console.log('event', event.data?.data)
     if (event.data?.data?.event === CONNECTED_EVENT) {
       clearInterval(connectionTimer!)
       onConnected(channel)
-    }
-    else if (event.data?.data?.event === DISCONNECTED_EVENT) {
-      channel.close()
-      onDisconnected(channel)
     }
   }
 

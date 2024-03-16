@@ -129,7 +129,6 @@ window.addEventListener('message', (event) => {
 
 if (!isInIframe && !isInChromePanel && !isInElectron) {
   function initSeparateWindow() {
-    console.log('??????')
     const connectionApp = createConnectionApp()
 
     initDevToolsSeparateWindow({
@@ -138,13 +137,13 @@ if (!isInIframe && !isInChromePanel && !isInElectron) {
         initDevTools({
           connect: (callback) => {
             const bridge = initDevToolsSeparateWindowBridge(channel)
+            bridge.on('disconnect', () => {
+              channel.close()
+              initSeparateWindow()
+            })
             callback(bridge)
           },
         })
-      },
-      onDisconnected: () => {
-        console.log('??????-disconnected')
-        initSeparateWindow()
       },
     })
   }

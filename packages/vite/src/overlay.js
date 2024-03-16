@@ -10,6 +10,7 @@ const head = document.getElementsByTagName('head')[0]
 setDevToolsEnv({
   vitePluginDetected: true,
 })
+
 const devtoolsClientUrl = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}__devtools__/`
 setDevToolsClientUrl(devtoolsClientUrl)
 

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
-import { callViteServerAction, openInEditor, useDevToolsState } from '@vue/devtools-core'
+import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
 import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { openInEditor } from '../../composables/open-in-editor'
 
 const props = defineProps<{
   modelValue: AssetInfo

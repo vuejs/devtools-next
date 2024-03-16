@@ -2,10 +2,9 @@ import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 
 import type { BridgeInstanceType } from '@vue/devtools-core'
-import { BROADCAST_CHANNEL_NAME, isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, HandShakeServer, createDevToolsVuePlugin, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
+import { isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
+import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
 
-import type { App as AppType } from 'vue'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
@@ -128,66 +127,27 @@ window.addEventListener('message', (event) => {
   }
 })
 
-// @TODO: refactor separate window channel
 if (!isInIframe && !isInChromePanel && !isInElectron) {
-  function initSeparateWindowChannel() {
-    const connectionInfo: {
-      connected: boolean
-      timer: NodeJS.Timeout | null
-      app: AppType<Element> | null
-    } = {
-      connected: false,
-      timer: null,
-      app: null,
-    }
+  function initSeparateWindow() {
+    console.log('??????')
+    const connectionApp = createConnectionApp()
 
-    const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
-
-    function connect() {
-      connectionInfo.timer = setInterval(() => {
-        channel.postMessage({
-          source: '__VUE_DEVTOOLS_CLIENT__',
-          data: {
-            event: 'ready',
-          },
-        })
-      }, 2000)
-    }
-
-    connectionInfo.app = createConnectionApp()
-
-    channel.onmessage = (event) => {
-      if (event.data?.data?.event === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
-        connectionInfo.app?.unmount()
-        connectionInfo.connected = true
-        clearInterval(connectionInfo.timer!)
-
+    initDevToolsSeparateWindow({
+      onConnected: (channel) => {
+        connectionApp?.unmount()
         initDevTools({
           connect: (callback) => {
-            const bridge = new Bridge({
-              tracker(fn) {
-                channel.onmessage = (event) => {
-                  if (event.data.source === '__VUE_DEVTOOLS_USER_APP__')
-                    fn(event.data.data)
-                }
-              },
-              trigger(data) {
-                channel.postMessage({
-                  source: '__VUE_DEVTOOLS_CLIENT__',
-                  data,
-                })
-              },
-            })
-            bridge.on('disconnect', () => {
-              channel.close()
-              initSeparateWindowChannel()
-            })
+            const bridge = initDevToolsSeparateWindowBridge(channel)
             callback(bridge)
           },
         })
-      }
-    }
-    connect()
+      },
+      onDisconnected: () => {
+        console.log('??????-disconnected')
+        initSeparateWindow()
+      },
+    })
   }
-  initSeparateWindowChannel()
+
+  initSeparateWindow()
 }

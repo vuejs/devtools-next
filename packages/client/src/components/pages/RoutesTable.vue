@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { VueBadge } from '@vue/devtools-ui'
 import type { RouteRecordNormalized } from 'vue-router'
-import { openInEditor, useDevToolsState } from '@vue/devtools-core'
+import { useDevToolsState } from '@vue/devtools-core'
+import { openInEditor } from '../../composables/open-in-editor'
 
 const props = defineProps<{
   pages: RouteRecordNormalized[]

@@ -6,7 +6,6 @@ import {
   inspectComponentInspector as inspectComponentInspectorAction,
   onInspectorStateUpdated,
   onInspectorTreeUpdated,
-  openInEditor,
   scrollToComponent as scrollToComponentAction,
   toggleComponentInspector as toggleComponentInspectorAction,
   updateInspectorTreeId,
@@ -19,6 +18,7 @@ import { parse } from '@vue/devtools-kit'
 
 import { VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
+import { openInEditor } from '../composables/open-in-editor'
 
 const inspectorId = 'components'
 const bridge = useDevToolsBridge()

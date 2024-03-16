@@ -92,7 +92,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
 
     // vite client <-> server messaging
     initViteServerContext(server)
-    getViteConfig(config)
+    getViteConfig(config, pluginOptions)
     setupGraphModule({
       rpc: inspect.api.rpc,
       server,

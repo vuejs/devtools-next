@@ -1,5 +1,5 @@
 import type { InspectorStateEditorPayload } from '@vue/devtools-kit'
-import { stringify } from '@vue/devtools-kit'
+import { toggleHighPerfMode as _toggleHighPerfMode, stringify } from '@vue/devtools-kit'
 import { defineDevToolsAction } from '../bridge'
 
 export const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
@@ -20,8 +20,8 @@ export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-
   devtools.api.editInspectorState(payload)
 })
 
-export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (devtools, file: string) => {
-  devtools.api.openInEditor({ file })
+export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (devtools, file: string, baseUrl?: string) => {
+  devtools.api.openInEditor({ file, baseUrl })
 })
 
 export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', async (devtools, payload) => {
@@ -54,7 +54,7 @@ export const updateInspectorTreeId = defineDevToolsAction('devtools:update-inspe
   devtools.context.activeInspectorTreeId = payload
 })
 
-export const unhighlightElement = defineDevToolsAction('devtools:unhighlight-element', (devtools, payload) => {
+export const unhighlightElement = defineDevToolsAction('devtools:unhighlight-element', (devtools) => {
   return devtools.api.unhighlightElement()
 })
 
@@ -97,4 +97,8 @@ export const getDevToolsState = defineDevToolsAction('devtools:get-state', (devt
     })),
     activeAppRecordId: devtools.state.activeAppRecordId,
   }
+})
+
+export const toggleHighPerfMode = defineDevToolsAction('devtools:toggle-high-perf-mode', (_, payload) => {
+  _toggleHighPerfMode(payload)
 })

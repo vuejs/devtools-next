@@ -13,4 +13,5 @@ export interface DevToolsState {
   tabs: CustomTab[]
   commands: CustomCommand[]
   activeAppRecordId: string | null
+  highPerfModeEnabled: boolean
 }

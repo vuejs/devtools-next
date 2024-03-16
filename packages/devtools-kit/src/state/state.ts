@@ -19,6 +19,7 @@ function initStateFactory() {
     commands: [],
     vitePluginDetected: false,
     activeAppRecordId: null,
+    highPerfModeEnabled: false,
   }
 }
 

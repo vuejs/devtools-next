@@ -64,13 +64,6 @@ function normalizeGroupList(event: TimelineEvent['event']) {
   }
 }
 
-// @TODO: call this after connected
-// getTimelineLayer().then((data) => {
-//   const layer = data.find(item => item.id === LAYER_ID)
-//   console.log('x', layer)
-// })
-
-// @TODO: call this after connected and destroy after unmounted
 onAddTimelineEvent((payload) => {
   if (!payload)
     return

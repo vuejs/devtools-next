@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import DevToolsLogo from './DevToolsLogo.vue'
 import { useVirtualRouter } from '~/composables/virtual-router'
-import { onDevToolsClientConnected } from '~/composables/connect-state'
 
 const virtualRouter = useVirtualRouter()
-
-onDevToolsClientConnected(() => {
-  // console.log('client connected')
-})
 </script>
 
 <template>
@@ -32,7 +27,6 @@ onDevToolsClientConnected(() => {
       <div flex="~ gap2 wrap">
         <div flex="~ col auto" min-w-40 p4 theme-card-lime>
           <div i-logos-pinia text-3xl />
-          <code>v2.1.7</code>
         </div>
         <div flex="~ col auto" min-w-40 p4 theme-card-lime @click="virtualRouter.push('/store')">
           <div i-carbon-tree-view-alt text-3xl />

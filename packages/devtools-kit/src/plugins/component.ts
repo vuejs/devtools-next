@@ -99,8 +99,6 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
       if (devtoolsState.highPerfModeEnabled)
         return
 
-      console.log('added')
-
       if (app?._instance?.type?.devtools?.hide)
         return
 
@@ -131,8 +129,6 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
     const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
       if (devtoolsState.highPerfModeEnabled)
         return
-
-      console.log('updated')
 
       if (app?._instance?.type?.devtools?.hide)
         return

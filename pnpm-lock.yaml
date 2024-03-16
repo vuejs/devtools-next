@@ -161,25 +161,13 @@ importers:
       '@vue/devtools-ui':
         specifier: workspace:^
         version: link:../ui
-      hookable:
-        specifier: ^5.5.3
-        version: 5.5.3
-      mitt:
-        specifier: ^3.0.1
-        version: 3.0.1
       perfect-debounce:
         specifier: ^1.0.0
         version: 1.0.0
-      speakingurl:
-        specifier: ^14.0.1
-        version: 14.0.1
       splitpanes:
         specifier: ^3.1.5
         version: 3.1.5
     devDependencies:
-      '@types/speakingurl':
-        specifier: ^13.0.6
-        version: 13.0.6
       unplugin-vue:
         specifier: ^5.0.3
         version: 5.0.3(vite@5.1.6)(vue@3.4.21)
@@ -217,9 +205,6 @@ importers:
       '@unocss/runtime':
         specifier: ^0.58.5
         version: 0.58.5
-      '@vue/devtools-applet':
-        specifier: workspace:^
-        version: link:../applet
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core

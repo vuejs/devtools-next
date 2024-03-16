@@ -11,7 +11,6 @@ import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
-import PiniaPage2 from '~/pages/pinia2.vue'
 import RouterPage from '~/pages/router.vue'
 import I18nPage from '~/pages/i18n.vue'
 import Timeline from '~/pages/timeline.vue'
@@ -31,7 +30,6 @@ const routes = [
   { path: '/overview', component: Overview },
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },
-  { path: '/pinia2', component: PiniaPage2 },
   { path: '/router', component: RouterPage },
   { path: '/i18n', component: I18nPage },
   { path: '/timeline', component: Timeline },

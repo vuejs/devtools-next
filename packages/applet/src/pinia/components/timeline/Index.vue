@@ -35,7 +35,7 @@ const normalizedGroupInfo = computed(() => {
   const groupId = selectedEventInfo.value?.groupId
   const groupInfo = groupList.value.get(groupId)!
   if (groupInfo) {
-    const duration = groupInfo[groupInfo.length - 1]?.time - groupInfo[0]?.time ?? 0
+    const duration = groupInfo[groupInfo.length - 1]?.time - (groupInfo[0]?.time ?? 0)
     return [{
       key: 'events',
       type: 'events',

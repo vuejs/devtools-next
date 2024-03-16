@@ -43,7 +43,6 @@ export default {
         'vue-router',
         '@vueuse/core',
       ],
-      ignore: ['h'],
     }),
   ],
 

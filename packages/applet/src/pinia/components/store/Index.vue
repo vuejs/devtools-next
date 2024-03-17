@@ -18,11 +18,19 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
-const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
+const emptyState = computed(() => !state.value?.state?.length && !state.value?.getters?.length)
+
+function filterEmptyState(data: Record<string, unknown[] | undefined>) {
+  for (const key in data) {
+    if (!data[key]?.length)
+      delete data[key]
+  }
+  return data
+}
 
 function getPiniaState(nodeId: string) {
   getInspectorState({ inspectorId, nodeId }).then((data) => {
-    state.value = parse(data!)
+    state.value = filterEmptyState(parse(data!))
   })
 }
 
@@ -60,10 +68,10 @@ onInspectorStateUpdated((data) => {
   if (!data || !data?.state?.length || data.inspectorId !== inspectorId)
     return
 
-  state.value = {
+  state.value = filterEmptyState({
     state: data.state,
     getters: data.getters,
-  }
+  })
 })
 </script>
 

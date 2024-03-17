@@ -18,7 +18,7 @@ const state = ref<{
   getters?: InspectorState[]
 }>({})
 
-const emptyState = computed(() => !state.value?.state?.length && !state.value?.getters?.length)
+const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
 function filterEmptyState(data: Record<string, unknown[] | undefined>) {
   for (const key in data) {

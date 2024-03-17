@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-browser-extension",
   "type": "module",
-  "version": "7.0.17",
+  "version": "7.0.18",
   "private": true,
   "author": "webfansplz",
   "license": "MIT",

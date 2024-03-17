@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "types": [
+      "vite/client"
+    ],
+    "outDir": "./dist",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.vue", "**/*.d.ts", "**/*.ts"]
+}

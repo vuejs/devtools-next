@@ -50,12 +50,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'Router',
     },
     {
-      icon: 'i-icon-park-outline:pineapple',
+      icon: 'i-logos-pinia',
       name: 'pinia',
       order: -100,
       path: 'pinia',
       title: 'Pinia',
     },
+
     {
       icon: 'i-carbon-language',
       name: 'i18n',

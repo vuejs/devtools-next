@@ -2,7 +2,7 @@
 import type { InspectorState } from '@vue/devtools-kit'
 import StateFieldViewer from './StateFieldViewer.vue'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   data: InspectorState[]
   depth: number
   index: string
@@ -14,10 +14,10 @@ const props = withDefaults(defineProps<{
 <template>
   <div>
     <div
-      v-for="(item, index) in data"
-      :key="index"
+      v-for="(item, i) in data"
+      :key="i"
     >
-      <StateFieldViewer :data="item" :depth="depth + 1" :index="`${props.index}-${index}`" />
+      <StateFieldViewer :data="item" :depth="depth + 1" :index="`${index}-${i}`" />
     </div>
   </div>
 </template>

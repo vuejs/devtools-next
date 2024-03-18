@@ -1,6 +1,7 @@
 import {
   defineConfig,
   presetAttributify,
+  presetIcons,
   presetTypography,
   presetUno,
   transformerDirectives,
@@ -12,6 +13,12 @@ export default defineConfig({
     presetUno(),
     presetAttributify(),
     presetTypography(),
+    presetIcons({
+      prefix: ['i-', ''],
+      collections: {},
+      cdn: 'https://esm.sh/',
+      scale: 1.2,
+    }),
   ],
   transformers: [
     transformerDirectives(),

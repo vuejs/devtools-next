@@ -6,6 +6,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@iconify/json": "^2.2.191",
     "@vueuse/core": "^10.7.2",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/devtools-applet": "workspace:*",
+    "@vue/devtools-core": "workspace:*",
     "@vue/devtools-kit": "workspace:*",
     "sass": "^1.70.0",
     "serve": "^14.2.1",

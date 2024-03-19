@@ -6,22 +6,22 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.191",
-    "@vueuse/core": "^10.7.2",
+    "@iconify/json": "^2.2.193",
+    "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.3",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vue/devtools-applet": "workspace:*",
     "@vue/devtools-core": "workspace:*",
     "@vue/devtools-kit": "workspace:*",
-    "sass": "^1.70.0",
+    "sass": "^1.72.0",
     "serve": "^14.2.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.12",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6",
     "vite-plugin-inspect": "^0.8.3",
     "vite-plugin-vue-devtools": "workspace:*"
   }

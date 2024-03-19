@@ -35,9 +35,9 @@
     "splitpanes": "^3.1.5"
   },
   "devDependencies": {
-    "unplugin-vue": "^5.0.3",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5",
+    "unplugin-vue": "^5.0.5",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
     "vue-tsc": "^1.8.27"
   }
 }

@@ -17,8 +17,11 @@ function parseExpressRoute(route: string) {
 const partsInput = ref<string[]>([])
 const parts = computed(() => {
   const _ = parseExpressRoute(props.route.path)
-  partsInput.value = Array.from({ length: _.length }, () => '')
   return _
+})
+
+watchEffect(() => {
+  partsInput.value = Array.from({ length: parts.value.length }, () => '')
 })
 
 const path = computed(() => parts.value.map((i, idx) => i[0] === ':' ? partsInput.value[idx] : i).join('').replace(/\/+/g, '/'))

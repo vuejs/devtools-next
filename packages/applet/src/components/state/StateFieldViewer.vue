@@ -68,7 +68,7 @@ const normalizedDisplayedValue = computed(() => {
   }
 
   else {
-    const _value = type.value === 'custom' && !(props.data.value as InspectorCustomState)._custom?.type ? `"${displayedValue.value}"` : displayedValue.value
+    const _value = type.value === 'custom' && !(props.data.value as InspectorCustomState)._custom?.type ? `"${displayedValue.value}"` : (displayedValue.value === '' ? `""` : displayedValue.value)
     const result = `<span class="${type.value}-state-type">${_value}</span>`
 
     if (extraDisplayedValue)

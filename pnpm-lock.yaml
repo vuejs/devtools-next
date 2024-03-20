@@ -167,6 +167,9 @@ importers:
       splitpanes:
         specifier: ^3.1.5
         version: 3.1.5
+      vue-virtual-scroller:
+        specifier: 2.0.0-beta.8
+        version: 2.0.0-beta.8(vue@3.4.21)
     devDependencies:
       unplugin-vue:
         specifier: ^5.0.5

@@ -12,16 +12,19 @@ createDevToolsConnectStateContext()
 const { VirtualRouterView } = registerVirtualRouter([
   {
     path: '/',
+    name: 'Home',
     component: Home,
     icon: 'i-logos-pinia',
   },
   {
     path: '/store',
+    name: 'Store',
     component: Store,
     icon: 'i-carbon-tree-view-alt',
   },
   {
     path: '/timeline',
+    name: 'Timeline',
     component: Timeline,
     icon: 'i-mdi:timeline-clock-outline',
   },

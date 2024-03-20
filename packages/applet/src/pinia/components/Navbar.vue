@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVirtualRoute, useVirtualRouter } from '~/composables/virtual-router'
 
-const { routes } = useVirtualRoute()
+const { routes, currentRoute } = useVirtualRoute()
 const router = useVirtualRouter()
 </script>
 
@@ -10,10 +10,13 @@ const router = useVirtualRouter()
     <li
       v-for="(item, index) in routes"
       :key="index"
-      cursor-pointer op70 hover:op100
+      cursor-pointer hover:op100
+      :style="{
+        opacity: currentRoute.path === item.path ? 1 : 0.7,
+      }"
       @click="router.push(item.path)"
     >
-      <i :class="item.icon" />
+      {{ item.name }}
     </li>
   </ul>
 </template>

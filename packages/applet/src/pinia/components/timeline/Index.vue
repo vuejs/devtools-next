@@ -4,6 +4,7 @@ import { onAddTimelineEvent } from '@vue/devtools-core'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
 import { computed, ref } from 'vue'
+import Navbar from '../Navbar.vue'
 import EventList from './EventList.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
@@ -79,7 +80,9 @@ onAddTimelineEvent((payload) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia" />
+    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
+      <Navbar />
+    </DevToolsHeader>
     <template v-if="eventList.length">
       <div class="flex-1 overflow-hidden">
         <Splitpanes class="h-full">

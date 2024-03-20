@@ -10,10 +10,14 @@ const router = useVirtualRouter()
 </script>
 
 <template>
-  <div border="b base" class="h10 h40px flex items-center justify-between px-2">
-    <i class="i-ep:back cursor-pointer op70 text-base hover:op100" @click="router.push('/')" />
+  <div border="b base" class="h10 h40px flex items-center justify-between px3">
     <div>
-      <a class="pr1" :href="docLink" target="_blank">
+      <slot>
+        <i class="i-ep:back cursor-pointer op70 text-base hover:op100" @click="router.push('/')" />
+      </slot>
+    </div>
+    <div>
+      <a class="pr2" :href="docLink" target="_blank">
         <i class="i-clarity:document-line cursor-pointer op70 text-base hover:op100" />
       </a>
       <a :href="githubRepoLink" target="_blank">

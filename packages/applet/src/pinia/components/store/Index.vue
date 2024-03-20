@@ -4,6 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
+import Navbar from '../Navbar.vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -77,7 +78,9 @@ onInspectorStateUpdated((data) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia" />
+    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
+      <Navbar />
+    </DevToolsHeader>
     <Splitpanes class="flex-1">
       <Pane border="r base" size="40" h-full>
         <div h-full select-none overflow-scroll class="no-scrollbar">

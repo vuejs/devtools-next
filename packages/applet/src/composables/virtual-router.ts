@@ -2,9 +2,10 @@ import type { Component, InjectionKey, Ref } from 'vue'
 import { computed, defineComponent, h, inject, provide, ref } from 'vue'
 
 const VirtualRouteKey: InjectionKey<Ref<{ path: string }>> = Symbol('VirtualRouteKey')
+const VirtualRoutesKey: InjectionKey<{ path: string, component: Component, icon?: string }[]> = Symbol('VirtualRoutesKey')
 
-export function registerVirtualRouter(routes: { path: string, component: Component }[]) {
-  const route = ref<{ path: string }>({
+export function registerVirtualRouter(routes: { path: string, component: Component, icon?: string }[]) {
+  const route = ref<{ path: string, icon?: string }>({
     path: '/',
   })
   const routePath = computed(() => route.value.path)
@@ -22,6 +23,7 @@ export function registerVirtualRouter(routes: { path: string, component: Compone
   })
 
   provide(VirtualRouteKey, route)
+  provide(VirtualRoutesKey, routes)
   return { VirtualRouterView }
 }
 
@@ -32,5 +34,12 @@ export function useVirtualRouter() {
     push(path: string) {
       route.value.path = path
     },
+  }
+}
+
+export function useVirtualRoute() {
+  const route = inject(VirtualRoutesKey)!
+  return {
+    routes: route,
   }
 }

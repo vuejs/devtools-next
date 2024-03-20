@@ -13,22 +13,21 @@ const { VirtualRouterView } = registerVirtualRouter([
   {
     path: '/',
     component: Home,
+    icon: 'i-logos-pinia',
   },
   {
     path: '/store',
     component: Store,
+    icon: 'i-carbon-tree-view-alt',
   },
   {
     path: '/timeline',
     component: Timeline,
+    icon: 'i-mdi:timeline-clock-outline',
   },
 ])
 
 const routePath = ref('/')
-
-function toggleRoute(route: string) {
-  routePath.value = route
-}
 </script>
 
 <template>

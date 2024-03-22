@@ -279,7 +279,7 @@ const devtoolsState = useDevToolsState()
           </button>
         </div>
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-          <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" @select="selectComponentTree" @mouseenter="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
+          <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" group-id="component-tree" mouseenter="toggleComponentInspector" @select="selectComponentTree" @mouseleave="toggleComponentInspector" />
         </div>
       </Pane>
       <Pane flex flex-col>

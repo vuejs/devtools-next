@@ -356,15 +356,21 @@ export function parseGraphRawData(modules: ModuleInfo[], root: string) {
     }
 
     const uniqueDeps = getUniqueDeps(mod.deps, (dep) => {
+      node.edges.push(getEdge(mod.id, dep))
       // save references
       if (!moduleReferences.has(dep))
         moduleReferences.set(dep, [])
-      moduleReferences.get(dep)!.push({
+      const moduleReferencesValue = moduleReferences.get(dep)!
+      const displayPath = removeRootPath(path)
+      const isExist = !!(moduleReferencesValue.find(item => item.path === path && item.displayPath === displayPath && item.mod.id === mod.id))
+      if (isExist)
+        return
+
+      moduleReferencesValue.push({
         path,
-        displayPath: removeRootPath(path),
+        displayPath,
         mod,
       })
-      node.edges.push(getEdge(mod.id, dep))
     })
     mod.deps = uniqueDeps
     graphNodesTotal.value.push(node)

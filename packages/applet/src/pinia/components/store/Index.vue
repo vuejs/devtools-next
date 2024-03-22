@@ -81,7 +81,7 @@ onInspectorStateUpdated((data) => {
     <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
       <Navbar />
     </DevToolsHeader>
-    <Splitpanes class="flex-1">
+    <Splitpanes class="flex-1 overflow-auto">
       <Pane border="r base" size="40" h-full>
         <div h-full select-none overflow-scroll class="no-scrollbar">
           <SelectiveList v-model="selected" :data="tree" />

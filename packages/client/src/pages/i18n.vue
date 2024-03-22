@@ -8,14 +8,14 @@ import {
 } from '@vue/devtools-core'
 
 // eslint-disable-next-line ts/no-import-type-side-effects
-import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-kit'
+import { type InspectorNodeTag, type InspectorState, type InspectorTree } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const INSPECTOR_ID = 'vue-i18n-resource-inspector'
 
 const selected = ref('')
-const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
+const tree = ref<InspectorTree[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]

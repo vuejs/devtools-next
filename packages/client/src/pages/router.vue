@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated, useDevToolsState } from '@vue/devtools-core'
 
-import type { InspectorState } from '@vue/devtools-kit'
+import type { InspectorState, InspectorTree } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const selected = ref('')
-const tree = ref<{ id: string, label: string }[]>([])
+const tree = ref<InspectorTree[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]

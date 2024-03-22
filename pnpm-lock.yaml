@@ -520,6 +520,9 @@ importers:
       vue-router:
         specifier: ^4.3.0
         version: 4.3.0(vue@3.4.21)
+      vuex:
+        specifier: ^4.1.0
+        version: 4.1.0(vue@3.4.21)
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
@@ -14840,6 +14843,15 @@ packages:
       '@vue/server-renderer': 3.4.21(vue@3.4.21)
       '@vue/shared': 3.4.21
       typescript: 5.4.2
+
+  /vuex@4.1.0(vue@3.4.21):
+    resolution: {integrity: sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.5.1
+      vue: 3.4.21(typescript@5.4.2)
+    dev: false
 
   /w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}

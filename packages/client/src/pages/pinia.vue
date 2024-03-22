@@ -45,7 +45,7 @@ onDevToolsClientConnected(() => {
   onInspectorTreeUpdated((data) => {
     if (!data?.data.length || data.inspectorId !== inspectorId)
       return
-    tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
+    tree.value = data.data as unknown as InspectorTree[]
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getPiniaState(data.data[0].id)

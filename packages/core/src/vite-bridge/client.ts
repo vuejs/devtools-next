@@ -21,7 +21,13 @@ export function callViteServerAction<T>(name: string) {
     const uniqueEventKey = nanoid()
     return new Promise<T>((resolve) => {
       const cb = (e: T) => {
-        viteClient.off(uniqueEventKey, cb)
+        if (viteClient.off)
+          viteClient.off(uniqueEventKey, cb)
+
+        else
+          // compatible with vite 4.x
+          viteClient.dispose?.(cb)
+
         resolve(e)
       }
       viteClient.on(uniqueEventKey, cb)
@@ -38,7 +44,12 @@ export function defineViteClientListener(name: string) {
     const viteClient = getViteClientHotContext()
     viteClient.on(name, listener)
     return () => {
-      viteClient.off(name, listener)
+      if (viteClient.off)
+        viteClient.off(name, listener)
+
+      else
+        // compatible with vite 4.x
+        viteClient.dispose?.(listener)
     }
   }
 }

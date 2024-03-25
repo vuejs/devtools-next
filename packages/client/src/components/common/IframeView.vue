@@ -1,4 +1,6 @@
 <script lang="ts">
+import { useTheme } from '@vue/devtools-ui'
+
 const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>
 
@@ -7,7 +9,7 @@ const props = defineProps<{
   src: string
 }>()
 
-const colorMode = useColorMode()
+const colorMode = useTheme()
 const anchor = ref<HTMLDivElement>()
 const key = computed(() => props.src)
 const iframeEl = ref<HTMLIFrameElement>()

@@ -12,3 +12,22 @@ export const target = (typeof globalThis !== 'undefined'
 export const isInChromePanel = typeof target.chrome !== 'undefined' && !!target.chrome.devtools
 export const isInIframe = isBrowser && target.self !== target.top
 export const isInElectron = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('electron')
+
+export const checkIsVitepress = () => {
+  let t: typeof globalThis | Window = target
+
+  if (isInIframe && target.top)
+    t = target.top
+
+  let isVitepress = false
+
+  if (
+    // after 1.0.0-rc.45
+    !!(t as any)?.__vitepress__
+    // all versions
+    || t?.document?.getElementById('check-dark-mode')?.textContent?.includes('vitepress-theme-appearance')
+  )
+    isVitepress = true
+
+  return isVitepress
+}

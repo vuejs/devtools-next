@@ -6,7 +6,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.193",
+    "@iconify/json": "^2.2.195",
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
@@ -20,8 +20,8 @@
     "@vue/devtools-kit": "workspace:*",
     "sass": "^1.72.0",
     "serve": "^14.2.1",
-    "typescript": "^5.4.2",
-    "vite": "^5.1.6",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.6",
     "vite-plugin-inspect": "^0.8.3",
     "vite-plugin-vue-devtools": "workspace:*"
   }

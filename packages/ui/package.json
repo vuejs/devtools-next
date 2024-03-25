@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.14",
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.11.30",
     "@unocss/reset": "^0.58.6",
     "@vitejs/plugin-vue": "^5.0.4",
     "floating-vue": "5.2.2",

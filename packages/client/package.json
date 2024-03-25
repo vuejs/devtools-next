@@ -43,8 +43,8 @@
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.193",
-    "@types/node": "^20.11.29",
+    "@iconify/json": "^2.2.195",
+    "@types/node": "^20.11.30",
     "@types/splitpanes": "^2.2.6",
     "@unocss/core": "^0.58.6",
     "@unocss/reset": "^0.58.6",
@@ -60,7 +60,7 @@
     "unplugin": "^1.10.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.1.6",
+    "vite": "^5.2.6",
     "vue": "^3.4.21"
   }
 }

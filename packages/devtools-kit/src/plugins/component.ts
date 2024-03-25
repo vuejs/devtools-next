@@ -1,7 +1,7 @@
 import { debounce } from 'perfect-debounce'
 import { VueAppInstance } from '../types'
 import { DevToolsEvents, apiHooks, setupDevToolsPlugin } from '../api'
-import { devtoolsContext, devtoolsState } from '../state'
+import { devtoolsAppRecords, devtoolsContext, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getAppRecord, getComponentId, getComponentInstance } from '../core/component/utils'
 import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
@@ -116,8 +116,11 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
         if (component.__VUE_DEVTOOLS_UID__ == null)
           component.__VUE_DEVTOOLS_UID__ = id
 
-        if (!appRecord?.instanceMap.has(id))
+        if (!appRecord?.instanceMap.has(id)) {
           appRecord?.instanceMap.set(id, component)
+          // force sync appRecord instanceMap
+          devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
+        }
       }
 
       if (!appRecord)
@@ -147,8 +150,11 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
         if (component.__VUE_DEVTOOLS_UID__ == null)
           component.__VUE_DEVTOOLS_UID__ = id
 
-        if (!appRecord?.instanceMap.has(id))
+        if (!appRecord?.instanceMap.has(id)) {
+          // force sync appRecord instanceMap
           appRecord?.instanceMap.set(id, component)
+          devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
+        }
       }
 
       if (!appRecord)
@@ -177,7 +183,10 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
         uid,
         instance: component,
       }) as string
+
       appRecord?.instanceMap.delete(id)
+      // force sync appRecord instanceMap
+      devtoolsAppRecords.active.instanceMap = appRecord.instanceMap
 
       debounceSendInspectorTree()
     })

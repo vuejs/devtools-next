@@ -33,7 +33,7 @@ export function createDevToolsHook(): DevToolsHook {
     id: 'vue-devtools-next',
     enabled: false,
     appRecords: [],
-    apps: {},
+    apps: [],
     events: new Map(),
     on(event, fn) {
       if (!this.events.has(event))

@@ -1,4 +1,4 @@
-import { target } from '@vue/devtools-shared'
+import { isNuxtApp, target } from '@vue/devtools-shared'
 import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from '../hook'
 import { DevToolsHooks } from '../types'
 import { devtoolsAppRecords, devtoolsState, getDevToolsEnv } from '../state'
@@ -14,12 +14,16 @@ export function initDevTools() {
   if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isDevToolsNext)
     return
 
-  // compatible with old devtools
-  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__)
-    Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
-
-  else
+  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
     target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
+  }
+  else {
+    // respect old devtools hook in nuxt application
+    if (!isNuxtApp) {
+      // override devtools hook directly
+      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
+    }
+  }
 
   // setup old devtools plugin (compatible with pinia, router, etc)
   hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {

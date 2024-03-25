@@ -2,7 +2,7 @@ import type { SuspenseBoundary, VNode } from 'vue'
 import type { VueAppInstance } from '../../../types'
 import type { ComponentTreeNode } from '../types'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from '../utils'
-import { devtoolsContext } from '../../../state'
+import { devtoolsAppRecords, devtoolsContext } from '../../../state'
 import { getRootElementsFromComponentInstance } from './el'
 import type { ComponentFilter } from './filter'
 import { createComponentFilter } from './filter'
@@ -241,8 +241,12 @@ export class ComponentWalker {
    */
   private mark(instance: VueAppInstance, force = false) {
     const instanceMap = getAppRecord(instance)!.instanceMap
-    if (force || !instanceMap.has(instance.__VUE_DEVTOOLS_UID__))
+    if (force || !instanceMap.has(instance.__VUE_DEVTOOLS_UID__)) {
       instanceMap.set(instance.__VUE_DEVTOOLS_UID__, instance)
+
+      // force sync appRecord instanceMap
+      devtoolsAppRecords.active.instanceMap = instanceMap
+    }
   }
 
   private isKeepAlive(instance: VueAppInstance) {

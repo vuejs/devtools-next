@@ -6,7 +6,7 @@ import { reviver } from './reviver'
 
 export function getInspectorStateValueType(value, raw = true) {
   const type = typeof value
-  if (value == null || value === UNDEFINED) {
+  if (value == null || value === UNDEFINED || value === 'undefined') {
     return 'null'
   }
   else if (

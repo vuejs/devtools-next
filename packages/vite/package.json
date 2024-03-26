@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-vue-devtools",
   "type": "module",
-  "version": "7.0.22",
+  "version": "7.0.23",
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",

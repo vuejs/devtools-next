@@ -31,6 +31,7 @@ const on: VueHooks['on'] = {
 export function createDevToolsHook(): DevToolsHook {
   return {
     id: 'vue-devtools-next',
+    devtoolsVersion: '7.0',
     enabled: false,
     appRecords: [],
     apps: [],
@@ -105,7 +106,9 @@ export function subscribeDevToolsHook() {
   })
 
   // devtools plugin setup
-  hook.on<DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]>(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor, setupFn) => {
+  hook.on<DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]>(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, (pluginDescriptor, setupFn, options) => {
+    if (options?.target === 'legacy')
+      return
     devtoolsHooks.callHook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn)
   })
 }

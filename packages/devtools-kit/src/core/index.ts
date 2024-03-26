@@ -3,6 +3,7 @@ import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from '
 import { DevToolsHooks } from '../types'
 import { devtoolsAppRecords, devtoolsState, getDevToolsEnv } from '../state'
 import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectDevToolsPlugin, setupExternalPlugin } from '../api'
+import { onLegacyDevToolsPluginApiAvailabled } from '../compat'
 import { createAppRecord, setActiveAppRecord } from './app-record'
 
 export function initDevTools() {
@@ -32,6 +33,13 @@ export function initDevTools() {
     if (!app || !api)
       return
     setupExternalPlugin([pluginDescriptor, setupFn], app, api)
+  })
+
+  onLegacyDevToolsPluginApiAvailabled(() => {
+    const normalizedPluginBuffer = devtoolsState.pluginBuffer.filter(([item]) => item.id !== 'components')
+    normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
+      target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
+    })
   })
 
   // create app record

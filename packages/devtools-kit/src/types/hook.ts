@@ -26,12 +26,13 @@ export interface DevToolsEvent {
   [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
   [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
-  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
+  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction, options?: { target?: string }) => void
 }
 
 export interface DevToolsHook {
   id: string
   enabled?: boolean
+  devtoolsVersion: string
   events: Map<DevToolsHooks, Function[]>
   emit: (event: DevToolsHooks, ...payload: any[]) => void
   on: <T extends Function>(event: DevToolsHooks, handler: T) => () => void

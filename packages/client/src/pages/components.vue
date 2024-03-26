@@ -259,11 +259,16 @@ watchDebounced(filterName, (v) => {
 }, { debounce: 300 })
 
 const devtoolsState = useDevToolsState()
+
+// responsive horizontal layout
+const splitpanesRef = ref<HTMLDivElement>()
+const { width: splitpanesWidth } = useElementSize(splitpanesRef)
+const horizontal = computed(() => splitpanesWidth.value < 700)
 </script>
 
 <template>
   <PanelGrids h-screen>
-    <Splitpanes>
+    <Splitpanes ref="splitpanesRef" :horizontal="horizontal">
       <Pane flex flex-col border="r base">
         <div w-full flex gap2 px2 py2>
           <VueInput v-if="loaded" v-model="filterName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />

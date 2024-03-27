@@ -1,5 +1,5 @@
 import { DevToolsType, parse } from '@vue/devtools-kit'
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid/non-secure'
 import { BRIDGE_DEVTOOLS_ACTION_KEY, BRIDGE_DEVTOOLS_LISTENER_KEY, devtoolsActionEvents, devtoolsListenerEvents, getBridgeInstance, getBridgeTarget } from './shared'
 
 export function defineDevToolsAction<T>(name: string, action: (devtools: DevToolsType, ...args: any[]) => T | Promise<T>) {

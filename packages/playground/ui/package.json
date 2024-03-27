@@ -1,7 +1,7 @@
 {
   "name": "ui-playground",
   "type": "module",
-  "version": "7.0.23",
+  "version": "7.0.24",
   "private": true,
   "scripts": {
     "build:ui-playground": "vue-tsc && vite build",

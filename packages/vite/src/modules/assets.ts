@@ -76,6 +76,7 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
     ], {
       cwd: dir,
       onlyFiles: true,
+      caseSensitiveMatch: false,
       ignore: [
         '**/node_modules/**',
         '**/dist/**',

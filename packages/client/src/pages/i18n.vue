@@ -8,14 +8,14 @@ import {
 } from '@vue/devtools-core'
 
 // eslint-disable-next-line ts/no-import-type-side-effects
-import { type InspectorNodeTag, type InspectorState } from '@vue/devtools-kit'
+import { type InspectorState, type InspectorTree } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const INSPECTOR_ID = 'vue-i18n-resource-inspector'
 
 const selected = ref('')
-const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
+const tree = ref<InspectorTree[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]
@@ -52,7 +52,7 @@ onDevToolsClientConnected(() => {
   onInspectorTreeUpdated((data) => {
     if (!data?.data.length)
       return
-    tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
+    tree.value = data.data as unknown as InspectorTree[]
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getI18nState(data.data[0].id)

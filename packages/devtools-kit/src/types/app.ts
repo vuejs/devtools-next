@@ -96,6 +96,7 @@ export interface AppRecord {
   moduleDetectives?: {
     vueRouter: boolean
     pinia: boolean
+    vuex: boolean
     vueI18n: boolean
   }
 }

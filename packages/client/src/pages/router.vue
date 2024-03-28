@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated, useDevToolsState } from '@vue/devtools-core'
 
-import type { InspectorState } from '@vue/devtools-kit'
+import type { InspectorState, InspectorTree } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 
 const selected = ref('')
-const tree = ref<{ id: string, label: string }[]>([])
+const tree = ref<InspectorTree[]>([])
 const state = ref<{
   inspectorId?: string
   state?: InspectorState[]
@@ -46,7 +46,7 @@ onDevToolsClientConnected(() => {
   onInspectorTreeUpdated((data) => {
     if (!data?.data?.length || data.inspectorId !== inspectorId.value)
       return
-    tree.value = data.data as unknown as { id: string, label: string }[]
+    tree.value = data.data as unknown as InspectorTree[]
     if (!selected.value && data.data.length) {
       selected.value = data.data[0].id
       getRouterState(data.data[0].id)

@@ -4,6 +4,7 @@ interface StateEditorContext {
   nodeId: string
   inspectorId: string
   disableEdit: boolean
+  disableDelete: boolean
 }
 const StateEditorSymbolKey: InjectionKey<Ref<StateEditorContext>> = Symbol('StateEditorSymbol')
 

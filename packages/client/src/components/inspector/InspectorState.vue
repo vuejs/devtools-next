@@ -9,9 +9,12 @@ const props = withDefaults(defineProps<{
   nodeId: string
   inspectorId: string
   disableEdit?: boolean
+  disableDelete?: boolean
 }>(), {
   disableEdit: false,
 })
+
+const undeletableIds = ['getters']
 
 const { isExpanded, toggleCollapse } = useCollapse('inspector-state', props.id)
 // expand the root node by default
@@ -21,6 +24,7 @@ createStateEditorContext({
   nodeId: props.nodeId!,
   inspectorId: props.inspectorId!,
   disableEdit: props.disableEdit,
+  disableDelete: undeletableIds.includes(props.id),
 })
 </script>
 

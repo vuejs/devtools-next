@@ -59,7 +59,7 @@ export type VueAppInstance = ComponentInternalInstance & {
     computed: Record<string, unknown>
   }
   __v_cache: Cache
-  __VUE_DEVTOOLS_UID__: string
+  __VUE_DEVTOOLS_NEXT_UID__: string
   _isBeingDestroyed: boolean
   _instance: VueAppInstance
   _container: {
@@ -71,11 +71,11 @@ export type VueAppInstance = ComponentInternalInstance & {
   parent: VueAppInstance
   appContext: {
     app: VueAppInstance & App & {
-      __VUE_DEVTOOLS_APP_RECORD_ID__: string
-      __VUE_DEVTOOLS_APP_RECORD__: AppRecord
+      __VUE_DEVTOOLS_NEXT_APP_RECORD_ID__: string
+      __VUE_DEVTOOLS_NEXT_APP_RECORD__: AppRecord
     }
   }
-  __VUE_DEVTOOLS_APP_RECORD__: AppRecord
+  __VUE_DEVTOOLS_NEXT_APP_RECORD__: AppRecord
   suspense: SuspenseBoundary & { suspenseKey: string }
   renderContext: Record<string, unknown>
   devtoolsRawSetupState: Record<string, unknown>

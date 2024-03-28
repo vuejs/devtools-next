@@ -26,17 +26,17 @@ function saveComponentGussedName(instance: VueAppInstance, name: string) {
 }
 
 export function getAppRecord(instance: VueAppInstance) {
-  if (instance.__VUE_DEVTOOLS_APP_RECORD__)
-    return instance.__VUE_DEVTOOLS_APP_RECORD__
+  if (instance.__VUE_DEVTOOLS_NEXT_APP_RECORD__)
+    return instance.__VUE_DEVTOOLS_NEXT_APP_RECORD__
   else if (instance.root)
-    return instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD__
+    return instance.appContext.app.__VUE_DEVTOOLS_NEXT_APP_RECORD__
 }
 
 export async function getComponentId(options: { app: VueAppInstance, uid: number, instance: VueAppInstance }) {
   const { app, uid, instance } = options
   try {
-    if (instance.__VUE_DEVTOOLS_UID__)
-      return instance.__VUE_DEVTOOLS_UID__
+    if (instance.__VUE_DEVTOOLS_NEXT_UID__)
+      return instance.__VUE_DEVTOOLS_NEXT_UID__
 
     const appRecord = await getAppRecord(app)
     if (!appRecord)
@@ -100,7 +100,7 @@ export function getInstanceName(instance: VueAppInstance) {
  * @param {Vue} instance
  */
 export function getUniqueComponentId(instance: VueAppInstance) {
-  const appId = instance?.appContext?.app?.__VUE_DEVTOOLS_APP_RECORD_ID__ ?? 0
+  const appId = instance?.appContext?.app?.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ ?? 0
   const instanceId = instance === instance.root ? 'root' : instance.uid
   return `${appId}:${instanceId}`
 }

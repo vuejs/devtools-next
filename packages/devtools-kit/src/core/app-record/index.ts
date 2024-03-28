@@ -18,8 +18,8 @@ function getAppRootInstance(app: VueAppInstance['appContext']['app']) {
 }
 
 function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: string): string {
-  if (app.__VUE_DEVTOOLS_APP_RECORD_ID__ != null)
-    return app.__VUE_DEVTOOLS_APP_RECORD_ID__
+  if (app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ != null)
+    return app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__
 
   let id = defaultId ?? (appRecordInfo.id++).toString()
 
@@ -32,7 +32,7 @@ function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: st
 
   appRecordInfo.appIds.add(id)
 
-  app.__VUE_DEVTOOLS_APP_RECORD_ID__ = id
+  app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ = id
   return id
 }
 
@@ -50,10 +50,10 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
       rootInstance,
     }
 
-    app.__VUE_DEVTOOLS_APP_RECORD__ = record
+    app.__VUE_DEVTOOLS_NEXT_APP_RECORD__ = record
     const rootId = `${record.id}:root`
     record.instanceMap.set(rootId, record.rootInstance)
-    record.rootInstance.__VUE_DEVTOOLS_UID__ = rootId
+    record.rootInstance.__VUE_DEVTOOLS_NEXT_UID__ = rootId
 
     return record
   }

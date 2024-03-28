@@ -51,8 +51,8 @@ export class ComponentWalker {
     // instance.uid is not reliable in devtools as there
     // may be 2 roots with same uid which causes unexpected
     // behaviour
-    const id = instance.__VUE_DEVTOOLS_UID__ != null ? instance.__VUE_DEVTOOLS_UID__ : getUniqueComponentId(instance)
-    instance.__VUE_DEVTOOLS_UID__ = id
+    const id = instance.__VUE_DEVTOOLS_NEXT_UID__ != null ? instance.__VUE_DEVTOOLS_NEXT_UID__ : getUniqueComponentId(instance)
+    instance.__VUE_DEVTOOLS_NEXT_UID__ = id
 
     // Dedupe
     if (this.captureIds.has(id))
@@ -119,9 +119,9 @@ export class ComponentWalker {
     // keep-alive
     if (this.isKeepAlive(instance)) {
       const cachedComponents = this.getKeepAliveCachedInstances(instance)
-      const childrenIds = children.map(child => child.__VUE_DEVTOOLS_UID__)
+      const childrenIds = children.map(child => child.__VUE_DEVTOOLS_NEXT_UID__)
       for (const cachedChild of cachedComponents) {
-        if (!childrenIds.includes(cachedChild.__VUE_DEVTOOLS_UID__)) {
+        if (!childrenIds.includes(cachedChild.__VUE_DEVTOOLS_NEXT_UID__)) {
           const node = await this.capture({ ...cachedChild, isDeactivated: true }, depth + 1)
           if (node)
             treeNode.children.push(node)
@@ -241,8 +241,8 @@ export class ComponentWalker {
    */
   private mark(instance: VueAppInstance, force = false) {
     const instanceMap = getAppRecord(instance)!.instanceMap
-    if (force || !instanceMap.has(instance.__VUE_DEVTOOLS_UID__)) {
-      instanceMap.set(instance.__VUE_DEVTOOLS_UID__, instance)
+    if (force || !instanceMap.has(instance.__VUE_DEVTOOLS_NEXT_UID__)) {
+      instanceMap.set(instance.__VUE_DEVTOOLS_NEXT_UID__, instance)
 
       // force sync appRecord instanceMap
       devtoolsAppRecords.active.instanceMap = instanceMap

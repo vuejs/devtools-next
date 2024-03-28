@@ -113,8 +113,8 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
       const appRecord = await getAppRecord(app)
 
       if (component) {
-        if (component.__VUE_DEVTOOLS_UID__ == null)
-          component.__VUE_DEVTOOLS_UID__ = id
+        if (component.__VUE_DEVTOOLS_NEXT_UID__ == null)
+          component.__VUE_DEVTOOLS_NEXT_UID__ = id
 
         if (!appRecord?.instanceMap.has(id)) {
           appRecord?.instanceMap.set(id, component)
@@ -147,8 +147,8 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
       const appRecord = await getAppRecord(app)
 
       if (component) {
-        if (component.__VUE_DEVTOOLS_UID__ == null)
-          component.__VUE_DEVTOOLS_UID__ = id
+        if (component.__VUE_DEVTOOLS_NEXT_UID__ == null)
+          component.__VUE_DEVTOOLS_NEXT_UID__ = id
 
         if (!appRecord?.instanceMap.has(id)) {
           // force sync appRecord instanceMap

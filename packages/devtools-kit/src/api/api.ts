@@ -145,7 +145,7 @@ export class DevToolsPluginApi {
   }
 
   async getComponentInstances(app: VueAppInstance) {
-    const appRecord = app.__VUE_DEVTOOLS_APP_RECORD__
+    const appRecord = app.__VUE_DEVTOOLS_NEXT_APP_RECORD__
     const appId = appRecord.id.toString()
     const instances = [...appRecord.instanceMap]
       .filter(([key]) => key.split(':')[0] === appId)

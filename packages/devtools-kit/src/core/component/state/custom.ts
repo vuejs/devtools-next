@@ -164,7 +164,7 @@ export function getInstanceDetails(instance) {
   return {
     _custom: {
       type: 'component',
-      id: instance.__VUE_DEVTOOLS_UID__,
+      id: instance.__VUE_DEVTOOLS_NEXT_UID__,
       displayText: getInstanceName(instance),
       tooltipText: 'Component instance',
       value: reduceStateList(state),

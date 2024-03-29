@@ -192,8 +192,6 @@ export function inspectComponentHighLighter() {
   window.addEventListener('mouseover', inspectFn)
   return new Promise<string>((resolve) => {
     function onSelect(e: MouseEvent) {
-      console.log(e.target)
-
       e.preventDefault()
       e.stopPropagation()
       selectComponentFn(e, (id: string) => {

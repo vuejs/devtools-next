@@ -20,6 +20,7 @@ const containerStyles = {
   border: '1px solid #42b88350',
   borderRadius: '5px',
   transition: 'all 0.1s ease-in',
+  pointerEvents: 'none',
 }
 
 const cardStyles = {

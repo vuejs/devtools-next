@@ -109,7 +109,7 @@ registerCommands(() => [
     <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
     <div
       v-else
-      class="h-full of-auto"
+      class="h-full of-auto transition-base"
       :class="isUtilityView ? 'flex' : sidebarExpanded ? 'grid grid-cols-[250px_1fr]' : 'grid grid-cols-[50px_1fr]'"
       h-full h-screen of-hidden font-sans bg-base
     >

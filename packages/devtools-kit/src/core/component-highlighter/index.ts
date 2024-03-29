@@ -20,7 +20,6 @@ const containerStyles = {
   border: '1px solid #42b88350',
   borderRadius: '5px',
   transition: 'all 0.1s ease-in',
-  pointerEvents: 'none',
 }
 
 const cardStyles = {
@@ -193,6 +192,8 @@ export function inspectComponentHighLighter() {
   window.addEventListener('mouseover', inspectFn)
   return new Promise<string>((resolve) => {
     function onSelect(e: MouseEvent) {
+      console.log(e.target)
+
       e.preventDefault()
       e.stopPropagation()
       selectComponentFn(e, (id: string) => {

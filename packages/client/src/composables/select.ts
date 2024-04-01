@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import type { ComponentTreeNode } from '@vue/devtools-kit'
 
 export function createSelectContext(id: string) {
   const selected = ref<string>('')
@@ -42,5 +43,32 @@ export function useSelectWithContext(groupId: string, id: string, onSelect?: (id
   return {
     isSelected,
     toggleSelected,
+  }
+}
+
+export function useDefaultSelect() {
+  const router = useRouter()
+  const route = useRoute()
+
+  function saveParamId(id: string) {
+    router.push({
+      params: {
+        id,
+      },
+    })
+  }
+
+  function getValidNodeId(treeNode: { id: string }[]) {
+    return treeNode.some(({ id: treeNodeId }) => route.params.id === treeNodeId) && (route.params.id as string)
+  }
+
+  function getValidNestedNodeId(treeNode: ComponentTreeNode[]) {
+    return treeNode.some(({ id: treeNodeId, children }) => getValidNodeId(children) || treeNodeId === route.params.id) && (route.params.id as string)
+  }
+
+  return {
+    saveParamId,
+    getValidNodeId,
+    getValidNestedNodeId,
   }
 }

@@ -63,7 +63,7 @@ export function useDefaultSelect() {
   }
 
   function getValidNestedNodeId(treeNode: ComponentTreeNode[]) {
-    return treeNode.some(({ id: treeNodeId, children }) => getValidNodeId(children) || treeNodeId === route.params.id) && (route.params.id as string)
+    return treeNode.some(({ id: treeNodeId, children }) => getValidNestedNodeId(children) || treeNodeId === route.params.id) && (route.params.id as string)
   }
 
   return {

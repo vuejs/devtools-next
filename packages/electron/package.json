@@ -33,7 +33,7 @@
   "dependencies": {
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^29.1.5",
+    "electron": "^29.1.6",
     "execa": "^8.0.1",
     "h3": "^1.11.1",
     "ip": "^2.0.1",

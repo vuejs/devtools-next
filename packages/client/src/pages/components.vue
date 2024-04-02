@@ -166,11 +166,9 @@ function inspectComponentInspector() {
     else {
       treeNodeIdLinkedList.value.forEach((item) => {
         let index = item.indexOf(data.id)
-        if (index > -1) {
-          while (index >= 0) {
-            componentTreeCollapseMap.value[item[index]] = true
-            index--
-          }
+        while (index >= 0) {
+          componentTreeCollapseMap.value[item[index]] = true
+          index--
         }
       })
     }

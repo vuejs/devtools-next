@@ -27,11 +27,11 @@
     "@vueuse/core": "^10.9.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.195",
-    "@types/node": "^20.11.30",
+    "@iconify/json": "^2.2.196",
+    "@types/node": "^20.12.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "sass": "^1.72.0",
-    "vite": "^5.2.6",
+    "vite": "^5.2.7",
     "vue": "^3.4.21"
   }
 }

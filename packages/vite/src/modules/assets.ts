@@ -104,7 +104,6 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
         mtime: stat.mtimeMs,
       }
     }))
-    console.log('===>', cache)
     return cache
   }
 

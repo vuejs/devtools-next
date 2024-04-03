@@ -288,7 +288,7 @@ const horizontal = computed(() => splitpanesReady.value ? splitpanesWidth.value 
         </div>
       </Pane>
       <Pane flex flex-col>
-        <div flex justify-between overflow-auto px2 py3 class="no-scrollbar">
+        <div flex items-center justify-between overflow-auto px2 py3 class="no-scrollbar">
           <span v-if="selectedComponentTreeNode?.name">{{ selectedComponentTreeNode.name }}</span>
           <div flex="~ gap2">
             <VueIcon

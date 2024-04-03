@@ -196,7 +196,7 @@ export function inspectComponentHighLighter() {
       e.preventDefault()
       e.stopPropagation()
       selectComponentFn(e, (id: string) => {
-        window.removeEventListener('click', onSelect)
+        window.removeEventListener('click', onSelect, true)
         window.removeEventListener('mouseover', inspectFn)
         const el = getContainerElement()
         if (el)
@@ -204,7 +204,7 @@ export function inspectComponentHighLighter() {
         resolve(JSON.stringify({ id }))
       })
     }
-    window.addEventListener('click', onSelect)
+    window.addEventListener('click', onSelect, true)
   })
 }
 

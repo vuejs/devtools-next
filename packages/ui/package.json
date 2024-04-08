@@ -44,12 +44,12 @@
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.15",
-    "@types/node": "^20.12.2",
-    "@unocss/reset": "^0.58.9",
+    "@types/node": "^20.12.5",
+    "@unocss/reset": "^0.59.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.15",
-    "unocss": "^0.58.9",
+    "unocss": "^0.59.0",
     "vite-plugin-dts": "^3.8.1"
   }
 }

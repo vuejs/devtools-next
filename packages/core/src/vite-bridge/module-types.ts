@@ -1,5 +1,5 @@
 // assets
-export type AssetType = 'image' | 'font' | 'video' | 'audio' | 'text' | 'json' | 'other'
+export type AssetType = 'image' | 'font' | 'video' | 'audio' | 'text' | 'json' | 'wasm' | 'other'
 export interface AssetInfo {
   path: string
   type: AssetType

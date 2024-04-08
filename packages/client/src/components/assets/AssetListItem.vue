@@ -32,6 +32,8 @@ const icon = computed(() => {
     return 'i-carbon-document'
   if (props.item.type === 'json')
     return 'i-carbon-json'
+  if (props.item.type === 'wasm')
+    return 'i-vscode-icons-file-type-wasm'
   return 'i-carbon-document-blank'
 })
 </script>

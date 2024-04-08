@@ -29,6 +29,7 @@ defineProps<{
       <div v-if="!detail" i-carbon-volume-up text-3xl op20 />
       <audio v-else :src="asset.publicPath" controls />
     </div>
+    <div v-else-if="asset.type === 'wasm'" i-vscode-icons-file-type-wasm text-3xl />
     <div v-else i-carbon-help text-3xl op20 />
   </div>
 </template>

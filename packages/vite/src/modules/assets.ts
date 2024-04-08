@@ -50,6 +50,8 @@ function guessType(path: string): AssetType {
     return 'font'
   if (/\.(json[5c]?|te?xt|[mc]?[jt]sx?|md[cx]?|markdown|ya?ml|toml)/i.test(path))
     return 'text'
+  if (/\.wasm/i.test(path))
+    return 'wasm'
   return 'other'
 }
 
@@ -73,6 +75,8 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
       '**/*.(woff2?|eot|ttf|otf|ttc|pfa|pfb|pfm|afm)',
       // text
       '**/*.(json|json5|jsonc|txt|text|tsx|jsx|md|mdx|mdc|markdown|yaml|yml|toml)',
+      // wasm
+      '**/*.wasm',
     ], {
       cwd: dir,
       onlyFiles: true,

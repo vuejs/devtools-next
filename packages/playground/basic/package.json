@@ -1,5 +1,6 @@
 {
   "name": "playground-basic",
+  "type": "module",
   "version": "7.0.25",
   "private": true,
   "scripts": {
@@ -18,6 +19,7 @@
     "sass": "^1.74.1",
     "serve": "^14.2.1",
     "typescript": "^5.4.4",
+    "unocss": "^0.59.0",
     "vite": "^5.2.8",
     "vite-plugin-inspect": "^0.8.3",
     "vite-plugin-vue-devtools": "workspace:*"

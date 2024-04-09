@@ -13,14 +13,6 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
-  },
   "files": [
     "dist"
   ],

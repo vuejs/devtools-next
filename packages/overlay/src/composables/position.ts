@@ -1,6 +1,6 @@
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
-import { useEventListener, useScreenSafeArea } from '@vueuse/core'
+import { useEventListener, useScreenSafeArea, useWindowSize } from '@vueuse/core'
 import { clamp, pixelToNumber } from '../utils'
 import { useFrameState } from './state'
 
@@ -17,11 +17,11 @@ function snapToPoints(value: number) {
 }
 
 export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
+  const { width: windowWidth, height: windowHeight } = useWindowSize()
   const { state, updateState } = useFrameState()
   const isHovering = ref(false)
   const isDragging = ref(false)
   const draggingOffset = reactive({ x: 0, y: 0 })
-  const windowSize = reactive({ width: 0, height: 0 })
   const mousePosition = reactive({ x: 0, y: 0 })
   const panelMargins = reactive({
     left: 10,
@@ -47,11 +47,6 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
     draggingOffset.y = e.clientY - top - height / 2
   }
 
-  const setWindowSize = () => {
-    windowSize.width = window.innerWidth
-    windowSize.height = window.innerHeight
-  }
-
   const bringUp = () => {
     isHovering.value = true
     if (state.value.minimizePanelInactive < 0)
@@ -64,15 +59,7 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
   }
 
   onMounted(() => {
-    setTimeout(() => {
-      setWindowSize()
-    }, 200)
-
     bringUp()
-
-    useEventListener(window, 'resize', () => {
-      setWindowSize()
-    })
 
     useEventListener(window, 'pointerup', () => {
       isDragging.value = false
@@ -84,8 +71,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
       if (!isDragging.value)
         return
 
-      const centerX = windowSize.width / 2
-      const centerY = windowSize.height / 2
+      const centerX = windowWidth.value / 2
+      const centerY = windowHeight.value / 2
 
       const x = e.clientX - draggingOffset.x
       const y = e.clientY - draggingOffset.y
@@ -97,9 +84,9 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
       const deg = Math.atan2(y - centerY, x - centerX)
       const HORIZONTAL_MARGIN = 70
       const TL = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, 0 - centerX)
-      const TR = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, windowSize.width - centerX)
-      const BL = Math.atan2(windowSize.height - HORIZONTAL_MARGIN - centerY, 0 - centerX)
-      const BR = Math.atan2(windowSize.height - HORIZONTAL_MARGIN - centerY, windowSize.width - centerX)
+      const TR = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, windowWidth.value - centerX)
+      const BL = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, 0 - centerX)
+      const BR = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, windowWidth.value - centerX)
 
       updateState({
         position: (deg >= TL && deg <= TR)
@@ -109,8 +96,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
               : (deg >= BR && deg <= BL)
                   ? 'bottom'
                   : 'left',
-        left: snapToPoints(x / windowSize.width * 100),
-        top: snapToPoints(y / windowSize.height * 100),
+        left: snapToPoints(x / windowWidth.value * 100),
+        top: snapToPoints(y / windowHeight.value * 100),
       })
     })
   })
@@ -134,30 +121,30 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
     const halfWidth = (panelEl.value?.clientWidth || 0) / 2
     const halfHeight = (panelEl.value?.clientHeight || 0) / 2
 
-    const left = state.value.left * windowSize.width / 100
-    const top = state.value.top * windowSize.height / 100
+    const left = state.value.left * windowWidth.value / 100
+    const top = state.value.top * windowHeight.value / 100
 
     switch (state.value.position) {
       case 'top':
         return {
-          left: clamp(left, halfWidth + panelMargins.left, windowSize.width - halfWidth - panelMargins.right),
+          left: clamp(left, halfWidth + panelMargins.left, windowWidth.value - halfWidth - panelMargins.right),
           top: panelMargins.top + halfHeight,
         }
       case 'right':
         return {
-          left: windowSize.width - panelMargins.right - halfHeight,
-          top: clamp(top, halfWidth + panelMargins.top, windowSize.height - halfWidth - panelMargins.bottom),
+          left: windowWidth.value - panelMargins.right - halfHeight,
+          top: clamp(top, halfWidth + panelMargins.top, windowHeight.value - halfWidth - panelMargins.bottom),
         }
       case 'left':
         return {
           left: panelMargins.left + halfHeight,
-          top: clamp(top, halfWidth + panelMargins.top, windowSize.height - halfWidth - panelMargins.bottom),
+          top: clamp(top, halfWidth + panelMargins.top, windowHeight.value - halfWidth - panelMargins.bottom),
         }
       case 'bottom':
       default:
         return {
-          left: clamp(left, halfWidth + panelMargins.left, windowSize.width - halfWidth - panelMargins.right),
-          top: windowSize.height - panelMargins.bottom - halfHeight,
+          left: clamp(left, halfWidth + panelMargins.left, windowWidth.value - halfWidth - panelMargins.right),
+          top: windowHeight.value - panelMargins.bottom - halfHeight,
         }
     }
   })
@@ -180,8 +167,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
     const marginHorizontal = frameMargin.left + frameMargin.right
     const marginVertical = frameMargin.top + frameMargin.bottom
 
-    const maxWidth = windowSize.width - marginHorizontal
-    const maxHeight = windowSize.height - marginVertical
+    const maxWidth = windowWidth.value - marginHorizontal
+    const maxHeight = windowHeight.value - marginVertical
 
     const style: CSSProperties = {
       zIndex: -1,
@@ -191,8 +178,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
     }
 
     const anchor = anchorPos.value
-    const width = Math.min(maxWidth, state.value.width * windowSize.width / 100)
-    const height = Math.min(maxHeight, state.value.height * windowSize.height / 100)
+    const width = Math.min(maxWidth, state.value.width * windowWidth.value / 100)
+    const height = Math.min(maxHeight, state.value.height * windowHeight.value / 100)
 
     const anchorX = anchor?.left || 0
     const anchorY = anchor?.top || 0
@@ -204,8 +191,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
         style.transform = 'translate(-50%, 0)'
         if ((anchorX - frameMargin.left) < width / 2)
           style.left = `${width / 2 - anchorX + frameMargin.left}px`
-        else if ((windowSize.width - anchorX - frameMargin.right) < width / 2)
-          style.left = `${windowSize.width - anchorX - width / 2 - frameMargin.right}px`
+        else if ((windowWidth.value - anchorX - frameMargin.right) < width / 2)
+          style.left = `${windowWidth.value - anchorX - width / 2 - frameMargin.right}px`
         break
       case 'right':
       case 'left':
@@ -213,8 +200,8 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
         style.transform = 'translate(0, -50%)'
         if ((anchorY - frameMargin.top) < height / 2)
           style.top = `${height / 2 - anchorY + frameMargin.top}px`
-        else if ((windowSize.height - anchorY - frameMargin.bottom) < height / 2)
-          style.top = `${windowSize.height - anchorY - height / 2 - frameMargin.bottom}px`
+        else if ((windowHeight.value - anchorY - frameMargin.bottom) < height / 2)
+          style.top = `${windowHeight.value - anchorY - height / 2 - frameMargin.bottom}px`
         break
     }
 

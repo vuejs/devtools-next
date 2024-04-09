@@ -1,6 +1,5 @@
 {
   "name": "playground-basic",
-  "type": "module",
   "version": "7.0.25",
   "private": true,
   "scripts": {

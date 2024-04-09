@@ -1,43 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "// build //": {},
+    "// prepare:type //": {},
     "// stub //": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "stub": {
-      "cache": false
-    },
-    "@vue/devtools-electron#stub": {
-      "cache": false,
-      "dependsOn": [
-        "@vue/devtools-client#stub",
-        "^stub"
-      ]
-    },
     "@vue/devtools#stub": {
       "cache": false,
       "dependsOn": [
         "@vue/devtools-electron#stub"
       ]
     },
-    "// build //": {},
-    "build": {
+    "@vue/devtools-applet#stub": {
+      "cache": false,
       "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**/*.?{c|m}js",
-        "dist/**/*.d.ts"
-      ]
-    },
-    "@vue/devtools-ui#build": {
-      "dependsOn": ["^build"],
-      "outputs": [
-        "dist/index.?{c|m}js",
-        "dist/theme.?{c|m}js",
-        "dist/types/**/*.d.ts"
+        "@vue/devtools-kit#stub",
+        "^stub"
       ]
     },
     "@vue/devtools-browser-extension#build": {
@@ -70,17 +47,36 @@
         "dist/{app|cli|index|devtools|user-app}.d.ts"
       ]
     },
-    "vite-plugin-vue-devtools#build": {
+    "@vue/devtools-electron#stub": {
+      "cache": false,
       "dependsOn": [
-        "@vue/devtools-client#build",
+        "@vue/devtools-client#stub",
+        "^stub"
+      ]
+    },
+    "@vue/devtools-ui#build": {
+      "dependsOn": [
         "^build"
       ],
       "outputs": [
-        "dist/**/*.d.ts",
-        "dist/**/*.?{c|m}js"
+        "dist/index.?{c|m}js",
+        "dist/theme.?{c|m}js",
+        "dist/types/**/*.d.ts"
       ]
     },
-    "// prepare:type //": {},
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**/*.?{c|m}js",
+        "dist/**/*.d.ts"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
     "prepare:type": {
       "dependsOn": [
         "^prepare:type"
@@ -89,14 +85,17 @@
         "dist/**/*.d.ts"
       ]
     },
-    "@vue/devtools-applet#prepare:type": {
+    "stub": {
+      "cache": false
+    },
+    "vite-plugin-vue-devtools#build": {
       "dependsOn": [
-        "@vue/devtools-ui#build",
-        "@vue/devtools-core#build",
-        "^prepare:type"
+        "@vue/devtools-client#build",
+        "^build"
       ],
       "outputs": [
-        "dist/**/*.d.ts"
+        "dist/**/*.d.ts",
+        "dist/**/*.?{c|m}js"
       ]
     }
   }

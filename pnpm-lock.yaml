@@ -183,9 +183,6 @@ importers:
       vue-router:
         specifier: ^4.3.0
         version: 4.3.0(vue@3.4.21)
-      vue-tsc:
-        specifier: ^1.8.27
-        version: 1.8.27(typescript@5.4.4)
 
   packages/browser-extension:
     dependencies:

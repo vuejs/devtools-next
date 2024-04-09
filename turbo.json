@@ -1,9 +1,43 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "@vue/devtools#stub": {
+    "// stub //": {},
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "stub": {
+      "cache": false
+    },
+    "@vue/devtools-electron#stub": {
+      "cache": false,
       "dependsOn": [
-        "^@vue/devtools-electron#stub"
+        "@vue/devtools-client#stub",
+        "^stub"
+      ]
+    },
+    "@vue/devtools#stub": {
+      "cache": false,
+      "dependsOn": [
+        "@vue/devtools-electron#stub"
+      ]
+    },
+    "// build //": {},
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**/*.?{c|m}js",
+        "dist/**/*.d.ts"
+      ]
+    },
+    "@vue/devtools-ui#build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/index.?{c|m}js",
+        "dist/theme.?{c|m}js",
+        "dist/types/**/*.d.ts"
       ]
     },
     "@vue/devtools-browser-extension#build": {
@@ -36,18 +70,17 @@
         "dist/{app|cli|index|devtools|user-app}.d.ts"
       ]
     },
-    "build": {
+    "vite-plugin-vue-devtools#build": {
       "dependsOn": [
+        "@vue/devtools-client#build",
         "^build"
       ],
       "outputs": [
+        "dist/**/*.d.ts",
         "dist/**/*.?{c|m}js"
       ]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
+    "// prepare:type //": {},
     "prepare:type": {
       "dependsOn": [
         "^prepare:type"
@@ -56,16 +89,14 @@
         "dist/**/*.d.ts"
       ]
     },
-    "stub": {
-      "cache": false
-    },
-    "vite-plugin-vue-devtools#build": {
+    "@vue/devtools-applet#prepare:type": {
       "dependsOn": [
-        "@vue/devtools-client#build",
-        "^build"
+        "@vue/devtools-ui#build",
+        "@vue/devtools-core#build",
+        "^prepare:type"
       ],
       "outputs": [
-        "dist/**"
+        "dist/**/*.d.ts"
       ]
     }
   }

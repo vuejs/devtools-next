@@ -119,7 +119,8 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
         if (!appRecord?.instanceMap.has(id)) {
           appRecord?.instanceMap.set(id, component)
           // force sync appRecord instanceMap
-          devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
+          if (devtoolsAppRecords.active.id === appRecord?.id)
+            devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
         }
       }
 
@@ -153,7 +154,8 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
         if (!appRecord?.instanceMap.has(id)) {
           // force sync appRecord instanceMap
           appRecord?.instanceMap.set(id, component)
-          devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
+          if (devtoolsAppRecords.active.id === appRecord?.id)
+            devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
         }
       }
 
@@ -186,7 +188,8 @@ export function registerComponentDevToolsPlugin(app: VueAppInstance) {
 
       appRecord?.instanceMap.delete(id)
       // force sync appRecord instanceMap
-      devtoolsAppRecords.active.instanceMap = appRecord.instanceMap
+      if (devtoolsAppRecords.active.id === appRecord?.id)
+        devtoolsAppRecords.active.instanceMap = appRecord!.instanceMap
 
       debounceSendInspectorTree()
     })

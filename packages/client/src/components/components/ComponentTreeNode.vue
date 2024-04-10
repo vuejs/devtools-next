@@ -20,10 +20,15 @@ const { isExpanded, toggleCollapse } = useCollapse('component-tree', props.data.
 const { isSelected, toggleSelected } = useSelectWithContext('component-tree', props.data.id, (id) => {
   emit('select', id)
 })
+
+const nodeEl = ref<HTMLDivElement>()
+
+useScrollSelectedIntoView(nodeEl, isSelected)
 </script>
 
 <template>
   <div
+    ref="nodeEl"
     class="group selectable-item"
     :style="{ paddingLeft: `${depth * 15 + 4}px` }"
     :class="{ active: isSelected }"

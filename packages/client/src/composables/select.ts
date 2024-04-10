@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import { promiseTimeout } from '@vueuse/core'
 
 export function createSelectContext(id: string) {
   const selected = ref<string>('')
@@ -43,4 +44,25 @@ export function useSelectWithContext(groupId: string, id: string, onSelect?: (id
     isSelected,
     toggleSelected,
   }
+}
+
+export function useScrollSelectedIntoView(nodeEl: Ref<HTMLDivElement | undefined>, isSelected: ComputedRef<boolean>) {
+  whenever(isSelected, async () => {
+    await promiseTimeout(100)
+
+    const parentEl = nodeEl.value?.parentElement
+    if (!parentEl || !nodeEl.value)
+      return
+
+    const bounds = nodeEl.value.getBoundingClientRect()
+    const parentBounds = parentEl.getBoundingClientRect()
+
+    const isNodeVisible = bounds.top >= parentBounds.top && bounds.bottom <= parentBounds.bottom
+    if (!isNodeVisible) {
+      parentEl?.scrollBy({
+        top: bounds.top - parentBounds.top - parentBounds.height / 2 + bounds.height / 2,
+        behavior: 'smooth',
+      })
+    }
+  })
 }

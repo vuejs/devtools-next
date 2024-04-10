@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import type { InspectorNodeTag } from '@vue/devtools-kit'
+import type { ComponentTreeNode } from '@vue/devtools-kit'
 import { getInspectorTree } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { createExpandedContext } from '~/composables/toggle-expanded'
+import { createSelectedContext } from '~/composables/select'
 
 const inspectorId = 'components'
-const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
+const tree = ref<ComponentTreeNode[]>([])
+
+createExpandedContext()
+createSelectedContext()
 
 const getPiniaInspectorTree = () => {
   getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
@@ -24,7 +29,7 @@ getPiniaInspectorTree()
     <Splitpanes class="flex-1 overflow-auto">
       <Pane border="r base" h-full>
         <div h-full select-none overflow-scroll p2 class="no-scrollbar">
-          <ComponentTree />
+          <ComponentTree :data="tree" />
         </div>
       </Pane>
       <Pane>

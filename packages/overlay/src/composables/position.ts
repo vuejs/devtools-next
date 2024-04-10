@@ -60,45 +60,45 @@ export function usePosition(panelEl: Ref<HTMLElement | undefined>) {
 
   onMounted(() => {
     bringUp()
+  })
 
-    useEventListener(window, 'pointerup', () => {
-      isDragging.value = false
-    })
-    useEventListener(window, 'pointerleave', () => {
-      isDragging.value = false
-    })
-    useEventListener(window, 'pointermove', (e) => {
-      if (!isDragging.value)
-        return
+  useEventListener('pointerup', () => {
+    isDragging.value = false
+  })
+  useEventListener('pointerleave', () => {
+    isDragging.value = false
+  })
+  useEventListener('pointermove', (e) => {
+    if (!isDragging.value)
+      return
 
-      const centerX = windowWidth.value / 2
-      const centerY = windowHeight.value / 2
+    const centerX = windowWidth.value / 2
+    const centerY = windowHeight.value / 2
 
-      const x = e.clientX - draggingOffset.x
-      const y = e.clientY - draggingOffset.y
+    const x = e.clientX - draggingOffset.x
+    const y = e.clientY - draggingOffset.y
 
-      mousePosition.x = x
-      mousePosition.y = y
+    mousePosition.x = x
+    mousePosition.y = y
 
-      // Get position
-      const deg = Math.atan2(y - centerY, x - centerX)
-      const HORIZONTAL_MARGIN = 70
-      const TL = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, 0 - centerX)
-      const TR = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, windowWidth.value - centerX)
-      const BL = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, 0 - centerX)
-      const BR = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, windowWidth.value - centerX)
+    // Get position
+    const deg = Math.atan2(y - centerY, x - centerX)
+    const HORIZONTAL_MARGIN = 70
+    const TL = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, 0 - centerX)
+    const TR = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, windowWidth.value - centerX)
+    const BL = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, 0 - centerX)
+    const BR = Math.atan2(windowHeight.value - HORIZONTAL_MARGIN - centerY, windowWidth.value - centerX)
 
-      updateState({
-        position: (deg >= TL && deg <= TR)
-          ? 'top'
-          : (deg >= TR && deg <= BR)
-              ? 'right'
-              : (deg >= BR && deg <= BL)
-                  ? 'bottom'
-                  : 'left',
-        left: snapToPoints(x / windowWidth.value * 100),
-        top: snapToPoints(y / windowHeight.value * 100),
-      })
+    updateState({
+      position: (deg >= TL && deg <= TR)
+        ? 'top'
+        : (deg >= TR && deg <= BR)
+            ? 'right'
+            : (deg >= BR && deg <= BL)
+                ? 'bottom'
+                : 'left',
+      left: snapToPoints(x / windowWidth.value * 100),
+      top: snapToPoints(y / windowHeight.value * 100),
     })
   })
 

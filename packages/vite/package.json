@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-vue-devtools",
   "type": "module",
-  "version": "7.0.26",
+  "version": "7.0.27",
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",
@@ -43,7 +43,7 @@
     "node": ">=v14.21.3"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "unbuild",
     "stub": "tsup --watch"
   },
   "peerDependencies": {

@@ -23,13 +23,13 @@
   "exports": {
     ".": {
       "types": "./dist/vite.d.ts",
-      "import": "./dist/vite.js",
+      "import": "./dist/vite.mjs",
       "require": "./dist/vite.cjs"
     },
     "./*": "./*"
   },
   "main": "dist/vite.cjs",
-  "module": "dist/vite.js",
+  "module": "dist/vite.mjs",
   "types": "dist/vite.d.ts",
   "files": [
     "*.d.ts",
@@ -51,6 +51,9 @@
   },
   "dependencies": {
     "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-kit": "workspace:^",
+    "@vue/devtools-shared": "workspace:^",
+    "execa": "^8.0.1",
     "sirv": "^2.0.4",
     "vite-plugin-inspect": "^0.8.3",
     "vite-plugin-vue-inspector": "^4.0.2"

@@ -767,6 +767,15 @@ importers:
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core
+      '@vue/devtools-kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
+      '@vue/devtools-shared':
+        specifier: workspace:^
+        version: link:../shared
+      execa:
+        specifier: ^8.0.1
+        version: 8.0.1
       sirv:
         specifier: ^2.0.4
         version: 2.0.4

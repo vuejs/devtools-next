@@ -44,6 +44,7 @@ export interface VitePluginVueDevToolsOptions {
   /**
    * Customize openInEditor host (e.g. http://localhost:3000)
    * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   openInEditorHost?: string | false
 
@@ -51,6 +52,7 @@ export interface VitePluginVueDevToolsOptions {
    * DevTools client host (e.g. http://localhost:3000)
    * useful for projects that use a reverse proxy
    * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   clientHost?: string | false
 
@@ -140,9 +142,9 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         return `export default ${JSON.stringify({ base: config.base, clientHost: pluginOptions.clientHost, componentInspector: pluginOptions.componentInspector })}`
     },
     transform(code, id) {
-      const { root, base } = config
+      const { root } = config
 
-      const projectPath = `${root}${base}`
+      const projectPath = `${root}`
 
       if (!id.startsWith(projectPath))
         return
@@ -150,6 +152,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       const { appendTo } = pluginOptions
 
       const [filename] = id.split('?', 2)
+
       if (appendTo
         && (
           (typeof appendTo === 'string' && filename.endsWith(appendTo))

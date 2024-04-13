@@ -8,13 +8,16 @@ import { useSelect } from '~/composables/select'
 withDefaults(defineProps<{
   data: ComponentTreeNode[]
   depth: number
-  i: number
 }>(), {
   depth: 0,
-  i: 0,
 })
+const selectedNodeId = defineModel()
 const { expanded, toggleExpanded } = useToggleExpanded()
-const { selected, select } = useSelect()
+const { selected, select: _select } = useSelect()
+
+function select(id: string) {
+  selectedNodeId.value = id
+}
 </script>
 
 <template>
@@ -25,14 +28,14 @@ const { selected, select } = useSelect()
     <div
       class="group flex cursor-pointer items-center rounded-1 hover:(bg-primary-300 dark:bg-gray-600)"
       :style=" { paddingLeft: `${15 * depth + 4}px` }"
-      :class="{ 'bg-primary-600! active': selected === `${depth}-${i}-${index}` }"
-      @click="select(`${depth}-${i}-${index}`)"
+      :class="{ 'bg-primary-600! active': selectedNodeId === item.id }"
+      @click="select(item.id)"
     >
       <ToggleExpanded
         v-if="item?.children?.length"
-        :value="expanded.includes(`${depth}-${i}-${index}`)"
+        :value="expanded.includes(item.id)"
         class="[.active_&]:op20 group-hover:op20"
-        @click.stop="toggleExpanded(`${depth}-${i}-${index}`)"
+        @click.stop="toggleExpanded(item.id)"
       />
       <!-- placeholder -->
       <span v-else pl5 />
@@ -43,9 +46,9 @@ const { selected, select } = useSelect()
       </span>
     </div>
     <div
-      v-if="item?.children?.length && expanded.includes(`${depth}-${i}-${index}`)"
+      v-if="item?.children?.length && expanded.includes(item.id)"
     >
-      <ComponentTreeViewer :data="item?.children" :depth="depth + 1" :i="index" />
+      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" />
     </div>
   </div>
 </template>

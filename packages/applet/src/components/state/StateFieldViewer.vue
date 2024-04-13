@@ -58,7 +58,7 @@ const normalizedDisplayedKey = computed(() => {
 // normalized display value
 const normalizedDisplayedValue = computed(() => {
   const directlyDisplayedValueMap = ['Reactive']
-  const extraDisplayedValue = (props.data as InspectorCustomState)._custom?.stateTypeName || props.data?.stateTypeName
+  const extraDisplayedValue = (props.data as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
   if (directlyDisplayedValueMap.includes(extraDisplayedValue!)) {
     return extraDisplayedValue
   }
@@ -68,7 +68,7 @@ const normalizedDisplayedValue = computed(() => {
   }
 
   else {
-    const _type = (props.data.value as InspectorCustomState)._custom?.type
+    const _type = (props.data.value as InspectorCustomState)?._custom?.type
     const _value = type.value === 'custom' && !_type ? `"${displayedValue.value}"` : (displayedValue.value === '' ? `""` : displayedValue.value)
     const normalizedType = type.value === 'custom' && _type === 'ref' ? getInspectorStateValueType(_value) : type.value
     const result = `<span class="${normalizedType}-state-type">${_value}</span>`

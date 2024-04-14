@@ -7,6 +7,7 @@ const counterStore = useCounterStore()
 
 <template>
   <div class="container">
+    <img src="/vite.svg">
     Hey: {{ route.params.id }}
     Counter: {{ counterStore.count }}
   </div>

@@ -68,7 +68,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
 </script>
 
 <template>
-  <div class="inline pl5px">
+  <div class="flex pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="!props.disableEdit && data.editable">
       <!-- input edit, number/string/object -->

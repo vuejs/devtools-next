@@ -71,7 +71,7 @@ const normalizedDisplayedValue = computed(() => {
     const _type = (props.data.value as InspectorCustomState)?._custom?.type
     const _value = type.value === 'custom' && !_type ? `"${displayedValue.value}"` : (displayedValue.value === '' ? `""` : displayedValue.value)
     const normalizedType = type.value === 'custom' && _type === 'ref' ? getInspectorStateValueType(_value) : type.value
-    const result = `<span class="${normalizedType}-state-type">${_value}</span>`
+    const result = `<span class="${normalizedType}-state-type flex whitespace-nowrap">${_value}</span>`
 
     if (extraDisplayedValue)
       return `${result} <span class="text-gray-500">(${extraDisplayedValue})</span>`
@@ -197,13 +197,13 @@ function submitDrafting() {
       />
       <!-- placeholder -->
       <span v-else pl5 />
-      <span op70>
+      <span op70 class="whitespace-nowrap">
         {{ normalizedDisplayedKey }}
       </span>
       <span mx1>:</span>
       <StateFieldInputEditor v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
       <span :class="stateFormatClass">
-        <span v-html="normalizedDisplayedValue" />
+        <span class="flex" v-html="normalizedDisplayedValue" />
       </span>
       <StateFieldEditor
         :hovering="isHovering" :disable-edit="state.disableEdit"

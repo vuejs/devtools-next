@@ -1,20 +1,20 @@
-import type { InjectionKey, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { inject, provide, ref } from 'vue'
 
-const ExpandedSymbolKey: InjectionKey<Ref<string>> = Symbol('ExpandedSymbolKey')
+const expandedKey = 'expanded-state'
 
-export function createExpandedContext() {
+export function createExpandedContext(id = '') {
   const expanded = ref<string[]>([])
 
-  provide<Ref<string[]>>(ExpandedSymbolKey, expanded)
+  provide<Ref<string[]>>(`${expandedKey}-${id}`, expanded)
 
   return {
     expanded,
   }
 }
 
-export function useToggleExpanded() {
-  const expanded = inject<Ref<string[]>>(ExpandedSymbolKey, ref([]))!
+export function useToggleExpanded(id = '') {
+  const expanded = inject<Ref<string[]>>(`${expandedKey}-${id}`, ref([]))!
 
   function toggleExpanded(key: string) {
     const index = expanded.value.indexOf(key)

@@ -2,9 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
-import { getInspectorState, getInspectorTree, onInspectorStateUpdated } from '@vue/devtools-core'
+import { getInspectorState, getInspectorTree, inspectComponentInspector as inspectComponentInspectorAction, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import { useElementSize } from '@vueuse/core'
+import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
+import { VueInput } from '@vue/devtools-ui'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { createSelectedContext } from '~/composables/select'
@@ -16,6 +17,9 @@ const splitpanesReady = ref(false)
 const { width: splitpanesWidth } = useElementSize(splitpanesRef)
 // prevent `Splitpanes` layout from being changed before it ready
 const horizontal = computed(() => splitpanesReady.value ? splitpanesWidth.value < 700 : false)
+const filterComponentName = ref('')
+const [filtered, toggleFiltered] = useToggle(true)
+const componentTreeLoaded = ref(false)
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -55,14 +59,16 @@ const activeComponentState = ref<Record<string, InspectorState[]>>({})
 const activeComponentId = ref('')
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
+const { expanded: expandedStateNodes } = createExpandedContext('component-state')
 createSelectedContext()
 
-function getComponentsInspectorTree() {
-  getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
+function getComponentsInspectorTree(filter = '') {
+  return getInspectorTree({ inspectorId, filter }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     activeComponentId.value = tree.value?.[0]?.id
     expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+    componentTreeLoaded.value = true
   })
 }
 
@@ -81,6 +87,7 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 function getComponentState(id: string) {
   getInspectorState({ inspectorId, nodeId: id }).then((data) => {
     activeComponentState.value = normalizeComponentState(parse(data!))
+    expandedStateNodes.value = Array.from({ length: Object.keys(activeComponentState.value).length }, (_, i) => `${i}`)
   })
 }
 
@@ -96,6 +103,35 @@ onInspectorStateUpdated((data) => {
 })
 
 getComponentsInspectorTree()
+
+onInspectorTreeUpdated((data) => {
+  if (!data?.data.length || data.inspectorId !== inspectorId)
+    return
+
+  tree.value = data.data
+
+  // expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+})
+
+watchDebounced(filterComponentName, (v) => {
+  const value = v.trim().toLowerCase()
+  toggleFiltered()
+  getComponentsInspectorTree(value).then(() => {
+    toggleFiltered()
+  })
+}, { debounce: 300 })
+
+function inspectComponentInspector() {
+  inspectComponentInspectorAction().then((_data) => {
+    const data = JSON.parse(_data!)
+    activeComponentId.value = data.id
+    if (!expandedTreeNodes.value.includes(data.id))
+      expandedTreeNodes.value.push(data.id)
+
+    expandedTreeNodes.value = [...new Set([...expandedTreeNodes.value, ...getTargetLinkedNodes(treeNodeLinkedList.value, data.id)])]
+  }).finally(() => {
+  })
+}
 </script>
 
 <template>
@@ -103,13 +139,24 @@ getComponentsInspectorTree()
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
       <Pane border="r base" h-full>
         <div h-full select-none overflow-scroll p2 class="no-scrollbar">
+          <div class="flex py2">
+            <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
+            <button px-1 @click="inspectComponentInspector">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                style="height: 1.1em; width: 1.1em; opacity:0.5;"
+                :style="true ? 'opacity:1;color:#00dc82' : ''"
+                viewBox="0 0 24 24"
+              >
+                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r=".5" fill="currentColor" /><path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" /></g>
+              </svg>
+            </button>
+          </div>
           <ComponentTree v-model="activeComponentId" :data="tree" />
         </div>
       </Pane>
       <Pane>
-        <div h-full select-none overflow-scroll p2 class="no-scrollbar">
-          <RootStateViewer class="p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" />
-        </div>
+        <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
       </Pane>
     </Splitpanes>
   </div>

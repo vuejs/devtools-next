@@ -795,8 +795,8 @@ importers:
         specifier: ^0.8.3
         version: 0.8.3(rollup@3.28.1)(vite@5.2.8)
       vite-plugin-vue-inspector:
-        specifier: ^4.0.2
-        version: 4.0.2(vite@5.2.8)
+        specifier: ^5.0.0
+        version: 5.0.0(vite@5.2.8)
     devDependencies:
       '@types/node':
         specifier: ^20.12.5
@@ -14766,8 +14766,8 @@ packages:
       - rollup
       - supports-color
 
-  /vite-plugin-vue-inspector@4.0.2(vite@5.2.8):
-    resolution: {integrity: sha512-KPvLEuafPG13T7JJuQbSm5PwSxKFnVS965+MP1we2xGw9BPkkc/+LPix5MMWenpKWqtjr0ws8THrR+KuoDC8hg==}
+  /vite-plugin-vue-inspector@5.0.0(vite@5.2.8):
+    resolution: {integrity: sha512-InVRnJr8DwP8a32gp7vmz4WX6615DdMl9gdBEHfDC6tONZrgG1RkJ/wBx2UZlEfIMhJ5qT1WMOY42jOkVPi/RA==}
     peerDependencies:
       vite: ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0
     dependencies:

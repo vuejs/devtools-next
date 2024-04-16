@@ -67,3 +67,10 @@ export interface DevToolsEvent {
 export type DevToolsEventParams<T extends keyof DevToolsEvent> = Parameters<DevToolsEvent[T]>
 
 export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
+
+export const instanceHooks: (() => void)[] = []
+
+export const registerInstanceHook = (...args: Parameters<(typeof apiHooks)['hook']>) => {
+  const unregister = apiHooks.hook(...args)
+  instanceHooks.push(unregister)
+}

@@ -493,6 +493,9 @@ importers:
       '@vue/devtools-kit':
         specifier: workspace:*
         version: link:../../devtools-kit
+      '@vue/devtools-shared':
+        specifier: workspace:*
+        version: link:../../shared
       sass:
         specifier: ^1.75.0
         version: 1.75.0

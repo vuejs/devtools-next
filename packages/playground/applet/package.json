@@ -19,6 +19,7 @@
     "@vue/devtools-applet": "workspace:*",
     "@vue/devtools-core": "workspace:*",
     "@vue/devtools-kit": "workspace:*",
+    "@vue/devtools-shared": "workspace:*",
     "sass": "^1.75.0",
     "serve": "^14.2.1",
     "typescript": "^5.4.5",

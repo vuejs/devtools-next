@@ -3,10 +3,11 @@ import { Components } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
 import { HandShakeServer, getDevToolsState, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, onDevToolsStateUpdated, setupDevToolsBridge } from '@vue/devtools-core'
 import { useDevToolsColorMode } from '@vue/devtools-shared'
+import { useDark } from '@vueuse/core'
 import { useCounterStore } from './stores'
 import Hello from './components/Hello.vue'
 
-const { isDark } = useDevToolsColorMode()
+const isDark = useDark()
 // user app
 const counterStore = useCounterStore()
 

@@ -1,8 +1,12 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
 import { initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
-import { addCustomTab, devtools, setDevToolsEnv, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
+import { addCustomTab, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
-const overlayDir = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}@id/virtual:vue-devtools-path:overlay`
+function normalizeUrl(url) {
+  return new URL(`${vueDevToolsOptions.base || '/'}${url}`, import.meta.url).toString()
+}
+
+const overlayDir = normalizeUrl(`@id/virtual:vue-devtools-path:overlay`)
 const body = document.getElementsByTagName('body')[0]
 const head = document.getElementsByTagName('head')[0]
 
@@ -10,8 +14,9 @@ setDevToolsEnv({
   vitePluginDetected: true,
 })
 
-const devtoolsClientUrl = `${vueDevToolsOptions.clientHost || ''}${vueDevToolsOptions.base || '/'}__devtools__/`
+const devtoolsClientUrl = normalizeUrl(`__devtools__/`)
 setDevToolsClientUrl(devtoolsClientUrl)
+setOpenInEditorBaseUrl(normalizeUrl('').slice(0, -1))
 
 toggleComponentInspectorEnabled(!!vueDevToolsOptions.componentInspector)
 
@@ -24,7 +29,7 @@ addCustomTab({
   icon: 'i-carbon-ibm-watson-discovery',
   view: {
     type: 'iframe',
-    src: `${window.location.origin}${vueDevToolsOptions.base || '/'}__inspect`,
+    src: normalizeUrl(`__inspect/`),
   },
   category: 'advanced',
 })

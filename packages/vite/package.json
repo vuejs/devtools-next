@@ -56,7 +56,7 @@
     "execa": "^8.0.1",
     "sirv": "^2.0.4",
     "vite-plugin-inspect": "^0.8.3",
-    "vite-plugin-vue-inspector": "^4.0.2"
+    "vite-plugin-vue-inspector": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",

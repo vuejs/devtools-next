@@ -6,6 +6,7 @@ import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
 import { toggleComponentInspectorEnabled } from './core/component-inspector'
 import { toggleHighPerfMode } from './core/high-perf-mode'
+import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 
 export type * from './core/custom-tab'
 export type * from './core/custom-command'
@@ -50,4 +51,5 @@ export {
   setDevToolsEnv,
   toggleComponentInspectorEnabled,
   toggleHighPerfMode,
+  setOpenInEditorBaseUrl,
 }

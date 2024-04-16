@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useColorMode, useDark } from '@vueuse/core'
 import { Pinia } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
 import { HandShakeServer, getDevToolsState, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, onDevToolsStateUpdated, setupDevToolsBridge } from '@vue/devtools-core'
+import { useDevtoolsColorMode } from '@vue/devtools-shared'
 import { useCounterStore } from './stores'
 
-const isDark = useDark()
+const { isDark } = useDevtoolsColorMode()
 // user app
 const counterStore = useCounterStore()
 
@@ -45,7 +45,7 @@ function initVueDevToolsState() {
   })
 }
 
-useColorMode()
+useDevtoolsColorMode()
 </script>
 
 <template>

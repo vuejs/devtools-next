@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
-import { target } from '@vue/devtools-shared'
+import { target, useDevtoolsColorMode } from '@vue/devtools-shared'
 import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import Frame from '~/components/FrameBox.vue'
 
 type ViewMode = 'xs' | 'default' | 'fullscreen'
+const anchorEle = ref<HTMLDivElement>()
 const panelEle = ref<HTMLDivElement>()
-const mode = useColorMode()
+const { colorMode: mode } = useDevtoolsColorMode({
+  selector: anchorEle,
+})
 const panelState = ref<{
   viewMode: ViewMode
 }>({
@@ -98,6 +100,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 <template>
   <div
     v-show="state.preferShowFloatingPanel ? overlayVisible : panelVisible"
+    ref="anchorEle"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,

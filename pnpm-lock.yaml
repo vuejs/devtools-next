@@ -719,13 +719,13 @@ importers:
     dependencies:
       '@vueuse/core':
         specifier: '>=10.0.0'
-        version: 10.9.0(vue@3.4.21)
+        version: 10.9.0(vue@3.4.22)
       rfdc:
         specifier: ^1.3.1
         version: 1.3.1
       vue:
         specifier: '>=3.2.0'
-        version: 3.4.21(typescript@5.4.4)
+        version: 3.4.22(typescript@5.4.5)
     devDependencies:
       '@types/node':
         specifier: ^20.12.7

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
-import { target, useDevtoolsColorMode } from '@vue/devtools-shared'
+import { target, useDevToolsColorMode } from '@vue/devtools-shared'
 import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
@@ -10,7 +10,7 @@ import Frame from '~/components/FrameBox.vue'
 type ViewMode = 'xs' | 'default' | 'fullscreen'
 const anchorEle = ref<HTMLDivElement>()
 const panelEle = ref<HTMLDivElement>()
-const { colorMode: mode } = useDevtoolsColorMode({
+const { colorMode: mode } = useDevToolsColorMode({
   selector: anchorEle,
 })
 const panelState = ref<{

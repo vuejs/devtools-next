@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick } from 'vue'
 import { useVModel } from '@vueuse/core'
-import { useDevtoolsColorMode } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-shared'
 
 const props = withDefaults(defineProps<{
   isDark?: boolean
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
 
 const isDarkModel = useVModel(props, 'isDark')
 
-const { colorMode: mode } = useDevtoolsColorMode({
+const { colorMode: mode } = useDevToolsColorMode({
   initialValue: isDarkModel.value ? 'dark' : 'light',
   onChanged: (value) => {
     isDarkModel.value = value === 'dark'

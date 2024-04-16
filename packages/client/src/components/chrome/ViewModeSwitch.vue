@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useDevtoolsColorMode } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-shared'
 import { VueButton } from '@vue/devtools-ui'
 
-useDevtoolsColorMode()
+useDevToolsColorMode()
 
 const { toggle } = useToggleViewMode()
 </script>

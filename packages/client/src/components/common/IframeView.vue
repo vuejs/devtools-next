@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useDevtoolsColorMode } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-shared'
 
 const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>
@@ -9,7 +9,7 @@ const props = defineProps<{
   src: string
 }>()
 
-const { colorMode } = useDevtoolsColorMode()
+const { colorMode } = useDevToolsColorMode()
 const anchor = ref<HTMLDivElement>()
 const key = computed(() => props.src)
 const iframeEl = ref<HTMLIFrameElement>()

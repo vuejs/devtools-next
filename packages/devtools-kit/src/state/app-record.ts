@@ -36,7 +36,7 @@ export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.ap
       devtoolsContext.api = _value.api!
       // @ts-expect-error expected type
       devtoolsContext.inspector = _value.inspector ?? []
-      normalizeRouterInfo(value)
+      normalizeRouterInfo(value, devtoolsState)
       devtoolsContext.routerInfo = devtoolsRouterInfo
     }
 

@@ -21,10 +21,14 @@
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
   "peerDependencies": {
-    "@vueuse/core": ">=10.0.0"
+    "@vueuse/core": ">=10.0.0",
+    "vue": ">=3.2.0"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
+      "optional": true
+    },
+    "vue": {
       "optional": true
     }
   },

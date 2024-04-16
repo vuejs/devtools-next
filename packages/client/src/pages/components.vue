@@ -174,6 +174,7 @@ function inspectComponentInspector() {
     }
   }).finally(() => {
     bridge.value.emit('toggle-panel', true)
+    scrollToComponentTree()
   })
 }
 
@@ -264,6 +265,15 @@ const splitpanesReady = ref(false)
 const { width: splitpanesWidth } = useElementSize(splitpanesRef)
 // prevent `Splitpanes` layout from being changed before it ready
 const horizontal = computed(() => splitpanesReady.value ? splitpanesWidth.value < 700 : false)
+
+const componentTreeContainer = ref<HTMLDivElement>()
+function scrollToComponentTree() {
+  // Use setTimeout to wait for the panel to be visible before scrolling
+  setTimeout(() => {
+    const selected = componentTreeContainer.value?.querySelector('.active')
+    selected?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, 0)
+}
 </script>
 
 <template>
@@ -283,7 +293,7 @@ const horizontal = computed(() => splitpanesReady.value ? splitpanesWidth.value 
             </svg>
           </button>
         </div>
-        <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
+        <div ref="componentTreeContainer" h-screen select-none overflow-scroll p-2 class="no-scrollbar">
           <ComponentTreeNode v-for="item in treeNode" :key="item.id" :data="item" @select="selectComponentTree" @mouseenter="toggleComponentInspector" @mouseleave="toggleComponentInspector" />
         </div>
       </Pane>

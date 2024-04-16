@@ -23,6 +23,7 @@ export enum DevToolsHooks {
 export interface DevToolsEvent {
   [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void
   [DevToolsHooks.APP_CONNECTED]: () => void
+  [DevToolsHooks.APP_UNMOUNT]: (app: VueAppInstance['appContext']['app']) => void
   [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void
   [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
@@ -46,6 +47,7 @@ export interface DevToolsHook {
 export interface VueHooks {
   on: {
     vueAppInit: (fn: DevToolsEvent[DevToolsHooks.APP_INIT]) => void
+    vueAppUnmount: (fn: DevToolsEvent[DevToolsHooks.APP_UNMOUNT]) => void
     vueAppConnected: (fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) => void
     componentAdded: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) => () => void
     componentUpdated: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) => () => void

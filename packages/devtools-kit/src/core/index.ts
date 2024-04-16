@@ -63,6 +63,13 @@ export function initDevTools() {
     }
   })
 
+  hook.on.vueAppUnmount(async (app) => {
+    const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
+    devtoolsAppRecords.value = activeRecords
+    if (devtoolsAppRecords.active.app === app)
+      await setActiveAppRecord(activeRecords[0])
+  })
+
   subscribeDevToolsHook()
 }
 

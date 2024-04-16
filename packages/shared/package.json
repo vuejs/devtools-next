@@ -20,6 +20,14 @@
     "prepare:type": "tsup --dts-only",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
+  "peerDependencies": {
+    "@vueuse/core": ">=10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vueuse/core": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "rfdc": "^1.3.1"
   },

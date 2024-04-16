@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
+const text = ref('Foo')
 </script>
 
 <template>
   <div>
-    Foo Component
+    {{ text }} Component
   </div>
 </template>

@@ -3,7 +3,7 @@ import type { ViteInspectAPI } from 'vite-plugin-inspect'
 import { debounce } from 'perfect-debounce'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
-import type { AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
+import type { AssetImporter, AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
@@ -107,8 +107,30 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
     return cache
   }
 
+  async function getAssetImporters(url: string) {
+    const importers: AssetImporter[] = []
+
+    const moduleGraph = server.moduleGraph
+    const module = await moduleGraph.getModuleByUrl(url)
+
+    if (module) {
+      for (const importer of module.importers) {
+        importers.push({
+          url: importer.url,
+          id: importer.id,
+        })
+      }
+    }
+
+    return importers
+  }
+
   defineViteServerAction('assets:get-static-assets', async () => {
     return await scan()
+  })
+
+  defineViteServerAction('assets:get-asset-importers', async (url: string) => {
+    return await getAssetImporters(url)
   })
 
   defineViteServerAction('assets:get-image-meta', async (filepath: string) => {

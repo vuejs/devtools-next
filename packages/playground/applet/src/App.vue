@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useColorMode, useDark } from '@vueuse/core'
 import { Components } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
 import { HandShakeServer, getDevToolsState, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, onDevToolsStateUpdated, setupDevToolsBridge } from '@vue/devtools-core'
+import { useDevToolsColorMode } from '@vue/devtools-shared'
 import { useCounterStore } from './stores'
 import Hello from './components/Hello.vue'
 
-const isDark = useDark()
+const { isDark } = useDevToolsColorMode()
 // user app
 const counterStore = useCounterStore()
 
@@ -46,7 +46,7 @@ function initVueDevToolsState() {
   })
 }
 
-useColorMode()
+useDevToolsColorMode()
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import type { ModuleInfo } from '@vue/devtools-core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
-import { deepClone } from '@vue/devtools-shared'
+import { deepClone, useDevToolsColorMode } from '@vue/devtools-shared'
 
 // #region file types
 export const fileTypes = {
@@ -52,7 +52,7 @@ export function useFileTypes() {
 // #endregion
 
 // #region graph options
-const isDark = useDark()
+const { isDark } = useDevToolsColorMode()
 
 export const graphOptions = computed<Options>(() => ({
   nodes: {

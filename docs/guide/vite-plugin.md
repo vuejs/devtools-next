@@ -59,6 +59,7 @@ interface VitePluginVueDevToolsOptions {
   /**
    * Customize openInEditor host (e.g. http://localhost:3000)
    * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   openInEditorHost?: string | false
 
@@ -66,6 +67,7 @@ interface VitePluginVueDevToolsOptions {
    * DevTools client host (e.g. http://localhost:3000)
    * useful for projects that use a reverse proxy
    * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   clientHost?: string | false
 }

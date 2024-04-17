@@ -77,12 +77,14 @@ function checkComponentInTree(treeNode: ComponentTreeNode[], id: string) {
   return treeNode.some(item => checkComponentInTree(item.children || [], id))
 }
 
+const { saveParamId, getValidNestedNodeId } = useDefaultSelect()
+
 function initSelectedComponent(treeNode: ComponentTreeNode[]) {
   if (!treeNode.length)
     return
   if (!selectedComponentTree.value) {
-    selectedComponentTree.value = treeNode?.[0].id
-    getComponentState(treeNode?.[0].id)
+    selectedComponentTree.value = getValidNestedNodeId(treeNode) || treeNode?.[0].id
+    getComponentState(selectedComponentTree.value)
   }
   else {
     // fallback to root if selected component is not in the tree
@@ -184,6 +186,7 @@ function selectComponentTree(id: string) {
   clearComponentState()
   getComponentState(id)
   activeComponentId.value = id
+  saveParamId(id)
 }
 
 watch(selectedComponentTree, (id) => {

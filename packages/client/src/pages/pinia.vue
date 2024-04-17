@@ -25,9 +25,12 @@ function clearPiniaState() {
   state.value = {}
 }
 
+const { saveParamId, getValidNodeId } = useDefaultSelect()
+
 watch(selected, () => {
   clearPiniaState()
   getPiniaState(selected.value)
+  saveParamId(selected.value)
 })
 
 createCollapseContext('inspector-state')
@@ -37,8 +40,8 @@ onDevToolsClientConnected(() => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getPiniaState(data[0].id)
+      selected.value = getValidNodeId(data) || data[0].id
+      getPiniaState(selected.value)
     }
   })
 

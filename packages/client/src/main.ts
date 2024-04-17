@@ -6,7 +6,7 @@ import { isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
 import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
 
 import { createApp } from 'vue'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { type RouteRecordRaw, createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
 import Overview from '~/pages/overview.vue'
@@ -25,14 +25,14 @@ import WaitForConnection from '~/components/WaitForConnection.vue'
 import 'uno.css'
 import '~/assets/styles/main.css'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: '/', component: Index },
   { path: '/overview', component: Overview },
-  { path: '/components', component: Components },
-  { path: '/pinia', component: PiniaPage },
-  { path: '/router', component: RouterPage },
+  { path: '/components/:id?', component: Components },
+  { path: '/pinia/:id?', component: PiniaPage },
+  { path: '/router/:id?', component: RouterPage },
   { path: '/i18n', component: I18nPage },
-  { path: '/timeline', component: Timeline },
+  { path: '/timeline/:id?', component: Timeline },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },

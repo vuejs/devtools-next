@@ -66,6 +66,8 @@ function normalizeGroupInfo(layerId: string, event: TimelineEvent['event']) {
   }
 }
 
+const { saveParamId, getValidNodeId } = useDefaultSelect()
+
 onDevToolsClientConnected(() => {
   getTimelineLayer().then((data) => {
     layers.value = data!
@@ -74,7 +76,7 @@ onDevToolsClientConnected(() => {
       layer.groups = {}
     })
     if (!selectedLayer.value)
-      selectedLayer.value = data?.length ? data[0].id : ''
+      selectedLayer.value = data?.length ? (getValidNodeId(layers.value) || data[0].id) : ''
   })
   onAddTimelineEvent((payload) => {
     if (!payload)
@@ -99,7 +101,10 @@ watch(() => activeTimelineEvent.value.length, (l) => {
         <!-- layer -->
         <Pane border="r base" size="20">
           <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
-            <TimelineLayer v-for="(item) in layers" :key="item.id" v-model="selectedLayer" :data="item" />
+            <TimelineLayer
+              v-for="(item) in layers" :key="item.id" v-model="selectedLayer" :data="item"
+              @update:model-value="saveParamId"
+            />
           </div>
         </Pane>
         <!-- event -->

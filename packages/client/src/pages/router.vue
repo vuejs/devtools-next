@@ -28,9 +28,12 @@ function clearRouterState() {
   state.value = {}
 }
 
+const { saveParamId, getValidNodeId } = useDefaultSelect()
+
 watch(selected, () => {
   clearRouterState()
   getRouterState(selected.value)
+  saveParamId(selected.value)
 })
 
 onDevToolsClientConnected(() => {
@@ -38,8 +41,8 @@ onDevToolsClientConnected(() => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getRouterState(data[0].id)
+      selected.value = getValidNodeId(data) || data[0].id
+      getRouterState(selected.value)
     }
   })
 

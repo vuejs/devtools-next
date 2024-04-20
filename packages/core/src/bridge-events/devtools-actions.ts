@@ -37,6 +37,10 @@ export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-
   return devtools.api.inspectComponentInspector()
 })
 
+export const cancelInspectComponentInspector = defineDevToolsAction('devtools:cancel-inspect-component-inspector', (devtools) => {
+  return devtools.api.cancelInspectComponentInspector()
+})
+
 export const toggleComponentInspector = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
   return devtools.api.toggleComponentInspector(payload)
 })

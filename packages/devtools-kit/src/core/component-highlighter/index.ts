@@ -189,6 +189,14 @@ function selectComponentFn(e: MouseEvent, cb) {
   }
 }
 
+let inspectComponentHighLighterSelectFn: (e: MouseEvent) => void = null!
+
+export function cancelInspectComponentHighLighter() {
+  window.removeEventListener('mouseover', inspectFn)
+  window.removeEventListener('click', inspectComponentHighLighterSelectFn, true)
+  inspectComponentHighLighterSelectFn = null!
+}
+
 export function inspectComponentHighLighter() {
   window.addEventListener('mouseover', inspectFn)
   return new Promise<string>((resolve) => {
@@ -197,6 +205,7 @@ export function inspectComponentHighLighter() {
       e.stopPropagation()
       selectComponentFn(e, (id: string) => {
         window.removeEventListener('click', onSelect, true)
+        inspectComponentHighLighterSelectFn = null!
         window.removeEventListener('mouseover', inspectFn)
         const el = getContainerElement()
         if (el)
@@ -204,6 +213,7 @@ export function inspectComponentHighLighter() {
         resolve(JSON.stringify({ id }))
       })
     }
+    inspectComponentHighLighterSelectFn = onSelect
     window.addEventListener('click', onSelect, true)
   })
 }

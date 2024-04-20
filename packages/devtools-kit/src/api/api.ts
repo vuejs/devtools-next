@@ -2,7 +2,7 @@ import { TimelineLayerItem, addTimelineLayer } from '../core/timeline'
 import { InspectorApiPayload, addInspector, getInspector, updateInspector } from '../core/inspector'
 import { toggleActiveAppRecord } from '../core/app-record'
 import type { VueAppInstance } from '../types'
-import { highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
+import { cancelInspectComponentHighLighter, highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
 import { devtoolsContext } from '../state'
 import { now as nowFn, stringify } from '../shared'
 import { StateEditor } from '../core/component/state/editor'
@@ -180,6 +180,10 @@ export class DevToolsPluginApi {
 
   inspectComponentInspector() {
     return inspectComponentHighLighter()
+  }
+
+  cancelInspectComponentInspector() {
+    return cancelInspectComponentHighLighter()
   }
 
   scrollToComponent(...params: DevToolsEventParams<DevToolsEvents.SCROLL_TO_COMPONENT>) {

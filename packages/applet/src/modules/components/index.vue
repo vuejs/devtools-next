@@ -58,6 +58,19 @@ const tree = ref<ComponentTreeNode[]>([])
 const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[0]) : [])
 const activeComponentState = ref<Record<string, InspectorState[]>>({})
 const activeComponentId = ref('')
+const activeTreeNode = computed(() => {
+  const res: ComponentTreeNode[] = []
+  const find = (treeNode: ComponentTreeNode[]) => {
+    treeNode.forEach((item) => {
+      if (item.id === activeComponentId.value)
+        res.push(item)
+      if (item.children?.length)
+        find(item.children)
+    })
+  }
+  find(tree.value)
+  return res[0]
+})
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('component-state')
@@ -69,6 +82,7 @@ function getComponentsInspectorTree(filter = '') {
     tree.value = data
     activeComponentId.value = tree.value?.[0]?.id
     expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+    console.log('-', activeTreeNode.value)
     componentTreeLoaded.value = true
   })
 }
@@ -163,8 +177,26 @@ function cancelInspectComponentInspector() {
           <ComponentTree v-model="activeComponentId" :data="tree" />
         </div>
       </Pane>
-      <Pane>
-        <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+      <Pane h-full>
+        <div h-full select-none overflow-scroll p2 class="no-scrollbar">
+          <div class="flex py2">
+            <!-- component name -->
+            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
+              <span class="text-gray-400 dark:text-gray-600">&lt;</span>
+              <span group-hover:text-white class="[.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
+              <span class="text-gray-400 dark:text-gray-600">&gt;</span>
+            </span>
+
+            <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Filter State..." flex-1 />
+
+            <div class="flex items-center gap-2 px-1">
+              <i class="i-material-symbols-light:eye-tracking-outline h-4 w-4" />
+              <i class="i-material-symbols-light:code h-5 w-5" />
+              <i class="i-carbon-launch h-4 w-4" />
+            </div>
+          </div>
+          <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+        </div>
       </Pane>
     </Splitpanes>
 

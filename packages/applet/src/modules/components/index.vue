@@ -15,6 +15,8 @@ import {
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
 import { VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { sortByKey } from '@vue/devtools-shared'
+import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
@@ -22,6 +24,7 @@ import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { searchDeepInObject } from '~/utils'
 
+const emit = defineEmits(['openInEditor'])
 // responsive layout
 const splitpanesRef = ref<HTMLDivElement>()
 const splitpanesReady = ref(false)
@@ -84,23 +87,29 @@ const activeTreeNode = computed(() => {
   find(tree.value)
   return res[0]
 })
+const activeTreeNodeFilePath = computed(() => activeTreeNode.value?.file ?? '')
 
 const filteredState = computed(() => {
-  if (filterStateName.value) {
-    const result = {}
-    for (const groupKey in activeComponentState.value) {
-      const group = activeComponentState.value[groupKey]
-      const groupFields = group.filter(el => searchDeepInObject({
-        [el.key]: el.value,
-      }, filterStateName.value))
-      if (groupFields.length)
-        result[groupKey] = groupFields
-    }
-    return result
+  const result = {}
+  for (const groupKey in activeComponentState.value) {
+    const group = activeComponentState.value[groupKey]
+    const groupFields = group.filter((el) => {
+      try {
+        return searchDeepInObject({
+          [el.key]: el.value,
+        }, filterStateName.value)
+      }
+      catch (e) {
+        return {
+          [el.key]: e,
+        }
+      }
+    })
+    const normalized = flatten(Object.values(groupBy(sortByKey(groupFields), 'stateType')))
+    if (groupFields.length)
+      result[groupKey] = normalized
   }
-  else {
-    return activeComponentState.value
-  }
+  return result
 })
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
@@ -175,6 +184,7 @@ function inspectComponentInspector() {
       expandedTreeNodes.value.push(data.id)
 
     expandedTreeNodes.value = [...new Set([...expandedTreeNodes.value, ...getTargetLinkedNodes(treeNodeLinkedList.value, data.id)])]
+    scrollToActiveTreeNode()
   }).finally(() => {
     inspectComponentTipVisible.value = false
   })
@@ -196,13 +206,25 @@ function getComponentRenderCode() {
     componentRenderCode.value = data!
   })
 }
+
+function openInEditor() {
+  emit('openInEditor', activeTreeNodeFilePath.value)
+}
+
+const componentTreeContainer = ref<HTMLDivElement>()
+function scrollToActiveTreeNode() {
+  setTimeout(() => {
+    const selected = componentTreeContainer.value?.querySelector('.active')
+    selected?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, 0)
+}
 </script>
 
 <template>
   <div class="h-full w-full">
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
       <Pane border="r base" h-full>
-        <div h-full select-none overflow-scroll p2 class="no-scrollbar">
+        <div class="h-full flex flex-col p2">
           <div class="flex py2">
             <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
             <button px-1 @click="inspectComponentInspector">
@@ -216,11 +238,13 @@ function getComponentRenderCode() {
               </svg>
             </button>
           </div>
-          <ComponentTree v-model="activeComponentId" :data="tree" />
+          <div ref="componentTreeContainer" class="no-scrollbar flex-1 select-none overflow-scroll">
+            <ComponentTree v-model="activeComponentId" :data="tree" />
+          </div>
         </div>
       </Pane>
       <Pane relative h-full>
-        <div class="no-scrollbar h-full select-none overflow-scroll p2">
+        <div class="h-full flex flex-col p2">
           <div class="flex py2">
             <!-- component name -->
             <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
@@ -234,10 +258,10 @@ function getComponentRenderCode() {
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
-              <i v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" />
+              <i v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
-          <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+          <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
         <ComponentRenderCode v-if="componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = ''" />
       </Pane>

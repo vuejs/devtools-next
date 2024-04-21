@@ -20,6 +20,7 @@ import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
+import { searchDeepInObject } from '~/utils'
 
 // responsive layout
 const splitpanesRef = ref<HTMLDivElement>()
@@ -28,6 +29,7 @@ const { width: splitpanesWidth } = useElementSize(splitpanesRef)
 // prevent `Splitpanes` layout from being changed before it ready
 const horizontal = computed(() => splitpanesReady.value ? splitpanesWidth.value < 700 : false)
 const filterComponentName = ref('')
+const filterStateName = ref('')
 const [filtered, toggleFiltered] = useToggle(true)
 const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
@@ -83,6 +85,24 @@ const activeTreeNode = computed(() => {
   return res[0]
 })
 
+const filteredState = computed(() => {
+  if (filterStateName.value) {
+    const result = {}
+    for (const groupKey in activeComponentState.value) {
+      const group = activeComponentState.value[groupKey]
+      const groupFields = group.filter(el => searchDeepInObject({
+        [el.key]: el.value,
+      }, filterStateName.value))
+      if (groupFields.length)
+        result[groupKey] = groupFields
+    }
+    return result
+  }
+  else {
+    return activeComponentState.value
+  }
+})
+
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('component-state')
 createSelectedContext()
@@ -93,7 +113,6 @@ function getComponentsInspectorTree(filter = '') {
     tree.value = data
     activeComponentId.value = tree.value?.[0]?.id
     expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
-    console.log('-', activeTreeNode.value)
     componentTreeLoaded.value = true
   })
 }
@@ -206,11 +225,11 @@ function getComponentRenderCode() {
             <!-- component name -->
             <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
               <span class="text-gray-400 dark:text-gray-600">&lt;</span>
-              <span group-hover:text-white class="[.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
+              <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis [.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 
-            <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Filter State..." flex-1 />
+            <VueInput v-if="componentTreeLoaded" v-model="filterStateName" :loading-debounce-time="250" :loading="!filtered" placeholder="Filter State..." flex-1 />
 
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
@@ -218,7 +237,7 @@ function getComponentRenderCode() {
               <i v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" />
             </div>
           </div>
-          <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+          <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
         <ComponentRenderCode v-if="componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = ''" />
       </Pane>

@@ -218,6 +218,8 @@ function scrollToActiveTreeNode() {
     selected?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, 0)
 }
+
+// @TODO: 1. tree node tags 2. toggle panel when inspect component
 </script>
 
 <template>

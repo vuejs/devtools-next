@@ -17,6 +17,7 @@ export enum DevToolsEvents {
   TOGGLE_COMPONENT_HIGHLIGHTER = 'component-highlighter:toggle',
   GET_COMPONENT_BOUNDING_RECT = 'component-bounding-rect:get',
   SCROLL_TO_COMPONENT = 'scroll-to-component',
+  GET_COMPONENT_RENDER_CODE = 'component-render-code:get',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
@@ -36,6 +37,7 @@ export interface DevToolsEvent {
   // highlighter
   [DevToolsEvents.TOGGLE_COMPONENT_HIGHLIGHTER]: (payload: ComponentHighLighterOptions) => void
   [DevToolsEvents.SCROLL_TO_COMPONENT]: (payload: ScrollToComponentOptions) => void
+  [DevToolsEvents.GET_COMPONENT_RENDER_CODE]: (id: string) => void
   [DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]: (payload: ComponentBoundingRectApiPayload) => void
   // state
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void

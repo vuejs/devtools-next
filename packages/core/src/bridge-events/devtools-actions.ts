@@ -49,6 +49,10 @@ export const scrollToComponent = defineDevToolsAction('devtools:scroll-to-compon
   return devtools.api.scrollToComponent(payload)
 })
 
+export const getComponentRenderCode = defineDevToolsAction('devtools:get-component-render-code', (devtools, payload) => {
+  return devtools.api.getComponentRenderCode(payload)
+})
+
 export const getInspectorState = defineDevToolsAction('devtools:inspector-state', async (devtools, payload) => {
   const res = await devtools.api.getInspectorState(payload)
   return stringify(res) as string

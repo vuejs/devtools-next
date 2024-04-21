@@ -2,6 +2,7 @@
 // This components requires to run in DevTools to render correctly
 import { computed, nextTick } from 'vue'
 import type { BuiltinLanguage } from 'shiki'
+import { renderCodeHighlight } from '~/composables/shiki'
 
 const props = withDefaults(
   defineProps<{

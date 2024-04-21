@@ -2,10 +2,20 @@
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
-import { cancelInspectComponentInspector as cancelInspectComponentInspectorAction, getInspectorState, getInspectorTree, inspectComponentInspector as inspectComponentInspectorAction, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
+import {
+  cancelInspectComponentInspector as cancelInspectComponentInspectorAction,
+  getComponentRenderCode as getComponentRenderCodeAction,
+  getInspectorState,
+  getInspectorTree,
+  inspectComponentInspector as inspectComponentInspectorAction,
+  onInspectorStateUpdated,
+  onInspectorTreeUpdated,
+  scrollToComponent as scrollToComponentAction,
+} from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
-import { VueInput } from '@vue/devtools-ui'
+import { VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { createSelectedContext } from '~/composables/select'
@@ -21,6 +31,7 @@ const filterComponentName = ref('')
 const [filtered, toggleFiltered] = useToggle(true)
 const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
+const componentRenderCode = ref('')
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -154,6 +165,18 @@ function cancelInspectComponentInspector() {
   inspectComponentTipVisible.value = false
   cancelInspectComponentInspectorAction()
 }
+
+function scrollToComponent() {
+  scrollToComponentAction({
+    id: activeComponentId.value,
+  })
+}
+
+function getComponentRenderCode() {
+  getComponentRenderCodeAction(activeComponentId.value).then((data) => {
+    componentRenderCode.value = data!
+  })
+}
 </script>
 
 <template>
@@ -166,8 +189,8 @@ function cancelInspectComponentInspector() {
             <button px-1 @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                style="height: 1.1em; width: 1.1em; opacity:0.5;"
-                :style="true ? 'opacity:1;color:#00dc82' : ''"
+                style="height: 1.1em; width: 1.1em;color:#00dc82;"
+                class="hover:(op-80)"
                 viewBox="0 0 24 24"
               >
                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r=".5" fill="currentColor" /><path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" /></g>
@@ -177,8 +200,8 @@ function cancelInspectComponentInspector() {
           <ComponentTree v-model="activeComponentId" :data="tree" />
         </div>
       </Pane>
-      <Pane h-full>
-        <div h-full select-none overflow-scroll p2 class="no-scrollbar">
+      <Pane relative h-full>
+        <div class="no-scrollbar h-full select-none overflow-scroll p2">
           <div class="flex py2">
             <!-- component name -->
             <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
@@ -190,13 +213,14 @@ function cancelInspectComponentInspector() {
             <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Filter State..." flex-1 />
 
             <div class="flex items-center gap-2 px-1">
-              <i class="i-material-symbols-light:eye-tracking-outline h-4 w-4" />
-              <i class="i-material-symbols-light:code h-5 w-5" />
-              <i class="i-carbon-launch h-4 w-4" />
+              <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
+              <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
+              <i v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" />
             </div>
           </div>
           <RootStateViewer class="no-scrollbar h-full select-none overflow-scroll p2 p3" :data="activeComponentState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
+        <ComponentRenderCode v-if="componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = ''" />
       </Pane>
     </Splitpanes>
 
@@ -206,8 +230,7 @@ function cancelInspectComponentInspector() {
         <span class="block">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            style="height: 2em; width: 2em; opacity:0.5;"
-            :style="true ? 'opacity:1;color:#00dc82' : ''"
+            style="height: 2em; width: 2em; opacity:0.5;color:#00dc82;"
             class="animate-fade"
             viewBox="0 0 24 24"
           >

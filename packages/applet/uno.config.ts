@@ -48,6 +48,8 @@ export default defineConfig(mergeConfigs([unoConfig, {
     // selective list
     'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
 
+    'code-block': 'dark:bg-[#121212] bg-white',
+
     // state
     'string-state-type': 'text-#e74c3c dark:(text-#c41a16)',
     'literal-state-type': 'text-#03c dark:(text-#997fff)',

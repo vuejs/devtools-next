@@ -27,7 +27,7 @@ watch(() => route.params.name, () => {
 
 <template>
   <template v-if="!tab">
-    <PanelGrids flex="~ col" h-full items-center justify-center>
+    <div flex="~ col" h-full items-center justify-center>
       <div flex="~ col gap2" mxa items-center>
         <div i-carbon-queued mb2 text-5xl op50 />
         <p text-xl>
@@ -37,7 +37,7 @@ watch(() => route.params.name, () => {
           Redirecting to overview page...
         </p>
       </div>
-    </PanelGrids>
+    </div>
   </template>
   <template v-else-if="tab?.view?.type === 'iframe'">
     <IframeView v-if="iframeViewVisible" :src="tab.view.src" />
@@ -46,10 +46,10 @@ watch(() => route.params.name, () => {
     <Component :is="tab.view.vnode" />
   </template>
   <template v-else>
-    <PanelGrids>
+    <div>
       <NCard flex="~ col" h-full items-center justify-center>
         Unknown tab type {{ tab?.view }}
       </NCard>
-    </PanelGrids>
+    </div>
   </template>
 </template>

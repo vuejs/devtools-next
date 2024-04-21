@@ -104,7 +104,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <PanelGrids block h-full of-auto class="drawer-container relative">
+  <div block h-full of-auto class="drawer-container relative">
     <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
       <template #actions>
         <div flex-none flex="~ gap2 items-center" text-lg>
@@ -192,5 +192,5 @@ onUnmounted(() => {
     >
       <AssetDetails v-if="selected" v-model="selected" />
     </VueDrawer>
-  </PanelGrids>
+  </div>
 </template>

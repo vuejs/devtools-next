@@ -94,7 +94,7 @@ watch(() => activeTimelineEvent.value.length, (l) => {
 
 <template>
   <template v-if="layers.length">
-    <PanelGrids>
+    <div>
       <Splitpanes>
         <!-- layer -->
         <Pane border="r base" size="20">
@@ -129,7 +129,7 @@ watch(() => activeTimelineEvent.value.length, (l) => {
           </div>
         </Pane>
       </Splitpanes>
-    </PanelGrids>
+    </div>
   </template>
   <EmptyPane v-else icon="i-ic-baseline-inbox">
     No layers

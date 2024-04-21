@@ -9,6 +9,9 @@ import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
+import { createExpandedContext } from '~/composables/toggle-expanded'
+
+const { expanded: expandedStateNodes } = createExpandedContext('pinia-store-state')
 
 const inspectorId = 'pinia'
 
@@ -32,6 +35,7 @@ function filterEmptyState(data: Record<string, unknown[] | undefined>) {
 function getPiniaState(nodeId: string) {
   getInspectorState({ inspectorId, nodeId }).then((data) => {
     state.value = filterEmptyState(parse(data!))
+    expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }
 
@@ -73,6 +77,7 @@ onInspectorStateUpdated((data) => {
     state: data.state,
     getters: data.getters,
   })
+  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 })
 </script>
 
@@ -89,7 +94,7 @@ onInspectorStateUpdated((data) => {
       </Pane>
       <Pane size="60">
         <div h-full select-none overflow-scroll class="no-scrollbar">
-          <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" />
+          <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
           <Empty v-else>
             No Data
           </Empty>

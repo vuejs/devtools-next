@@ -65,7 +65,7 @@ onDevToolsClientConnected(() => {
 </script>
 
 <template>
-  <PanelGrids h-screen>
+  <div h-screen>
     <Splitpanes>
       <Pane flex flex-col border="r base">
         <div h-screen select-none overflow-scroll p-2 class="no-scrollbar">
@@ -82,5 +82,5 @@ onDevToolsClientConnected(() => {
         </div>
       </Pane>
     </Splitpanes>
-  </PanelGrids>
+  </div>
 </template>

@@ -28,6 +28,7 @@
     "stub:devtools-kit": "turbo stub --filter=./packages/devtools-kit",
     "stub:overlay": "turbo stub --filter=./packages/overlay",
     "stub:client": "turbo stub --filter=./packages/client",
+    "stub:applet": "turbo stub --filter=./packages/applet",
     "stub:vite": "turbo stub --filter=./packages/vite",
     "stub:devtools-api": "turbo stub --filter=./packages/devtools-api...",
     "build:shared": "turbo build --filter=./packages/shared...",

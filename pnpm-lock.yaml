@@ -217,6 +217,9 @@ importers:
       '@unocss/runtime':
         specifier: ^0.59.3
         version: 0.59.3
+      '@vue/devtools-applet':
+        specifier: workspace:^
+        version: link:../applet
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core

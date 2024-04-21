@@ -224,9 +224,9 @@ function scrollToActiveTreeNode() {
   <div class="h-full w-full">
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
       <Pane border="r base" h-full>
-        <div class="h-full flex flex-col p2">
+        <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
-            <VueInput v-if="componentTreeLoaded" v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
+            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
             <button px-1 @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -253,12 +253,12 @@ function scrollToActiveTreeNode() {
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 
-            <VueInput v-if="componentTreeLoaded" v-model="filterStateName" :loading-debounce-time="250" :loading="!filtered" placeholder="Filter State..." flex-1 />
+            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." flex-1 />
 
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
-              <i v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
+              <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />

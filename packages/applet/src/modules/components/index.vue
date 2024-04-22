@@ -24,7 +24,7 @@ import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { searchDeepInObject } from '~/utils'
 
-const emit = defineEmits(['openInEditor'])
+const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd'])
 // responsive layout
 const splitpanesRef = ref<HTMLDivElement>()
 const splitpanesReady = ref(false)
@@ -177,6 +177,7 @@ watchDebounced(filterComponentName, (v) => {
 
 function inspectComponentInspector() {
   inspectComponentTipVisible.value = true
+  emit('onInspectComponentStart')
   inspectComponentInspectorAction().then((_data) => {
     const data = JSON.parse(_data!)
     activeComponentId.value = data.id
@@ -187,6 +188,7 @@ function inspectComponentInspector() {
     scrollToActiveTreeNode()
   }).finally(() => {
     inspectComponentTipVisible.value = false
+    emit('onInspectComponentEnd')
   })
 }
 

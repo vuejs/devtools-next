@@ -1,5 +1,5 @@
-import { apiHooks } from './hook'
+import { instanceHooks } from './hook'
 
 export function remove() {
-  apiHooks.removeAllHooks()
+  instanceHooks.forEach(unregister => unregister())
 }

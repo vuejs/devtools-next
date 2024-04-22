@@ -11,6 +11,9 @@ const on: VueHooks['on'] = {
   vueAppInit(fn) {
     devtoolsHooks.hook(DevToolsHooks.APP_INIT, fn)
   },
+  vueAppUnmount(fn) {
+    devtoolsHooks.hook(DevToolsHooks.APP_UNMOUNT, fn)
+  },
   vueAppConnected(fn) {
     devtoolsHooks.hook(DevToolsHooks.APP_CONNECTED, fn)
   },
@@ -76,6 +79,10 @@ export function subscribeDevToolsHook() {
       return
 
     devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.APP_UNMOUNT]>(DevToolsHooks.APP_UNMOUNT, (app) => {
+    devtoolsHooks.callHook(DevToolsHooks.APP_UNMOUNT, app)
   })
 
   // component added hook

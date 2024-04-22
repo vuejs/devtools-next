@@ -38,7 +38,7 @@
     "@types/lodash-es": "^4.17.12",
     "unplugin-vue": "^5.0.5",
     "vite-plugin-dts": "^3.8.3",
-    "vue": "^3.4.22",
-    "vue-router": "^4.3.0"
+    "vue": "^3.4.23",
+    "vue-router": "^4.3.2"
   }
 }

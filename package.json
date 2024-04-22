@@ -3,7 +3,7 @@
   "type": "module",
   "version": "7.0.27",
   "private": true,
-  "packageManager": "pnpm@8.15.7",
+  "packageManager": "pnpm@9.0.5",
   "description": "DevTools for Vue.js",
   "author": "webfansplz",
   "license": "MIT",
@@ -68,14 +68,14 @@
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.14.0",
+    "@antfu/eslint-config": "2.15.0",
     "@antfu/ni": "^0.21.12",
     "@arethetypeswrong/cli": "^0.15.3",
     "@types/chrome": "^0.0.266",
     "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.7",
-    "@unocss/eslint-plugin": "^0.59.3",
+    "@unocss/eslint-plugin": "^0.59.4",
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/test-utils": "^2.4.5",
@@ -84,7 +84,7 @@
     "cross-env": "^7.0.3",
     "degit": "^2.8.4",
     "eslint": "npm:eslint-ts-patch@8.57.0-0",
-    "eslint-plugin-format": "^0.1.0",
+    "eslint-plugin-format": "^0.1.1",
     "eslint-ts-patch": "8.57.0-0",
     "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
@@ -92,7 +92,7 @@
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "npm-run-all2": "^6.1.2",
-    "pnpm": "^8.15.7",
+    "pnpm": "^9.0.5",
     "progress": "^2.0.3",
     "publint": "^0.2.7",
     "readdir-glob": "^2.0.0",
@@ -104,10 +104,10 @@
     "turbo": "^1.13.2",
     "typescript": "^5.4.5",
     "unbuild": "^2.0.0",
-    "unocss": "^0.59.3",
-    "vite": "^5.2.9",
+    "unocss": "^0.59.4",
+    "vite": "^5.2.10",
     "vitest": "^1.5.0",
-    "vue": "^3.4.22"
+    "vue": "^3.4.23"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

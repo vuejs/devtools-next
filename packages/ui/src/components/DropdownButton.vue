@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<ButtonProps & {
   keepOpen: false,
 })
 
-const disabled = inject<ComputedGetter<boolean> | undefined>('$ui-dropdown-disabled', undefined)
+const disabled = inject<ComputedGetter<boolean> | undefined>('$ui-dropdown-disabled', undefined)!
 </script>
 
 <template>

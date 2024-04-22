@@ -10,17 +10,17 @@
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
-    "vue": "^3.4.22",
-    "vue-router": "^4.3.0"
+    "vue": "^3.4.23",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "sass": "^1.75.0",
-    "serve": "^14.2.1",
+    "serve": "^14.2.2",
     "typescript": "^5.4.5",
-    "unocss": "^0.59.3",
-    "vite": "^5.2.9",
-    "vite-plugin-inspect": "^0.8.3",
+    "unocss": "^0.59.4",
+    "vite": "^5.2.10",
+    "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

@@ -55,8 +55,8 @@
     "@vue/devtools-shared": "workspace:^",
     "execa": "^8.0.1",
     "sirv": "^2.0.4",
-    "vite-plugin-inspect": "^0.8.3",
-    "vite-plugin-vue-inspector": "^5.0.0"
+    "vite-plugin-inspect": "^0.8.4",
+    "vite-plugin-vue-inspector": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

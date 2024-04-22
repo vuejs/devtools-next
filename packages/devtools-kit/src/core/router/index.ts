@@ -2,7 +2,7 @@ import type { RouteLocationNormalizedLoaded, RouteRecordRaw, Router } from 'vue-
 import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
 import { ROUTER_INFO_KEY, ROUTER_KEY } from '../../state'
-import type { AppRecord } from '../../types'
+import type { AppRecord, DevToolsState } from '../../types'
 import { hook } from '../../hook'
 import { DevToolsEvents, apiHooks } from '../../api/hook'
 
@@ -42,7 +42,7 @@ function filterCurrentRoute(route: RouteLocationNormalizedLoaded & { href?: stri
   return route
 }
 
-export function normalizeRouterInfo(appRecord: AppRecord) {
+export function normalizeRouterInfo(appRecord: AppRecord, state: DevToolsState) {
   function init() {
     const router = appRecord.app?.config.globalProperties.$router as Router | undefined
     const currentRoute = filterCurrentRoute(router?.currentRoute.value)
@@ -61,6 +61,9 @@ export function normalizeRouterInfo(appRecord: AppRecord) {
 
   // @TODO: use another way to watch router
   hook.on.componentUpdated(debounce(() => {
+    if (state.activeAppRecord?.app !== appRecord.app)
+      return
+
     init()
     apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[ROUTER_INFO_KEY])
   }, 200))

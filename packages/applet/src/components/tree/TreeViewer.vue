@@ -15,7 +15,7 @@ withDefaults(defineProps<{
 })
 const selectedNodeId = defineModel()
 const { expanded, toggleExpanded } = useToggleExpanded()
-const { selected, select: _select } = useSelect()
+const { select: _select } = useSelect()
 
 function select(id: string) {
   selectedNodeId.value = id

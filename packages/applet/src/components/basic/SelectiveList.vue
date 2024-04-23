@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineModel } from 'vue'
+import type { InspectorNodeTag } from '@vue/devtools-kit'
+import NodeTag from '~/components/basic/NodeTag.vue'
 
-defineProps<{ data: { id: string, label: string }[] }>()
+defineProps<{ data: { id: string, label: string, tags: InspectorNodeTag[] }[] }>()
 
 const selected = defineModel()
 
@@ -19,6 +21,7 @@ function select(id: string) {
       @click="select(item.id)"
     >
       {{ item.label }}
+      <NodeTag v-for="(_item, index) in item.tags" :key="index" :tag="_item" />
     </li>
   </ul>
 </template>

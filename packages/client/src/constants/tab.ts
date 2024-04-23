@@ -33,13 +33,6 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'assets',
       title: 'Assets',
     },
-    {
-      icon: 'i-icon-park-outline:vertical-timeline',
-      name: 'timeline',
-      order: -100,
-      path: 'timeline',
-      title: 'Timeline',
-    },
   ]],
   ['modules', [
     {

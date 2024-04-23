@@ -1,7 +1,8 @@
 import type { ModuleInfo } from '@vue/devtools-core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
-import { deepClone, useDevToolsColorMode } from '@vue/devtools-shared'
+import { deepClone } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 
 // #region file types
 export const fileTypes = {

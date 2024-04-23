@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
-import { target, useDevToolsColorMode } from '@vue/devtools-shared'
+import { target } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'

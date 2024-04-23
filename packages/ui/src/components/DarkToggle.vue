@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick } from 'vue'
 import { useVModel } from '@vueuse/core'
-import { useDevToolsColorMode } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '../composables'
 
 const props = withDefaults(defineProps<{
   isDark?: boolean

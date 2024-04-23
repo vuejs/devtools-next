@@ -46,7 +46,7 @@ function select(id: string) {
         <span group-hover:text-white class="[.active_&]:(text-white)">{{ item.name }}</span>
         <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
       </span>
-      <NodeTag v-for="(_item, index) in item.tags" :key="index" :tag="_item" />
+      <NodeTag v-for="(_item, _index) in item.tags" :key="_index" :tag="_item" />
     </div>
     <div
       v-if="item?.children?.length && expanded.includes(item.id)"

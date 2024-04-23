@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useDevToolsColorMode } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 
 const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>

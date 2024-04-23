@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
-import { isInChromePanel, useDevToolsColorMode } from '@vue/devtools-shared'
+import { isInChromePanel } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import('./setup/unocss-runtime')

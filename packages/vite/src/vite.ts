@@ -155,7 +155,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
         && (
           (typeof appendTo === 'string' && filename.endsWith(appendTo))
           || (appendTo instanceof RegExp && appendTo.test(filename))))
-        code = `${code}\nimport 'virtual:vue-devtools-path:overlay.js'`
+        code = `import 'virtual:vue-devtools-path:overlay.js';\n${code}`
 
       return code
     },

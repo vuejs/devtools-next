@@ -10,13 +10,6 @@
         "@vue/devtools-electron#stub"
       ]
     },
-    "@vue/devtools-applet#stub": {
-      "cache": false,
-      "dependsOn": [
-        "@vue/devtools-kit#stub",
-        "^stub"
-      ]
-    },
     "@vue/devtools-browser-extension#build": {
       "dependsOn": [
         "@vue/devtools-client#build",

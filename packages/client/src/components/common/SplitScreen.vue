@@ -83,7 +83,7 @@ const showGridPanel = ref(false)
       <!-- Tabs -->
       <component :is="PageComponent" :key="`tab-${currentTab.name}`" />
     </div>
-    <PanelGrids v-else>
+    <div v-else>
       <span text-lg op50>
         Select a tab to start
       </span>
@@ -93,6 +93,6 @@ const showGridPanel = ref(false)
       <VueButton type="warning" outlined mt2 @click="close">
         Close Split Screen
       </VueButton>
-    </PanelGrids>
+    </div>
   </div>
 </template>

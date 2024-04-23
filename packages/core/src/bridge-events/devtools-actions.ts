@@ -37,12 +37,20 @@ export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-
   return devtools.api.inspectComponentInspector()
 })
 
+export const cancelInspectComponentInspector = defineDevToolsAction('devtools:cancel-inspect-component-inspector', (devtools) => {
+  return devtools.api.cancelInspectComponentInspector()
+})
+
 export const toggleComponentInspector = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
   return devtools.api.toggleComponentInspector(payload)
 })
 
 export const scrollToComponent = defineDevToolsAction('devtools:scroll-to-component', (devtools, payload) => {
   return devtools.api.scrollToComponent(payload)
+})
+
+export const getComponentRenderCode = defineDevToolsAction('devtools:get-component-render-code', (devtools, payload) => {
+  return devtools.api.getComponentRenderCode(payload)
 })
 
 export const getInspectorState = defineDevToolsAction('devtools:inspector-state', async (devtools, payload) => {

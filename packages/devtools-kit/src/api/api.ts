@@ -2,7 +2,7 @@ import { TimelineLayerItem, addTimelineLayer } from '../core/timeline'
 import { InspectorApiPayload, addInspector, getInspector, updateInspector } from '../core/inspector'
 import { toggleActiveAppRecord } from '../core/app-record'
 import type { VueAppInstance } from '../types'
-import { highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
+import { cancelInspectComponentHighLighter, highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
 import { devtoolsContext } from '../state'
 import { now as nowFn, stringify } from '../shared'
 import { StateEditor } from '../core/component/state/editor'
@@ -14,6 +14,7 @@ import type { CustomCommand } from '../core/custom-command'
 import { getComponentInspector } from '../core/component-inspector'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { openInEditor } from '../core/open-in-editor'
+import { getComponentInstance } from '../core/component/utils'
 
 import { DevToolsEventParams, DevToolsEvents, apiHooks } from './hook'
 import { on } from './on'
@@ -182,8 +183,19 @@ export class DevToolsPluginApi {
     return inspectComponentHighLighter()
   }
 
+  cancelInspectComponentInspector() {
+    return cancelInspectComponentHighLighter()
+  }
+
   scrollToComponent(...params: DevToolsEventParams<DevToolsEvents.SCROLL_TO_COMPONENT>) {
     return scrollToComponent(...params)
+  }
+
+  getComponentRenderCode(id: string) {
+    const instance = getComponentInstance(devtoolsContext.appRecord!, id)
+    if (instance)
+      // @ts-expect-error skip type check
+      return !(instance?.type instanceof Function) ? instance.render.toString() : instance.type.toString()
   }
 
   getComponentBoundingRect(...params: DevToolsEventParams<DevToolsEvents.GET_COMPONENT_BOUNDING_RECT>) {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { onAddTimelineEvent } from '@vue/devtools-core'
+import { computed, ref } from 'vue'
 
 import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
-import { computed, ref } from 'vue'
 import Navbar from '../Navbar.vue'
 import EventList from './EventList.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -11,9 +11,12 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
-createExpandedContext()
+const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
 
-const LAYER_ID = 'pinia:mutations'
+// event info + group info = [0, 1]
+expandedStateNodes.value = ['0', '1']
+
+const LAYER_ID = `router:navigations:0`
 const eventList = ref<TimelineEvent['event'][]>([])
 const groupList = ref<Map<number, TimelineEvent['event'][]>>(new Map())
 const selectedEventIndex = ref(0)
@@ -80,7 +83,7 @@ onAddTimelineEvent((payload) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
+    <DevToolsHeader doc-link="https://router.vuejs.org/" github-repo-link="https://github.com/vuejs/router">
       <Navbar />
     </DevToolsHeader>
     <template v-if="eventList.length">
@@ -93,7 +96,7 @@ onAddTimelineEvent((payload) => {
           </Pane>
           <Pane size="60">
             <div h-full select-none overflow-scroll class="no-scrollbar">
-              <RootStateViewer class="p3" :data="displayedInfo" node-id="" inspector-id="" :disable-edit="true" />
+              <RootStateViewer class="p3" :data="displayedInfo" node-id="" inspector-id="" :disable-edit="true" expanded-state-id="timeline-state" />
             </div>
           </Pane>
         </Splitpanes>

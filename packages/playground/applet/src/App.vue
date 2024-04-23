@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Pinia } from '@vue/devtools-applet'
+import { Components } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
 import { HandShakeServer, getDevToolsState, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, onDevToolsStateUpdated, setupDevToolsBridge } from '@vue/devtools-core'
 import { useDevToolsColorMode } from '@vue/devtools-shared'
+import { useDark } from '@vueuse/core'
 import { useCounterStore } from './stores'
+import Hello from './components/Hello.vue'
 
-const { isDark } = useDevToolsColorMode()
+const isDark = useDark()
 // user app
 const counterStore = useCounterStore()
 
@@ -58,10 +60,11 @@ useDevToolsColorMode()
       <span @click="counterStore.decrement">➖</span>
     </div>
     <div h-150 w-200 border="1 green solid">
-      <Pinia v-if="connected" />
+      <Components v-if="connected" />
       <div v-else class="h-full flex items-center justify-center">
         Connecting...
       </div>
     </div>
   </div>
+  <Hello />
 </template>

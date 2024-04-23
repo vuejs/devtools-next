@@ -101,7 +101,7 @@ export function getInstanceName(instance: VueAppInstance) {
  */
 export function getUniqueComponentId(instance: VueAppInstance) {
   const appId = instance?.appContext?.app?.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ ?? 0
-  const instanceId = instance === instance.root ? 'root' : instance.uid
+  const instanceId = instance === instance?.root ? 'root' : instance.uid
   return `${appId}:${instanceId}`
 }
 

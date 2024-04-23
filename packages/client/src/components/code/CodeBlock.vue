@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // This components requires to run in DevTools to render correctly
 import { computed, nextTick } from 'vue'
-import type { BuiltinLanguage } from 'shikiji'
+import type { BuiltinLanguage } from 'shiki'
 
 const props = withDefaults(
   defineProps<{

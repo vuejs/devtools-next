@@ -26,6 +26,9 @@ function select(id: string) {
   <div
     v-for="(item, index) in data"
     :key="index"
+    :class="{
+      'min-w-max': depth === 0,
+    }"
   >
     <div
       class="group flex cursor-pointer items-center rounded-1 hover:(bg-primary-300 dark:bg-gray-600)"

@@ -139,16 +139,11 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       if (id === 'virtual:vue-devtools-options')
         return `export default ${JSON.stringify({ base: config.base, componentInspector: pluginOptions.componentInspector })}`
     },
-    transform(code, id) {
-      const { root } = config
-
-      const projectPath = `${root}`
-
-      if (!id.startsWith(projectPath))
+    transform(code, id, options) {
+      if (options?.ssr)
         return
 
       const { appendTo } = pluginOptions
-
       const [filename] = id.split('?', 2)
 
       if (appendTo

@@ -43,7 +43,7 @@ function select(id: string) {
       <span v-else pl5 />
       <span font-state-field text-4>
         <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
-        <span group-hover:text-white class="[.active_&]:(text-white)">{{ item.name }}</span>
+        <span group-hover:text-white class="ws-nowrap [.active_&]:(text-white)">{{ item.name }}</span>
         <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
       </span>
       <NodeTag v-for="(_item, _index) in item.tags" :key="_index" :tag="_item" />

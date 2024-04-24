@@ -218,7 +218,7 @@ function scrollToActiveTreeNode() {
   setTimeout(() => {
     const selected = componentTreeContainer.value?.querySelector('.active')
     selected?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, 0)
+  }, 300)
 }
 
 // @TODO: 1. tree node tags 2. toggle panel when inspect component

@@ -6,7 +6,7 @@ import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
-import Frame from '~/components/FrameBox.vue'
+import FrameBox from '~/components/FrameBox.vue'
 
 type ViewMode = 'xs' | 'default' | 'fullscreen'
 const anchorEle = ref<HTMLDivElement>()
@@ -147,7 +147,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
     </div>
 
     <!-- iframe -->
-    <Frame
+    <FrameBox
       :style="iframeStyle" :is-dragging="isDragging" :client="{
         close: closePanel,
         getIFrame: getIframe,

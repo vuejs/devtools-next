@@ -5,7 +5,7 @@ export function initViteServerContext(context: ViteDevServer) {
   setViteServerContext(context)
 }
 
-export function defineViteServerAction(name: string, action: (...args: any[]) => void) {
+export function defineViteServerAction<T = Promise<unknown>>(name: string, action: (...args: any[]) => void | T) {
   const viteServer = getViteServerContext()
   // `server.hot` (Vite 5.1+) > `server.ws`
   const ws = viteServer.hot ?? viteServer.ws

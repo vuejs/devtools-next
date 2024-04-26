@@ -111,7 +111,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       const urls = server.resolvedUrls!
       const keys = normalizeComboKeyPrint('option-shift-d')
       _printUrls()
-      for (const url of urls?.local)
+      for (const url of urls.local)
         console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Open ${colorUrl(`${url}__devtools__/`)} as a separate window`)}`)
       console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }

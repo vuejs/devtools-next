@@ -48,10 +48,10 @@ export interface DevToolsEvent {
     app: VueAppInstance | undefined
     instanceData: InspectorStateApiPayload['state']
   }) => void
-  [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => void
+  [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: { inspectorId: string, data: InspectorTreeApiPayload['rootNodes'] }) => void
-  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => void
-  [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => void
+  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => Promise<void>
+  [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_STATE]: (payload: string) => void
   [DevToolsEvents.VISIT_COMPONENT_TREE]: (payload: {
     componentInstance: VueAppInstance | undefined

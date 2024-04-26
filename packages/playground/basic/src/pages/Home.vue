@@ -8,7 +8,7 @@ const visible = ref(false)
   <div class="m-auto mt-3 h-80 w-120 flex flex-col items-center justify-center rounded bg-[#363636]">
     Home
     <Foo v-if="visible" />
-    <img src="/vite.svg">
+    <img src="/vite.svg" alt="Vite Logo">
     <button class="w-30 cursor-pointer" @click="visible = !visible">
       Toggle Foo
     </button>

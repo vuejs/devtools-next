@@ -46,7 +46,7 @@ const buttonClass = computed(() => ({
 
 function quickEdit(v: unknown, remove: boolean = false) {
   editInspectorState({
-    path: props.data.key.split('.'),
+    path: props.data.path || [props.data.key],
     inspectorId: state.value.inspectorId,
     type: props.data.stateType!,
     nodeId: state.value.nodeId,

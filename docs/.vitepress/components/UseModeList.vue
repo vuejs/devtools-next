@@ -14,7 +14,7 @@ const list = [
     link: '/guide/standalone',
   },
   {
-    name: 'Chrome Extension (Coming Soon)',
+    name: 'Chrome Extension',
     logo: '/features/chrome-logo.svg',
     link: '/guide/browser-extension',
     disabled: true,

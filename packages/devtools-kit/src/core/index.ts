@@ -56,7 +56,7 @@ export function initDevTools() {
       },
     ]
 
-    if (devtoolsAppRecords.value.length === 1) {
+    if (devtoolsAppRecords.value.length >= 1) {
       await setActiveAppRecord(devtoolsAppRecords.value[0])
       devtoolsState.connected = true
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
@@ -65,6 +65,11 @@ export function initDevTools() {
 
   hook.on.vueAppUnmount(async (app) => {
     const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
+    // #356 should disconnect when all apps are unmounted
+    if (activeRecords.length === 0) {
+      devtoolsState.connected = false
+      return
+    }
     devtoolsAppRecords.value = activeRecords
     if (devtoolsAppRecords.active.app === app)
       await setActiveAppRecord(activeRecords[0])

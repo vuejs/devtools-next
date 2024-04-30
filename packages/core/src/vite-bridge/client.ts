@@ -6,8 +6,8 @@ async function getViteHotContext() {
   if (import.meta.url?.includes('chrome-extension://'))
     return
 
-  const viteCLient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
-  return viteCLient?.createHotContext('/____')
+  const viteClient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
+  return viteClient?.createHotContext('/____')
 }
 
 export async function initViteClientHotContext() {

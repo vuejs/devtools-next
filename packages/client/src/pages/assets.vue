@@ -104,83 +104,85 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div block h-full of-auto class="drawer-container relative">
-    <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
-      <template #actions>
-        <div flex-none flex="~ gap2 items-center" text-lg>
-          <!-- <VueIcon
+  <div block h-full of-hidden class="drawer-container relative">
+    <div h-full w-full of-auto>
+      <Navbar ref="navbar" v-model:search="search" pb2 :no-padding="true">
+        <template #actions>
+          <div flex-none flex="~ gap2 items-center" text-lg>
+            <!-- <VueIcon
             v-tooltip.bottom-end="'File Upload'"
             icon="i-carbon:cloud-upload"
             title="File Upload" :border="false" flex="~ gap-0!" action
             @click="dropzone = !dropzone"
           /> -->
-          <VueSelect v-model="filteredExtensions" :multiple="true" :options="uniqAssetsTypes">
-            <template #button>
-              <IconTitle
-                v-tooltip.bottom-end="'Filter'"
-                icon="i-carbon-filter hover:op50" :border="false"
-                title="Filter" relative cursor-pointer p2 text-lg
-                @click="() => { }"
+            <VueSelect v-model="filteredExtensions" :multiple="true" :options="uniqAssetsTypes">
+              <template #button>
+                <IconTitle
+                  v-tooltip.bottom-end="'Filter'"
+                  icon="i-carbon-filter hover:op50" :border="false"
+                  title="Filter" relative cursor-pointer p2 text-lg
+                  @click="() => { }"
+                >
+                  <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px text-white>
+                    {{ filteredExtensions.length }}
+                  </span>
+                </IconTitle>
+              </template>
+              <template
+                #item="{
+                  item, active,
+                }"
               >
-                <span flex="~ items-center justify-center" absolute bottom-0 right-2px h-4 w-4 rounded-full bg-primary-800 text-8px text-white>
-                  {{ filteredExtensions.length }}
-                </span>
-              </IconTitle>
-            </template>
-            <template
-              #item="{
-                item, active,
-              }"
-            >
-              <div
-                w-full flex="~ gap-2 items-center" rounded px2 py2
-              >
-                <VueCheckbox :model-value="active" />
-                <span text-xs op75>{{ item.label }}</span>
-              </div>
-            </template>
-          </VueSelect>
-          <VueIcon
-            v-tooltip.bottom-end="'Toggle View'"
-            :border="false"
-            :icon="view === 'grid' ? 'i-carbon-list' : 'i-carbon-grid'"
-            title="Toggle view"
-            action cursor-pointer text-lg
-            @click="toggleView"
-          />
+                <div
+                  w-full flex="~ gap-2 items-center" rounded px2 py2
+                >
+                  <VueCheckbox :model-value="active" />
+                  <span text-xs op75>{{ item.label }}</span>
+                </div>
+              </template>
+            </VueSelect>
+            <VueIcon
+              v-tooltip.bottom-end="'Toggle View'"
+              :border="false"
+              :icon="view === 'grid' ? 'i-carbon-list' : 'i-carbon-grid'"
+              title="Toggle view"
+              action cursor-pointer text-lg
+              @click="toggleView"
+            />
+          </div>
+        </template>
+        <div op50>
+          <span v-if="search">{{ filtered.length }} matched · </span>
+          <span>{{ assets?.length }} assets in total</span>
+        </div>
+      </Navbar>
+
+      <template v-if="view === 'grid'">
+        <template v-if="byFolders.length > 1">
+          <SectionBlock
+            v-for="[folder, items] of byFolders"
+            :key="folder"
+            :text="folder"
+            :description="`${items.length} items`"
+            :open="items.length <= DETAILS_MAX_ITEMS"
+            :padding="false"
+          >
+            <div mt--4 px2 grid="~ cols-minmax-8rem">
+              <AssetGridItem v-for="a of items" :key="a.path" :asset="a" :folder="folder" @click="selected = a" />
+            </div>
+          </SectionBlock>
+        </template>
+        <div v-else p2 grid="~ cols-minmax-8rem">
+          <AssetGridItem v-for="a of filtered" :key="a.path" :asset="a" @click="selected = a" />
         </div>
       </template>
-      <div op50>
-        <span v-if="search">{{ filtered.length }} matched · </span>
-        <span>{{ assets?.length }} assets in total</span>
+      <div v-else>
+        <AssetListItem
+          v-for="item, key of byTree" :key="key"
+          v-model="selected"
+          :item="item"
+        />
       </div>
-    </Navbar>
-
-    <template v-if="view === 'grid'">
-      <template v-if="byFolders.length > 1">
-        <SectionBlock
-          v-for="[folder, items] of byFolders"
-          :key="folder"
-          :text="folder"
-          :description="`${items.length} items`"
-          :open="items.length <= DETAILS_MAX_ITEMS"
-          :padding="false"
-        >
-          <div mt--4 px2 grid="~ cols-minmax-8rem">
-            <AssetGridItem v-for="a of items" :key="a.path" :asset="a" :folder="folder" @click="selected = a" />
-          </div>
-        </SectionBlock>
-      </template>
-      <div v-else p2 grid="~ cols-minmax-8rem">
-        <AssetGridItem v-for="a of filtered" :key="a.path" :asset="a" @click="selected = a" />
-      </div>
-    </template>
-    <div v-else>
-      <AssetListItem
-        v-for="item, key of byTree" :key="key"
-        v-model="selected"
-        :item="item"
-      />
     </div>
     <VueDrawer
       :model-value="!!selected"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRaw } from 'vue'
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { getRaw } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'

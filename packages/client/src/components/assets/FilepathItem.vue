@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VTooltip as vTooltip } from '@vue/devtools-ui'
+import { vTooltip } from '@vue/devtools-ui'
 
 const props = defineProps<{
   filepath: string

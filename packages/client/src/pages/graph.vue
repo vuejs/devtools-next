@@ -65,7 +65,7 @@ const navbarRef = ref<HTMLElement>()
 </script>
 
 <template>
-  <div flex="~ col" relative h-screen of-hidden panel-grids class="graph-body">
+  <div flex="~ col" relative h-full of-hidden panel-grids class="graph-body">
     <GraphNavbar ref="navbarRef" />
     <div ref="container" class="absolute h-full w-full" />
     <GraphFileType />

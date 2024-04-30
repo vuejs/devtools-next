@@ -15,8 +15,10 @@ const PageComponent = shallowRef()
 const customTabName = ref<string | null>(null)
 
 function isMatchedWithRoute(tab?: typeof flattenedTabs['value'][number]) {
-  const routePath = route.path.startsWith('/') ? route.path.slice(1) : route.path
-  return tab && 'path' in tab && routePath === tab.path
+  const routeTabName = getRouteTabName()
+  if (!tab)
+    return false
+  return tab.name === routeTabName
 }
 
 const currentTab = computed(() => {
@@ -25,8 +27,16 @@ const currentTab = computed(() => {
 })
 
 const mainViewName = computed(() =>
-  customTabName.value ? customTabName.value : route.path.startsWith('/') ? route.path.slice(1) : route.path,
+  getRouteTabName(),
 )
+
+function getRouteTabName() {
+  return route.path.startsWith(`/${CUSTOM_TAB_VIEW}/`)
+    ? route.path.slice(CUSTOM_TAB_VIEW.length + 2)
+    : route.path.startsWith('/')
+      ? route.path.slice(1)
+      : route.path
+}
 
 watch(
   () => currentTab.value,
@@ -84,7 +94,7 @@ const showGridPanel = ref(false)
       </button>
     </div>
     <CustomTabComponent v-if="customTabName && currentTab" :tab="currentTab as CustomTab" class="h-[calc(100%-50px)]" iframe-inline of-auto />
-    <div v-else-if="PageComponent && currentTab" of-auto class="h-[calc(100%-50px)]" @click.prevent @wheel.prevent>
+    <div v-else-if="PageComponent && currentTab" of-auto class="h-[calc(100%-50px)]">
       <component :is="PageComponent" :key="`tab-${currentTab.name}`" />
     </div>
     <div v-else class="h-full w-full $ui-fcc">

@@ -41,14 +41,18 @@ onMounted(() => {
     catch (e) {
       iframeEl.value.style.opacity = '1'
     }
-    if (props.inline)
-      document.body.appendChild(iframeEl.value)
-    else
-      anchor.value?.appendChild(iframeEl.value)
 
+    document.body.appendChild(iframeEl.value)
     nextTick(updateIframeBox)
   }
+
+  // should force update the iframe visible on conflict(inline mode is unmounted after global mode is mounted)
+  const timer = setTimeout(resolveConflictVisible, 100)
   setTimeout(syncColorMode, 100)
+
+  onUnmounted(() => {
+    clearTimeout(timer)
+  })
 })
 
 watchEffect(updateIframeBox)
@@ -58,6 +62,12 @@ onUnmounted(() => {
   if (iframeEl.value)
     iframeEl.value.style.visibility = 'hidden'
 })
+
+function resolveConflictVisible() {
+  if (!iframeEl.value)
+    return
+  iframeEl.value.style.visibility = 'visible'
+}
 
 function syncColorMode() {
   if (!iframeEl.value || !iframeEl.value.contentWindow)
@@ -79,7 +89,7 @@ function updateIframeBox() {
     left: `${box.left}px`,
     top: `${box.top}px`,
     width: `${box.width}px`,
-    height: `${props.inline ? box.height : box.height - box.top}px`,
+    height: `${props.inline ? box.height - box.top : box.height}px`,
     outline: 'none',
   })
 }

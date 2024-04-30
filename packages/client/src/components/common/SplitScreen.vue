@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { CustomTab } from '@vue/devtools-kit'
 import { VueButton, VueCard, VueDropdown, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { ModuleBuiltinTab } from '~/types'
 
 function close() {
   devtoolsClientState.value.splitScreen.enabled = false
@@ -10,6 +12,7 @@ const { enabledTabs, flattenedTabs } = useAllTabs()
 const router = useRouter()
 const route = useRoute()
 const PageComponent = shallowRef()
+const customTabName = ref<string | null>(null)
 
 function isMatchedWithRoute(tab?: typeof flattenedTabs['value'][number]) {
   const routePath = route.path.startsWith('/') ? route.path.slice(1) : route.path
@@ -21,21 +24,23 @@ const currentTab = computed(() => {
   return isMatchedWithRoute(tab) ? undefined : tab
 })
 
+const mainViewName = computed(() =>
+  customTabName.value ? customTabName.value : route.path.startsWith('/') ? route.path.slice(1) : route.path,
+)
+
 watch(
   () => currentTab.value,
   (tab) => {
     if (!tab)
       return
-    const routes = router.getRoutes()
-    const matched = tab && 'path' in tab
-      ? routes.find(route => route.path === (tab.path.startsWith('/') ? tab.path : `/${tab.path}`))
-      : routes.find(route => route.name === 'custom-tab') // TODO: custom tabs
-    // if it's the same route as the main view, skip
-    const path = route.path.startsWith('/') ? route.path.slice(1) : route.path
-    if (matched?.path === path || route.params?.name === tab.name) {
-      PageComponent.value = undefined
+    // check if is a custom tab
+    if ((tab as CustomTab).view) {
+      customTabName.value = tab.name
       return
     }
+    customTabName.value = null
+    const routes = router.getRoutes()
+    const matched = routes.find(route => route.path === `/${(tab as ModuleBuiltinTab).path}`)
     const component = matched?.components?.default
     if (typeof component === 'function')
       PageComponent.value = defineAsyncComponent(component as any)
@@ -50,7 +55,7 @@ const showGridPanel = ref(false)
 
 <template>
   <div h-full h-screen of-hidden>
-    <div v-if="PageComponent && currentTab" border="b base" flex="~ gap1" z-99 px4 py3 navbar-glass>
+    <div v-if="(PageComponent || customTabName) && currentTab" border="b base" flex="~ gap1" z-99 px4 py3 navbar-glass>
       <VueDropdown placement="bottom-start" :distance="12" :skidding="5" :shown="showGridPanel" trigger="click">
         <div flex cursor-pointer items-center gap2>
           <div i-carbon-chevron-down text-sm op50 />
@@ -66,7 +71,7 @@ const showGridPanel = ref(false)
           </span>
         </div>
         <template #popper>
-          <TabsGrid :categories="enabledTabs" target="side" />
+          <TabsGrid :categories="enabledTabs" target="side" :disabled-items="[mainViewName]" />
         </template>
       </VueDropdown>
       <div flex-auto />
@@ -78,21 +83,22 @@ const showGridPanel = ref(false)
         <div i-carbon:side-panel-open />
       </button>
     </div>
-    <div v-if="PageComponent && currentTab" of-auto style="height: calc(100% - 50px)">
-      <!-- TODO: custom tabs -->
-      <!-- Tabs -->
+    <CustomTabComponent v-if="customTabName && currentTab" :tab="currentTab as CustomTab" class="h-[calc(100%-50px)]" iframe-inline of-auto />
+    <div v-else-if="PageComponent && currentTab" of-auto class="h-[calc(100%-50px)]" @click.prevent @wheel.prevent>
       <component :is="PageComponent" :key="`tab-${currentTab.name}`" />
     </div>
-    <div v-else>
-      <span text-lg op50>
-        Select a tab to start
-      </span>
-      <VueCard px4 py2 bg-base>
-        <TabsGrid :categories="enabledTabs" target="side" />
-      </VueCard>
-      <VueButton type="warning" outlined mt2 @click="close">
-        Close Split Screen
-      </VueButton>
+    <div v-else class="h-full w-full $ui-fcc">
+      <div>
+        <span text-lg op50>
+          Select a tab to start
+        </span>
+        <VueCard px4 py2 bg-base>
+          <TabsGrid :categories="enabledTabs" target="side" :disabled-items="[mainViewName]" />
+        </VueCard>
+        <VueButton type="warning" outlined mt2 @click="close">
+          Close Split Screen
+        </VueButton>
+      </div>
     </div>
   </div>
 </template>

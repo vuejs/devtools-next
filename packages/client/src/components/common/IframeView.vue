@@ -5,9 +5,12 @@ const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   src: string
-}>()
+  inline?: boolean
+}>(), {
+  inline: false,
+})
 
 const { colorMode } = useDevToolsColorMode()
 const anchor = ref<HTMLDivElement>()
@@ -38,7 +41,12 @@ onMounted(() => {
     catch (e) {
       iframeEl.value.style.opacity = '1'
     }
-    document.body.appendChild(iframeEl.value)
+    console.log(props)
+    if (props.inline)
+      document.body.appendChild(iframeEl.value)
+    else
+      anchor.value?.appendChild(iframeEl.value)
+
     nextTick(updateIframeBox)
   }
   setTimeout(syncColorMode, 100)
@@ -72,7 +80,7 @@ function updateIframeBox() {
     left: `${box.left}px`,
     top: `${box.top}px`,
     width: `${box.width}px`,
-    height: `${box.height}px`,
+    height: `${props.inline ? box.height : box.height - box.top}px`,
     outline: 'none',
   })
 }

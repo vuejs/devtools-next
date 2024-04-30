@@ -41,7 +41,6 @@ onMounted(() => {
     catch (e) {
       iframeEl.value.style.opacity = '1'
     }
-    console.log(props)
     if (props.inline)
       document.body.appendChild(iframeEl.value)
     else

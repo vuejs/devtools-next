@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "tsx": "^4.7.2",
+    "tsx": "^4.8.2",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.23"
+    "vue": "^3.4.26"
   }
 }

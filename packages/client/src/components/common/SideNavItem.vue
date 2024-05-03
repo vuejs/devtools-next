@@ -9,10 +9,12 @@ const props = withDefaults(
     tab: ModuleBuiltinTab
     minimized?: boolean
     target?: 'main' | 'side'
+    disabled?: boolean
   }>(),
   {
     minimized: true,
     target: 'main',
+    disabled: false,
   },
 )
 const route = useRoute()
@@ -22,6 +24,8 @@ const badge = computed(() => 'badge' in props.tab && props.tab.badge?.())
 const isActive = computed(() => route.path.startsWith(tabPath.value))
 
 function onClick() {
+  if (props.disabled)
+    return
   if ('onClick' in props.tab && props.tab.onClick)
     props.tab.onClick()
   else if (props.target === 'side')
@@ -35,11 +39,14 @@ function onClick() {
       :is="target === 'main' ? RouterLink : 'button'"
       :to="tabPath"
       :flex="`~ items-center ${minimized ? 'justify-center' : 'justify-between'}`"
-      hover="bg-active op-100"
-
+      text-secondary relative block h-10 select-none op65
+      :disabled="disabled"
+      :class="[
+        disabled ? 'cursor-not-allowed op40!' : 'hover:(bg-active op-100)',
+      ]"
       :w="minimized ? '10' : 'full'"
       :rounded="minimized ? 'xl' : ''"
-      :p="minimized ? '1' : 'x3'" text-secondary relative block h-10 select-none op65
+      :p="minimized ? '1' : 'x3'"
       exact-active-class="!text-primary-600 bg-active op-100!"
       @click="onClick"
     >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { VueButton, VueCard, VueDropdown, vTooltip } from '@vue/devtools-ui'
 import { CustomTab } from '@vue/devtools-kit'
-import { VueButton, VueCard, VueDropdown, VTooltip as vTooltip } from '@vue/devtools-ui'
 import { ModuleBuiltinTab } from '~/types'
 
 function close() {

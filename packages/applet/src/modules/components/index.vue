@@ -14,7 +14,7 @@ import {
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
-import { VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueInput, vTooltip } from '@vue/devtools-ui'
 import { sortByKey } from '@vue/devtools-shared'
 import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'

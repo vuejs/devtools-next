@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueButton, VueIcon, VueInput, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueIcon, VueInput, vTooltip } from '@vue/devtools-ui'
 import { debounce } from 'perfect-debounce'
 import { customTypeEnums, toSubmit } from '@vue/devtools-kit'
 import { computed, ref, watch, watchEffect } from 'vue'

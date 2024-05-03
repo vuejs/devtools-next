@@ -45,15 +45,9 @@ const fieldsCount = computed(() => {
   else
     return 0
 })
-
+const normalizedPath = computed(() => props.data.path || [props.data.key])
 // normalized display key
-const normalizedDisplayedKey = computed(() => {
-  const key = props.data.key
-  const lastDotIndex = key.lastIndexOf('.')
-  if (lastDotIndex === -1)
-    return key
-  return key.slice(lastDotIndex + 1)
-})
+const normalizedDisplayedKey = computed(() => normalizedPath.value[normalizedPath.value.length - 1])
 
 // normalized display value
 const normalizedDisplayedValue = computed(() => {
@@ -90,7 +84,8 @@ const normalizedDisplayedChildren = computed(() => {
   if (isArray(value)) {
     const sliced = value.slice(0, limit.value)
     return sliced.map((item, i) => ({
-      key: `${props.data.key}.${i}`,
+      key: i.toString(),
+      path: [...normalizedPath.value, i.toString()],
       value: item,
       ...inherit,
       editable: props.data.editable && !isUneditableType,
@@ -99,7 +94,8 @@ const normalizedDisplayedChildren = computed(() => {
   }
   else if (isObject(value)) {
     displayedChildren = Object.keys(value).slice(0, limit.value).map(key => ({
-      key: `${props.data.key}.${key}`,
+      key,
+      path: [...normalizedPath.value, key],
       value: value[key],
       ...inherit,
       editable: props.data.editable && !isUneditableType,
@@ -137,7 +133,7 @@ watch(() => editing.value, (v) => {
 function submit() {
   const data = props.data
   editInspectorState({
-    path: data.key.split('.'),
+    path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
     nodeId,
@@ -163,10 +159,8 @@ function addNewProp(type: EditorAddNewPropType) {
 
 function submitDrafting() {
   const data = props.data
-  const path = data.key.split('.')
-  path.push(draftingNewProp.value.key)
   editInspectorState({
-    path,
+    path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
     nodeId,

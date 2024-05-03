@@ -79,7 +79,7 @@ export function getSetDetails(val: Set<unknown>) {
   }
 }
 
-function getCatchedGetters(store) {
+function getCaughtGetters(store) {
   const getters = {}
 
   const origGetters = store.getters || {}
@@ -131,7 +131,7 @@ export function getStoreDetails(store) {
       displayText: 'Store',
       value: {
         state: store.state,
-        getters: getCatchedGetters(store),
+        getters: getCaughtGetters(store),
       },
       fields: {
         abstract: true,

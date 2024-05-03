@@ -4,6 +4,7 @@ import type { CategorizedTabs } from '~/composables/state-tab'
 defineProps<{
   categories: CategorizedTabs
   target: 'main' | 'side'
+  disabledItems?: string[]
 }>()
 </script>
 
@@ -16,6 +17,7 @@ defineProps<{
           <SideNavItem
             v-for="tab of tabs"
             :key="tab.name"
+            :disabled="disabledItems?.includes(tab.name)"
             :target="target"
             :tab="tab"
           />

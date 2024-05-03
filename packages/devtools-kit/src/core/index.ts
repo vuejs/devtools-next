@@ -3,7 +3,7 @@ import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from '
 import { DevToolsHooks } from '../types'
 import { devtoolsAppRecords, devtoolsState, getDevToolsEnv } from '../state'
 import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectDevToolsPlugin, setupExternalPlugin } from '../api'
-import { onLegacyDevToolsPluginApiAvailabled } from '../compat'
+import { onLegacyDevToolsPluginApiAvailable } from '../compat'
 import { createAppRecord, setActiveAppRecord } from './app-record'
 
 export function initDevTools() {
@@ -35,7 +35,7 @@ export function initDevTools() {
     setupExternalPlugin([pluginDescriptor, setupFn], app, api)
   })
 
-  onLegacyDevToolsPluginApiAvailabled(() => {
+  onLegacyDevToolsPluginApiAvailable(() => {
     const normalizedPluginBuffer = devtoolsState.pluginBuffer.filter(([item]) => item.id !== 'components')
     normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
       target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
@@ -56,7 +56,7 @@ export function initDevTools() {
       },
     ]
 
-    if (devtoolsAppRecords.value.length === 1) {
+    if (devtoolsAppRecords.value.length >= 1) {
       await setActiveAppRecord(devtoolsAppRecords.value[0])
       devtoolsState.connected = true
       devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
@@ -65,6 +65,11 @@ export function initDevTools() {
 
   hook.on.vueAppUnmount(async (app) => {
     const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
+    // #356 should disconnect when all apps are unmounted
+    if (activeRecords.length === 0) {
+      devtoolsState.connected = false
+      return
+    }
     devtoolsAppRecords.value = activeRecords
     if (devtoolsAppRecords.active.app === app)
       await setActiveAppRecord(activeRecords[0])

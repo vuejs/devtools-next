@@ -101,3 +101,5 @@ export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: Devtools
     ? tab
     : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }
+
+export const CUSTOM_TAB_VIEW = 'custom-tab-view'

@@ -5,7 +5,7 @@ declare global {
   var __VUE_DEVTOOLS_GLOBAL_HOOK__: DevToolsHook
   var __VUE_DEVTOOLS_GLOBAL_STATE__: DevToolsState
   var __VUE_DEVTOOLS_CONTEXT__: DevToolsContext
-  var __VUE_DEVTOOLS_NEXT_APP_RECROD_INFO__: {
+  var __VUE_DEVTOOLS_NEXT_APP_RECORD_INFO__: {
     id: number
     appIds: Set<string>
   }

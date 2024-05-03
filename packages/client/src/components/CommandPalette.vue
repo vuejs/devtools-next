@@ -98,8 +98,8 @@ useEventListener('keydown', (e) => {
 </script>
 
 <template>
-  <VueOverlay v-if="show" dim class="backdrop-blur-2xl!">
-    <div flex="~ col" max-h-120 min-h-60 h="60%" w-xl of-hidden border="1 base" rounded-md text-3.75>
+  <VueOverlay v-if="show" dim class="$ui-z-max-override backdrop-blur-2xl!">
+    <div flex="~ col" h="60%" border="1 base" m-x-4 max-h-120 min-h-60 w-xl of-hidden rounded-md text-3.75>
       <header border="b base" flex-none>
         <VueInput v-model="search" placeholder="Type to search..." flat auto-focus class="h12 border-none!" />
       </header>

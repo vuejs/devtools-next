@@ -8,11 +8,9 @@ export interface OverlayProps {
   position?: 'fixed' | 'absolute'
 }
 
-const props = withDefaults(defineProps<OverlayProps>(), {
+withDefaults(defineProps<OverlayProps>(), {
   position: 'fixed',
 })
-
-console.log({ props })
 </script>
 
 <template>

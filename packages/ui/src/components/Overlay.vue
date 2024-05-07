@@ -2,17 +2,26 @@
 export interface OverlayProps {
   dim?: boolean
   blur?: boolean
+  /**
+   * Position of the overlay, default is `fixed`
+   */
+  position?: 'fixed' | 'absolute'
 }
 
-defineProps<OverlayProps>()
+const props = withDefaults(defineProps<OverlayProps>(), {
+  position: 'fixed',
+})
+
+console.log({ props })
 </script>
 
 <template>
   <div
-    class="absolute left-0 top-0 $ui-z-max h-full w-full $ui-fcc transition-opacity transition-duration-300 $ui-bg-base"
+    class="left-0 top-0 $ui-z-max h-full w-full $ui-fcc transition-opacity transition-duration-300 $ui-bg-base"
     :class="[
       dim ? 'bg-opacity-50!' : 'bg-opacity-0!',
       blur ? 'backdrop-blur-sm' : '',
+      position,
     ]"
   >
     <slot />

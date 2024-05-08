@@ -95,6 +95,7 @@ registerCommands(() => [
         title: 'Color Picker',
         icon: 'i-carbon-eyedropper',
         action: async () => {
+          bridge.value.emit('toggle-panel', false)
           const { sRGBHex } = await eyeDropper.open() || {}
           if (sRGBHex)
             copy(sRGBHex)

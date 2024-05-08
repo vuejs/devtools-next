@@ -77,7 +77,7 @@ onMounted(() => isMount.value = true)
         :class="{
           'pointer-events-none': permanent,
         }"
-        :dim="dim" :blur="blur" @click="closeOutside && closable && (show = false)"
+        :dim :blur :position @click="closeOutside && closable && (show = false)"
       >
         <div
           :class="[classes.class, contentClass ?? '', contentBlur ? '$ui-glass-effect' : '$ui-bg-base']"

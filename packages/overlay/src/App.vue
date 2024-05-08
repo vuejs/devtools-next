@@ -137,10 +137,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
             xmlns="http://www.w3.org/2000/svg" style="height: 1.1em; width: 1.1em; opacity:0.5;"
             :style="vueInspectorEnabled ? 'opacity:1;color:#00dc82;' : ''" viewBox="0 0 24 24"
           >
-            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <circle cx="12" cy="12" r=".5" fill="currentColor" />
-              <path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" />
-            </g>
+            <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h8.925l-2 2H5v14h14v-6.95l2-2V19q0 .825-.587 1.413T19 21zm4-6v-4.25l9.175-9.175q.3-.3.675-.45t.75-.15q.4 0 .763.15t.662.45L22.425 3q.275.3.425.663T23 4.4t-.137.738t-.438.662L13.25 15zM21.025 4.4l-1.4-1.4zM11 13h1.4l5.8-5.8l-.7-.7l-.725-.7L11 11.575zm6.5-6.5l-.725-.7zl.7.7z" />
           </svg>
         </div>
       </template>

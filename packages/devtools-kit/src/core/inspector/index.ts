@@ -5,6 +5,11 @@ export interface Inspector {
   nodeId: string
   filter: string
   treeFilterPlaceholder: string
+  nodeActions?: {
+    icon: string
+    tooltip: string
+    action: (payload: unknown) => void
+  }[]
 }
 
 export interface InspectorApiPayload {
@@ -17,9 +22,15 @@ export interface InspectorApiPayload {
     tooltip: string
     action: (payload: unknown) => void
   }[]
+  nodeActions?: {
+    icon: string
+    tooltip: string
+    action: (payload: unknown) => void
+  }[]
 }
 
 export function addInspector(payload: Inspector) {
+  console.log('xxx', payload.id, payload.nodeActions)
   devtoolsContext.inspector.push(payload)
 }
 

@@ -18,14 +18,15 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   if (pluginDescriptor.app !== app)
     return
 
-  if (pluginDescriptor.packageName === 'vue-query') {
-    /**
-     * Skip it for now because plugin api doesn't support vue-query devtools plugin:
-     * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
-     * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
-     */
-    return
-  }
+  console.log('x', pluginDescriptor)
+  // if (pluginDescriptor.packageName === 'vue-query') {
+  //   /**
+  //    * Skip it for now because plugin api doesn't support vue-query devtools plugin:
+  //    * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
+  //    * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
+  //    */
+  //   return
+  // }
 
   // edge case for router plugin
   if (pluginDescriptor.packageName === 'vue-router') {
@@ -50,6 +51,7 @@ export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
     return {
       ...record,
       moduleDetectives: {
+        vueQuery: true,
         vueRouter: !!globalProperties.$router,
         pinia: !!globalProperties.$pinia,
         vueI18n: !!globalProperties.$i18n,

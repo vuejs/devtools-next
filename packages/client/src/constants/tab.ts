@@ -49,7 +49,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
-
+    {
+      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
+      name: 'vueQuery',
+      order: -100,
+      path: 'vue-query',
+      title: 'VueQuery',
+    },
     {
       icon: 'i-carbon-language',
       name: 'i18n',
@@ -78,6 +84,7 @@ export const viteOnlyTabs = [
 type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 
 const moduleDetectivesMapping = {
+  vueQuery: 'vueQuery',
   pinia: 'pinia',
   router: 'vueRouter',
   i18n: 'vueI18n',
@@ -85,6 +92,7 @@ const moduleDetectivesMapping = {
 
 export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {
   const key = tab.name
+  console.log('key', key)
   return key in moduleDetectivesMapping && moduleDetectives[moduleDetectivesMapping[key]]
 }
 

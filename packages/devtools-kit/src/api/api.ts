@@ -48,6 +48,7 @@ export class DevToolsPluginApi {
       nodeId: '',
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder || '',
+      nodeActions: payload.nodeActions || [],
     })
   }
 
@@ -169,6 +170,7 @@ export class DevToolsPluginApi {
   getSettings() {
     return {
       logStoreChanges: null,
+      onlineMode: {},
     }
   }
 

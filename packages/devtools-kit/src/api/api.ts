@@ -167,12 +167,12 @@ export class DevToolsPluginApi {
     return nowFn()
   }
 
-  getSettings() {
-    return {
-      logStoreChanges: null,
-      onlineMode: {},
-    }
-  }
+  // getSettings() {
+  //   return {
+  //     logStoreChanges: null,
+  //     onlineMode: {},
+  //   }
+  // }
 
   // #endregion compatible with old devtools
 

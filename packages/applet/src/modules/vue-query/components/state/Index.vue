@@ -67,7 +67,6 @@ onInspectorTreeUpdated((data) => {
 })
 
 onInspectorStateUpdated((data) => {
-  console.log('data', data)
   if (!data || data.inspectorId !== inspectorId)
     return
 

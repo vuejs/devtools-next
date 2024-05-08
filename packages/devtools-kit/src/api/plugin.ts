@@ -18,7 +18,6 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   if (pluginDescriptor.app !== app)
     return
 
-  console.log('x', pluginDescriptor)
   // if (pluginDescriptor.packageName === 'vue-query') {
   //   /**
   //    * Skip it for now because plugin api doesn't support vue-query devtools plugin:
@@ -38,7 +37,27 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
       }))
     }
   }
-  setupFn(api)
+
+  // @TODO: re-design the plugin api
+  const extendedApi = new Proxy(api, {
+    get(target, prop, receiver) {
+      if (prop === 'getSettings') {
+        return function () {
+          const _settings = {}
+          Object.keys(pluginDescriptor.settings!).forEach((key) => {
+            _settings[key] = pluginDescriptor.settings![key].defaultValue
+          })
+
+          return _settings
+        }
+      }
+      return Reflect.get(target, prop, receiver)
+    },
+    set(target, prop, value, receiver) {
+      return Reflect.set(target, prop, value, receiver)
+    },
+  })
+  setupFn(extendedApi)
 }
 
 export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {

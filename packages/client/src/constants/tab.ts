@@ -92,7 +92,6 @@ const moduleDetectivesMapping = {
 
 export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {
   const key = tab.name
-  console.log('key', key)
   return key in moduleDetectivesMapping && moduleDetectives[moduleDetectivesMapping[key]]
 }
 

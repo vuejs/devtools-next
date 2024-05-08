@@ -30,7 +30,6 @@ export interface InspectorApiPayload {
 }
 
 export function addInspector(payload: Inspector) {
-  console.log('xxx', payload.id, payload.nodeActions)
   devtoolsContext.inspector.push(payload)
 }
 

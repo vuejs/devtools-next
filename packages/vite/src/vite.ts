@@ -42,7 +42,7 @@ export interface VitePluginVueDevToolsOptions {
   appendTo?: string | RegExp
 
   /**
-   * Enable Vue Component Inspector
+   * Enable vue component inspector
    *
    * @default true
    */

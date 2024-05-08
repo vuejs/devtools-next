@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/getting-started
+      link: /getting-started/introduction
     - theme: alt
       text: Features
-      link: /guide/features
+      link: /getting-started/features
     - theme: alt
       text: View on GitHub
       link: https://github.com/vuejs/devtools-next

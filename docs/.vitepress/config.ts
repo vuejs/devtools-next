@@ -24,9 +24,9 @@ const PLUGINS: DefaultTheme.NavItemWithLink[] = [
   { text: 'API', link: '/plugins/api' },
 ]
 
-const VERSIONS: DefaultTheme.NavItemWithLink[] = [
-  { text: `v${version} (current)`, link: 'https://github.com/vuejs/devtools-next/releases' },
-]
+// const VERSIONS: DefaultTheme.NavItemWithLink[] = [
+//   { text: `v${version} (current)`, link: 'https://github.com/vuejs/devtools-next/releases' },
+// ]
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({

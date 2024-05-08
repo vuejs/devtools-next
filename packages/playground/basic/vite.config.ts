@@ -9,7 +9,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 export default defineConfig({
   plugins: [
     vue(),
-    VueDevTools(),
+    VueDevTools({
+      launchEditor: 'code',
+    }),
     Unocss(),
     AutoImport({
       imports: [

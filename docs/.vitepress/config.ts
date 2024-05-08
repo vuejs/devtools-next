@@ -38,6 +38,7 @@ export default defineConfig({
       dark: 'vitesse-dark',
     },
   },
+
   cleanUrls: true,
   vite,
   themeConfig: {
@@ -48,6 +49,7 @@ export default defineConfig({
         text: 'Guide',
         link: '/getting-started/introduction',
       },
+      { text: 'Features', link: '/guide/features' },
       {
         text: 'Plugins',
         items: [

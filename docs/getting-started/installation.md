@@ -1,8 +1,6 @@
-# Getting Started
+# Installation
 
-## Overview
-
-**Vue DevTools is a tool designed to enhance the Vue developer experience,** It provides some [features](/guide/features) to help you better understand your Vue application.There are several ways to use Vue DevTools in your Vue project:
+There are multiple options to add this tool to your projects, ensuring that it fits seamlessly into your development workflow. Whether you're working on a [Vue.js](https://vuejs.org/) project with [Vite](https://vitejs.dev/), a standalone Vue.js application, or a web application, Vue DevTools offers a solution that match your needs:
 
 <UseModeList />
 

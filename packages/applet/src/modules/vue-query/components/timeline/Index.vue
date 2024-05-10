@@ -16,7 +16,7 @@ const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
 // event info + group info = [0, 1]
 expandedStateNodes.value = ['0', '1']
 
-const LAYER_ID = 'pinia:mutations'
+const LAYER_ID = 'vue-query'
 const eventList = ref<TimelineEvent['event'][]>([])
 const groupList = ref<Map<number, TimelineEvent['event'][]>>(new Map())
 const selectedEventIndex = ref(0)
@@ -83,7 +83,7 @@ onAddTimelineEvent((payload) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
+    <DevToolsHeader doc-link="https://tanstack.com/query/latest/docs/framework/vue/overview/" github-repo-link="https://github.com/TanStack/query/tree/main/packages/vue-query/">
       <Navbar />
     </DevToolsHeader>
     <template v-if="eventList.length">

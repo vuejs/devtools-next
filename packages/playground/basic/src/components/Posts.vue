@@ -39,7 +39,7 @@ export default defineComponent({
   </div>
   <div v-else-if="data">
     <ul>
-      <li v-for="item in data" :key="item.id">
+      <li v-for="item in data" :key="item.id" class="list-none">
         <a
           href="#"
           :class="{ visited: isVisited(item.id) }"

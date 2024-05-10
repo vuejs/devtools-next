@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
+import { callInspectorNodeAction, getInspectorNodeActions, getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
+import { vTooltip } from '@vue/devtools-ui'
 import Navbar from '../Navbar.vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
@@ -13,13 +14,30 @@ import { createExpandedContext } from '~/composables/toggle-expanded'
 
 const { expanded: expandedStateNodes } = createExpandedContext('vue-query-state')
 
+interface NodeAction {
+  icon: string
+  tooltip: string
+  actions?: (payload: unknown) => void
+}
 const inspectorId = 'vue-query'
+const nodeActions = ref<NodeAction[]>([])
 
 const selected = ref('')
 const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
 const state = ref<Record<string, InspectorState[]>>({})
-
 const emptyState = computed(() => !Object.keys(state.value).length)
+
+function getNodeActions() {
+  getInspectorNodeActions(inspectorId).then((actions) => {
+    nodeActions.value = actions as NodeAction[]
+  })
+}
+
+getNodeActions()
+
+function callNodeAction(index: number) {
+  callInspectorNodeAction(inspectorId, index, selected.value)
+}
 
 function filterEmptyState(data: Record<string, InspectorState[]>) {
   for (const key in data) {
@@ -29,32 +47,32 @@ function filterEmptyState(data: Record<string, InspectorState[]>) {
   return data
 }
 
-function getPiniaState(nodeId: string) {
+function getVueQueryState(nodeId: string) {
   getInspectorState({ inspectorId, nodeId }).then((data) => {
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }
 
-function clearPiniaState() {
+function clearVueQueryState() {
   state.value = {}
 }
 
 watch(selected, () => {
-  clearPiniaState()
-  getPiniaState(selected.value)
+  clearVueQueryState()
+  getVueQueryState(selected.value)
 })
 
-const getPiniaInspectorTree = () => {
+const getVueQueryInspectorTree = () => {
   getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length)
       selected.value = data[0].id
-    getPiniaState(data[0].id)
+    getVueQueryState(data[0].id)
   })
 }
-getPiniaInspectorTree()
+getVueQueryInspectorTree()
 
 onInspectorTreeUpdated((data) => {
   if (!data?.data.length || data.inspectorId !== inspectorId)
@@ -62,7 +80,7 @@ onInspectorTreeUpdated((data) => {
   tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
   if (!selected.value && data.data.length) {
     selected.value = data.data[0].id
-    getPiniaState(data.data[0].id)
+    getVueQueryState(data.data[0].id)
   }
 })
 
@@ -77,7 +95,7 @@ onInspectorStateUpdated((data) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
+    <DevToolsHeader doc-link="https://tanstack.com/query/latest/docs/framework/vue/overview/" github-repo-link="https://github.com/TanStack/query/tree/main/packages/vue-query/">
       <Navbar />
     </DevToolsHeader>
     <Splitpanes class="flex-1 overflow-auto">
@@ -87,8 +105,15 @@ onInspectorStateUpdated((data) => {
         </div>
       </Pane>
       <Pane size="60">
-        <div h-full select-none overflow-scroll class="no-scrollbar">
-          <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="vue-query-state" />
+        <div class="h-full flex flex-col p2">
+          <div class="flex justify-end pb-1" border="b dashed base">
+            <div class="flex items-center gap-2 px-1">
+              <div v-for="(action, index) in nodeActions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callNodeAction(index)">
+                <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
+              </div>
+            </div>
+          </div>
+          <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="vue-query-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
           <Empty v-else>
             No Data
           </Empty>

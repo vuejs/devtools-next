@@ -52,6 +52,21 @@ export class DevToolsPluginApi {
     })
   }
 
+  // get inspector node action
+  getInspectorNodeActions(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    return inspector?.nodeActions?.map(({ icon, tooltip }) => ({ icon, tooltip })) || []
+  }
+
+  // call inspector node action
+  callInspectorNodeAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector && inspector.nodeActions) {
+      const item = inspector.nodeActions[actionIndex]
+      item.action?.(nodeId)
+    }
+  }
+
   highlightElement(instance: VueAppInstance) {
     highlightElement(instance)
   }

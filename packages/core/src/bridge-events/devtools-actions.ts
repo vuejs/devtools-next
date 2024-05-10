@@ -29,6 +29,14 @@ export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', 
   return stringify(res) as string
 })
 
+export const getInspectorNodeActions = defineDevToolsAction('devtools:inspector-node-actions', (devtools, payload) => {
+  return devtools.api.getInspectorNodeActions(payload)
+})
+
+export const callInspectorNodeAction = defineDevToolsAction('devtools:call-inspector-node-action', (devtools, inspectorId: string, actionIndex: number, nodeId: string) => {
+  return devtools.api.callInspectorNodeAction(inspectorId, actionIndex, nodeId)
+})
+
 export const getComponentBoundingRect = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
   return devtools.api.getComponentBoundingRect(payload)
 })

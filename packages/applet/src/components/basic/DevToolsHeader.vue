@@ -17,12 +17,14 @@ const router = useVirtualRouter()
       </slot>
     </div>
     <div>
-      <a class="pr2" :href="docLink" target="_blank">
-        <i class="i-clarity:document-line cursor-pointer op70 text-base hover:op100" />
-      </a>
-      <a :href="githubRepoLink" target="_blank">
-        <i class="i-mdi:github cursor-pointer op70 text-base hover:op100" />
-      </a>
+      <div class="flex gap2">
+        <a class="pr2" :href="docLink" target="_blank">
+          <i class="i-clarity:document-line cursor-pointer op70 text-base hover:op100" />
+        </a>
+        <a :href="githubRepoLink" target="_blank">
+          <i class="i-mdi:github cursor-pointer op70 text-base hover:op100" />
+        </a>
+      </div>
     </div>
   </div>
 </template>

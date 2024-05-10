@@ -36,11 +36,11 @@ const virtualRouter = useVirtualRouter()
       </div>
 
       <div flex="~ gap-6 wrap" mt-5 items-center justify-center>
-        <a href="https://github.com/vuejs/pinia" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-blue" transition>
+        <a href="https://github.com/TanStack/query/tree/main/packages/vue-query/" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-blue" transition>
           <div i-carbon-star />
           Star on GitHub
         </a>
-        <a href="https://pinia.vuejs.org/" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
+        <a href="https://tanstack.com/query/latest/docs/framework/vue/overview/" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
           <div i-carbon-document />
           View Documentation
         </a>

@@ -12,9 +12,9 @@ import { createExpandedContext } from '~/composables/toggle-expanded'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
 const props = defineProps<{
-  layerId: string
+  layerIds: string[]
   docLink: string
-  repoLink: string
+  githubRepoLink: string
 }>()
 
 const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
@@ -78,7 +78,7 @@ onAddTimelineEvent((payload) => {
     return
 
   const { layerId, event } = payload
-  if (layerId !== props.layerId)
+  if (!props.layerIds.includes(layerId))
     return
 
   eventList.value.push(event)
@@ -88,7 +88,7 @@ onAddTimelineEvent((payload) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader :doc-link="docLink" :github-repo-link="repoLink">
+    <DevToolsHeader :doc-link="docLink" :github-repo-link="githubRepoLink">
       <Navbar />
     </DevToolsHeader>
     <template v-if="eventList.length">

@@ -16,10 +16,14 @@ if (!fse.existsSync(dir)) {
 const APIReg = new RegexExtra(/^## (.*)\{#(.*)\}/gm)
 
 const files = await fg(['src/api/*.md'], {
-  ignore: ['!*index.md'],
+  ignore: ['*index.md'],
   cwd: dir,
   onlyFiles: true,
 }).then(r => r.sort())
+
+const IGNORED_TITLES = [
+  'guide',
+]
 
 const headerMatch = /^# (.*)/m
 
@@ -32,6 +36,8 @@ export function getTitleMarkdown(text: string) {
   return title.trim()
 }
 
+const titleIgnored = (title: string) => IGNORED_TITLES.some(ignored => title.toLowerCase().includes(ignored))
+
 const manifest = await Promise.all(files.map(async (file) => {
   const filepath = join(dir, file)
   const content = await fse.readFile(filepath, 'utf-8')
@@ -43,7 +49,9 @@ const manifest = await Promise.all(files.map(async (file) => {
     return
   const result = APIReg.capturesAll(content) ?? []
   return result.map((item) => {
-    const [title, path] = item.map(i => i.replaceAll(/(?<!`)<.*>(?!`)/g, '').replaceAll('\\', '').trim())
+    const [title, path] = item.map(i => i.replaceAll(/(?<!`)<.*>(?!`)/g, '').replaceAll('\\', '').trim().replace(/`/g, ''))
+    if (titleIgnored(title))
+      return null
     return {
       id: `${parentId}:${title}`,
       title,

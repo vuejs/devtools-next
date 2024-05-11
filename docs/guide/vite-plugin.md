@@ -57,14 +57,28 @@ interface VitePluginVueDevToolsOptions {
   appendTo?: string | RegExp
 
   /**
-   * Customize openInEditor host (e.g. http://localhost:3000)
+   * Enable vue component inspector
+   *
+   * @default true
+   */
+  componentInspector?: boolean | VitePluginInspectorOptions
+
+  /**
+   * Target editor when open in editor (v7.2.0+)
+   *
+   * @default code (Visual Studio Code)
+   */
+  launchEditor?: 'appcode' | 'atom' | 'atom-beta' | 'brackets' | 'clion' | 'code' | 'code-insiders' | 'codium' | 'emacs' | 'idea' | 'notepad++' | 'pycharm' | 'phpstorm' | 'rubymine' | 'sublime' | 'vim' | 'visualstudio' | 'webstorm'
+
+  /**
+   * Customize openInEditor host
    * @default false
    * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   openInEditorHost?: string | false
 
   /**
-   * DevTools client host (e.g. http://localhost:3000)
+   * DevTools client host
    * useful for projects that use a reverse proxy
    * @default false
    * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.

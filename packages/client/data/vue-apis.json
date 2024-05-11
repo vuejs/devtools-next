@@ -108,32 +108,32 @@
     "url": "https:/vuejs.org/api/application#app-config-optionmergestrategies"
   },
   {
-    "id": "doc:built-in-components:`<Transition>`",
-    "title": "`<Transition>`",
+    "id": "doc:built-in-components:<Transition>",
+    "title": "<Transition>",
     "description": "built-in-components",
     "url": "https:/vuejs.org/api/built-in-components#transition"
   },
   {
-    "id": "doc:built-in-components:`<TransitionGroup>`",
-    "title": "`<TransitionGroup>`",
+    "id": "doc:built-in-components:<TransitionGroup>",
+    "title": "<TransitionGroup>",
     "description": "built-in-components",
     "url": "https:/vuejs.org/api/built-in-components#transitiongroup"
   },
   {
-    "id": "doc:built-in-components:`<KeepAlive>`",
-    "title": "`<KeepAlive>`",
+    "id": "doc:built-in-components:<KeepAlive>",
+    "title": "<KeepAlive>",
     "description": "built-in-components",
     "url": "https:/vuejs.org/api/built-in-components#keepalive"
   },
   {
-    "id": "doc:built-in-components:`<Teleport>`",
-    "title": "`<Teleport>`",
+    "id": "doc:built-in-components:<Teleport>",
+    "title": "<Teleport>",
     "description": "built-in-components",
     "url": "https:/vuejs.org/api/built-in-components#teleport"
   },
   {
-    "id": "doc:built-in-components:`<Suspense>`",
-    "title": "`<Suspense>`",
+    "id": "doc:built-in-components:<Suspense>",
+    "title": "<Suspense>",
     "description": "built-in-components",
     "url": "https:/vuejs.org/api/built-in-components#suspense"
   },
@@ -246,23 +246,42 @@
     "url": "https:/vuejs.org/api/built-in-special-attributes#is"
   },
   {
-    "id": "doc:built-in-special-elements:`<component>`",
-    "title": "`<component>`",
+    "id": "doc:built-in-special-elements:<component>",
+    "title": "<component>",
     "description": "built-in-special-elements",
     "url": "https:/vuejs.org/api/built-in-special-elements#component"
   },
   {
-    "id": "doc:built-in-special-elements:`<slot>`",
-    "title": "`<slot>`",
+    "id": "doc:built-in-special-elements:<slot>",
+    "title": "<slot>",
     "description": "built-in-special-elements",
     "url": "https:/vuejs.org/api/built-in-special-elements#slot"
   },
   {
-    "id": "doc:built-in-special-elements:`<template>`",
-    "title": "`<template>`",
+    "id": "doc:built-in-special-elements:<template>",
+    "title": "<template>",
     "description": "built-in-special-elements",
     "url": "https:/vuejs.org/api/built-in-special-elements#template"
   },
+  {
+    "id": "doc:compile-time-flags:__VUE_OPTIONS_API__",
+    "title": "__VUE_OPTIONS_API__",
+    "description": "compile-time-flags",
+    "url": "https:/vuejs.org/api/compile-time-flags#VUE_OPTIONS_API"
+  },
+  {
+    "id": "doc:compile-time-flags:__VUE_PROD_DEVTOOLS__",
+    "title": "__VUE_PROD_DEVTOOLS__",
+    "description": "compile-time-flags",
+    "url": "https:/vuejs.org/api/compile-time-flags#VUE_PROD_DEVTOOLS"
+  },
+  {
+    "id": "doc:compile-time-flags:__VUE_PROD_HYDRATION_MISMATCH_DETAILS__",
+    "title": "__VUE_PROD_HYDRATION_MISMATCH_DETAILS__",
+    "description": "compile-time-flags",
+    "url": "https:/vuejs.org/api/compile-time-flags#VUE_PROD_HYDRATION_MISMATCH_DETAILS"
+  },
+  null,
   {
     "id": "doc:component-instance:$data",
     "title": "$data",
@@ -906,8 +925,8 @@
     "url": "https:/vuejs.org/api/sfc-css-features#css-modules"
   },
   {
-    "id": "doc:sfc-css-features:`v-bind()` in CSS",
-    "title": "`v-bind()` in CSS",
+    "id": "doc:sfc-css-features:v-bind() in CSS",
+    "title": "v-bind() in CSS",
     "description": "sfc-css-features",
     "url": "https:/vuejs.org/api/sfc-css-features#v-bind-in-css"
   },
@@ -942,6 +961,12 @@
     "url": "https:/vuejs.org/api/sfc-script-setup#defineprops-defineemits"
   },
   {
+    "id": "doc:sfc-script-setup:defineModel()",
+    "title": "defineModel()",
+    "description": "sfc-script-setup",
+    "url": "https:/vuejs.org/api/sfc-script-setup#definemodel"
+  },
+  {
     "id": "doc:sfc-script-setup:defineExpose()",
     "title": "defineExpose()",
     "description": "sfc-script-setup",
@@ -960,20 +985,20 @@
     "url": "https:/vuejs.org/api/sfc-script-setup#defineslots"
   },
   {
-    "id": "doc:sfc-script-setup:`useSlots()` & `useAttrs()`",
-    "title": "`useSlots()` & `useAttrs()`",
+    "id": "doc:sfc-script-setup:useSlots() & useAttrs()",
+    "title": "useSlots() & useAttrs()",
     "description": "sfc-script-setup",
     "url": "https:/vuejs.org/api/sfc-script-setup#useslots-useattrs"
   },
   {
-    "id": "doc:sfc-script-setup:Usage alongside normal `<script>`",
-    "title": "Usage alongside normal `<script>`",
+    "id": "doc:sfc-script-setup:Usage alongside normal <script>",
+    "title": "Usage alongside normal <script>",
     "description": "sfc-script-setup",
     "url": "https:/vuejs.org/api/sfc-script-setup#usage-alongside-normal-script"
   },
   {
-    "id": "doc:sfc-script-setup:Top-level `await`",
-    "title": "Top-level `await`",
+    "id": "doc:sfc-script-setup:Top-level await",
+    "title": "Top-level await",
     "description": "sfc-script-setup",
     "url": "https:/vuejs.org/api/sfc-script-setup#top-level-await"
   },
@@ -1014,8 +1039,8 @@
     "url": "https:/vuejs.org/api/sfc-spec#pre-processors"
   },
   {
-    "id": "doc:sfc-spec:`src` Imports",
-    "title": "`src` Imports",
+    "id": "doc:sfc-spec:src Imports",
+    "title": "src Imports",
     "description": "sfc-spec",
     "url": "https:/vuejs.org/api/sfc-spec#src-imports"
   },

@@ -2,7 +2,7 @@
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetImporter, AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
 import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
-import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 
 const props = defineProps<{

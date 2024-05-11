@@ -37,7 +37,7 @@ const routes = [
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },
   { path: '/settings', component: Settings },
-  { path: '/custom-tab-view/:name', component: CustomTabView },
+  { path: `/${CUSTOM_TAB_VIEW}/:name`, component: CustomTabView },
 ]
 
 // @TODO: find a better way to handle it

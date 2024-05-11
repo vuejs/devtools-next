@@ -63,7 +63,7 @@ onMounted(() => isMount.value = true)
       leave-from-class="opacity-100 [&_.modal]:scale-100"
       leave-to-class="opacity-0 [&_.modal]:scale-95"
     >
-      <Overlay v-if="show" :dim="dim" :blur="blur">
+      <Overlay v-if="show" :dim :blur :position>
         <div
           class="modal relative grid grid-rows-[1.875rem_1fr_2.5rem] $ui-base max-h-[calc(100vh-6.25rem)] max-w-[calc(100vw-6.25rem)] min-h-6.25rem min-w-12.5rem gap-2.5 rounded-md bg-white px6 py4.5 color-gray-800 shadow-2xl transition-transform transition-duration-300 dark:bg-gray-900 dark:color-gray-200"
           :style="{

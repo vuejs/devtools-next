@@ -5,9 +5,12 @@ const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   src: string
-}>()
+  inline?: boolean
+}>(), {
+  inline: false,
+})
 
 const { colorMode } = useDevToolsColorMode()
 const anchor = ref<HTMLDivElement>()
@@ -38,10 +41,18 @@ onMounted(() => {
     catch (e) {
       iframeEl.value.style.opacity = '1'
     }
+
     document.body.appendChild(iframeEl.value)
     nextTick(updateIframeBox)
   }
+
+  // should force update the iframe visible on conflict(inline mode is unmounted after global mode is mounted)
+  const timer = setTimeout(resolveConflictVisible, 100)
   setTimeout(syncColorMode, 100)
+
+  onUnmounted(() => {
+    clearTimeout(timer)
+  })
 })
 
 watchEffect(updateIframeBox)
@@ -51,6 +62,12 @@ onUnmounted(() => {
   if (iframeEl.value)
     iframeEl.value.style.visibility = 'hidden'
 })
+
+function resolveConflictVisible() {
+  if (!iframeEl.value)
+    return
+  iframeEl.value.style.visibility = 'visible'
+}
 
 function syncColorMode() {
   if (!iframeEl.value || !iframeEl.value.contentWindow)
@@ -72,7 +89,7 @@ function updateIframeBox() {
     left: `${box.left}px`,
     top: `${box.top}px`,
     width: `${box.width}px`,
-    height: `${box.height}px`,
+    height: `${props.inline ? box.height - box.top : box.height}px`,
     outline: 'none',
   })
 }

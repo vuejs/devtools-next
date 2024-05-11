@@ -12,7 +12,7 @@ const { VirtualRouterView } = registerVirtualRouter([
     path: '/',
     name: 'Home',
     component: Home,
-    icon: 'i-carbon:data-base',
+    icon: 'i-fluent:folder-list-20-regular',
   },
   {
     path: '/store',

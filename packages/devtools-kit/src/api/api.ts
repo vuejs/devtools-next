@@ -121,7 +121,7 @@ export class DevToolsPluginApi {
     // @ts-expect-error TODO: types
     const state = _payload.state
 
-    delete state.instance
+    delete state?.instance
     return state
   }
 
@@ -181,13 +181,6 @@ export class DevToolsPluginApi {
   now() {
     return nowFn()
   }
-
-  // getSettings() {
-  //   return {
-  //     logStoreChanges: null,
-  //     onlineMode: {},
-  //   }
-  // }
 
   // #endregion compatible with old devtools
 

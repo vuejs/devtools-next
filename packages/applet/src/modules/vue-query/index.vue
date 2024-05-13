@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { getInspectorNodeActions } from '@vue/devtools-core'
 import Home from './components/Home.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'

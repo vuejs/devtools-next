@@ -66,6 +66,6 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'i-ic-baseline-delete',
     'i-ic-baseline-settings-backup-restore',
     'i-ic-baseline-hourglass-empty',
-
+    'i-ic-baseline-error-outline',
   ],
 }])) as any

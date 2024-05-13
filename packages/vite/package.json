@@ -53,7 +53,7 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "execa": "^8.0.1",
+    "execa": "^9.1.0",
     "sirv": "^2.0.4",
     "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-vue-inspector": "^5.1.0"

@@ -31,7 +31,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   plugins: [
-    DevTools({
+    VueDevTools({
       appendTo: 'resources/js/app.js'
     }),
     laravel([

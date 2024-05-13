@@ -12,7 +12,7 @@ const { VirtualRouterView } = registerVirtualRouter([
     path: '/',
     name: 'Home',
     component: Home,
-    icon: 'i-fluent:folder-list-20-regular',
+    icon: 'i-ic-baseline-storage',
   },
   {
     path: '/store',

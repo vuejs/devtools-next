@@ -50,7 +50,7 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'Pinia',
     },
     {
-      icon: 'i-fluent:folder-list-20-regular',
+      icon: 'i-ic-baseline-storage',
       name: 'vuex',
       order: -100,
       path: 'vuex',

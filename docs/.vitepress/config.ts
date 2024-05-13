@@ -49,7 +49,6 @@ export default defineConfig({
         text: 'Guide',
         link: '/getting-started/introduction',
       },
-      { text: 'Features', link: '/guide/features' },
       {
         text: 'Plugins',
         items: [

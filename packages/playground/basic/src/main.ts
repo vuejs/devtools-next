@@ -1,12 +1,14 @@
 import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import store from './stores/vuexStore'
 
 import App from './App.vue'
 
 import Home from './pages/Home.vue'
 import Hey from './pages/Hey.vue'
+import VueQuery from './pages/VueQuery.vue'
 import './style.css'
 import 'uno.css'
 
@@ -34,6 +36,11 @@ const routes: RouteRecordRaw[] = [
     component: Hey,
     name: 'hey',
   },
+  {
+    path: '/vue-query',
+    component: VueQuery,
+    name: 'vue-query',
+  },
 ]
 
 const router = createRouter({
@@ -42,6 +49,9 @@ const router = createRouter({
 })
 
 // setTimeout(() => {
+app.use(VueQueryPlugin, {
+  enableDevtoolsV6Plugin: true,
+})
 app.use(router)
 app.use(pinia)
 app.use(store)

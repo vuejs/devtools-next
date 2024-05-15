@@ -50,6 +50,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'Pinia',
     },
     {
+      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
+      name: 'vueQuery',
+      order: -100,
+      path: 'vue-query',
+      title: 'VueQuery',
+    },
+    {
       icon: 'i-ic-baseline-storage',
       name: 'vuex',
       order: -100,
@@ -84,6 +91,7 @@ export const viteOnlyTabs = [
 type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 
 const moduleDetectivesMapping = {
+  vueQuery: 'vueQuery',
   pinia: 'pinia',
   vuex: 'vuex',
   router: 'vueRouter',

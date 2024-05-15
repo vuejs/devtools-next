@@ -14,6 +14,7 @@ import PiniaPage from '~/pages/pinia.vue'
 import VuexPage from '~/pages/vuex.vue'
 import RouterPage from '~/pages/router.vue'
 import I18nPage from '~/pages/i18n.vue'
+import VueQueryPage from '~/pages/vue-query.vue'
 import Pages from '~/pages/pages.vue'
 import Assets from '~/pages/assets.vue'
 import Graph from '~/pages/graph.vue'
@@ -32,6 +33,7 @@ const routes = [
   { path: '/pinia', component: PiniaPage },
   { path: '/vuex', component: VuexPage },
   { path: '/router', component: RouterPage },
+  { path: '/vue-query', component: VueQueryPage },
   { path: '/i18n', component: I18nPage },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },

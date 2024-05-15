@@ -7,6 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.35.2",
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
@@ -15,6 +16,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@tanstack/vue-query-devtools": "^5.35.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/devtools": "workspace:^",
     "sass": "^1.76.0",

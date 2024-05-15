@@ -94,6 +94,7 @@ export interface AppRecord {
   api?: PluginApi
   routerId?: string
   moduleDetectives?: {
+    vueQuery: boolean
     vueRouter: boolean
     pinia: boolean
     vuex: boolean

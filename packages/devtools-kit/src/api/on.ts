@@ -12,6 +12,7 @@ export const on = {
   visitComponentTree(fn: DevToolsEvent[DevToolsEvents.VISIT_COMPONENT_TREE]) {
     registerInstanceHook(DevToolsEvents.VISIT_COMPONENT_TREE, fn)
   },
+  setPluginSettings() {},
   getInspectorTree(fn: DevToolsEvent[DevToolsEvents.GET_INSPECTOR_TREE]) {
     registerInstanceHook(DevToolsEvents.GET_INSPECTOR_TREE, fn)
   },

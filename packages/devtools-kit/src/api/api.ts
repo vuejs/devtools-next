@@ -48,7 +48,23 @@ export class DevToolsPluginApi {
       nodeId: '',
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder || '',
+      nodeActions: payload.nodeActions || [],
     })
+  }
+
+  // get inspector node action
+  getInspectorNodeActions(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    return inspector?.nodeActions?.map(({ icon, tooltip }) => ({ icon, tooltip })) || []
+  }
+
+  // call inspector node action
+  callInspectorNodeAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector && inspector.nodeActions) {
+      const item = inspector.nodeActions[actionIndex]
+      item.action?.(nodeId)
+    }
   }
 
   highlightElement(instance: VueAppInstance) {
@@ -105,7 +121,7 @@ export class DevToolsPluginApi {
     // @ts-expect-error TODO: types
     const state = _payload.state
 
-    delete state.instance
+    delete state?.instance
     return state
   }
 
@@ -164,12 +180,6 @@ export class DevToolsPluginApi {
 
   now() {
     return nowFn()
-  }
-
-  getSettings() {
-    return {
-      logStoreChanges: null,
-    }
   }
 
   // #endregion compatible with old devtools

@@ -9,6 +9,7 @@ import App from './App.vue'
 import Home from './pages/Home.vue'
 import Hey from './pages/Hey.vue'
 import VueQuery from './pages/VueQuery.vue'
+import VeeValidate from './pages/VeeValidate.vue'
 import './style.css'
 import 'uno.css'
 
@@ -40,6 +41,11 @@ const routes: RouteRecordRaw[] = [
     path: '/vue-query',
     component: VueQuery,
     name: 'vue-query',
+  },
+  {
+    path: '/vee-validate',
+    component: VeeValidate,
+    name: 'vee-validate',
   },
 ]
 

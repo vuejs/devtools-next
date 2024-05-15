@@ -12,14 +12,14 @@ import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 
-const { expanded: expandedStateNodes } = createExpandedContext('vue-query-state')
+const { expanded: expandedStateNodes } = createExpandedContext('vee-validate-state')
 
 interface NodeAction {
   icon: string
   tooltip: string
   actions?: (payload: unknown) => void
 }
-const inspectorId = 'vue-query'
+const inspectorId = 'vee-validate-inspector'
 const nodeActions = ref<NodeAction[]>([])
 const actions = ref<NodeAction[]>([])
 
@@ -60,33 +60,33 @@ function filterEmptyState(data: Record<string, InspectorState[]>) {
   return data
 }
 
-function getVueQueryState(nodeId: string) {
+function getVeeValidateState(nodeId: string) {
   getInspectorState({ inspectorId, nodeId }).then((data) => {
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }
 
-function clearVueQueryState() {
+function clearVeeValidateState() {
   state.value = {}
 }
 
 watch(selected, () => {
-  clearVueQueryState()
-  getVueQueryState(selected.value)
+  clearVeeValidateState()
+  getVeeValidateState(selected.value)
 })
 
-const getVueQueryInspectorTree = () => {
+const getVeeValidateInspectorTree = () => {
   getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
-      getVueQueryState(data[0].id)
+      getVeeValidateState(data[0].id)
     }
   })
 }
-getVueQueryInspectorTree()
+getVeeValidateInspectorTree()
 
 onInspectorTreeUpdated((data) => {
   if (!data?.data.length || data.inspectorId !== inspectorId)
@@ -94,13 +94,14 @@ onInspectorTreeUpdated((data) => {
   tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
   if ((!selected.value && data.data.length) || (selected.value && !data.data.find(node => node.id === selected.value))) {
     selected.value = data.data[0].id
-    getVueQueryState(data.data[0].id)
+    getVeeValidateState(data.data[0].id)
   }
 })
 
 onInspectorStateUpdated((data) => {
   if (!data || data.inspectorId !== inspectorId)
     return
+
   const { inspectorId: _inspectorId, ...filtered } = data
 
   state.value = filterEmptyState(filtered)
@@ -110,17 +111,19 @@ onInspectorStateUpdated((data) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader doc-link="https://tanstack.com/query/latest/docs/framework/vue/overview/" github-repo-link="https://github.com/TanStack/query/tree/main/packages/vue-query/">
+    <DevToolsHeader doc-link="https://vee-validate.logaretm.com/v4/" github-repo-link="https://github.com/logaretm/vee-validate/">
       <Navbar />
     </DevToolsHeader>
     <template v-if="tree.length">
       <Splitpanes class="flex-1 overflow-auto">
         <Pane border="r base" size="40" h-full>
           <div h-full select-none overflow-scroll class="no-scrollbar">
-            <div v-if="actions.length" class="flex justify-end pb-1" border="b dashed base">
-              <div class="flex items-center gap-2 px-1">
-                <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
-                  <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
+            <div v-if="actions.length" class="w-full px2 pt2">
+              <div class="w-full flex justify-end pb1" border="b dashed base">
+                <div class="flex items-center gap-2 px-1">
+                  <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
+                    <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
+                  </div>
                 </div>
               </div>
             </div>
@@ -136,7 +139,7 @@ onInspectorStateUpdated((data) => {
                 </div>
               </div>
             </div>
-            <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="vue-query-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
+            <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="vee-validate-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
             <Empty v-else>
               No Data
             </Empty>

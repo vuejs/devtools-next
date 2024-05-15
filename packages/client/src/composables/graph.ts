@@ -177,7 +177,8 @@ function checkReferenceIsValid(modId: string) {
   return refer ? refer.some(ref => checkIsValidModule(ref.mod)) : true
 }
 
-const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^/]+$)/
 
 function updateGraph() {
   graphNodes.clear()
@@ -269,7 +270,7 @@ function getEdge(modId: string, dep: string) {
 
 function removeVerbosePath(path: string) {
   // remove query, hash, and duplicate slash
-  return path.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(/\/{2,}/g, '/')
+  return path.replace(/\?.*$/, '').replace(/#.*$/, '').replace(/\/{2,}/g, '/')
 }
 
 function isVueStyleFile(path: string) {

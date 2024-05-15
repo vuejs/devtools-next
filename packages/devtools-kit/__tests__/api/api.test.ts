@@ -95,6 +95,7 @@ describe('devtools api', () => {
       const componentInspector = {
         id: 'components',
         nodeActions: [],
+        actions: [],
         nodeId: '',
         filter: '',
         treeFilterPlaceholder: 'Search components',
@@ -102,6 +103,7 @@ describe('devtools api', () => {
       const inspectorData = {
         id: 'vueuse',
         label: 'VueUse',
+        actions: [],
         nodeActions: [],
         nodeId: '',
         filter: '',

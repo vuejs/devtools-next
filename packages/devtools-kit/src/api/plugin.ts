@@ -52,8 +52,7 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   setupFn(extendedApi)
 }
 
-export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
-  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
+export function updatePluginDetectives() {
   devtoolsAppRecords.value = devtoolsAppRecords.value.map((record) => {
     const globalProperties = record.app?.config?.globalProperties
     if (!globalProperties)
@@ -63,6 +62,7 @@ export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
       ...record,
       moduleDetectives: {
         vueQuery: !!getInspector('vue-query'),
+        veeValidate: !!getInspector('vee-validate-inspector'),
         vueRouter: !!globalProperties.$router,
         pinia: !!globalProperties.$pinia,
         vueI18n: !!globalProperties.$i18n,
@@ -70,4 +70,9 @@ export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
       },
     }
   })
+}
+
+export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
+  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
+  updatePluginDetectives()
 }

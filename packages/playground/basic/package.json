@@ -11,7 +11,8 @@
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.5",
     "vue": "^3.4.26",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

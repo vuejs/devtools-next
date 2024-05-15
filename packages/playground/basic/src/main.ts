@@ -1,6 +1,7 @@
 import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
+import store from './stores/vuexStore'
 
 import App from './App.vue'
 
@@ -43,6 +44,8 @@ const router = createRouter({
 // setTimeout(() => {
 app.use(router)
 app.use(pinia)
+app.use(store)
+
 app.mount('#app')
 // }, 2000)
 

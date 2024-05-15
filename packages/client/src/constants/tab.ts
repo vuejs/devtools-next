@@ -49,7 +49,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
-
+    {
+      icon: 'i-ic-baseline-storage',
+      name: 'vuex',
+      order: -100,
+      path: 'vuex',
+      title: 'vuex',
+    },
     {
       icon: 'i-carbon-language',
       name: 'i18n',
@@ -79,6 +85,7 @@ type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 
 const moduleDetectivesMapping = {
   pinia: 'pinia',
+  vuex: 'vuex',
   router: 'vueRouter',
   i18n: 'vueI18n',
 } satisfies Record<string, keyof Detective>

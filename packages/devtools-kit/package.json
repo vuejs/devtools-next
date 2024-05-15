@@ -1,9 +1,14 @@
 {
   "name": "@vue/devtools-kit",
   "type": "module",
-  "version": "7.1.3",
+  "version": "7.2.0",
   "author": "webfansplz",
   "license": "MIT",
+  "repository": {
+    "directory": "packages/devtools-kit",
+    "type": "git",
+    "url": "git+https://github.com/vuejs/devtools-next.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -17,11 +22,6 @@
     "**.d.ts",
     "dist"
   ],
-  "repository": {
-    "directory": "packages/devtools-kit",
-    "type": "git",
-    "url": "git+https://github.com/vuejs/devtools-next.git"
-  },
   "scripts": {
     "build": "tsup --clean",
     "prepare:type": "tsup --dts-only",

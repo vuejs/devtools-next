@@ -6,7 +6,7 @@
     "not ie 11"
   ],
   "name": "webpack-playground",
-  "version": "7.1.3",
+  "version": "7.2.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve"

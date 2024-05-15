@@ -50,7 +50,7 @@ export interface DevToolsEvent {
   }) => void
   [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: { inspectorId: string, data: InspectorTreeApiPayload['rootNodes'] }) => void
-  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => Promise<void>
+  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload, ctx: { currentTab: string }) => Promise<void>
   [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_STATE]: (payload: string) => void
   [DevToolsEvents.VISIT_COMPONENT_TREE]: (payload: {

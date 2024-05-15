@@ -57,6 +57,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'VueQuery',
     },
     {
+      icon: 'https://vee-validate.logaretm.com/v4/logo.png',
+      name: 'veeValidate',
+      order: -100,
+      path: 'vee-validate',
+      title: 'Vee Validate',
+    },
+    {
       icon: 'i-ic-baseline-storage',
       name: 'vuex',
       order: -100,
@@ -92,6 +99,7 @@ type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 
 const moduleDetectivesMapping = {
   vueQuery: 'vueQuery',
+  veeValidate: 'veeValidate',
   pinia: 'pinia',
   vuex: 'vuex',
   router: 'vueRouter',

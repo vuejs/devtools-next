@@ -19,6 +19,7 @@ import { getComponentInstance } from '../core/component/utils'
 import { DevToolsEventParams, DevToolsEvents, apiHooks } from './hook'
 import { on } from './on'
 import { remove } from './off'
+import { updatePluginDetectives } from './plugin'
 
 export { collectDevToolsPlugin } from './plugin'
 
@@ -48,8 +49,10 @@ export class DevToolsPluginApi {
       nodeId: '',
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder || '',
+      actions: payload.actions || [],
       nodeActions: payload.nodeActions || [],
     })
+    updatePluginDetectives()
   }
 
   // get inspector node action
@@ -63,6 +66,21 @@ export class DevToolsPluginApi {
     const inspector = getInspector(inspectorId)
     if (inspector && inspector.nodeActions) {
       const item = inspector.nodeActions[actionIndex]
+      item.action?.(nodeId)
+    }
+  }
+
+  // get inspector action
+  getInspectorActions(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    return inspector?.actions?.map(({ icon, tooltip }) => ({ icon, tooltip })) || []
+  }
+
+  // call inspector action
+  callInspectorAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector && inspector.actions) {
+      const item = inspector.actions[actionIndex]
       item.action?.(nodeId)
     }
   }
@@ -110,12 +128,16 @@ export class DevToolsPluginApi {
       nodeId,
     }
 
+    const ctx = {
+      currentTab: `custom-inspector:${inspectorId}`,
+    }
+
     updateInspector(inspectorId!, {
       nodeId,
     })
     // @ts-expect-error hookable
     apiHooks.callHookWith((callbacks) => {
-      callbacks.forEach(cb => cb(_payload))
+      callbacks.forEach(cb => cb(_payload, ctx))
     }, DevToolsEvents.GET_INSPECTOR_STATE)
 
     // @ts-expect-error TODO: types

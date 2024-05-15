@@ -2,6 +2,8 @@ import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import store from './stores/vuexStore'
+
 import App from './App.vue'
 
 import Home from './pages/Home.vue'
@@ -52,6 +54,8 @@ app.use(VueQueryPlugin, {
 })
 app.use(router)
 app.use(pinia)
+app.use(store)
+
 app.mount('#app')
 // }, 2000)
 

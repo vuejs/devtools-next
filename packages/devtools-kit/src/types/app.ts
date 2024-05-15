@@ -97,6 +97,7 @@ export interface AppRecord {
     vueQuery: boolean
     vueRouter: boolean
     pinia: boolean
+    vuex: boolean
     vueI18n: boolean
   }
 }

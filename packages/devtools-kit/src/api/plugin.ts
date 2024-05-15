@@ -66,6 +66,7 @@ export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
         vueRouter: !!globalProperties.$router,
         pinia: !!globalProperties.$pinia,
         vueI18n: !!globalProperties.$i18n,
+        vuex: !!globalProperties.$store,
       },
     }
   })

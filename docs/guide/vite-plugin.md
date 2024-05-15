@@ -84,11 +84,5 @@ interface VitePluginVueDevToolsOptions {
    * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   clientHost?: string | false
-
-  /**
-   * Enable Vue Component Inspector
-   * @default true
-   */
-  componentInspector?: boolean | true
 }
 ```

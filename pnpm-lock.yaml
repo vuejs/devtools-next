@@ -550,6 +550,9 @@ importers:
       vue-router:
         specifier: ^4.3.2
         version: 4.3.2(vue@3.4.26(typescript@5.4.5))
+      vuex:
+        specifier: ^4.1.0
+        version: 4.1.0(vue@3.4.26(typescript@5.4.5))
     devDependencies:
       '@tanstack/vue-query-devtools':
         specifier: ^5.35.2
@@ -8272,6 +8275,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuex@4.1.0:
+    resolution: {integrity: sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ==}
+    peerDependencies:
+      vue: ^3.2.0
 
   w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
@@ -17069,6 +17077,11 @@ snapshots:
       '@vue/shared': 3.4.26
     optionalDependencies:
       typescript: 5.4.5
+
+  vuex@4.1.0(vue@3.4.26(typescript@5.4.5)):
+    dependencies:
+      '@vue/devtools-api': 6.5.1
+      vue: 3.4.26(typescript@5.4.5)
 
   w3c-keyname@2.2.8: {}
 

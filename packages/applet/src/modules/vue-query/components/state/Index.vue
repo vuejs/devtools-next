@@ -5,7 +5,7 @@ import { callInspectorNodeAction, getInspectorNodeActions, getInspectorState, ge
 import { parse } from '@vue/devtools-kit'
 import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
 import { vTooltip } from '@vue/devtools-ui'
-import Navbar from '../Navbar.vue'
+import Navbar from '~/components/basic/Navbar.vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'

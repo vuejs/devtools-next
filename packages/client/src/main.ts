@@ -4,6 +4,7 @@ import 'floating-vue/dist/style.css'
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
 import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
+import { createMessageChannel, createRpc } from '@vue/devtools-kit'
 
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
@@ -154,3 +155,13 @@ if (!isInIframe && !isInChromePanel && !isInElectron) {
 
   initSeparateWindow()
 }
+
+createMessageChannel({ preset: 'iframe' }, 'client').then((res) => {
+  const functions = {
+    reload: () => {
+      console.log('realod')
+    },
+  }
+  const rpc = createRpc<typeof functions>(functions, 'client')
+  rpc.broadcast.reload()
+})

@@ -31,6 +31,7 @@ export { parse, stringify } from './shared'
 export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
 export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from './core/component/state/constants'
 export { isPlainObject } from './core/component/state/is'
+export * from './messaging'
 
 export const devtools = {
   state: devtoolsState,

@@ -8,10 +8,8 @@ import 'uno.css'
 
 const app = createApp(App)
 
+const app2 = createApp(App2)
+
 app.mount('#app')
 
-setTimeout(() => {
-  app.unmount()
-  app.mount('#app')
-  createApp(App2).mount('#app2')
-}, 500)
+app2.mount('#app2')

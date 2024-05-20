@@ -9,6 +9,9 @@
     "type": "git",
     "url": "git+https://github.com/vuejs/devtools-next.git"
   },
+  "publishConfig": {
+    "tag": "next"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

@@ -631,6 +631,19 @@ importers:
         specifier: workspace:*
         version: link:../../vite
 
+  packages/playground/options-api:
+    dependencies:
+      vue:
+        specifier: ^3.4.27
+        version: 3.4.27(typescript@5.4.5)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^5.0.4
+        version: 5.0.4(vite@5.2.11(@types/node@20.12.12)(sass@1.77.1)(terser@5.26.0))(vue@3.4.27(typescript@5.4.5))
+      vite-plugin-vue-devtools:
+        specifier: workspace:*
+        version: link:../../vite
+
   packages/playground/termui:
     dependencies:
       '@vue/devtools':

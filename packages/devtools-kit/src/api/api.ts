@@ -23,8 +23,6 @@ import { updatePluginDetectives } from './plugin'
 
 export { collectDevToolsPlugin } from './plugin'
 
-const stateEditor = new StateEditor()
-
 export class DevToolsPluginApi {
   public on: typeof on
   public clear = remove
@@ -150,11 +148,13 @@ export class DevToolsPluginApi {
   }
 
   async editInspectorState(payload: InspectorStateEditorPayload) {
+    const stateEditor = new StateEditor()
     apiHooks.callHook(DevToolsEvents.EDIT_INSPECTOR_STATE, {
       ...payload,
       app: devtoolsContext.appRecord?.app,
       set: (obj, path = payload.path, value = payload.state.value, cb) => {
         stateEditor.set(obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
+        console.log('set', obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
       },
     })
   }

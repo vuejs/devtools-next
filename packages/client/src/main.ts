@@ -1,12 +1,9 @@
 import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 
-import type { BridgeInstanceType } from '@vue/devtools-core'
-import { isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
-import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
+import { RPCFunctions, functions } from '@vue/devtools-core'
 import { createMessageChannel, createRpc, setCurrentMessagingEnv } from '@vue/devtools-kit'
-
-import { createApp, ref } from 'vue'
+import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
@@ -23,7 +20,7 @@ import Graph from '~/pages/graph.vue'
 import Index from '~/pages/index.vue'
 import Settings from '~/pages/settings.vue'
 import CustomTabView from '~/pages/custom-tab-view.vue'
-import WaitForConnection from '~/components/WaitForConnection.vue'
+import { createDevToolsPlugin } from '~/plugins'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -45,143 +42,21 @@ const routes = [
   { path: `/${CUSTOM_TAB_VIEW}/:name`, component: CustomTabView },
 ]
 
-// @TODO: find a better way to handle it
-const devtoolsBridge: {
-  value: BridgeInstanceType
-} = {
-  value: null!,
-}
-
-async function reload(app, shell) {
-  devtoolsBridge.value.removeAllListeners()
-  shell.connect(async (bridge) => {
-    devtoolsBridge.value = bridge
-    setupDevToolsBridge(devtoolsBridge.value)
-    new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
-      app.config.globalProperties.__VUE_DEVTOOLS_UPDATE__(devtoolsBridge.value)
-      devtoolsBridge.value.emit('devtools:client-ready')
-    })
-  })
-}
-
-async function connectApp(app, shell) {
-  return new Promise<void>((resolve) => {
-    shell.connect((bridge) => {
-      devtoolsBridge.value = bridge
-      resolve()
-    })
-    shell.reload(() => {
-      reload(app, shell)
-    })
-  })
-}
-
-export async function initDevTools(shell, options: { viewMode?: 'overlay' | 'panel' } = { viewMode: 'overlay' }) {
-  const app = createApp(App)
-  await connectApp(app, shell)
-  await initViteClientHotContext()
-  setupDevToolsBridge(devtoolsBridge.value)
-  new HandShakeServer(devtoolsBridge.value).onnConnect().then(() => {
-    const router = createRouter({
-      history: createMemoryHistory(),
-      routes,
-    })
-
-    app.use(router)
-    app.use(createDevToolsVuePlugin({
-      bridge: devtoolsBridge.value,
-      viewMode: options.viewMode!,
-    }))
-    app.mount('#app')
-    devtoolsBridge.value.emit('devtools:client-ready')
-  })
-}
-
-export function createConnectionApp(container: string = '#app', props?: Record<string, string>) {
-  const app = createApp(WaitForConnection, {
-    ...props,
-  })
-  app.mount(container)
-  return app
-}
-
-window.addEventListener('message', (event) => {
-  if (event.data === '__VUE_DEVTOOLS_CREATE_CLIENT__') {
-    initDevTools({
-      connect: (callback) => {
-        const bridge = new Bridge({
-          tracker(fn) {
-            window.addEventListener('message', (e) => {
-              if (e.data.source === '__VUE_DEVTOOLS_USER_APP__')
-                fn(e.data.data)
-            })
-          },
-          trigger(data) {
-            event?.source?.postMessage({
-              source: '__VUE_DEVTOOLS_CLIENT__',
-              data,
-            }, {
-              targetOrigin: '*',
-            })
-          },
-        })
-        callback(bridge)
-      },
-    })
-    event.source?.postMessage('__VUE_DEVTOOLS_CLIENT_READY__')
-  }
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes,
 })
 
-if (!isInIframe && !isInChromePanel && !isInElectron) {
-  function initSeparateWindow() {
-    const connectionApp = createConnectionApp()
-
-    initDevToolsSeparateWindow({
-      onConnected: (channel) => {
-        connectionApp?.unmount()
-        initDevTools({
-          connect: (callback) => {
-            const bridge = initDevToolsSeparateWindowBridge(channel)
-            bridge.on('disconnect', () => {
-              channel.close()
-              initSeparateWindow()
-            })
-            callback(bridge)
-          },
-        })
-      },
-    })
-  }
-
-  initSeparateWindow()
-}
+const app = createApp(App)
+app.use(router)
+app.use(createDevToolsPlugin())
+app.mount('#app')
 
 setCurrentMessagingEnv('client')
 createMessageChannel({ preset: 'broadcast' })
-const functions = {
-  heartbeat: () => ({}),
-  reload: () => {
-    console.log('realod')
-  },
-}
-const rpc = createRpc<typeof functions>(functions)
-
-const connected = ref(false)
-async function heartbeat() {
-  const timer = setTimeout(() => {
-    connected.value = false
-    heartbeat()
-  }, 2000)
-  rpc.broadcast.heartbeat().then(() => {
-    clearTimeout(timer)
-    connected.value = true
-    setTimeout(() => {
-      heartbeat()
-    }, 2000)
-  })
-}
-
-function onDevToolsClientConnected() {
-}
-
+createRpc<RPCFunctions>(functions)
 heartbeat()
+
+export function initDevTools() {}
+
+export function createConnectionApp() {}

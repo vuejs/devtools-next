@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
-import { isInChromePanel } from '@vue/devtools-shared'
-import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
+import { getRpc } from '@vue/devtools-kit'
+import { RPCFunctions } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
-
-// @TODO: fix browser extension cross-origin localStorage issue
 useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()
-const { connected, clientConnected } = useDevToolsState()
+const hostEnv = useHostEnv()
+const { connected: _connected } = useDevToolsState()
 const clientState = devtoolsClientState
 
-const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
-const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)
-const bridge = useDevToolsBridge()
-
+const { connected } = useConnection()
+const devtoolsReady = computed(() => connected.value && _connected.value)
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
-const devtoolsReady = computed(() => clientConnected.value && connected.value)
+const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
+const splitScreenSize = computed({
+  get: () => clientState.value.splitScreen.size,
+  set: v => clientState.value.splitScreen.size = v,
+})
 
 watchEffect(() => {
   const scale = devtoolsClientState.value.scale
@@ -42,73 +42,24 @@ watch(devtoolsReady, (v) => {
 })
 
 useEventListener('keydown', (e) => {
-  if (e.code === 'KeyD' && e.altKey && e.shiftKey)
-    bridge.value.emit('toggle-panel')
-})
-
-watchEffect(() => {
-  bridge.value.emit('update-client-state', {
-    minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
-    closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
-    showFloatingPanel: devtoolsClientState.value.showPanel,
-  })
-})
-
-const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
-const splitScreenSize = computed({
-  get: () => clientState.value.splitScreen.size,
-  set: v => clientState.value.splitScreen.size = v,
-})
-
-// setup active app
-const devtoolsState = useDevToolsState()
-watchEffect(() => {
-  activeAppRecords.value = devtoolsState.appRecords.value
-  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
-})
-
-// register commands
-const { copy } = useCopy()
-const eyeDropper = useEyeDropper({})
-
-checkVueInspectorDetected().then((detected) => {
-  if (detected) {
-    vueInspectorDetected.value = true
-    registerCommands(() =>
-      [{
-        id: 'action:vue-inspector',
-        title: 'Inspector',
-        icon: 'i-carbon-select-window',
-        action: async () => {
-          bridge.value.emit('toggle-panel', false)
-          await enableVueInspector()
-        },
-      }],
-    )
+  if (e.code === 'KeyD' && e.altKey && e.shiftKey) {
+    const rpc = getRpc<RPCFunctions>()
+    rpc.broadcast.emit('toggle-panel')
   }
 })
 
-registerCommands(() => [
-  ...(eyeDropper.isSupported.value
-    ? [{
-        id: 'action:eye-dropper',
-        title: 'Color Picker',
-        icon: 'i-carbon-eyedropper',
-        action: async () => {
-          bridge.value.emit('toggle-panel', false)
-          const { sRGBHex } = await eyeDropper.open() || {}
-          if (sRGBHex)
-            copy(sRGBHex)
-        },
-      }]
-    : []),
-])
+// watchEffect(() => {
+//   bridge.value.emit('update-client-state', {
+//     minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
+//     closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
+//     showFloatingPanel: devtoolsClientState.value.showPanel,
+//   })
+// })
 </script>
 
 <template>
   <main class="fixed inset-0 h-screen w-screen $ui-bg-base">
     <AppConnecting v-if="!devtoolsReady" />
-    <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
     <div
       v-else
       class="h-full of-auto transition-base"

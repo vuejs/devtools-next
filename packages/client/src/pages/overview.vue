@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue/devtools-shared'
-import { getInspectorTree, getRouterInfo, onInspectorTreeUpdated, onRouterInfoUpdated, useDevToolsState } from '@vue/devtools-core'
+import { getInspectorTree, getRouterInfo, onInspectorTreeUpdated, onRouterInfoUpdated } from '@vue/devtools-core'
 import type { ComponentTreeNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
-
 import { version } from '../../../core/package.json'
 
 const { vueVersion } = useDevToolsState()

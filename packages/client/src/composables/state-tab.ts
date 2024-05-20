@@ -1,4 +1,4 @@
-import { onCustomTabsUpdated, useDevToolsState } from '@vue/devtools-core'
+import { onCustomTabsUpdated } from '@vue/devtools-core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInElectron } from '@vue/devtools-shared'

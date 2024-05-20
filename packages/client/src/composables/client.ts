@@ -1,5 +1,3 @@
-import { useDevToolsState } from '@vue/devtools-core'
-
 const fns: (() => void)[] = []
 
 export function onDevToolsClientConnected(fn: () => void) {

@@ -1,4 +1,4 @@
-import { createBirpcGroup } from 'birpc'
+import { BirpcGroup, createBirpcGroup } from 'birpc'
 import {
   createBroadcastChannel,
   createIframeClientChannel,
@@ -37,6 +37,16 @@ export async function createMessageChannel(options: CreateMessageChannelOptions 
   initMessageChannel(p)
 }
 
+export function getRpc<T extends Record<string, Function>>(): BirpcGroup<T, unknown> {
+  const host = getCurrentMessagingEnv()
+  return getMessagingContext().rpc[host] as BirpcGroup<T, unknown>
+}
+
+export function setRpcToGlobal<T extends BirpcGroup<unknown, unknown>>(rpc: T) {
+  const host = getCurrentMessagingEnv()
+  getMessagingContext().rpc[host] = rpc
+}
+
 export function createRpc<
 RemoteFunctions = Record<string, Function>,
 LocalFunctions extends Record<string, Function> = Record<string, Function>,
@@ -46,5 +56,6 @@ LocalFunctions extends Record<string, Function> = Record<string, Function>,
   const rpc = createBirpcGroup<RemoteFunctions, LocalFunctions>(functions, channels, {
     timeout: -1,
   })
+  setRpcToGlobal<typeof rpc>(rpc)
   return rpc
 }

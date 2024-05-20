@@ -1,5 +1,5 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
+import { functions, initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
 import { addCustomTab, createMessageChannel, createRpc, devtools, setCurrentMessagingEnv, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 function normalizeUrl(url) {
@@ -57,10 +57,5 @@ initAppSeparateWindow()
 
 setCurrentMessagingEnv('server')
 createMessageChannel({ preset: 'broadcast' })
-const functions = {
-  heartbeat: () => ({}),
-  reload: () => {
-    console.log('reload')
-  },
-}
-const rpc = createRpc(functions)
+
+createRpc(functions)

@@ -136,7 +136,7 @@ function submit() {
     path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: null!,
       type: editingType.value,
@@ -163,7 +163,7 @@ function submitDrafting() {
     path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: draftingNewProp.value.key,
       type: typeof toSubmit(draftingNewProp.value.value),

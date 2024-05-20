@@ -4,9 +4,9 @@ import 'floating-vue/dist/style.css'
 import type { BridgeInstanceType } from '@vue/devtools-core'
 import { isInChromePanel, isInElectron, isInIframe } from '@vue/devtools-shared'
 import { Bridge, HandShakeServer, createDevToolsVuePlugin, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, initViteClientHotContext, setupDevToolsBridge } from '@vue/devtools-core'
-import { createMessageChannel, createRpc } from '@vue/devtools-kit'
+import { createMessageChannel, createRpc, setCurrentMessagingEnv } from '@vue/devtools-kit'
 
-import { createApp } from 'vue'
+import { createApp, ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
@@ -156,12 +156,32 @@ if (!isInIframe && !isInChromePanel && !isInElectron) {
   initSeparateWindow()
 }
 
-createMessageChannel({ preset: 'iframe' }, 'client').then((res) => {
-  const functions = {
-    reload: () => {
-      console.log('realod')
-    },
-  }
-  const rpc = createRpc<typeof functions>(functions, 'client')
-  rpc.broadcast.reload()
-})
+setCurrentMessagingEnv('client')
+createMessageChannel({ preset: 'broadcast' })
+const functions = {
+  heartbeat: () => ({}),
+  reload: () => {
+    console.log('realod')
+  },
+}
+const rpc = createRpc<typeof functions>(functions)
+
+const connected = ref(false)
+async function heartbeat() {
+  const timer = setTimeout(() => {
+    connected.value = false
+    heartbeat()
+  }, 2000)
+  rpc.broadcast.heartbeat().then(() => {
+    clearTimeout(timer)
+    connected.value = true
+    setTimeout(() => {
+      heartbeat()
+    }, 2000)
+  })
+}
+
+function onDevToolsClientConnected() {
+}
+
+heartbeat()

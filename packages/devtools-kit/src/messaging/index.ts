@@ -1,33 +1,50 @@
-import { type ChannelOptions, createBirpcGroup } from 'birpc'
+import { createBirpcGroup } from 'birpc'
 import {
+  createBroadcastChannel,
   createIframeClientChannel,
   createIframeServerChannel,
 } from './presets'
 
+import { getCurrentMessagingEnv } from './env'
+import { getMessagingContext } from './context'
+
+export * from './env'
+
 export interface CreateMessageChannelOptions {
-  on?: () => void
-  post?: () => void
-  preset?: string
+  preset?: string | string[]
 }
 
-const CHANNELS = globalThis.__CHANNELS__ = globalThis.__CHANNELS__ || {}
-
-export async function createMessageChannel(options: CreateMessageChannelOptions = {}, host: 'client' | 'server') {
-  const {
-    on = () => {},
-    post = () => {},
-    preset = 'iframe',
-  } = options
-  if (preset === 'iframe') {
-    const channel = host === 'client' ? await createIframeClientChannel() : createIframeServerChannel()
-    ;(CHANNELS[host] || (CHANNELS[host] = [])).push(channel)
+async function initMessageChannel(preset: string[]) {
+  const host = getCurrentMessagingEnv()
+  const channels = getMessagingContext().channels[host]
+  for (const p of preset) {
+    if (p === 'iframe') {
+      const channel = host === 'client' ? await createIframeClientChannel() : createIframeServerChannel()
+      channels.push(channel)
+    }
+    else if (p === 'broadcast') {
+      const channel = createBroadcastChannel()
+      channels.push(channel)
+    }
   }
+}
+
+export async function createMessageChannel(options: CreateMessageChannelOptions = {}) {
+  const {
+    preset = ['iframe', 'broadcast'],
+  } = options
+  const p = Array.isArray(preset) ? preset : [preset]
+  initMessageChannel(p)
 }
 
 export function createRpc<
 RemoteFunctions = Record<string, Function>,
 LocalFunctions extends Record<string, Function> = Record<string, Function>,
->(functions: LocalFunctions, host: 'client' | 'server') {
-  const rpc = createBirpcGroup<RemoteFunctions, LocalFunctions>(functions, CHANNELS[host] as ChannelOptions[])
+>(functions: LocalFunctions) {
+  const host = getCurrentMessagingEnv()
+  const channels = getMessagingContext().channels[host]
+  const rpc = createBirpcGroup<RemoteFunctions, LocalFunctions>(functions, channels, {
+    timeout: -1,
+  })
   return rpc
 }

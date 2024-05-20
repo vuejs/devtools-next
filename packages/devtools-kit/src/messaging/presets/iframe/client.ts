@@ -5,7 +5,6 @@ export function createIframeClientChannel(): Promise<MergeableChannelOptions> {
     window.addEventListener('message', (event) => {
       if (event.data === 'port' && event.ports.length > 0) {
         const port = event.ports[0]
-        console.log('port', port)
         resolve({
           post: (data) => {
             port.postMessage(data)

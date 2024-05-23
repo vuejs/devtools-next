@@ -2,6 +2,7 @@ import { devtools } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 
 const hooks = createHooks()
+const apiHooks = createHooks()
 
 export const functions = {
   on: (event: string, handler: Function) => {
@@ -15,6 +16,20 @@ export const functions = {
   },
   emit: (event: string, ...args: any[]) => {
     hooks.callHook(event, ...args)
+  },
+  api: {
+    on: (event: string, handler: Function) => {
+      apiHooks.hook(event, handler)
+    },
+    off: (event: string, handler: Function) => {
+      apiHooks.removeHook(event, handler)
+    },
+    once: (event: string, handler: Function) => {
+      apiHooks.hookOnce(event, handler)
+    },
+    emit: (event: string, ...args: any[]) => {
+      apiHooks.callHook(event, ...args)
+    },
   },
   heartbeat: () => ({}),
   devtoolsState: () => {

@@ -46,11 +46,11 @@
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@types/node": "^20.12.12",
-    "@unocss/reset": "^0.60.2",
+    "@unocss/reset": "^0.60.3",
     "@vitejs/plugin-vue": "^5.0.4",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.17",
-    "unocss": "^0.60.2",
+    "unocss": "^0.60.3",
     "vite-plugin-dts": "^3.9.1"
   }
 }

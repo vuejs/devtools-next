@@ -1,13 +1,15 @@
+import { initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
 import { initDevTools, onDevToolsClientConnected, onDevToolsConnected } from './core'
 import { hook } from './hook'
 import { devtoolsContext, devtoolsState, setDevToolsEnv } from './state'
-import { setupDevToolsPlugin } from './api'
+// import { setupDevToolsPlugin } from './api'
 import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
 import { toggleComponentInspectorEnabled } from './core/component-inspector'
 import { toggleHighPerfMode } from './core/high-perf-mode'
 import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 
+export * from '../src2/index'
 export type * from './core/custom-tab'
 export type * from './core/custom-command'
 export type * from './core/timeline'
@@ -37,7 +39,10 @@ export const devtools = {
   state: devtoolsState,
   context: devtoolsContext,
   hook,
-  init: initDevTools,
+  init: () => {
+    // initDevTools()
+    _initDevTools()
+  },
   get api() {
     return devtoolsContext.api
   },

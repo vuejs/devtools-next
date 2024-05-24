@@ -12,7 +12,7 @@ import type {
   TimelineEvent,
   TimelineEventOptions,
   TimelineLayerOptions,
-} from '../types-next'
+} from '../types'
 import { addInspector, getInspector } from './inspector'
 import { addTimelineLayer } from './timeline'
 

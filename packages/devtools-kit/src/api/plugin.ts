@@ -4,8 +4,6 @@ import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
 import { getInspector } from '../core/inspector'
-import { DevToolsPluginAPI } from '../api-next'
-import { devtoolsContext } from '../ctx'
 
 export function collectDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
@@ -50,13 +48,13 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   //     return Reflect.set(target, prop, value, receiver)
   //   },
   // })
-  setupFn(new DevToolsPluginAPI({
-    plugin: {
-      setupFn,
-      descriptor: pluginDescriptor,
-    },
-    ctx: devtoolsContext,
-  }))
+  // setupFn(new DevToolsPluginAPI({
+  //   plugin: {
+  //     setupFn,
+  //     descriptor: pluginDescriptor,
+  //   },
+  //   ctx: devtoolsContext,
+  // }))
   // setupFn(extendedApi)
 }
 

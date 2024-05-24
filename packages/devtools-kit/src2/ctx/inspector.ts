@@ -1,6 +1,6 @@
 import { target } from '@vue/devtools-shared'
 import type { App } from 'vue'
-import type { CustomInspectorOptions, PluginDescriptor } from '../types-next'
+import type { CustomInspectorOptions, PluginDescriptor } from '../types'
 
 interface DevToolsKitInspector {
   options: CustomInspectorOptions
@@ -18,8 +18,6 @@ export const devtoolsInspector = new Proxy<DevToolsKitInspector[]>(target.__VUE_
 })
 
 export function addInspector(inspector: CustomInspectorOptions, descriptor: PluginDescriptor) {
-  console.log('123')
-
   devtoolsInspector.push({
     options: inspector,
     descriptor,

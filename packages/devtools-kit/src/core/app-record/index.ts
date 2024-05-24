@@ -1,5 +1,5 @@
 import slug from 'speakingurl'
-import { AppRecord, VueAppInstance } from '../../types'
+import { AppRecord, VueAppInstance } from '../../types-next'
 import { DevToolsPluginApi } from '../../api'
 import { registerPlugin } from '../../api/plugin'
 import { registerComponentDevToolsPlugin } from '../../plugins'
@@ -66,7 +66,7 @@ export async function setActiveAppRecord(appRecord: AppRecord) {
   await registerComponentDevToolsPlugin(appRecord?.app as unknown as VueAppInstance)
   devtoolsAppRecords.active = appRecord
   devtoolsAppRecords.activeId = `${appRecord.id}`
-  registerPlugin(appRecord.app!, appRecord.api!)
+  registerPlugin(appRecord.app!)
 }
 
 export async function toggleActiveAppRecord(id: string) {

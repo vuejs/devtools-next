@@ -11,11 +11,11 @@ interface DevToolsKitInspector {
 }
 target.__VUE_DEVTOOLS_KIT_INSPECTOR__ ??= []
 
-export const devtoolsInspector = new Proxy(target.__VUE_DEVTOOLS_KIT_INSPECTOR__, {
+export const devtoolsInspector = new Proxy<DevToolsKitInspector[]>(target.__VUE_DEVTOOLS_KIT_INSPECTOR__, {
   get(target, prop, receiver) {
     return Reflect.get(target, prop, receiver)
   },
-}) as DevToolsKitInspector[]
+})
 
 export function addInspector(inspector: CustomInspectorOptions, descriptor: PluginDescriptor) {
   devtoolsInspector.push({

@@ -1,6 +1,5 @@
 import { createHooks } from 'hookable'
 import type {
-  APP,
   App,
   ComponentInstance,
   ComponentTreeNode,
@@ -112,6 +111,9 @@ export enum DevToolsContextHookKeys {
   TIMELINE_EVENT_ADDED = 'timelineEventAdded',
   GET_COMPONENT_INSTANCES = 'getComponentInstances',
   GET_COMPONENT_BOUNDS = 'getComponentBounds',
+  GET_COMPONENT_NAME = 'getComponentName',
+  COMPONENT_HIGHLIGHT = 'componentHighlight',
+  COMPONENT_UNHIGHLIGHT = 'componentUnhighlight',
 }
 
 export interface DevToolsContextHookPayloads {
@@ -141,11 +143,18 @@ export interface DevToolsContextHookPayloads {
     plugin: DevToolsPlugin
   }
   [DevToolsContextHookKeys.GET_COMPONENT_INSTANCES]: {
-    app: APP
+    app: App
   }
   [DevToolsContextHookKeys.GET_COMPONENT_BOUNDS]: {
     instance: ComponentInstance
   }
+  [DevToolsContextHookKeys.GET_COMPONENT_NAME]: {
+    instance: ComponentInstance
+  }
+  [DevToolsContextHookKeys.COMPONENT_HIGHLIGHT]: {
+    uid: string
+  }
+  [DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT]: Record<string, never>
 }
 
 export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {
@@ -157,6 +166,9 @@ export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {
   [DevToolsContextHookKeys.TIMELINE_EVENT_ADDED]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.TIMELINE_EVENT_ADDED]) => void
   [DevToolsContextHookKeys.GET_COMPONENT_INSTANCES]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.GET_COMPONENT_INSTANCES]) => void
   [DevToolsContextHookKeys.GET_COMPONENT_BOUNDS]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.GET_COMPONENT_BOUNDS]) => void
+  [DevToolsContextHookKeys.GET_COMPONENT_NAME]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.GET_COMPONENT_NAME]) => void
+  [DevToolsContextHookKeys.COMPONENT_HIGHLIGHT]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.COMPONENT_HIGHLIGHT]) => void
+  [DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT]: () => void
 }
 
 export function createDevToolsCtxHooks() {
@@ -264,6 +276,24 @@ export function createDevToolsCtxHooks() {
 
     // 2. notify devtools client
     // console.log('x----', bounds)
+  })
+
+  // get component name
+  hooks.hook(DevToolsContextHookKeys.GET_COMPONENT_NAME, ({ instance }) => {
+    // 1. get component name (via getComponentName function)
+    // console.log('x----', name)
+  })
+
+  // component highlight
+  hooks.hook(DevToolsContextHookKeys.COMPONENT_HIGHLIGHT, ({ uid }) => {
+    // 1. highlight component in devtools client
+    // appRecord.instanceMap.get(uid)
+    // console.log('x----', uid)
+  })
+
+  // component unhighlight
+  hooks.hook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT, () => {
+    // 1. unhighlight component in devtools client
   })
 
   return hooks

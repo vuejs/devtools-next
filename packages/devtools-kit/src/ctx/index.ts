@@ -3,6 +3,8 @@ import { HookKeys, Hookable } from 'hookable'
 import type { DevToolsContextHooks } from './hook'
 import { createDevToolsCtxHooks } from './hook'
 
+export * from './app'
+
 export interface DevtoolsContext {
   hooks: Hookable<DevToolsContextHooks, HookKeys<DevToolsContextHooks>>
 }

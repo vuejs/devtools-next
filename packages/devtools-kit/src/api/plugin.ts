@@ -1,12 +1,11 @@
 import type { App } from 'vue'
-import { PluginDescriptor, PluginSetupFunction } from '../types'
+import { PluginDescriptor, PluginSetupFunction } from '../types-next'
 import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
 import { getInspector } from '../core/inspector'
 import { DevToolsPluginAPI } from '../api-next'
 import { devtoolsContext } from '../ctx'
-import type { DevToolsPluginApi } from './api'
 
 export function collectDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
@@ -16,7 +15,7 @@ export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn:
   return hook.setupDevToolsPlugin(pluginDescriptor, setupFn)
 }
 
-export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFunction], app: App<any>, api: DevToolsPluginApi) {
+export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFunction], app: App<any>) {
   const [pluginDescriptor, setupFn] = plugin
   if (pluginDescriptor.app !== app)
     return
@@ -33,32 +32,32 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   }
 
   // @TODO: re-design the plugin api
-  const extendedApi = new Proxy(api, {
-    get(target, prop, receiver) {
-      if (prop === 'getSettings') {
-        return function () {
-          const _settings = {}
-          Object.keys(pluginDescriptor.settings!).forEach((key) => {
-            _settings[key] = pluginDescriptor.settings![key].defaultValue
-          })
+  // const extendedApi = new Proxy(api, {
+  //   get(target, prop, receiver) {
+  //     if (prop === 'getSettings') {
+  //       return function () {
+  //         const _settings = {}
+  //         Object.keys(pluginDescriptor.settings!).forEach((key) => {
+  //           _settings[key] = pluginDescriptor.settings![key].defaultValue
+  //         })
 
-          return _settings
-        }
-      }
-      return Reflect.get(target, prop, receiver)
-    },
-    set(target, prop, value, receiver) {
-      return Reflect.set(target, prop, value, receiver)
-    },
-  })
+  //         return _settings
+  //       }
+  //     }
+  //     return Reflect.get(target, prop, receiver)
+  //   },
+  //   set(target, prop, value, receiver) {
+  //     return Reflect.set(target, prop, value, receiver)
+  //   },
+  // })
   setupFn(new DevToolsPluginAPI({
     plugin: {
       setupFn,
       descriptor: pluginDescriptor,
     },
     ctx: devtoolsContext,
-  }) as any)
-  setupFn(extendedApi)
+  }))
+  // setupFn(extendedApi)
 }
 
 export function updatePluginDetectives() {
@@ -81,7 +80,7 @@ export function updatePluginDetectives() {
   })
 }
 
-export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
-  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
+export function registerPlugin(app: App<any>) {
+  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app))
   updatePluginDetectives()
 }

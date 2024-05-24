@@ -1,6 +1,7 @@
 import type { CustomCommand } from '../core/custom-command'
 import type { CustomTab } from '../core/custom-tab'
-import type { AppRecord, PluginDescriptor, PluginSetupFunction } from './app'
+import type { PluginDescriptor, PluginSetupFunction } from '../types-next'
+import type { AppRecord } from './app'
 
 export interface DevToolsState {
   connected: boolean

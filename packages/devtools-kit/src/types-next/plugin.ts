@@ -1,7 +1,6 @@
 import type { App } from 'vue'
+import type { DevToolsPluginAPI } from '../api-next'
 
-// @TODO
-type PluginApi = any
 type PluginSettingsItem = {
   label: string
   description?: string
@@ -21,7 +20,7 @@ type PluginSettingsItem = {
   defaultValue: string
 })
 
-export type PluginSetupFunction = (api: PluginApi) => void
+export type PluginSetupFunction = (api: InstanceType<typeof DevToolsPluginAPI>) => void
 
 export interface PluginDescriptor {
   id: string

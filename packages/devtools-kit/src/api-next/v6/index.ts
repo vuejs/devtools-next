@@ -15,13 +15,13 @@ export class DevToolsV6PluginAPI {
     return {
       // component inspector
       visitComponentTree: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE, handler)
       },
       inspectComponent: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.INSPECT_COMPONENT]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.INSPECT_COMPONENT, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.INSPECT_COMPONENT, handler)
       },
       editComponentState: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE, handler)
       },
 
       // custom inspector
@@ -32,20 +32,20 @@ export class DevToolsV6PluginAPI {
         this.hooks.hook(DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE, handler)
       },
       editInspectorState: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE, handler)
       },
 
       // timeline
       inspectTimelineEvent: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.INSPECT_TIMELINE_EVENT]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.INSPECT_TIMELINE_EVENT, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.INSPECT_TIMELINE_EVENT, handler)
       },
       timelineCleared: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.TIMELINE_CLEARED]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.TIMELINE_CLEARED, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.TIMELINE_CLEARED, handler)
       },
 
       // settings
       setPluginSettings: (handler: DevToolsV6PluginAPIHooks[DevToolsV6PluginAPIHookKeys.SET_PLUGIN_SETTINGS]) => {
-        // this.hooks.hook(DevToolsV6PluginAPIHookKeys.SET_PLUGIN_SETTINGS, handler)
+        this.hooks.hook(DevToolsV6PluginAPIHookKeys.SET_PLUGIN_SETTINGS, handler)
       },
     }
   }
@@ -112,7 +112,17 @@ export class DevToolsV6PluginAPI {
   getComponentBounds(instance: ComponentInstance): Promise<ComponentBounds> {
     return this.hooks.callHook(DevToolsContextHookKeys.GET_COMPONENT_BOUNDS, { instance })
   }
-  // getComponentName(instance: ComponentInstance): Promise<string> {}
-  // highlightElement(instance: ComponentInstance) {}
-  // unhighlightElement() {}
+
+  getComponentName(instance: ComponentInstance): Promise<string> {
+    return this.hooks.callHook(DevToolsContextHookKeys.GET_COMPONENT_NAME, { instance })
+  }
+
+  highlightElement(instance: ComponentInstance) {
+    const uid = instance.__VUE_DEVTOOLS_NEXT_UID__
+    return this.hooks.callHook(DevToolsContextHookKeys.COMPONENT_HIGHLIGHT, { uid })
+  }
+
+  unhighlightElement() {
+    return this.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
+  }
 }

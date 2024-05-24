@@ -7,11 +7,11 @@ interface DevToolsKitTimelineLayer extends TimelineLayerOptions {
 
 target.__VUE_DEVTOOLS_KIT_TIMELINE_LAYERS ??= []
 
-export const devtoolsTimelineLayers = new Proxy(target.__VUE_DEVTOOLS_KIT_TIMELINE_LAYERS, {
+export const devtoolsTimelineLayers = new Proxy<DevToolsKitTimelineLayer[]>(target.__VUE_DEVTOOLS_KIT_TIMELINE_LAYERS, {
   get(target, prop, receiver) {
     return Reflect.get(target, prop, receiver)
   },
-}) as DevToolsKitTimelineLayer[]
+})
 
 export function addTimelineLayer(options: TimelineLayerOptions, descriptor: PluginDescriptor) {
   devtoolsTimelineLayers.push({

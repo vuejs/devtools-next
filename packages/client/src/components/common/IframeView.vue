@@ -23,6 +23,7 @@ onMounted(() => {
   if (iframeCacheMap.get(key.value)) {
     iframeEl.value = iframeCacheMap.get(key.value)!
     iframeEl.value.style.visibility = 'visible'
+    iframeEl.value.style.opacity = '1'
     iframeLoaded.value = true
   }
   else {
@@ -59,14 +60,17 @@ watchEffect(updateIframeBox)
 watchEffect(syncColorMode)
 
 onUnmounted(() => {
-  if (iframeEl.value)
+  if (iframeEl.value) {
     iframeEl.value.style.visibility = 'hidden'
+    iframeEl.value.style.opacity = '0'
+  }
 })
 
 function resolveConflictVisible() {
   if (!iframeEl.value)
     return
   iframeEl.value.style.visibility = 'visible'
+  iframeEl.value.style.opacity = '1'
 }
 
 function syncColorMode() {

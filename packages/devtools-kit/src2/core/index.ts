@@ -7,6 +7,7 @@ import {
   devtoolsAppRecords,
   setActiveAppRecord,
   setActiveAppRecordId,
+  updateDevToolsState,
 } from '../ctx'
 import { createAppRecord } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
@@ -63,6 +64,9 @@ export function initDevTools() {
     registerDevToolsPlugin(normalizedAppRecord.app)
 
     // @TODO: call app connected
+    updateDevToolsState({
+      connected: true,
+    })
 
     // console.log('?', appRecord)
   })

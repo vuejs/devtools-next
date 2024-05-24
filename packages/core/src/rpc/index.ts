@@ -33,13 +33,14 @@ export const functions = {
   },
   heartbeat: () => ({}),
   devtoolsState: () => {
-    return {
-      connected: devtools.state.connected,
-      clientConnected: devtools.state.clientConnected,
-      vueVersion: devtools.state?.activeAppRecord?.version || '',
+    const state = devtools.ctx.state
+    console.log({
+      connected: state.connected,
+      clientConnected: true,
+      vueVersion: state?.activeAppRecord?.version || '',
       tabs: devtools.state.tabs,
       commands: devtools.state.commands,
-      vitePluginDetected: devtools.state.vitePluginDetected,
+      vitePluginDetected: true,
       appRecords: devtools.state.appRecords.map(item => ({
         id: item.id,
         name: item.name,
@@ -47,7 +48,23 @@ export const functions = {
         routerId: item.routerId,
         moduleDetectives: item.moduleDetectives,
       })),
-      activeAppRecordId: devtools.state.activeAppRecordId,
+      activeAppRecordId: state.activeAppRecordId,
+    })
+    return {
+      connected: state.connected,
+      clientConnected: true,
+      vueVersion: state?.activeAppRecord?.version || '',
+      tabs: devtools.state.tabs,
+      commands: devtools.state.commands,
+      vitePluginDetected: true,
+      appRecords: devtools.state.appRecords.map(item => ({
+        id: item.id,
+        name: item.name,
+        version: item.version,
+        routerId: item.routerId,
+        moduleDetectives: item.moduleDetectives,
+      })),
+      activeAppRecordId: state.activeAppRecordId,
     }
   },
 }

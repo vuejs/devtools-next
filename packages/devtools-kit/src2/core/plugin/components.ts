@@ -1,5 +1,8 @@
 import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 // import { hook } from '../hook'
+import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
+import { activeAppRecord } from '../../ctx'
+import { ComponentWalker } from '../../core/component/tree/walker'
 
 const INSPECTOR_ID = 'components'
 
@@ -19,16 +22,18 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
 
     api.on.getInspectorTree(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
-        // const instance = getComponentInstance(devtoolsContext.appRecord!, payload.instanceId)
-        // if (instance) {
-        //   const walker = new ComponentWalker({
-        //     filterText: payload.filter,
-        //     // @TODO: should make this configurable?
-        //     maxDepth: 100,
-        //     recursively: false,
-        //   })
-        //   payload.rootNodes = await walker.getComponentTree(instance)
-        // }
+        // @ts-expect-error skip type @TODO
+        const instance = getComponentInstance(activeAppRecord.value!, payload.instanceId)
+        if (instance) {
+          const walker = new ComponentWalker({
+            filterText: payload.filter,
+            // @TODO: should make this configurable?
+            maxDepth: 100,
+            recursively: false,
+          })
+          // @ts-expect-error skip type @TODO
+          payload.rootNodes = await walker.getComponentTree(instance)
+        }
       }
     })
 

@@ -1,6 +1,5 @@
 import type { SuspenseBoundary, VNode } from 'vue'
-import type { VueAppInstance } from '../../../types'
-import type { ComponentTreeNode } from '../types'
+import type { ComponentTreeNode, VueAppInstance } from '../../../types'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from '../utils'
 // import { devtoolsAppRecords, devtoolsContext } from '../../../state'
 import { activeAppRecord } from '../../../ctx'

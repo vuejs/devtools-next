@@ -28,10 +28,13 @@ export const removeDevToolsAppRecord = (id: string) => {
   target.__VUE_DEVTOOLS_KIT_APP_RECORDS__ = devtoolsAppRecords.filter(app => app.id !== id)
 }
 
-export const activeAppRecord = new Proxy<AppRecord & { value: AppRecord }>(target.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__, {
+export const activeAppRecord = new Proxy<AppRecord & { value: AppRecord, id: string }>(target.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__, {
   get(_target, prop, receiver) {
     if (prop === 'value')
       return target.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__
+
+    else if (prop === 'id')
+      return target.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__
 
     return target.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__[prop]
   },

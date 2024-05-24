@@ -1,4 +1,4 @@
-import { initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
+import { devtoolsContext as _devtoolsContext, initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
 import { initDevTools, onDevToolsClientConnected, onDevToolsConnected } from './core'
 import { hook } from './hook'
 import { devtoolsContext, devtoolsState, setDevToolsEnv } from './state'
@@ -42,6 +42,9 @@ export const devtools = {
   init: () => {
     // initDevTools()
     _initDevTools()
+  },
+  get ctx() {
+    return _devtoolsContext
   },
   get api() {
     return devtoolsContext.api

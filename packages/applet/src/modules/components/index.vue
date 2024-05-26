@@ -158,7 +158,6 @@ onInspectorStateUpdated((data) => {
 getComponentsInspectorTree()
 
 rpc.value.onInspectorTreeUpdated((data) => {
-  console.log('x123123131', data)
 })
 
 onInspectorTreeUpdated((data) => {

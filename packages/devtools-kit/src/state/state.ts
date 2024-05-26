@@ -37,7 +37,7 @@ export const callConnectedUpdatedHook = debounce((state: DevToolsState, oldState
   apiHooks.callHook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, state, oldState)
 }, 80)
 
-export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
+export const devtoolsState: any = new Proxy(global[STATE_KEY], {
   get(target, property) {
     return global[STATE_KEY][property]
   },

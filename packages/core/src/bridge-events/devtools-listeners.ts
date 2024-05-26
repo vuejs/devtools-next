@@ -1,8 +1,8 @@
-import type { ComponentTreeNode, CustomCommand, CustomTab, DevToolsState, InspectorState, RouterInfo, TimelineEvent } from '@vue/devtools-kit'
+import type { ComponentTreeNode, CustomCommand, CustomTab, TimelineEvent } from '@vue/devtools-kit'
 import { defineDevToolsListener } from '../bridge'
 
-export const onDevToolsStateUpdated = defineDevToolsListener<DevToolsState & { vueVersion: string }>('devtools:on-state-updated', (devtools, callback) => {
-  function setPayload(payload: DevToolsState & { vueVersion?: string }) {
+export const onDevToolsStateUpdated = defineDevToolsListener<any & { vueVersion: string }>('devtools:on-state-updated', (devtools, callback) => {
+  function setPayload(payload: any & { vueVersion?: string }) {
     return {
       vueVersion: payload?.activeAppRecord?.version || '',
       connected: payload.connected,
@@ -58,25 +58,25 @@ export const onInspectorTreeUpdated = defineDevToolsListener<{ inspectorId: stri
   })
 })
 
-export const onInspectorStateUpdated = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-inspector-state-updated', (devtools, callback) => {
+export const onInspectorStateUpdated = defineDevToolsListener<{ inspectorId: string, state?: any[], getters?: any[] }>('devtools:on-inspector-state-updated', (devtools, callback) => {
   devtools.api.on.sendInspectorState((payload) => {
     callback(payload)
   })
 })
 
-export const onComponentUpdated = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-component-updated', (devtools, callback) => {
+export const onComponentUpdated = defineDevToolsListener<{ inspectorId: string, state?: any[], getters?: any[] }>('devtools:on-component-updated', (devtools, callback) => {
   devtools.api.on.componentUpdated(() => {
     callback()
   })
 })
 
-export const onEditInspectorState = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-edit-inspector-state', (devtools, callback) => {
+export const onEditInspectorState = defineDevToolsListener<{ inspectorId: string, state?: any[], getters?: any[] }>('devtools:on-edit-inspector-state', (devtools, callback) => {
   devtools.api.on.editInspectorState(async (payload) => {
     await callback(payload)
   })
 })
 
-export const onRouterInfoUpdated = defineDevToolsListener<RouterInfo>('devtools:on-router-info-updated', (devtools, callback) => {
+export const onRouterInfoUpdated = defineDevToolsListener<any>('devtools:on-router-info-updated', (devtools, callback) => {
   devtools.api.on.routerInfoUpdated((payload) => {
     callback(payload)
   })

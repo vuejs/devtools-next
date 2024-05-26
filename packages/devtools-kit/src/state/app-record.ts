@@ -11,7 +11,7 @@ interface DevToolsAppRecords {
   activeId: string
 }
 
-export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.appRecords as unknown as DevToolsAppRecords, {
+export const devtoolsAppRecords = new Proxy<any>(devtoolsState.appRecords as any, {
   get(_, property) {
     if (property === 'value')
       return devtoolsState.appRecords

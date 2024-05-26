@@ -1,4 +1,4 @@
-import { TimelineLayerItem, addTimelineLayer } from '../core/timeline'
+import { addTimelineLayer } from '../core/timeline'
 import { InspectorApiPayload, addInspector, getInspector, updateInspector } from '../core/inspector'
 import { toggleActiveAppRecord } from '../core/app-record'
 import type { VueAppInstance } from '../types'
@@ -33,7 +33,7 @@ export class DevToolsPluginApi {
   // #region compatible with old devtools
 
   // timeline layer
-  addTimelineLayer(payload: TimelineLayerItem) {
+  addTimelineLayer(payload: any) {
     addTimelineLayer(payload)
   }
 

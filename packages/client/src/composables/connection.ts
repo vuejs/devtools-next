@@ -1,5 +1,4 @@
-import { getRpc } from '@vue/devtools-kit'
-import type { RPCFunctions } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 
 const connected = ref(false)
 
@@ -30,12 +29,11 @@ export function markAsDisconnected() {
 }
 
 export function heartbeat() {
-  const rpc = getRpc<RPCFunctions>()
   const timer = setTimeout(() => {
     markAsDisconnected()
     heartbeat()
   }, 2000)
-  rpc.broadcast.heartbeat().then(() => {
+  rpc.value.heartbeat().then(() => {
     clearTimeout(timer)
     markAsConnected()
     setTimeout(() => {

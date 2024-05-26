@@ -1,4 +1,3 @@
-import type { InspectorStateEditorPayload } from '@vue/devtools-kit'
 import { toggleHighPerfMode as _toggleHighPerfMode, stringify } from '@vue/devtools-kit'
 import { defineDevToolsAction } from '../bridge'
 
@@ -16,7 +15,7 @@ export const toggleApp = defineDevToolsAction('devtools:toggle-app', async (devt
   await devtools.api.toggleApp(id)
 })
 
-export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: InspectorStateEditorPayload) => {
+export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: any) => {
   devtools.api.editInspectorState(payload)
 })
 

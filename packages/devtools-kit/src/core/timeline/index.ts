@@ -12,13 +12,7 @@ export interface TimelineEvent {
   layerId: string
 }
 
-export interface TimelineLayerItem {
-  id: string
-  label: string
-  color: number
-}
-
-export function addTimelineLayer(payload: TimelineLayerItem) {
+export function addTimelineLayer(payload: any) {
   devtoolsContext.timelineLayer.push(payload)
 }
 

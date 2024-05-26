@@ -1,7 +1,6 @@
 import type { App, InjectionKey, Ref } from 'vue'
 import type { AppRecord, CustomCommand, CustomTab } from '@vue/devtools-kit'
-import { getRpc } from '@vue/devtools-kit'
-import type { RPCFunctions } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { onDevToolsConnected } from '~/composables/connection'
 
 export type DevtoolsBridgeAppRecord = Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId' | 'moduleDetectives'>
@@ -29,8 +28,7 @@ export function createDevToolsPlugin() {
       const activeAppRecordId = ref('')
 
       onDevToolsConnected(() => {
-        const rpc = getRpc<RPCFunctions>()
-        rpc.broadcast.devtoolsState().then(([data]) => {
+        rpc.value.devtoolsState().then(([data]) => {
           connected.value = data.connected
           clientConnected.value = data.clientConnected
           vueVersion.value = data.vueVersion || ''

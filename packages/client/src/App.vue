@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { getRpc } from '@vue/devtools-kit'
-import { RPCFunctions } from '@vue/devtools-core'
+import { parse } from '@vue/devtools-kit'
+import { rpc } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()
@@ -42,10 +42,27 @@ watch(devtoolsReady, (v) => {
 })
 
 useEventListener('keydown', (e) => {
-  if (e.code === 'KeyD' && e.altKey && e.shiftKey) {
-    const rpc = getRpc<RPCFunctions>()
-    rpc.broadcast.emit('toggle-panel')
-  }
+  if (e.code === 'KeyD' && e.altKey && e.shiftKey)
+    rpc.value.emit('toggle-panel')
+})
+
+function getInspectorState() {
+  rpc.value.getInspectorState({
+    inspectorId: 'components',
+    nodeId: 'app-1:root',
+  }).then(([res]) => {
+    console.log('state', parse(res))
+  })
+}
+
+onDevToolsConnected(() => {
+  rpc.value.getInspectorTree({
+    inspectorId: 'components',
+    filter: '',
+  }).then(([res]) => {
+    getInspectorState()
+    console.log('tree', parse(res))
+  })
 })
 
 // watchEffect(() => {

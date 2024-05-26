@@ -1,5 +1,6 @@
-import { devtools } from '@vue/devtools-kit'
+import { devtools, getRpc, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
+import type { CustomInspectorNode, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
 
 const hooks = createHooks()
 const apiHooks = createHooks()
@@ -67,6 +68,32 @@ export const functions = {
       activeAppRecordId: state.activeAppRecordId,
     }
   },
+  async getInspectorTree(payload: Pick<DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_TREE], 'inspectorId' | 'filter'>) {
+    const res = await devtools.ctx.api.getInspectorTree(payload)
+    return stringify(res) as string
+  },
+  async getInspectorState(payload: Pick<DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE], 'inspectorId' | 'nodeId'>) {
+    const res = await devtools.ctx.api.getInspectorState(payload)
+    return stringify(res) as string
+  },
+  onInspectorTreeUpdated(handler: (data: CustomInspectorNode[]) => void) {
+    // devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (nodes) => {
+    //   handler(nodes)
+    // })
+  },
 }
 
 export type RPCFunctions = typeof functions
+
+export const rpc = new Proxy<{
+  value: ReturnType<typeof getRpc<RPCFunctions>>['broadcast']
+}>({
+  value: {} as ReturnType<typeof getRpc<RPCFunctions>>['broadcast'],
+}, {
+  get(target, property) {
+    if (property === 'value') {
+      const _rpc = getRpc<RPCFunctions>()
+      return _rpc.broadcast
+    }
+  },
+})

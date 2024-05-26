@@ -33,7 +33,7 @@ function initDevToolsState() {
       tabs.value = data.tabs
       commands.value = data.commands
       vitePluginDetected.value = data.vitePluginDetected
-      appRecords.value = data.appRecords
+      appRecords.value = data.appRecords as any
       activeAppRecordId.value = data.activeAppRecordId!
     })
 

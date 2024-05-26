@@ -5,11 +5,10 @@ import type { ComponentTreeNode, InspectorState } from '@vue/devtools-kit'
 import {
   cancelInspectComponentInspector as cancelInspectComponentInspectorAction,
   getComponentRenderCode as getComponentRenderCodeAction,
-  getInspectorState,
-  getInspectorTree,
   inspectComponentInspector as inspectComponentInspectorAction,
   onInspectorStateUpdated,
   onInspectorTreeUpdated,
+  rpc,
   scrollToComponent as scrollToComponentAction,
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
@@ -117,9 +116,9 @@ const { expanded: expandedStateNodes } = createExpandedContext('component-state'
 createSelectedContext()
 
 function getComponentsInspectorTree(filter = '') {
-  return getInspectorTree({ inspectorId, filter }).then((_data) => {
-    const data = parse(_data!)
-    tree.value = data
+  return rpc.value.getInspectorTree({ inspectorId, filter }).then(([data]) => {
+    const res = parse(data)
+    tree.value = res
     activeComponentId.value = tree.value?.[0]?.id
     expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
     componentTreeLoaded.value = true
@@ -139,7 +138,7 @@ function normalizeComponentState(data: { state?: InspectorState[] }) {
 }
 
 function getComponentState(id: string) {
-  getInspectorState({ inspectorId, nodeId: id }).then((data) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId: id }).then(([data]) => {
     activeComponentState.value = normalizeComponentState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(activeComponentState.value).length }, (_, i) => `${i}`)
   })
@@ -157,6 +156,10 @@ onInspectorStateUpdated((data) => {
 })
 
 getComponentsInspectorTree()
+
+rpc.value.onInspectorTreeUpdated((data) => {
+  console.log('x123123131', data)
+})
 
 onInspectorTreeUpdated((data) => {
   if (!data?.data.length || data.inspectorId !== inspectorId)

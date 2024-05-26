@@ -18,8 +18,6 @@ export const devtoolsInspector = new Proxy<DevToolsKitInspector[]>(target.__VUE_
 })
 
 export function addInspector(inspector: CustomInspectorOptions, descriptor: PluginDescriptor) {
-  console.log('123')
-
   devtoolsInspector.push({
     options: inspector,
     descriptor,

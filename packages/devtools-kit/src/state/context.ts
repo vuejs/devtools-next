@@ -1,5 +1,4 @@
 import { target as global } from '@vue/devtools-shared'
-import type { DevToolsContext } from '../types'
 import { ROUTER_KEY } from './router'
 
 const CONTEXT_KEY = '__VUE_DEVTOOLS_CONTEXT__'
@@ -14,7 +13,7 @@ function initContextFactory() {
     router: null,
     activeInspectorTreeId: '',
     componentPluginHookBuffer: [],
-  } as unknown as DevToolsContext
+  } as any
 }
 
 global[CONTEXT_KEY] ??= initContextFactory()

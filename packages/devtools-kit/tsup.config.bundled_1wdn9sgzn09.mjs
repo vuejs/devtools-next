@@ -1,0 +1,20 @@
+// tsup.config.ts
+import { defineConfig } from 'tsup'
+
+const tsup_config_default = defineConfig({
+  entryPoints: [
+    'src/index.ts',
+  ],
+  external: [
+    'vue',
+  ],
+  noExternal: ['speakingurl'],
+  clean: true,
+  format: ['esm', 'cjs'],
+  dts: true,
+  shims: true,
+})
+export {
+  tsup_config_default as default,
+}
+// # sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidHN1cC5jb25maWcudHMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9faW5qZWN0ZWRfZmlsZW5hbWVfXyA9IFwiL1VzZXJzL2FybG8vZy9kZXZ0b29scy1uZXh0L3BhY2thZ2VzL2RldnRvb2xzLWtpdC90c3VwLmNvbmZpZy50c1wiO2NvbnN0IF9faW5qZWN0ZWRfZGlybmFtZV9fID0gXCIvVXNlcnMvYXJsby9nL2RldnRvb2xzLW5leHQvcGFja2FnZXMvZGV2dG9vbHMta2l0XCI7Y29uc3QgX19pbmplY3RlZF9pbXBvcnRfbWV0YV91cmxfXyA9IFwiZmlsZTovLy9Vc2Vycy9hcmxvL2cvZGV2dG9vbHMtbmV4dC9wYWNrYWdlcy9kZXZ0b29scy1raXQvdHN1cC5jb25maWcudHNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tICd0c3VwJ1xuXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xuICBlbnRyeVBvaW50czogW1xuICAgICdzcmMvaW5kZXgudHMnLFxuICBdLFxuICBleHRlcm5hbDogW1xuICAgICd2dWUnLFxuICBdLFxuICBub0V4dGVybmFsOiBbJ3NwZWFraW5ndXJsJ10sXG4gIGNsZWFuOiB0cnVlLFxuICBmb3JtYXQ6IFsnZXNtJywgJ2NqcyddLFxuICBkdHM6IHRydWUsXG4gIHNoaW1zOiB0cnVlLFxufSlcbiJdLAogICJtYXBwaW5ncyI6ICI7QUFBaVMsU0FBUyxvQkFBb0I7QUFFOVQsSUFBTyxzQkFBUSxhQUFhO0FBQUEsRUFDMUIsYUFBYTtBQUFBLElBQ1g7QUFBQSxFQUNGO0FBQUEsRUFDQSxVQUFVO0FBQUEsSUFDUjtBQUFBLEVBQ0Y7QUFBQSxFQUNBLFlBQVksQ0FBQyxhQUFhO0FBQUEsRUFDMUIsT0FBTztBQUFBLEVBQ1AsUUFBUSxDQUFDLE9BQU8sS0FBSztBQUFBLEVBQ3JCLEtBQUs7QUFBQSxFQUNMLE9BQU87QUFDVCxDQUFDOyIsCiAgIm5hbWVzIjogW10KfQo=

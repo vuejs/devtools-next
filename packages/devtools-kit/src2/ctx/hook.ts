@@ -29,7 +29,7 @@ export enum DevToolsV6PluginAPIHookKeys {
   SET_PLUGIN_SETTINGS = 'setPluginSettings',
 }
 
-interface DevToolsV6PluginAPIHookPayloads {
+export interface DevToolsV6PluginAPIHookPayloads {
   [DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE]: {
     app: App
     componentInstance: ComponentInstance
@@ -157,6 +157,22 @@ export interface DevToolsContextHookPayloads {
   [DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT]: Record<string, never>
 }
 
+// devtools client hooks
+export enum DevToolsMessagingHookKeys {
+  SEND_INSPECTOR_TREE_TO_CLIENT = 'sendInspectorTreeToClient',
+  SEND_INSPECTOR_STATE_TO_CLIENT = 'sendInspectorStateToClient',
+}
+
+export interface DevToolsMessagingHookPayloads {
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: CustomInspectorNode[]
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: CustomInspectorState
+}
+
+export interface DevToolsMessagingHooks {
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]) => void
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]) => void
+}
+
 export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {
   [DevToolsContextHookKeys.ADD_INSPECTOR]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.ADD_INSPECTOR]) => void
   [DevToolsContextHookKeys.SEND_INSPECTOR_TREE]: (payload: DevToolsContextHookPayloads[DevToolsContextHookKeys.SEND_INSPECTOR_TREE]) => void
@@ -172,13 +188,16 @@ export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {
 }
 
 export function createDevToolsCtxHooks() {
-  const hooks = createHooks<DevToolsContextHooks>()
+  const hooks = createHooks<DevToolsContextHooks & DevToolsMessagingHooks>()
   hooks.hook(DevToolsContextHookKeys.ADD_INSPECTOR, ({ inspector, plugin }) => {
     addInspector(inspector, plugin.descriptor)
   })
 
   // send inspector tree
   hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_TREE, async ({ inspectorId, plugin }) => {
+    if (!inspectorId || !plugin?.descriptor?.app)
+      return
+
     // 1. get inspector
     const inspector = getInspector(inspectorId, plugin.descriptor.app)
 
@@ -197,16 +216,21 @@ export function createDevToolsCtxHooks() {
       }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_TREE)
     })
 
-    // 3. notify devtools client (call rpc)
-    // console.log('x----', _payload.rootNodes)
+    // @ts-expect-error hookable
+    hooks.callHookWith(async (callbacks) => {
+      await Promise.all(callbacks.map(cb => cb(_payload.rootNodes)))
+    }, DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT)
   })
 
   // send inspector state
   hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_STATE, async ({ inspectorId, plugin }) => {
+    if (!inspectorId || !plugin?.descriptor?.app)
+      return
+
     // 1. get inspector
     const inspector = getInspector(inspectorId, plugin.descriptor.app)
 
-    // 2. get inspector tree
+    // 2. get inspector state
     const _payload = {
       app: plugin.descriptor.app,
       inspectorId,
@@ -218,11 +242,11 @@ export function createDevToolsCtxHooks() {
       hooks.callHookWith(async (callbacks) => {
         await Promise.all(callbacks.map(cb => cb(_payload)))
         resolve()
-      }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
+      }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_TREE)
     })
 
     // 3. notify devtools client (call rpc)
-    // console.log('x----', _payload.state)
+    console.log('x----send-state', _payload.state)
   })
 
   // select inspector node

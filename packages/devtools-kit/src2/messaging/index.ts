@@ -37,9 +37,9 @@ export async function createMessageChannel(options: CreateMessageChannelOptions 
   initMessageChannel(p)
 }
 
-export function getRpc<T extends Record<string, Function | Record<string, Function>>>(): BirpcGroup<T, unknown> {
+export function getRpc<T extends Record<string, Function | Record<string, Function>>>(): BirpcGroup<T, T> {
   const host = getCurrentMessagingEnv()
-  return getMessagingContext().rpc[host] as BirpcGroup<T, unknown>
+  return getMessagingContext().rpc[host] as BirpcGroup<T, T>
 }
 
 export function setRpcToGlobal<T extends BirpcGroup<unknown, unknown>>(rpc: T) {

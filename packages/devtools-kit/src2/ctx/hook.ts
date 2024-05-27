@@ -164,8 +164,15 @@ export enum DevToolsMessagingHookKeys {
 }
 
 export interface DevToolsMessagingHookPayloads {
-  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: CustomInspectorNode[]
-  [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: CustomInspectorState
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: {
+    inspectorId: string
+    rootNodes: CustomInspectorNode[]
+  }
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: {
+    inspectorId: string
+    nodeId: string
+    state: CustomInspectorState
+  }
 }
 
 export interface DevToolsMessagingHooks {
@@ -218,7 +225,10 @@ export function createDevToolsCtxHooks() {
 
     // @ts-expect-error hookable
     hooks.callHookWith(async (callbacks) => {
-      await Promise.all(callbacks.map(cb => cb(_payload.rootNodes)))
+      await Promise.all(callbacks.map(cb => cb({
+        inspectorId,
+        rootNodes: _payload.rootNodes,
+      })))
     }, DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT)
   })
 
@@ -230,6 +240,7 @@ export function createDevToolsCtxHooks() {
     // 1. get inspector
     const inspector = getInspector(inspectorId, plugin.descriptor.app)
 
+    console.log('x---', inspector?.selectedNodeId || '')
     // 2. get inspector state
     const _payload = {
       app: plugin.descriptor.app,
@@ -242,11 +253,17 @@ export function createDevToolsCtxHooks() {
       hooks.callHookWith(async (callbacks) => {
         await Promise.all(callbacks.map(cb => cb(_payload)))
         resolve()
-      }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_TREE)
+      }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
     })
 
-    // 3. notify devtools client (call rpc)
-    console.log('x----send-state', _payload.state)
+    // @ts-expect-error hookable
+    hooks.callHookWith(async (callbacks) => {
+      await Promise.all(callbacks.map(cb => cb({
+        inspectorId,
+        nodeId: _payload.nodeId,
+        state: _payload.state,
+      })))
+    }, DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT)
   })
 
   // select inspector node

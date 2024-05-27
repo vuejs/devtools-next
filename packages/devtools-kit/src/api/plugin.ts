@@ -1,19 +1,18 @@
 import type { App } from 'vue'
-import { PluginDescriptor, PluginSetupFunction } from '../types-next'
 import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
 import { getInspector } from '../core/inspector'
 
-export function collectDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
+export function collectDevToolsPlugin(pluginDescriptor: any, setupFn: any) {
   devtoolsState.pluginBuffer.push([pluginDescriptor, setupFn])
 }
 
-export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
+export function setupDevToolsPlugin(pluginDescriptor: any, setupFn: any) {
   return hook.setupDevToolsPlugin(pluginDescriptor, setupFn)
 }
 
-export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFunction], app: App<any>) {
+export function setupExternalPlugin(plugin: [any, any], app: App<any>) {
   const [pluginDescriptor, setupFn] = plugin
   if (pluginDescriptor.app !== app)
     return

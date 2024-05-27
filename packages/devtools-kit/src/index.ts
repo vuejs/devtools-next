@@ -16,7 +16,6 @@ export type * from './core/custom-command'
 export type * from './core/open-in-editor'
 export type * from './core/component-highlighter'
 export type * from './core/component-inspector'
-export type * from './core/inspector'
 
 export type DevToolsType = any
 

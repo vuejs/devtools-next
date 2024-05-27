@@ -1,15 +1,14 @@
 import slug from 'speakingurl'
-import { AppRecord, VueAppInstance } from '../../types-next'
 import { DevToolsPluginApi } from '../../api'
 import { registerPlugin } from '../../api/plugin'
 import { registerComponentDevToolsPlugin } from '../../plugins'
 import { appRecordInfo, devtoolsAppRecords, devtoolsContext, devtoolsState } from '../../state'
 
-function getAppRecordName(app: VueAppInstance['appContext']['app'], fallbackName: string) {
+function getAppRecordName(app: any['appContext']['app'], fallbackName: string) {
   return app?._component?.name || `App ${fallbackName}`
 }
 
-function getAppRootInstance(app: VueAppInstance['appContext']['app']) {
+function getAppRootInstance(app: any['appContext']['app']) {
   if (app._instance)
     return app._instance
 
@@ -17,7 +16,7 @@ function getAppRootInstance(app: VueAppInstance['appContext']['app']) {
     return app._container?._vnode?.component
 }
 
-function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: string): string {
+function getAppRecordId(app: any['appContext']['app'], defaultId?: string): string {
   if (app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ != null)
     return app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__
 
@@ -36,14 +35,14 @@ function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: st
   return id
 }
 
-export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRecord {
+export function createAppRecord(app: any['appContext']['app']): any {
   const rootInstance = getAppRootInstance(app)
   if (rootInstance) {
     appRecordInfo.id++
     const name = getAppRecordName(app, appRecordInfo.id.toString())
     const id = getAppRecordId(app, slug(name))
 
-    const record: AppRecord = {
+    const record: any = {
       id,
       name,
       instanceMap: new Map(),
@@ -58,12 +57,12 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
     return record
   }
   else {
-    return {} as AppRecord
+    return {} as any
   }
 }
 
-export async function setActiveAppRecord(appRecord: AppRecord) {
-  await registerComponentDevToolsPlugin(appRecord?.app as unknown as VueAppInstance)
+export async function setActiveAppRecord(appRecord: any) {
+  await registerComponentDevToolsPlugin(appRecord?.app as unknown as any)
   devtoolsAppRecords.active = appRecord
   devtoolsAppRecords.activeId = `${appRecord.id}`
   registerPlugin(appRecord.app!)

@@ -1,5 +1,4 @@
 import type { App } from 'vue'
-import type { PluginDescriptor, PluginSetupFunction } from '../types-next'
 import type { AppRecord, VueAppInstance } from './app'
 
 type HookAppInstance = App & VueAppInstance
@@ -28,7 +27,7 @@ export interface DevToolsEvent {
   [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void | Promise<void>
   [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
-  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction, options?: { target?: string }) => void
+  [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: any, setupFn: any, options?: { target?: string }) => void
 }
 
 export interface DevToolsHook {
@@ -55,5 +54,5 @@ export interface VueHooks {
     componentRemoved: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) => () => void
     setupDevtoolsPlugin: (fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) => void
   }
-  setupDevToolsPlugin: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
+  setupDevToolsPlugin: (pluginDescriptor: any, setupFn: any) => void
 }

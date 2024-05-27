@@ -1,9 +1,14 @@
-import { devtools, getRpc, stringify } from '@vue/devtools-kit'
+import { DevToolsMessagingHookKeys, devtools, getInspector, getRpc, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
-import type { CustomInspectorNode, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
+import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
 
 const hooks = createHooks()
 const apiHooks = createHooks()
+
+export enum DevToolsMessagingEvents {
+  INSPECTOR_TREE_UPDATED = 'inspector-tree-updated',
+  INSPECTOR_STATE_UPDATED = 'inspector-state-updated',
+}
 
 export const functions = {
   on: (event: string, handler: Function) => {
@@ -17,20 +22,6 @@ export const functions = {
   },
   emit: (event: string, ...args: any[]) => {
     hooks.callHook(event, ...args)
-  },
-  api: {
-    on: (event: string, handler: Function) => {
-      apiHooks.hook(event, handler)
-    },
-    off: (event: string, handler: Function) => {
-      apiHooks.removeHook(event, handler)
-    },
-    once: (event: string, handler: Function) => {
-      apiHooks.hookOnce(event, handler)
-    },
-    emit: (event: string, ...args: any[]) => {
-      apiHooks.callHook(event, ...args)
-    },
   },
   heartbeat: () => ({}),
   devtoolsState: () => {
@@ -73,13 +64,21 @@ export const functions = {
     return stringify(res) as string
   },
   async getInspectorState(payload: Pick<DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE], 'inspectorId' | 'nodeId'>) {
+    // @TODO: refactor this to use the new API
+    const inspector = getInspector(payload.inspectorId)
+    if (inspector)
+      inspector.selectedNodeId = payload.nodeId
+
     const res = await devtools.ctx.api.getInspectorState(payload)
     return stringify(res) as string
   },
-  onInspectorTreeUpdated(handler: (data: CustomInspectorNode[]) => void) {
-    // devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (nodes) => {
-    //   handler(nodes)
-    // })
+  initDevToolsServerListener() {
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
+      this.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))
+    })
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT, (payload) => {
+      this.emit(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, stringify(payload))
+    })
   },
 }
 
@@ -87,13 +86,16 @@ export type RPCFunctions = typeof functions
 
 export const rpc = new Proxy<{
   value: ReturnType<typeof getRpc<RPCFunctions>>['broadcast']
+  functions: ReturnType<typeof getRpc<RPCFunctions>>['functions']
 }>({
   value: {} as ReturnType<typeof getRpc<RPCFunctions>>['broadcast'],
+  functions: {} as ReturnType<typeof getRpc<RPCFunctions>>['functions'],
 }, {
   get(target, property) {
-    if (property === 'value') {
-      const _rpc = getRpc<RPCFunctions>()
+    const _rpc = getRpc<RPCFunctions>()
+    if (property === 'value')
       return _rpc.broadcast
-    }
+    else if (property === 'functions')
+      return _rpc.functions
   },
 })

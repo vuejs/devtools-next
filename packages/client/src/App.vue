@@ -56,6 +56,7 @@ function getInspectorState() {
 }
 
 onDevToolsConnected(() => {
+  rpc.value.initDevToolsServerListener()
   rpc.value.getInspectorTree({
     inspectorId: 'components',
     filter: '',

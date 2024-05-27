@@ -13,6 +13,7 @@ export * from './app'
 export * from './plugin'
 export * from './api'
 export * from './hook'
+export * from './inspector'
 export { devtoolsState, updateDevToolsState } from './state'
 
 export interface DevtoolsContext {

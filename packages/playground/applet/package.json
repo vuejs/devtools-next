@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.212",
+    "@iconify/json": "^2.2.214",
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.6",

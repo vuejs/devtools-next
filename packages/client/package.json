@@ -44,7 +44,7 @@
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.212",
+    "@iconify/json": "^2.2.214",
     "@types/node": "^20.12.12",
     "@types/splitpanes": "^2.2.6",
     "@unocss/core": "^0.60.3",

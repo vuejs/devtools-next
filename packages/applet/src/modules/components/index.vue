@@ -4,9 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import {
   DevToolsMessagingEvents,
-  getComponentRenderCode as getComponentRenderCodeAction,
   rpc,
-  scrollToComponent as scrollToComponentAction,
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
@@ -197,17 +195,15 @@ function inspectComponentInspector() {
 
 function cancelInspectComponentInspector() {
   inspectComponentTipVisible.value = false
-  // cancelInspectComponentInspectorAction()
+  rpc.value.cancelInspectComponentInspector()
 }
 
 function scrollToComponent() {
-  scrollToComponentAction({
-    id: activeComponentId.value,
-  })
+  rpc.value.scrollToComponent(activeComponentId.value)
 }
 
 function getComponentRenderCode() {
-  getComponentRenderCodeAction(activeComponentId.value).then((data) => {
+  rpc.value.getComponentRenderCode(activeComponentId.value).then(([data]) => {
     componentRenderCode.value = data!
   })
 }

@@ -1,7 +1,8 @@
 import type { HookKeys, Hookable } from 'hookable'
 import type { CustomInspectorState } from '../types'
 import { StateEditor } from '../core/component/state/editor'
-import { cancelInspectComponentHighLighter, inspectComponentHighLighter } from '../core/component-highlighter'
+import { cancelInspectComponentHighLighter, inspectComponentHighLighter, scrollToComponent } from '../core/component-highlighter'
+import { getComponentInstance } from '../core/component/utils'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord } from './app'
@@ -55,13 +56,24 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
         callbacks.forEach(cb => cb(_payload))
       }, DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE)
     },
-
+    // inspect component inspector
     inspectComponentInspector() {
       return inspectComponentHighLighter()
     },
-
+    // cancel inspect component inspector
     cancelInspectComponentInspector() {
       return cancelInspectComponentHighLighter()
+    },
+    // get component render code
+    getComponentRenderCode(id: string) {
+      const instance = getComponentInstance(activeAppRecord.value, id)
+
+      if (instance)
+        return !(instance?.type instanceof Function) ? instance.render.toString() : instance.type.toString()
+    },
+    // scroll to component
+    scrollToComponent(id: string) {
+      return scrollToComponent({ id })
     },
   }
 }

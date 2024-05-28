@@ -82,6 +82,12 @@ export const functions = {
   cancelInspectComponentInspector() {
     return devtools.ctx.api.cancelInspectComponentInspector()
   },
+  getComponentRenderCode(id: string) {
+    return devtools.ctx.api.getComponentRenderCode(id)
+  },
+  scrollToComponent(id: string) {
+    return devtools.ctx.api.scrollToComponent(id)
+  },
   initDevToolsServerListener() {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
       this.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))

@@ -156,7 +156,6 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string
   if (data.inspectorId !== inspectorId && data.nodeId !== activeComponentId.value)
     return
 
-  console.log('x11111', data)
   activeComponentState.value = normalizeComponentState({ state: data.state.state })
 })
 

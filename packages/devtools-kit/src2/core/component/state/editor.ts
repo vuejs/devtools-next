@@ -2,6 +2,7 @@ import type { MaybeRef, Ref } from 'vue'
 import { isReactive, isRef, toRaw } from 'vue'
 import { getComponentInstance } from '../utils'
 import { activeAppRecord } from '../../../ctx'
+import { EditStatePayload } from '../../../types'
 
 import type { InspectorStateEditorPayload, PropPath } from '../types'
 
@@ -72,7 +73,7 @@ export class StateEditor {
     return object != null && Object.prototype.hasOwnProperty.call(object, sections[0])
   }
 
-  createDefaultSetCallback(state: InspectorStateEditorPayload['state']) {
+  createDefaultSetCallback(state: EditStatePayload) {
     return (object: Recordable, field: string | number, value: unknown) => {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))

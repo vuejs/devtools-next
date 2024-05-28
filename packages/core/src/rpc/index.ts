@@ -1,6 +1,7 @@
 import { DevToolsMessagingHookKeys, devtools, getInspector, getRpc, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
+import { editInspectorState } from '../bridge-events/devtools-actions'
 
 const hooks = createHooks()
 const apiHooks = createHooks()
@@ -71,6 +72,9 @@ export const functions = {
 
     const res = await devtools.ctx.api.getInspectorState(payload)
     return stringify(res) as string
+  },
+  async editInspectorState(payload: DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE]) {
+    return await devtools.ctx.api.editInspectorState(payload)
   },
   initDevToolsServerListener() {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {

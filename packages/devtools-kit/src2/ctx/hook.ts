@@ -43,7 +43,8 @@ export interface DevToolsV6PluginAPIHookPayloads {
   }
   [DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE]: {
     app: App
-    componentInstance: ComponentInstance
+    inspectorId: string
+    nodeId: string
     path: string[]
     type: string
     state: EditStatePayload
@@ -240,7 +241,6 @@ export function createDevToolsCtxHooks() {
     // 1. get inspector
     const inspector = getInspector(inspectorId, plugin.descriptor.app)
 
-    console.log('x---', inspector?.selectedNodeId || '')
     // 2. get inspector state
     const _payload = {
       app: plugin.descriptor.app,

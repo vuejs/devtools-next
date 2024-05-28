@@ -1,13 +1,16 @@
 {
   "name": "@vue/devtools-api",
   "type": "module",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
     "directory": "packages/devtools-api",
     "type": "git",
     "url": "git+https://github.com/vuejs/devtools-next.git"
+  },
+  "publishConfig": {
+    "tag": "next"
   },
   "exports": {
     ".": {

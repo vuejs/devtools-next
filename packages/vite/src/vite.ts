@@ -53,7 +53,7 @@ export interface VitePluginVueDevToolsOptions {
    *
    * @default code (Visual Studio Code)
    */
-  launchEditor?: 'appcode' | 'atom' | 'atom-beta' | 'brackets' | 'clion' | 'code' | 'code-insiders' | 'codium' | 'emacs' | 'idea' | 'notepad++' | 'pycharm' | 'phpstorm' | 'rubymine' | 'sublime' | 'vim' | 'visualstudio' | 'webstorm'
+  launchEditor?: 'appcode' | 'atom' | 'atom-beta' | 'brackets' | 'clion' | 'code' | 'code-insiders' | 'codium' | 'emacs' | 'idea' | 'notepad++' | 'pycharm' | 'phpstorm' | 'rubymine' | 'sublime' | 'vim' | 'visualstudio' | 'webstorm' | 'rider' | string
 
   /**
    * Customize openInEditor host
@@ -74,7 +74,7 @@ export interface VitePluginVueDevToolsOptions {
 const defaultOptions: VitePluginVueDevToolsOptions = {
   appendTo: '',
   componentInspector: true,
-  launchEditor: 'code',
+  launchEditor: process.env.LAUNCH_EDITOR ?? 'code',
 }
 
 function mergeOptions(options: VitePluginVueDevToolsOptions): VitePluginVueDevToolsOptions {
@@ -199,7 +199,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     pluginOptions.componentInspector && VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
-      launchEditor: pluginOptions.launchEditor,
+      launchEditor: 'pluginOptions.launchEditor',
       ...typeof pluginOptions.componentInspector === 'boolean'
         ? {}
         : pluginOptions.componentInspector,

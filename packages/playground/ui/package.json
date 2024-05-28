@@ -1,7 +1,7 @@
 {
   "name": "ui-playground",
   "type": "module",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "private": true,
   "scripts": {
     "build:ui-playground": "vue-tsc && vite build",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@unocss/reset": "^0.60.2",
+    "@unocss/reset": "^0.60.3",
     "@vue/devtools-ui": "workspace:*",
     "@vueuse/core": "^10.9.0",
     "vue": "^3.4.27"
@@ -17,7 +17,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.4.5",
-    "unocss": "^0.60.2",
+    "unocss": "^0.60.3",
     "vite": "^5.2.11",
     "vue-tsc": "^1.8.27"
   }

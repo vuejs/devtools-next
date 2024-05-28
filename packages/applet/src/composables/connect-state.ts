@@ -1,4 +1,4 @@
-import { getDevToolsState, onDevToolsStateUpdated } from '@vue/devtools-core'
+import { onDevToolsStateUpdated, rpc } from '@vue/devtools-core'
 import type { ComputedRef, InjectionKey } from 'vue'
 import { computed, inject, provide, ref, watch } from 'vue'
 
@@ -9,7 +9,7 @@ export function createDevToolsConnectStateContext() {
   const clientConnected = ref(false)
   const connected = computed(() => appConnected.value && clientConnected.value)
 
-  getDevToolsState().then((data) => {
+  rpc.value.devtoolsState().then(([data]) => {
     appConnected.value = data!.connected
     clientConnected.value = data!.clientConnected
   })

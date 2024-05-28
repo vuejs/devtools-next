@@ -1,10 +1,8 @@
-import { DevToolsMessagingHookKeys, devtools, getInspector, getRpc, stringify } from '@vue/devtools-kit'
+import { DevToolsMessagingHookKeys, devtools, getInspector, getInspectorActions, getInspectorNodeActions, getRpc, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
-import { cancelInspectComponentInspector, editInspectorState } from '../bridge-events/devtools-actions'
 
 const hooks = createHooks()
-const apiHooks = createHooks()
 
 export enum DevToolsMessagingEvents {
   INSPECTOR_TREE_UPDATED = 'inspector-tree-updated',
@@ -88,6 +86,27 @@ export const functions = {
   scrollToComponent(id: string) {
     return devtools.ctx.api.scrollToComponent(id)
   },
+  getInspectorNodeActions(id: string) {
+    return getInspectorNodeActions(id)
+  },
+  getInspectorActions(id: string) {
+    return getInspectorActions(id)
+  },
+  callInspectorNodeAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const nodeActions = getInspectorNodeActions(inspectorId)
+    if (nodeActions?.length) {
+      const item = nodeActions[actionIndex]
+      item.action?.(nodeId)
+    }
+  },
+  callInspectorAction(inspectorId: string, actionIndex: number) {
+    const actions = getInspectorActions(inspectorId)
+    if (actions?.length) {
+      const item = actions[actionIndex]
+      item.action?.()
+    }
+  },
+  // listen to devtools server events
   initDevToolsServerListener() {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
       this.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))

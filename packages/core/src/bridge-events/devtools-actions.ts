@@ -15,6 +15,7 @@ export const toggleApp = defineDevToolsAction('devtools:toggle-app', async (devt
   await devtools.api.toggleApp(id)
 })
 
+// done
 export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: any) => {
   devtools.api.editInspectorState(payload)
 })
@@ -23,23 +24,28 @@ export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (dev
   devtools.api.openInEditor({ file, baseUrl })
 })
 
+// done
 export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', async (devtools, payload) => {
   const res = await devtools.api.getInspectorTree(payload)
   return stringify(res) as string
 })
 
+// done
 export const getInspectorNodeActions = defineDevToolsAction('devtools:inspector-node-actions', (devtools, payload) => {
   return devtools.api.getInspectorNodeActions(payload)
 })
 
+// done
 export const callInspectorNodeAction = defineDevToolsAction('devtools:call-inspector-node-action', (devtools, inspectorId: string, actionIndex: number, nodeId: string) => {
   return devtools.api.callInspectorNodeAction(inspectorId, actionIndex, nodeId)
 })
 
+// done
 export const getInspectorActions = defineDevToolsAction('devtools:inspector-actions', (devtools, payload) => {
   return devtools.api.getInspectorActions(payload)
 })
 
+// done
 export const callInspectorAction = defineDevToolsAction('devtools:call-inspector-action', (devtools, inspectorId: string, actionIndex: number, nodeId: string) => {
   return devtools.api.callInspectorAction(inspectorId, actionIndex, nodeId)
 })
@@ -48,10 +54,12 @@ export const getComponentBoundingRect = defineDevToolsAction('devtools:get-compo
   return devtools.api.getComponentBoundingRect(payload)
 })
 
+// done
 export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-component-inspector', (devtools) => {
   return devtools.api.inspectComponentInspector()
 })
 
+// done
 export const cancelInspectComponentInspector = defineDevToolsAction('devtools:cancel-inspect-component-inspector', (devtools) => {
   return devtools.api.cancelInspectComponentInspector()
 })
@@ -60,14 +68,17 @@ export const toggleComponentInspector = defineDevToolsAction('devtools:toggle-co
   return devtools.api.toggleComponentInspector(payload)
 })
 
+// done
 export const scrollToComponent = defineDevToolsAction('devtools:scroll-to-component', (devtools, payload) => {
   return devtools.api.scrollToComponent(payload)
 })
 
+// done
 export const getComponentRenderCode = defineDevToolsAction('devtools:get-component-render-code', (devtools, payload) => {
   return devtools.api.getComponentRenderCode(payload)
 })
 
+// done
 export const getInspectorState = defineDevToolsAction('devtools:inspector-state', async (devtools, payload) => {
   const res = await devtools.api.getInspectorState(payload)
   return stringify(res) as string
@@ -103,6 +114,7 @@ export const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-laye
   return devtools.context.timelineLayer
 })
 
+// done
 export const getDevToolsState = defineDevToolsAction('devtools:get-state', (devtools) => {
   return {
     connected: devtools.state.connected,

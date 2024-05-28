@@ -13,8 +13,12 @@ import type {
   TimelineEventOptions,
   TimelineLayerOptions,
 } from '../types'
+import { highlight, unhighlight } from '../core/component-highlighter'
+import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
+import { getInstanceName } from '../core/component/utils'
 import { addInspector, getInspector } from './inspector'
 import { addTimelineLayer } from './timeline'
+import { activeAppRecord } from './app'
 
 // v6 plugin api hooks
 export enum DevToolsV6PluginAPIHookKeys {
@@ -297,43 +301,40 @@ export function createDevToolsCtxHooks() {
 
   // get component instances
   hooks.hook(DevToolsContextHookKeys.GET_COMPONENT_INSTANCES, async ({ app }) => {
-    // 1. get component instances (via getComponentInstances function)
-    const instances: ComponentInstance[] = []
-
-    // 2. notify devtools client
-    // console.log('x----', instances)
+    const appRecord = app.__VUE_DEVTOOLS_NEXT_APP_RECORD__
+    if (!appRecord)
+      return null
+    const appId = appRecord.id.toString()
+    const instances = [...appRecord.instanceMap]
+      .filter(([key]) => key.split(':')[0] === appId)
+      .map(([,instance]) => instance)
+    return instances
   })
 
   // get component bounds
   hooks.hook(DevToolsContextHookKeys.GET_COMPONENT_BOUNDS, async ({ instance }) => {
-    // 1. get component bounds (via getInstanceOrVnodeRect function)
-    const bounds = {
-      top: 0,
-      left: 0,
-      width: 0,
-      height: 0,
-    }
-
-    // 2. notify devtools client
-    // console.log('x----', bounds)
+    const bounds = getComponentBoundingRect(instance)
+    return bounds
   })
 
   // get component name
   hooks.hook(DevToolsContextHookKeys.GET_COMPONENT_NAME, ({ instance }) => {
-    // 1. get component name (via getComponentName function)
-    // console.log('x----', name)
+    const name = getInstanceName(instance)
+    return name
   })
 
   // component highlight
   hooks.hook(DevToolsContextHookKeys.COMPONENT_HIGHLIGHT, ({ uid }) => {
     // 1. highlight component in devtools client
-    // appRecord.instanceMap.get(uid)
-    // console.log('x----', uid)
+    const instance = activeAppRecord.value.instanceMap.get(uid)
+    if (instance) {
+      highlight(instance)
+    }
   })
 
   // component unhighlight
   hooks.hook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT, () => {
-    // 1. unhighlight component in devtools client
+    unhighlight()
   })
 
   return hooks

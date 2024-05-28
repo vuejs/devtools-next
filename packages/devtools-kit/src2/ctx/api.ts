@@ -1,6 +1,7 @@
 import type { HookKeys, Hookable } from 'hookable'
 import type { CustomInspectorState } from '../types'
 import { StateEditor } from '../core/component/state/editor'
+import { cancelInspectComponentHighLighter, inspectComponentHighLighter } from '../core/component-highlighter'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord } from './app'
@@ -53,6 +54,14 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
       hooks.callHookWith((callbacks) => {
         callbacks.forEach(cb => cb(_payload))
       }, DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE)
+    },
+
+    inspectComponentInspector() {
+      return inspectComponentHighLighter()
+    },
+
+    cancelInspectComponentInspector() {
+      return cancelInspectComponentHighLighter()
     },
   }
 }

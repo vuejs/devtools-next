@@ -180,8 +180,6 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
 
       debounceSendInspectorTree()
     })
-
-    console.log('api', api)
   }
 
   return [descriptor, setupFn]

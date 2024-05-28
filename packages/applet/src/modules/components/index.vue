@@ -4,9 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import {
   DevToolsMessagingEvents,
-  cancelInspectComponentInspector as cancelInspectComponentInspectorAction,
   getComponentRenderCode as getComponentRenderCodeAction,
-  inspectComponentInspector as inspectComponentInspectorAction,
   rpc,
   scrollToComponent as scrollToComponentAction,
 } from '@vue/devtools-core'
@@ -183,8 +181,8 @@ watchDebounced(filterComponentName, (v) => {
 function inspectComponentInspector() {
   inspectComponentTipVisible.value = true
   emit('onInspectComponentStart')
-  inspectComponentInspectorAction().then((_data) => {
-    const data = JSON.parse(_data!)
+  rpc.value.inspectComponentInspector().then((_data) => {
+    const data = JSON.parse(_data! as unknown as string)
     activeComponentId.value = data.id
     if (!expandedTreeNodes.value.includes(data.id))
       expandedTreeNodes.value.push(data.id)
@@ -199,7 +197,7 @@ function inspectComponentInspector() {
 
 function cancelInspectComponentInspector() {
   inspectComponentTipVisible.value = false
-  cancelInspectComponentInspectorAction()
+  // cancelInspectComponentInspectorAction()
 }
 
 function scrollToComponent() {

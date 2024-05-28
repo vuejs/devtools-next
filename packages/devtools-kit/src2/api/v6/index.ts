@@ -1,12 +1,14 @@
 import type { DevtoolsContext } from '../../ctx'
 import type { App, ComponentBounds, ComponentInstance, CustomInspectorOptions, DevToolsPlugin, TimelineEventOptions, TimelineLayerOptions } from '../../types'
 import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
+import { devtoolsPluginBuffer } from '../../ctx/plugin'
+import { devtoolsHooks } from '../../hook'
+import { DevToolsHooks } from '../../types'
 
 export class DevToolsV6PluginAPI {
   private plugin: DevToolsPlugin
   private hooks: DevtoolsContext['hooks']
   constructor({ plugin, ctx }: { plugin: DevToolsPlugin, ctx: DevtoolsContext }) {
-    // @TODO: configure
     this.hooks = ctx.hooks
     this.plugin = plugin
   }
@@ -53,12 +55,17 @@ export class DevToolsV6PluginAPI {
   // component inspector
   notifyComponentUpdate(instance?: ComponentInstance) {
     if (instance) {
-      // 1. get args via instance
-      // [app, uid, parentUid, component]
-      // 2. call component-updated hook
+      const args = [
+        instance.appContext.app,
+        instance.uid,
+        instance.parent?.uid,
+        instance,
+      ] as const
+      devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED, ...args)
     }
     else {
-      // 1. call component-updated hook
+      // @ts-expect-error skip type check
+      devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED)
     }
   }
 
@@ -94,14 +101,13 @@ export class DevToolsV6PluginAPI {
 
   // settings
   getSettings(pluginId?: string) {
-    // @TODO
-    function getPluginSettings(id: string) {
-      // @TODO
-      return {
-        onlineMode: {},
-      }
+    if (pluginId) {
+      const item = devtoolsPluginBuffer.find(item => item[0].id === pluginId)?.[0] ?? null
+      return item?.settings ?? this.plugin.descriptor.settings
     }
-    return getPluginSettings(pluginId ?? this.plugin.descriptor.id)
+    else {
+      return this.plugin.descriptor.settings
+    }
   }
 
   // utilities

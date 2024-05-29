@@ -2,19 +2,17 @@ import { target } from '@vue/devtools-shared'
 import { HookKeys, Hookable } from 'hookable'
 import type { DevToolsContextHooks, DevToolsMessagingHooks } from './hook'
 import { createDevToolsCtxHooks } from './hook'
-import { devtoolsState } from './state'
-import type { DevToolsState } from './state'
-import { activeAppRecord, devtoolsAppRecords } from './app'
-import type { DevToolsAppRecords } from './app'
+import { activeAppRecord, devtoolsAppRecords, devtoolsState } from './state'
+import type { DevToolsAppRecords, DevToolsState } from './state'
 import type { DevToolsApiType } from './api'
 import { createDevToolsApi } from './api'
 
-export * from './app'
 export * from './plugin'
 export * from './api'
 export * from './hook'
 export * from './inspector'
-export { devtoolsState, updateDevToolsState } from './state'
+export * from './env'
+export * from './state'
 
 export interface DevtoolsContext {
   hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>

@@ -18,7 +18,7 @@ import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
 import { getInstanceName } from '../core/component/utils'
 import { addInspector, getInspector } from './inspector'
 import { addTimelineLayer } from './timeline'
-import { activeAppRecord } from './app'
+import { DevToolsState, activeAppRecord } from './state'
 
 // v6 plugin api hooks
 export enum DevToolsV6PluginAPIHookKeys {
@@ -166,6 +166,8 @@ export interface DevToolsContextHookPayloads {
 export enum DevToolsMessagingHookKeys {
   SEND_INSPECTOR_TREE_TO_CLIENT = 'sendInspectorTreeToClient',
   SEND_INSPECTOR_STATE_TO_CLIENT = 'sendInspectorStateToClient',
+  DEVTOOLS_STATE_UPDATED = 'devtoolsStateUpdated',
+  DEVTOOLS_CONNECTED_UPDATED = 'devtoolsConnectedUpdated',
 }
 
 export interface DevToolsMessagingHookPayloads {
@@ -178,11 +180,21 @@ export interface DevToolsMessagingHookPayloads {
     nodeId: string
     state: CustomInspectorState
   }
+  [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: {
+    state: DevToolsState
+    oldState: DevToolsState
+  }
+  [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: {
+    state: DevToolsState
+    oldState: DevToolsState
+  }
 }
 
 export interface DevToolsMessagingHooks {
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]) => void
+  [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]) => void
+  [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]) => void
 }
 
 export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {

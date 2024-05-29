@@ -1,11 +1,11 @@
 import { devtoolsContext as _devtoolsContext, initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
-import { onDevToolsClientConnected, onDevToolsConnected } from './core'
+import { toggleComponentInspectorEnabled } from '../src2/core/component-inspector'
+import { onDevToolsClientConnected } from './core'
 import { hook } from './hook'
-import { devtoolsContext, devtoolsState, setDevToolsEnv } from './state'
+import { devtoolsContext, devtoolsState } from './state'
 // import { setupDevToolsPlugin } from './api'
 import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
-import { toggleComponentInspectorEnabled } from './core/component-inspector'
 import { toggleHighPerfMode } from './core/high-perf-mode'
 import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 
@@ -15,7 +15,7 @@ export type * from './core/custom-tab'
 export type * from './core/custom-command'
 export type * from './core/open-in-editor'
 export type * from './core/component-highlighter'
-export type * from './core/component-inspector'
+export type * from '../src2/core/component-inspector'
 
 export type DevToolsType = any
 
@@ -42,12 +42,10 @@ export const devtools = {
 
 export {
   onDevToolsClientConnected,
-  onDevToolsConnected,
   addCustomTab,
   addCustomCommand,
   removeCustomCommand,
   setupDevToolsPlugin,
-  setDevToolsEnv,
   toggleComponentInspectorEnabled,
   toggleHighPerfMode,
   setOpenInEditorBaseUrl,

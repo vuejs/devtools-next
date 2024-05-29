@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { isInChromePanel } from '@vue/devtools-shared'
-import { toggleApp, useDevToolsState } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 
 // #region view mode
 const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -33,10 +33,14 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
 })))
 
 const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
+watchEffect(() => {
+  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+})
+
 const activeAppRecordName = computed(() => appRecords.value.find(app => app.value === activeAppRecordId.value)?.label ?? '')
 
 watch(activeAppRecordId, (id) => {
-  toggleApp(`${id}`).then(() => {
+  rpc.value.toggleApp(`${id}`).then(() => {
     router.push('/overview').then(() => {
       refreshCurrentPageData()
     })

@@ -1,10 +1,12 @@
 import { toggleHighPerfMode as _toggleHighPerfMode, stringify } from '@vue/devtools-kit'
 import { defineDevToolsAction } from '../bridge'
 
+// done
 export const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
   return !!await devtools?.api?.getVueInspector?.()
 })
 
+// done
 export const enableVueInspector = defineDevToolsAction('devtools:enable-vue-inspector', async (devtools) => {
   const inspector = await devtools?.api?.getVueInspector?.()
   if (inspector)
@@ -51,10 +53,6 @@ export const callInspectorAction = defineDevToolsAction('devtools:call-inspector
   return devtools.api.callInspectorAction(inspectorId, actionIndex, nodeId)
 })
 
-export const getComponentBoundingRect = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
-  return devtools.api.getComponentBoundingRect(payload)
-})
-
 // done
 export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-component-inspector', (devtools) => {
   return devtools.api.inspectComponentInspector()
@@ -63,10 +61,6 @@ export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-
 // done
 export const cancelInspectComponentInspector = defineDevToolsAction('devtools:cancel-inspect-component-inspector', (devtools) => {
   return devtools.api.cancelInspectComponentInspector()
-})
-
-export const toggleComponentInspector = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
-  return devtools.api.toggleComponentInspector(payload)
 })
 
 // done
@@ -85,14 +79,6 @@ export const getInspectorState = defineDevToolsAction('devtools:inspector-state'
   return stringify(res) as string
 })
 
-export const updateInspectorTreeId = defineDevToolsAction('devtools:update-inspector-tree-id', (devtools, payload) => {
-  devtools.context.activeInspectorTreeId = payload
-})
-
-export const unhighlightElement = defineDevToolsAction('devtools:unhighlight-element', (devtools) => {
-  return devtools.api.unhighlightElement()
-})
-
 export const getRouterInfo = defineDevToolsAction('devtools:router-info', (devtools) => {
   return JSON.stringify(devtools.context.routerInfo)
 })
@@ -109,10 +95,6 @@ export const getMatchedRoutes = defineDevToolsAction('devtools:matched-routes', 
   }).matched ?? []
   console.warn = c
   return JSON.stringify(matched)
-})
-
-export const getTimelineLayer = defineDevToolsAction('devtools:get-timeline-layer', (devtools) => {
-  return devtools.context.timelineLayer
 })
 
 // done

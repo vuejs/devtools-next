@@ -11,7 +11,6 @@ import { addCustomTab } from '../core/custom-tab'
 import type { CustomTab } from '../core/custom-tab/types'
 import { addCustomCommand, removeCustomCommand } from '../core/custom-command'
 import type { CustomCommand } from '../core/custom-command'
-import { getComponentInspector } from '../core/component-inspector'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { openInEditor } from '../core/open-in-editor'
 import { getComponentInstance } from '../core/component/utils'
@@ -273,6 +272,6 @@ export class DevToolsPluginApi {
   }
 
   getVueInspector() {
-    return getComponentInspector()
+    // return getComponentInspector()
   }
 }

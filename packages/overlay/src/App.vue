@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Bridge, RPCFunctions, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
+import { Bridge, getDevToolsClientUrl, prepareInjection, rpc } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { devtools, getRpc, onDevToolsConnected } from '@vue/devtools-kit'
+import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import FrameBox from '~/components/FrameBox.vue'
@@ -77,15 +77,12 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
 }
 
 const vueInspector = ref()
-const rpc = getRpc<RPCFunctions>()
-// @TODO: types
-// @ts-expect-error skip type check
-rpc.functions.on('toggle-panel', (state = !panelVisible) => {
-  togglePanelVisible(state)
-})
 
 onDevToolsConnected(() => {
-  devtools.api.getVueInspector().then((inspector) => {
+  rpc.functions.on('toggle-panel', (state = !panelVisible) => {
+    togglePanelVisible(state)
+  })
+  devtools.ctx.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector
   })
 })
@@ -131,7 +128,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
           <path fill="#35495E" d="M50.56 0L128 133.12L204.8 0h-47.36L128 51.2L97.92 0H50.56Z" />
         </svg>
       </div>
-      <template v-if="devtools.state.vitePluginDetected && vueInspectorEnabled">
+      <template v-if="devtools.ctx.state.vitePluginDetected && vueInspectorEnabled">
         <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
         <div
           class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"

@@ -5,6 +5,7 @@ import {
   addDevToolsAppRecord,
   addDevToolsPluginToBuffer,
   devtoolsAppRecords,
+  getDevToolsEnv,
   setActiveAppRecord,
   setActiveAppRecordId,
   updateDevToolsState,
@@ -13,7 +14,9 @@ import { createAppRecord } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
 
 export function initDevTools() {
-  // @TODO: 1. vitePluginDetected
+  updateDevToolsState({
+    vitePluginDetected: getDevToolsEnv().vitePluginDetected,
+  })
 
   const isDevToolsNext = target.__VUE_DEVTOOLS_GLOBAL_HOOK__?.id === 'vue-devtools-next'
 
@@ -67,8 +70,6 @@ export function initDevTools() {
     updateDevToolsState({
       connected: true,
     })
-
-    // console.log('?', appRecord)
   })
 
   // ...

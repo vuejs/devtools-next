@@ -4,7 +4,6 @@ import {
   getInspectorTree,
   onInspectorStateUpdated,
   onInspectorTreeUpdated,
-  unhighlightElement,
 } from '@vue/devtools-core'
 
 // eslint-disable-next-line ts/no-import-type-side-effects
@@ -70,7 +69,7 @@ onDevToolsClientConnected(() => {
 })
 
 onUnmounted(() => {
-  unhighlightElement()
+  // unhighlightElement()
 })
 </script>
 

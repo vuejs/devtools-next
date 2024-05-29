@@ -9,7 +9,7 @@ useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()
 const hostEnv = useHostEnv()
-const { connected: _connected } = useDevToolsState()
+const { connected: _connected, activeAppRecordId: _activeAppRecordId, appRecords: _appRecords } = useDevToolsState()
 const clientState = devtoolsClientState
 
 const { connected } = useConnection()
@@ -55,14 +55,29 @@ function getInspectorState() {
   })
 }
 
+watchEffect(() => {
+  console.log('x', _appRecords.value)
+  activeAppRecords.value = _appRecords.value
+  activeAppRecordId.value = _activeAppRecordId.value
+})
+
 onDevToolsConnected(() => {
   rpc.value.initDevToolsServerListener()
-  rpc.value.getInspectorTree({
-    inspectorId: 'components',
-    filter: '',
-  }).then(([res]) => {
-    getInspectorState()
-    console.log('tree', parse(res))
+  rpc.value.checkVueInspectorDetected().then(([detected]) => {
+    if (detected) {
+      vueInspectorDetected.value = true
+      registerCommands(() =>
+        [{
+          id: 'action:vue-inspector',
+          title: 'Inspector',
+          icon: 'i-carbon-select-window',
+          action: async () => {
+            rpc.value.emit('toggle-panel', false)
+            await rpc.value.enableVueInspector()
+          },
+        }],
+      )
+    }
   })
 })
 

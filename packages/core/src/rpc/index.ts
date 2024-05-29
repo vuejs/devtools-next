@@ -7,6 +7,31 @@ const hooks = createHooks()
 export enum DevToolsMessagingEvents {
   INSPECTOR_TREE_UPDATED = 'inspector-tree-updated',
   INSPECTOR_STATE_UPDATED = 'inspector-state-updated',
+  DEVTOOLS_STATE_UPDATED = 'devtools-state-updated',
+}
+
+function getDevToolsState() {
+  const state = devtools.ctx.state
+  console.log({
+    tabs: devtools.state.tabs,
+    commands: devtools.state.commands,
+  })
+  return {
+    connected: state.connected,
+    clientConnected: true,
+    vueVersion: state?.activeAppRecord?.version || '',
+    tabs: devtools.state.tabs,
+    commands: devtools.state.commands,
+    vitePluginDetected: state.vitePluginDetected,
+    appRecords: state.appRecords.map(item => ({
+      id: item.id,
+      name: item.name,
+      version: item.version,
+      routerId: item.routerId,
+      moduleDetectives: item.moduleDetectives,
+    })),
+    activeAppRecordId: state.activeAppRecordId,
+  }
 }
 
 export const functions = {
@@ -24,39 +49,7 @@ export const functions = {
   },
   heartbeat: () => ({}),
   devtoolsState: () => {
-    const state = devtools.ctx.state
-    console.log({
-      connected: state.connected,
-      clientConnected: true,
-      vueVersion: state?.activeAppRecord?.version || '',
-      tabs: devtools.state.tabs,
-      commands: devtools.state.commands,
-      vitePluginDetected: true,
-      appRecords: devtools.state.appRecords.map(item => ({
-        id: item.id,
-        name: item.name,
-        version: item.version,
-        routerId: item.routerId,
-        moduleDetectives: item.moduleDetectives,
-      })),
-      activeAppRecordId: state.activeAppRecordId,
-    })
-    return {
-      connected: state.connected,
-      clientConnected: true,
-      vueVersion: state?.activeAppRecord?.version || '',
-      tabs: devtools.state.tabs,
-      commands: devtools.state.commands,
-      vitePluginDetected: true,
-      appRecords: devtools.state.appRecords.map(item => ({
-        id: item.id,
-        name: item.name,
-        version: item.version,
-        routerId: item.routerId,
-        moduleDetectives: item.moduleDetectives,
-      })),
-      activeAppRecordId: state.activeAppRecordId,
-    }
+    return getDevToolsState()
   },
   async getInspectorTree(payload: Pick<DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_TREE], 'inspectorId' | 'filter'>) {
     const res = await devtools.ctx.api.getInspectorTree(payload)
@@ -109,6 +102,17 @@ export const functions = {
   openInEditor(options: OpenInEditorOptions) {
     return devtools.ctx.api.openInEditor(options)
   },
+  async checkVueInspectorDetected() {
+    return !!await devtools.ctx.api.getVueInspector()
+  },
+  async enableVueInspector() {
+    const inspector = await devtools?.api?.getVueInspector?.()
+    if (inspector)
+      await inspector.enable()
+  },
+  async toggleApp(id: string) {
+    return devtools.ctx.api.toggleApp(id)
+  },
   // listen to devtools server events
   initDevToolsServerListener() {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
@@ -117,7 +121,11 @@ export const functions = {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT, (payload) => {
       this.emit(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, stringify(payload))
     })
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, (payload) => {
+      this.emit(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, getDevToolsState())
+    })
   },
+
 }
 
 export type RPCFunctions = typeof functions

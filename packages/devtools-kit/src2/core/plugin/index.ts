@@ -11,8 +11,9 @@ export function setupDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn:
 
 export function callDevToolsPluginSetupFn(plugin: [PluginDescriptor, PluginSetupFunction], app: App) {
   const [pluginDescriptor, setupFn] = plugin
-  if (pluginDescriptor.app !== app)
-    return
+  // @TODO: need check
+  // if (pluginDescriptor.app !== app)
+  // return
 
   setupFn(new DevToolsPluginAPI({
     plugin: {

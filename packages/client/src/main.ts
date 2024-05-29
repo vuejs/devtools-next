@@ -20,7 +20,6 @@ import Graph from '~/pages/graph.vue'
 import Index from '~/pages/index.vue'
 import Settings from '~/pages/settings.vue'
 import CustomTabView from '~/pages/custom-tab-view.vue'
-import { createDevToolsPlugin } from '~/plugins'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -49,7 +48,6 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
-app.use(createDevToolsPlugin())
 app.mount('#app')
 
 setCurrentMessagingEnv('client')

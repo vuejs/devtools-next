@@ -1,10 +1,22 @@
 import { target as global } from '@vue/devtools-shared'
+import { debounce } from 'perfect-debounce'
+import type { AppRecord } from '../types'
+import { DevToolsMessagingHookKeys } from './hook'
+import { devtoolsContext } from '.'
+
+export interface DevToolsAppRecords extends AppRecord {}
 
 export interface DevToolsState {
   connected: boolean
   clientConnected: boolean
   vitePluginDetected: boolean
+  appRecords: DevToolsAppRecords[]
+  activeAppRecordId: string
 }
+
+global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
+global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__ ??= {}
+global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__ ??= ''
 
 const STATE_KEY = '__VUE_DEVTOOLS_KIT_GLOBAL_STATE__'
 function initStateFactory() {
@@ -12,12 +24,88 @@ function initStateFactory() {
     connected: false,
     clientConnected: false,
     vitePluginDetected: true,
+    appRecords: [],
+    activeAppRecordId: '',
   }
 }
 global[STATE_KEY] ??= initStateFactory()
 
+export const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+  devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, { state, oldState })
+})
+
+export const callConnectedUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+  devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED, { state, oldState })
+})
+
+export const devtoolsAppRecords = new Proxy<DevToolsAppRecords[] & { value: DevToolsAppRecords[] }>(global.__VUE_DEVTOOLS_KIT_APP_RECORDS__, {
+  get(_target, prop, receiver) {
+    if (prop === 'value')
+      return global.__VUE_DEVTOOLS_KIT_APP_RECORDS__
+
+    return global.__VUE_DEVTOOLS_KIT_APP_RECORDS__[prop]
+  },
+})
+
+export const addDevToolsAppRecord = (app: AppRecord) => {
+  global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ = [
+    ...global.__VUE_DEVTOOLS_KIT_APP_RECORDS__,
+    app,
+  ]
+}
+
+export const removeDevToolsAppRecord = (id: string) => {
+  global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ = devtoolsAppRecords.filter(app => app.id !== id)
+}
+
+export const activeAppRecord = new Proxy<AppRecord & { value: AppRecord, id: string }>(global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__, {
+  get(_target, prop, receiver) {
+    if (prop === 'value')
+      return global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__
+
+    else if (prop === 'id')
+      return global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__
+
+    return global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__[prop]
+  },
+})
+
+function updateStateAndRecord(oldState: DevToolsState) {
+  callStateUpdatedHook({
+    ...global[STATE_KEY],
+    appRecords: devtoolsAppRecords.value,
+    activeAppRecordId: activeAppRecord.id,
+  }, oldState)
+}
+
+export function setActiveAppRecord(app: AppRecord) {
+  const oldState = {
+    ...global[STATE_KEY],
+    appRecords: devtoolsAppRecords.value,
+    activeAppRecordId: activeAppRecord.id,
+  }
+  global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__ = app
+  updateStateAndRecord(oldState)
+}
+
+export function setActiveAppRecordId(id: string) {
+  const oldState = {
+    ...global[STATE_KEY],
+    appRecords: devtoolsAppRecords.value,
+    activeAppRecordId: activeAppRecord.id,
+  }
+  global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__ = id
+  updateStateAndRecord(oldState)
+}
+
 export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
   get(target, property) {
+    if (property === 'appRecords') {
+      return devtoolsAppRecords
+    }
+    else if (property === 'activeAppRecordId') {
+      return activeAppRecord.id
+    }
     return global[STATE_KEY][property]
   },
   deleteProperty(target, property) {
@@ -39,5 +127,30 @@ export function resetDevToolsState() {
 }
 
 export function updateDevToolsState(state: Partial<DevToolsState>) {
+  const oldState = {
+    ...global[STATE_KEY],
+    appRecords: devtoolsAppRecords.value,
+    activeAppRecordId: activeAppRecord.id,
+  }
+  if (oldState.connected !== state.connected && state.connected) {
+    callConnectedUpdatedHook(global[STATE_KEY], oldState)
+  }
   Object.assign(global[STATE_KEY], state)
+  updateStateAndRecord(oldState)
+}
+
+export function onDevToolsConnected(fn: () => void) {
+  return new Promise<void>((resolve) => {
+    if (devtoolsState.connected) {
+      fn()
+      resolve()
+    }
+
+    devtoolsContext.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED, ({ state }) => {
+      if (state.connected) {
+        fn()
+        resolve()
+      }
+    })
+  })
 }

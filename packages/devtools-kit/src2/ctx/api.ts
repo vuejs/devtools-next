@@ -4,9 +4,10 @@ import { StateEditor } from '../core/component/state/editor'
 import { cancelInspectComponentHighLighter, inspectComponentHighLighter, scrollToComponent } from '../core/component-highlighter'
 import { getComponentInstance } from '../core/component/utils'
 import { openInEditor } from '../core/open-in-editor'
+import { getComponentInspector } from '../core/component-inspector'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
-import { activeAppRecord } from './app'
+import { activeAppRecord, devtoolsAppRecords, setActiveAppRecord, setActiveAppRecordId } from './state'
 
 export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>) {
   return {
@@ -78,6 +79,16 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
     },
     // open in editor
     openInEditor,
+    // get vue inspector
+    getVueInspector: getComponentInspector,
+    // toogle app
+    toggleApp(id: string) {
+      const appRecord = devtoolsAppRecords.value.find(app => app.id === id)
+      if (appRecord) {
+        setActiveAppRecord(appRecord)
+        setActiveAppRecordId(id)
+      }
+    },
   }
 }
 

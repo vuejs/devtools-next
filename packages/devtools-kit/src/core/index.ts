@@ -77,23 +77,6 @@ export function initDevTools() {
   // subscribeDevToolsHook()
 }
 
-export function onDevToolsConnected(fn: () => void) {
-  return new Promise<void>((resolve) => {
-    if (devtoolsState.connected) {
-      fn()
-      resolve()
-      return
-    }
-
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
-      if (state.connected) {
-        fn()
-        resolve()
-      }
-    })
-  })
-}
-
 export function onDevToolsClientConnected(fn: () => void) {
   return new Promise<void>((resolve) => {
     if (devtoolsState.connected && devtoolsState.clientConnected) {

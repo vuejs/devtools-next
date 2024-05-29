@@ -3,6 +3,7 @@ import { target as global } from '@vue/devtools-shared'
 export interface DevToolsState {
   connected: boolean
   clientConnected: boolean
+  vitePluginDetected: boolean
 }
 
 const STATE_KEY = '__VUE_DEVTOOLS_KIT_GLOBAL_STATE__'
@@ -10,6 +11,7 @@ function initStateFactory() {
   return {
     connected: false,
     clientConnected: false,
+    vitePluginDetected: true,
   }
 }
 global[STATE_KEY] ??= initStateFactory()

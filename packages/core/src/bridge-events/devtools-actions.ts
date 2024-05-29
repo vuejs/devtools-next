@@ -20,6 +20,7 @@ export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-
   devtools.api.editInspectorState(payload)
 })
 
+// done
 export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (devtools, file: string, baseUrl?: string) => {
   devtools.api.openInEditor({ file, baseUrl })
 })

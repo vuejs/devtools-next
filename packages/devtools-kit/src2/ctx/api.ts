@@ -3,6 +3,7 @@ import type { CustomInspectorState } from '../types'
 import { StateEditor } from '../core/component/state/editor'
 import { cancelInspectComponentHighLighter, inspectComponentHighLighter, scrollToComponent } from '../core/component-highlighter'
 import { getComponentInstance } from '../core/component/utils'
+import { openInEditor } from '../core/open-in-editor'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord } from './app'
@@ -75,6 +76,8 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
     scrollToComponent(id: string) {
       return scrollToComponent({ id })
     },
+    // open in editor
+    openInEditor,
   }
 }
 

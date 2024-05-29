@@ -1,6 +1,6 @@
 import { DevToolsMessagingHookKeys, devtools, getInspector, getInspectorActions, getInspectorNodeActions, getRpc, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
-import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
+import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
 
 const hooks = createHooks()
 
@@ -105,6 +105,9 @@ export const functions = {
       const item = actions[actionIndex]
       item.action?.()
     }
+  },
+  openInEditor(options: OpenInEditorOptions) {
+    return devtools.ctx.api.openInEditor(options)
   },
   // listen to devtools server events
   initDevToolsServerListener() {

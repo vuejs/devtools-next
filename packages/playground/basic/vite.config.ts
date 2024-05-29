@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VueDevTools({
-      launchEditor: 'code',
+      // launchEditor: 'code',
     }),
     Unocss(),
     AutoImport({

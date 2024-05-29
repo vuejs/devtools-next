@@ -199,7 +199,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     pluginOptions.componentInspector && VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
-      launchEditor: 'pluginOptions.launchEditor',
+      launchEditor: pluginOptions.launchEditor,
       ...typeof pluginOptions.componentInspector === 'boolean'
         ? {}
         : pluginOptions.componentInspector,

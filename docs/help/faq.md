@@ -60,3 +60,22 @@ export default defineNuxtConfig({
   }
 })
 ```
+
+## How to work with [Vite Ruby](https://vite-ruby.netlify.app/)?
+
+```ts
+import { defineConfig } from 'vite'
+import RubyPlugin from 'vite-plugin-ruby'
+import vue from '@vitejs/plugin-vue'
+import VueDevTools from 'vite-plugin-vue-devtools'
+
+export default defineConfig({
+  plugins: [
+    VueDevTools({
+      appendTo: 'app/frontend/entrypoints/application.js', // your app entrypoint (wherever you call createApp())
+    }),
+    RubyPlugin(),
+    vue(),
+  ],
+})
+```

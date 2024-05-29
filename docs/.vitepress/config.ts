@@ -3,23 +3,30 @@ import { defineConfig } from 'vitepress'
 import { version } from '../../package.json'
 import vite from './vite.config'
 
+const GETTING_STARTED: DefaultTheme.NavItemWithLink[] = [
+  { text: 'Introduction', link: '/getting-started/introduction' },
+  { text: 'Installation', link: '/getting-started/installation' },
+  { text: 'Features', link: '/getting-started/features' },
+]
+
 const GUIDES: DefaultTheme.NavItemWithLink[] = [
-  { text: 'Getting Started', link: '/guide/getting-started' },
-  { text: 'Features', link: '/guide/features' },
-  { text: 'Contributing', link: '/guide/contributing' },
-  { text: 'FAQ', link: '/guide/faq' },
   { text: 'Vite Plugin', link: '/guide/vite-plugin' },
   { text: 'Browser Extension', link: '/guide/browser-extension' },
   { text: 'Standalone App', link: '/guide/standalone' },
+]
+
+const HELP: DefaultTheme.NavItemWithLink[] = [
+  { text: 'Contributing', link: '/help/contributing' },
+  { text: 'FAQ', link: '/help/faq' },
 ]
 
 const PLUGINS: DefaultTheme.NavItemWithLink[] = [
   { text: 'API', link: '/plugins/api' },
 ]
 
-const VERSIONS: DefaultTheme.NavItemWithLink[] = [
-  { text: `v${version} (current)`, link: '/' },
-]
+// const VERSIONS: DefaultTheme.NavItemWithLink[] = [
+//   { text: `v${version} (current)`, link: 'https://github.com/vuejs/devtools-next/releases' },
+// ]
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -40,13 +47,8 @@ export default defineConfig({
     nav: [
       {
         text: 'Guide',
-        items: [
-          {
-            items: GUIDES,
-          },
-        ],
+        link: '/getting-started/introduction',
       },
-      { text: 'Features', link: '/guide/features' },
       {
         text: 'Plugins',
         items: [
@@ -56,8 +58,14 @@ export default defineConfig({
         ],
       },
       {
-        text: `v${version}`,
-        items: VERSIONS,
+        // text: `v${version}`,
+        // items: VERSIONS,
+        text: `v${version} (current)`,
+        link: 'https://github.com/vuejs/devtools-next/releases',
+      },
+      {
+        text: 'Playground',
+        link: 'https://stackblitz.com/github/vuejs/create-vue-templates/tree/main/devtools',
       },
     ],
 
@@ -66,8 +74,16 @@ export default defineConfig({
       {
         '/': [
           {
-            text: 'Guide',
+            text: 'Getting Started',
+            items: GETTING_STARTED,
+          },
+          {
+            text: 'Installation Guide',
             items: GUIDES,
+          },
+          {
+            text: 'Help',
+            items: HELP,
           },
           {
             text: 'Plugins',

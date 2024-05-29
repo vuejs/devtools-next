@@ -154,7 +154,6 @@ export class DevToolsPluginApi {
       app: devtoolsContext.appRecord?.app,
       set: (obj, path = payload.path, value = payload.state.value, cb) => {
         stateEditor.set(obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
-        console.log('set', obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
       },
     })
   }

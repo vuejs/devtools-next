@@ -7,10 +7,10 @@ import { devtoolsContext } from '../state'
 import { now as nowFn, stringify } from '../shared'
 import { StateEditor } from '../core/component/state/editor'
 import type { ComponentTreeNode, InspectorStateEditorPayload } from '../core/component/types'
-import { addCustomTab } from '../core/custom-tab'
-import type { CustomTab } from '../core/custom-tab/types'
-import { addCustomCommand, removeCustomCommand } from '../core/custom-command'
-import type { CustomCommand } from '../core/custom-command'
+// import { addCustomTab } from '../core/custom-tab'
+// import type { CustomTab } from '../core/custom-tab/types'
+// import { addCustomCommand, removeCustomCommand } from '../core/custom-command'
+// import type { CustomCommand } from '../core/custom-command'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { openInEditor } from '../core/open-in-editor'
 import { getComponentInstance } from '../core/component/utils'
@@ -255,17 +255,17 @@ export class DevToolsPluginApi {
     return toggleActiveAppRecord(id)
   }
 
-  addCustomTab(tab: CustomTab) {
-    addCustomTab(tab)
-  }
+  // addCustomTab(tab: CustomTab) {
+  //   addCustomTab(tab)
+  // }
 
-  addCustomCommand(action: CustomCommand) {
-    addCustomCommand(action)
-  }
+  // addCustomCommand(action: CustomCommand) {
+  //   addCustomCommand(action)
+  // }
 
-  removeCustomCommand(actionId: CustomCommand['id']) {
-    removeCustomCommand(actionId)
-  }
+  // removeCustomCommand(actionId: CustomCommand['id']) {
+  //   removeCustomCommand(actionId)
+  // }
 
   openInEditor(payload: OpenInEditorOptions) {
     openInEditor(payload)

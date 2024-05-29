@@ -182,7 +182,6 @@ export interface DevToolsMessagingHookPayloads {
   }
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: {
     state: DevToolsState
-    oldState: DevToolsState
   }
   [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: {
     state: DevToolsState

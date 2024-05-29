@@ -27,6 +27,9 @@ let removeTabsUpdatedListener: (() => void) | null = null
 export function useAllTabs() {
   const state = useDevToolsState()
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
+  watchEffect(() => {
+    customTabs.value = state.tabs.value
+  })
   const allTabs = computed(() => {
     const vitePluginDetected = state.vitePluginDetected.value
     // @TODO: refactor
@@ -109,6 +112,7 @@ export function useAllTabs() {
   })
 
   onDevToolsClientConnected(() => {
+    // @TODO: refactor
     removeTabsUpdatedListener?.()
     removeTabsUpdatedListener = onCustomTabsUpdated((data) => {
       customTabs.value = data

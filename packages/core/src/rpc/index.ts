@@ -13,15 +13,15 @@ export enum DevToolsMessagingEvents {
 function getDevToolsState() {
   const state = devtools.ctx.state
   console.log({
-    tabs: devtools.state.tabs,
-    commands: devtools.state.commands,
+    tabs: state.tabs,
+    commands: state.commands,
   })
   return {
     connected: state.connected,
     clientConnected: true,
     vueVersion: state?.activeAppRecord?.version || '',
-    tabs: devtools.state.tabs,
-    commands: devtools.state.commands,
+    tabs: state.tabs,
+    commands: state.commands,
     vitePluginDetected: state.vitePluginDetected,
     appRecords: state.appRecords.map(item => ({
       id: item.id,
@@ -121,7 +121,7 @@ export const functions = {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT, (payload) => {
       this.emit(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, stringify(payload))
     })
-    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, (payload) => {
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, () => {
       this.emit(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, getDevToolsState())
     })
   },

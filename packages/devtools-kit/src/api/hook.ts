@@ -4,9 +4,7 @@ import { createHooks } from 'hookable'
 import type { TimelineEvent } from '../core/timeline'
 import type { ComponentHighLighterOptions, ScrollToComponentOptions } from '../core/component-highlighter'
 import type { ComponentBoundingRectApiPayload, ComponentTreeNode, InspectorStateApiPayload, InspectorStateEditorPayload, InspectorTreeApiPayload } from '../core/component/types'
-import type { DevToolsState, RouterInfo, VueAppInstance } from '../types'
-import type { CustomTab } from '../core/custom-tab/types'
-import type { CustomCommand } from '../core/custom-command'
+import type { RouterInfo, VueAppInstance } from '../types'
 
 export enum DevToolsEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools:state-updated',
@@ -40,8 +38,8 @@ export interface DevToolsEvent {
   [DevToolsEvents.GET_COMPONENT_RENDER_CODE]: (id: string) => void
   [DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]: (payload: ComponentBoundingRectApiPayload) => void
   // state
-  [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
-  [DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
+  [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: any, oldState: any) => void
+  [DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED]: (state: any, oldState: any) => void
   // inspector
   [DevToolsEvents.COMPONENT_STATE_INSPECT]: (payload: {
     componentInstance: VueAppInstance | undefined
@@ -60,9 +58,9 @@ export interface DevToolsEvent {
     filter: string
   }) => void
   // custom tabs
-  [DevToolsEvents.CUSTOM_TABS_UPDATED]: (payload: CustomTab[]) => void
+  [DevToolsEvents.CUSTOM_TABS_UPDATED]: (payload: any[]) => void
   // custom command
-  [DevToolsEvents.CUSTOM_COMMANDS_UPDATED]: (payload: CustomCommand[]) => void
+  [DevToolsEvents.CUSTOM_COMMANDS_UPDATED]: (payload: any[]) => void
   [DevToolsEvents.COMPONENT_UPDATED]: () => void
 }
 

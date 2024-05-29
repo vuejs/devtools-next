@@ -2,6 +2,8 @@ import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import { addCustomCommand } from '@vue/devtools-api'
+import { removeCustomCommand } from '@vue/devtools-kit'
 import store from './stores/vuexStore'
 
 import App from './App.vue'
@@ -65,16 +67,16 @@ app.use(store)
 app.mount('#app')
 // }, 2000)
 
-// setTimeout(() => {
-//   addCustomCommand({
-//     id: 'vueuse',
-//     title: 'VueUse',
-//     action: {
-//       type: 'url',
-//       src: 'https://vueuse.org/',
-//     },
-//   })
-// }, 2000)
+setTimeout(() => {
+  addCustomCommand({
+    id: 'vueuse',
+    title: 'VueUse',
+    action: {
+      type: 'url',
+      src: 'https://vueuse.org/',
+    },
+  })
+}, 2000)
 
 // setTimeout(() => {
 //   addCustomTab({

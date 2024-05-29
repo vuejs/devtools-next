@@ -1,6 +1,6 @@
 import { target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
-import type { AppRecord } from '../types'
+import type { AppRecord, CustomCommand, CustomTab } from '../types'
 import { DevToolsMessagingHookKeys } from './hook'
 import { devtoolsContext } from '.'
 
@@ -12,11 +12,15 @@ export interface DevToolsState {
   vitePluginDetected: boolean
   appRecords: DevToolsAppRecords[]
   activeAppRecordId: string
+  tabs: CustomTab[]
+  commands: CustomCommand[]
 }
 
 global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
 global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__ ??= {}
 global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__ ??= ''
+global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__ ??= []
+global.__VUE_DEVTOOLS_KIT_CUSTOM_COMMANDS__ ??= []
 
 const STATE_KEY = '__VUE_DEVTOOLS_KIT_GLOBAL_STATE__'
 function initStateFactory() {
@@ -26,12 +30,14 @@ function initStateFactory() {
     vitePluginDetected: true,
     appRecords: [],
     activeAppRecordId: '',
+    tabs: [],
+    commands: [],
   }
 }
 global[STATE_KEY] ??= initStateFactory()
 
-export const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
-  devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, { state, oldState })
+export const callStateUpdatedHook = debounce((state: DevToolsState) => {
+  devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, { state })
 })
 
 export const callConnectedUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
@@ -70,32 +76,25 @@ export const activeAppRecord = new Proxy<AppRecord & { value: AppRecord, id: str
   },
 })
 
-function updateStateAndRecord(oldState: DevToolsState) {
+// @TODO: refactor
+function updateAllStates() {
   callStateUpdatedHook({
     ...global[STATE_KEY],
     appRecords: devtoolsAppRecords.value,
     activeAppRecordId: activeAppRecord.id,
-  }, oldState)
+    tabs: global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__,
+    commands: global.__VUE_DEVTOOLS_KIT_CUSTOM_COMMANDS__,
+  })
 }
 
 export function setActiveAppRecord(app: AppRecord) {
-  const oldState = {
-    ...global[STATE_KEY],
-    appRecords: devtoolsAppRecords.value,
-    activeAppRecordId: activeAppRecord.id,
-  }
   global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__ = app
-  updateStateAndRecord(oldState)
+  updateAllStates()
 }
 
 export function setActiveAppRecordId(id: string) {
-  const oldState = {
-    ...global[STATE_KEY],
-    appRecords: devtoolsAppRecords.value,
-    activeAppRecordId: activeAppRecord.id,
-  }
   global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD_ID__ = id
-  updateStateAndRecord(oldState)
+  updateAllStates()
 }
 
 export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
@@ -105,6 +104,12 @@ export const devtoolsState: DevToolsState = new Proxy(global[STATE_KEY], {
     }
     else if (property === 'activeAppRecordId') {
       return activeAppRecord.id
+    }
+    else if (property === 'tabs') {
+      return global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__
+    }
+    else if (property === 'commands') {
+      return global.__VUE_DEVTOOLS_KIT_CUSTOM_COMMANDS__
     }
     return global[STATE_KEY][property]
   },
@@ -136,7 +141,7 @@ export function updateDevToolsState(state: Partial<DevToolsState>) {
     callConnectedUpdatedHook(global[STATE_KEY], oldState)
   }
   Object.assign(global[STATE_KEY], state)
-  updateStateAndRecord(oldState)
+  updateAllStates()
 }
 
 export function onDevToolsConnected(fn: () => void) {
@@ -153,4 +158,33 @@ export function onDevToolsConnected(fn: () => void) {
       }
     })
   })
+}
+
+export function addCustomTab(tab: CustomTab) {
+  const tabs = global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__
+  if (tabs.some((t: CustomTab) => t.name === tab.name))
+    return
+
+  tabs.push(tab)
+  updateAllStates()
+}
+
+export function addCustomCommand(action: CustomCommand) {
+  const commands = global.__VUE_DEVTOOLS_KIT_CUSTOM_COMMANDS__
+  if (commands.some((t: CustomCommand) => t.id === action.id))
+    return
+
+  commands.push(action)
+  updateAllStates()
+}
+
+export function removeCustomCommand(actionId: string) {
+  const commands = global.__VUE_DEVTOOLS_KIT_CUSTOM_COMMANDS__
+
+  const index = commands.findIndex(t => t.id === actionId)
+  if (index === -1)
+    return
+
+  commands.splice(index, 1)
+  updateAllStates()
 }

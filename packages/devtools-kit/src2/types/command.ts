@@ -1,5 +1,3 @@
-import { devtoolsState } from '../../state'
-
 export interface CustomCommandAction {
   type: 'url'
   /**
@@ -33,19 +31,4 @@ export interface CustomCommand {
    * - children of action, if set, execute the action will show the children
    */
   children?: Omit<CustomCommand, 'children'>[]
-}
-
-export function addCustomCommand(action: CustomCommand) {
-  if (devtoolsState.commands.some(t => t.id === action.id))
-    return
-
-  devtoolsState.commands.push(action)
-}
-
-export function removeCustomCommand(actionId: string) {
-  const index = devtoolsState.commands.findIndex(t => t.id === actionId)
-  if (index === -1)
-    return
-
-  devtoolsState.commands.splice(index, 1)
 }

@@ -34,11 +34,11 @@ $ bun add -D vite-plugin-vue-devtools
 //  Configuration Vite
 
 import { defineConfig } from 'vite'
-import VueDevTools from 'vite-plugin-vue-devtools'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   plugins: [
-    VueDevTools(),
+    vueDevTools(),
   ],
 })
 ```

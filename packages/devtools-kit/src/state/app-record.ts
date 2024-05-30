@@ -1,6 +1,5 @@
 import { target } from '@vue/devtools-shared'
 import { AppRecord } from '../types'
-import { normalizeRouterInfo } from '../core/router'
 import { callConnectedUpdatedHook, callStateUpdatedHook, devtoolsState } from './state'
 import { devtoolsRouterInfo } from './router'
 import { devtoolsContext } from './context'
@@ -36,7 +35,7 @@ export const devtoolsAppRecords = new Proxy<any>(devtoolsState.appRecords as any
       devtoolsContext.api = _value.api!
       // @ts-expect-error expected type
       devtoolsContext.inspector = _value.inspector ?? []
-      normalizeRouterInfo(value, devtoolsState)
+      // normalizeRouterInfo(value, devtoolsState)
       devtoolsContext.routerInfo = devtoolsRouterInfo
     }
 

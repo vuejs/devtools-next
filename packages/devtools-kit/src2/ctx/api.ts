@@ -4,6 +4,7 @@ import { StateEditor } from '../core/component/state/editor'
 import { cancelInspectComponentHighLighter, inspectComponentHighLighter, scrollToComponent } from '../core/component-highlighter'
 import { getComponentInstance } from '../core/component/utils'
 import { openInEditor } from '../core/open-in-editor'
+import { normalizeRouterInfo } from '../core/router'
 import { getComponentInspector } from '../core/component-inspector'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
@@ -87,6 +88,7 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
       if (appRecord) {
         setActiveAppRecord(appRecord)
         setActiveAppRecordId(id)
+        normalizeRouterInfo(appRecord, activeAppRecord)
       }
     },
   }

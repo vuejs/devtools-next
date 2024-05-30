@@ -1,7 +1,7 @@
 import type { DevToolsPluginApi } from '../api'
 import type { Inspector } from '../core/inspector'
+import type { Router, RouterInfo } from '../../src2/types/router'
 import type { AppRecord } from './app'
-import type { Router, RouterInfo } from './router'
 
 export interface DevToolsContext {
   appRecord: AppRecord | null

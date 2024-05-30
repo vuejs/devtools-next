@@ -9,7 +9,6 @@ declare global {
     id: number
     appIds: Set<string>
   }
-  var __VUE_DEVTOOLS_ROUTER__: Router | null
   var __VUE_DEVTOOLS_ROUTER_INFO__: RouterInfo
   var __VUE_DEVTOOLS_ENV__: DevToolsEnv
   var __VUE_DEVTOOLS_COMPONENT_INSPECTOR_ENABLED__: boolean

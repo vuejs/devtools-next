@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue/devtools-shared'
-import { DevToolsMessagingEvents, getRouterInfo, onRouterInfoUpdated, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
@@ -20,32 +20,30 @@ function normalizeComponentCount(data: CustomInspectorNode[]) {
   return count
 }
 
-onDevToolsClientConnected(() => {
-  // page count getter
-  getRouterInfo().then((_data) => {
-    const data = JSON.parse(_data!)
+onDevToolsConnected(() => {
+  rpc.value.getRouterInfo().then(([data]) => {
     pageCount.value = data?.routes?.length || 1
   })
-  onRouterInfoUpdated((data) => {
+  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
     pageCount.value = data?.routes?.length || 1
   })
+})
 
-  // component count getter
-  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then(([_data]) => {
-    const data = parse(_data!)
-    componentCount.value = normalizeComponentCount(data)
-  })
+// component count getter
+rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then(([_data]) => {
+  const data = parse(_data!)
+  componentCount.value = normalizeComponentCount(data)
+})
 
-  rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
-    const data = parse(_data) as {
-      inspectorId: string
-      rootNodes: CustomInspectorNode[]
-    }
-    if (data.inspectorId !== 'components')
-      return
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+  const data = parse(_data) as {
+    inspectorId: string
+    rootNodes: CustomInspectorNode[]
+  }
+  if (data.inspectorId !== 'components')
+    return
 
-    componentCount.value = normalizeComponentCount(data.rootNodes)
-  })
+  componentCount.value = normalizeComponentCount(data.rootNodes)
 })
 </script>
 

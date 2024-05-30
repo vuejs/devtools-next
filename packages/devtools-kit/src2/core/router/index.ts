@@ -1,10 +1,11 @@
 import type { RouteLocationNormalizedLoaded, RouteRecordRaw, Router } from 'vue-router'
 import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
-import { ROUTER_INFO_KEY, ROUTER_KEY } from '../../state'
-import type { AppRecord, DevToolsState } from '../../types'
+import { ROUTER_INFO_KEY, ROUTER_KEY } from '../../ctx/router'
+import { DevToolsMessagingHookKeys, devtoolsContext } from '../../ctx'
+import type { AppRecord } from '../../types'
 import { hook } from '../../hook'
-import { DevToolsEvents, apiHooks } from '../../api/hook'
+// import { DevToolsEvents, apiHooks } from '../../api/hook'
 
 function getRoutes(router?: Router) {
   const routesMap = new Map()
@@ -42,7 +43,7 @@ function filterCurrentRoute(route: RouteLocationNormalizedLoaded & { href?: stri
   return route
 }
 
-export function normalizeRouterInfo(appRecord: AppRecord, state: DevToolsState) {
+export function normalizeRouterInfo(appRecord: AppRecord, activeAppRecord: { value: AppRecord }) {
   function init() {
     const router = appRecord.app?.config.globalProperties.$router as Router | undefined
     const currentRoute = filterCurrentRoute(router?.currentRoute.value)
@@ -59,13 +60,12 @@ export function normalizeRouterInfo(appRecord: AppRecord, state: DevToolsState) 
 
   init()
 
-  // @TODO: use another way to watch router
   hook.on.componentUpdated(debounce(() => {
-    if (state.activeAppRecord?.app !== appRecord.app)
+    if (activeAppRecord.value?.app !== appRecord.app)
       return
 
     init()
-    apiHooks.callHook(DevToolsEvents.ROUTER_INFO_UPDATED, global[ROUTER_INFO_KEY])
+    devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED, { state: global[ROUTER_INFO_KEY] })
   }, 200))
 }
 export function getRouterDevToolsId(id: string) {

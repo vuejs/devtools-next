@@ -13,6 +13,7 @@ export * from './hook'
 export * from './inspector'
 export * from './env'
 export * from './state'
+export * from './router'
 
 export interface DevtoolsContext {
   hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
-import { getRouterDevToolsId } from '../core/router'
+// import { getRouterDevToolsId } from '../core/router'
 import { getInspector } from '../core/inspector'
 
 export function collectDevToolsPlugin(pluginDescriptor: any, setupFn: any) {
@@ -14,19 +14,19 @@ export function setupDevToolsPlugin(pluginDescriptor: any, setupFn: any) {
 
 export function setupExternalPlugin(plugin: [any, any], app: App<any>) {
   const [pluginDescriptor, setupFn] = plugin
-  if (pluginDescriptor.app !== app)
-    return
+  // if (pluginDescriptor.app !== app)
+  //   return
 
   // edge case for router plugin
-  if (pluginDescriptor.packageName === 'vue-router') {
-    const id = getRouterDevToolsId(`${pluginDescriptor.id}`)
-    if (pluginDescriptor.app === app) {
-      devtoolsAppRecords.value = devtoolsAppRecords.value.map(item => ({
-        ...item,
-        routerId: id,
-      }))
-    }
-  }
+  // if (pluginDescriptor.packageName === 'vue-router') {
+  //   const id = getRouterDevToolsId(`${pluginDescriptor.id}`)
+  //   if (pluginDescriptor.app === app) {
+  //     devtoolsAppRecords.value = devtoolsAppRecords.value.map(item => ({
+  //       ...item,
+  //       routerId: id,
+  //     }))
+  //   }
+  // }
 
   // @TODO: re-design the plugin api
   // const extendedApi = new Proxy(api, {

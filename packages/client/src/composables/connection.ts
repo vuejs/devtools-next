@@ -33,6 +33,7 @@ export function heartbeat() {
     markAsDisconnected()
     heartbeat()
   }, 2000)
+
   rpc.value.heartbeat().then(() => {
     clearTimeout(timer)
     markAsConnected()

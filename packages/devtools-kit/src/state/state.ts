@@ -1,9 +1,9 @@
 import { target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
-import type { DevToolsState } from '../types'
+// import type { DevToolsState } from '../types'
 import { DevToolsEvents, apiHooks } from '../api'
 
-export type { DevToolsState } from '../types'
+// export type { DevToolsState } from '../types'
 
 const STATE_KEY = '__VUE_DEVTOOLS_GLOBAL_STATE__'
 
@@ -29,11 +29,11 @@ export function resetDevToolsState() {
   global[STATE_KEY] = initStateFactory()
 }
 
-export const callStateUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+export const callStateUpdatedHook = debounce((state: any, oldState: any) => {
   apiHooks.callHook(DevToolsEvents.DEVTOOLS_STATE_UPDATED, state, oldState)
 }, 80)
 
-export const callConnectedUpdatedHook = debounce((state: DevToolsState, oldState: DevToolsState) => {
+export const callConnectedUpdatedHook = debounce((state: any, oldState: any) => {
   apiHooks.callHook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, state, oldState)
 }, 80)
 

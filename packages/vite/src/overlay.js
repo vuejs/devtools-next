@@ -1,6 +1,6 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
 import { functions, initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
-import { addCustomTab, createMessageChannel, createRpc, devtools, setCurrentMessagingEnv, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
+import { addCustomTab, createMessagingRpc, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 function normalizeUrl(url) {
   return new URL(`${vueDevToolsOptions.base || '/'}${url}`, import.meta.url).toString()
@@ -55,7 +55,8 @@ window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${dev
 
 initAppSeparateWindow()
 
-setCurrentMessagingEnv('server')
-createMessageChannel({ preset: 'broadcast' })
-
-createRpc(functions)
+createMessagingRpc({
+  functions,
+  env: 'server',
+  preset: ['broadcast'],
+})

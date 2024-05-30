@@ -4,8 +4,9 @@ import { normalizePath } from 'vite'
 import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
+import { setViteServerContext } from '@vue/devtools-kit'
 import VueInspector from 'vite-plugin-vue-inspector'
-import { initViteServerContext } from '@vue/devtools-core'
+import { createViteServerMessagingRpc } from '@vue/devtools-core'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
@@ -99,17 +100,20 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     }))
 
     // vite client <-> server messaging
-    initViteServerContext(server)
-    getViteConfig(config, pluginOptions)
-    setupGraphModule({
-      rpc: inspect.api.rpc,
-      server,
-    })
-    setupAssetsModule({
-      rpc: inspect.api.rpc,
-      server,
-      config,
-    })
+    setViteServerContext(server)
+    createViteServerMessagingRpc()
+
+    // initViteServerContext(server)
+    // getViteConfig(config, pluginOptions)
+    // setupGraphModule({
+    //   rpc: inspect.api.rpc,
+    //   server,
+    // })
+    // setupAssetsModule({
+    //   rpc: inspect.api.rpc,
+    //   server,
+    //   config,
+    // })
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>

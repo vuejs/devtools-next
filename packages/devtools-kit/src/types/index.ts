@@ -1,5 +1,5 @@
 export * from './app'
 export * from './hook'
 export * from './context'
-export * from './router'
+export * from '../../src2/types/router'
 export * from './env'

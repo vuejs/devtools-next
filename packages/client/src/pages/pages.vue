@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
-import { getMatchedRoutes, getRouterInfo, navigateAction, onRouterInfoUpdated } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
 
 const routeInput = ref('')
@@ -29,16 +29,14 @@ function navigate() {
 }
 
 function navigateToRoute(path: string) {
-  navigateAction({
-    path,
-  })
+  rpc.value.navigate(path)
 }
 
-onDevToolsClientConnected(() => {
-  getRouterInfo().then((data) => {
-    init(JSON.parse(data!))
+onDevToolsConnected(() => {
+  rpc.value.getRouterInfo().then(([data]) => {
+    init(data)
   })
-  onRouterInfoUpdated((data) => {
+  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
     init(data)
   })
 })
@@ -46,8 +44,8 @@ onDevToolsClientConnected(() => {
 watchDebounced(routeInput, () => {
   if (routeInput.value === currentRoute.value?.path)
     return
-  getMatchedRoutes(routeInput.value).then((data) => {
-    matchedRoutes.value = JSON.parse(data!)
+  rpc.value.getMatchedRoutes(routeInput.value).then(([data]) => {
+    matchedRoutes.value = data
   })
 })
 </script>

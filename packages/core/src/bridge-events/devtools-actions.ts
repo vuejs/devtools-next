@@ -13,6 +13,7 @@ export const enableVueInspector = defineDevToolsAction('devtools:enable-vue-insp
     await inspector.enable()
 })
 
+// done
 export const toggleApp = defineDevToolsAction('devtools:toggle-app', async (devtools, id: string) => {
   await devtools.api.toggleApp(id)
 })
@@ -79,14 +80,17 @@ export const getInspectorState = defineDevToolsAction('devtools:inspector-state'
   return stringify(res) as string
 })
 
+// done
 export const getRouterInfo = defineDevToolsAction('devtools:router-info', (devtools) => {
   return JSON.stringify(devtools.context.routerInfo)
 })
 
+// done
 export const navigateAction = defineDevToolsAction('devtools:router-navigate', (devtools, payload) => {
   devtools.context.router?.push(payload).catch(e => e)
 })
 
+// done
 export const getMatchedRoutes = defineDevToolsAction('devtools:matched-routes', (devtools, path) => {
   const c = console.warn
   console.warn = () => {}

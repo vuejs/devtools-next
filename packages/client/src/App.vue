@@ -2,7 +2,7 @@
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { parse } from '@vue/devtools-kit'
-import { rpc } from '@vue/devtools-core'
+import { onViteRpcConnected, rpc, viteRpc } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()
@@ -56,10 +56,13 @@ function getInspectorState() {
 }
 
 watchEffect(() => {
-  console.log('x', _appRecords.value)
   activeAppRecords.value = _appRecords.value
   activeAppRecordId.value = _activeAppRecordId.value
 })
+
+// onViteRpcConnected(async () => {
+//   console.log(await viteRpc.value.hi('boom'))
+// })
 
 onDevToolsConnected(() => {
   rpc.value.initDevToolsServerListener()

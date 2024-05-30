@@ -1,8 +1,9 @@
 import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
+import { getViteClient } from 'vite-hot-client'
 
-import { RPCFunctions, functions } from '@vue/devtools-core'
-import { createMessageChannel, createRpc, setCurrentMessagingEnv } from '@vue/devtools-kit'
+import { createViteClientMessagingRpc, functions } from '@vue/devtools-core'
+import { createMessagingRpc, setViteClientContext } from '@vue/devtools-kit'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
@@ -50,9 +51,32 @@ const app = createApp(App)
 app.use(router)
 app.mount('#app')
 
-setCurrentMessagingEnv('client')
-createMessageChannel({ preset: 'broadcast' })
-createRpc<RPCFunctions>(functions)
+async function getViteHotContext() {
+  if (import.meta.url?.includes('chrome-extension://'))
+    return
+
+  const viteClient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)
+  return viteClient?.createHotContext('/____')
+}
+
+export async function initViteClientHotContext() {
+  const context = await getViteHotContext()
+  context && setViteClientContext(context)
+  return context
+}
+
+initViteClientHotContext().then((ctx) => {
+  if (ctx) {
+    createViteClientMessagingRpc()
+  }
+})
+
+createMessagingRpc({
+  functions,
+  env: 'client',
+  preset: ['broadcast'],
+})
+
 heartbeat()
 
 export function initDevTools() {}

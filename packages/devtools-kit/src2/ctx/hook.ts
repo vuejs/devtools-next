@@ -9,6 +9,7 @@ import type {
   DevToolsPlugin,
   EditStatePayload,
   InspectedComponentData,
+  RouterInfo,
   TimelineEvent,
   TimelineEventOptions,
   TimelineLayerOptions,
@@ -168,6 +169,7 @@ export enum DevToolsMessagingHookKeys {
   SEND_INSPECTOR_STATE_TO_CLIENT = 'sendInspectorStateToClient',
   DEVTOOLS_STATE_UPDATED = 'devtoolsStateUpdated',
   DEVTOOLS_CONNECTED_UPDATED = 'devtoolsConnectedUpdated',
+  ROUTER_INFO_UPDATED = 'routerInfoUpdated',
 }
 
 export interface DevToolsMessagingHookPayloads {
@@ -187,6 +189,9 @@ export interface DevToolsMessagingHookPayloads {
     state: DevToolsState
     oldState: DevToolsState
   }
+  [DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]: {
+    state: RouterInfo
+  }
 }
 
 export interface DevToolsMessagingHooks {
@@ -194,6 +199,7 @@ export interface DevToolsMessagingHooks {
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]) => void
+  [DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]) => void
 }
 
 export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {

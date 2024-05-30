@@ -12,6 +12,7 @@ import {
 } from '../ctx'
 import { createAppRecord } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
+import { normalizeRouterInfo } from './router'
 
 export function initDevTools() {
   updateDevToolsState({
@@ -60,6 +61,7 @@ export function initDevTools() {
     if (devtoolsAppRecords.length === 1) {
       setActiveAppRecord(normalizedAppRecord)
       setActiveAppRecordId(normalizedAppRecord.id)
+      normalizeRouterInfo(normalizedAppRecord, activeAppRecord)
     }
 
     // @TODO: register plugin

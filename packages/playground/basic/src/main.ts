@@ -2,7 +2,7 @@ import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import { addCustomCommand } from '@vue/devtools-api'
+import { addCustomCommand, addCustomTab } from '@vue/devtools-api'
 import { removeCustomCommand } from '@vue/devtools-kit'
 import store from './stores/vuexStore'
 
@@ -78,19 +78,35 @@ setTimeout(() => {
   })
 }, 2000)
 
-// setTimeout(() => {
-//   addCustomTab({
-//   // unique identifier
-//     name: 'vue-use',
-//     // title to display in the tab
-//     title: 'VueUse',
-//     // any icon from Iconify, or a URL to an image
-//     icon: 'i-logos-vueuse',
-//     // iframe view
-//     view: {
-//       type: 'iframe',
-//       src: 'https://vueuse.org/',
-//     },
-//     category: 'advanced',
-//   })
-// }, 2000)
+setTimeout(() => {
+  addCustomTab({
+  // unique identifier
+    name: 'vue-use',
+    // title to display in the tab
+    title: 'VueUse',
+    // any icon from Iconify, or a URL to an image
+    icon: 'i-logos-vueuse',
+    // iframe view
+    view: {
+      type: 'iframe',
+      src: 'https://vueuse.org/',
+    },
+    category: 'advanced',
+  })
+  setTimeout(() => {
+    addCustomTab({
+    // unique identifier
+      name: 'vue-use1',
+      // title to display in the tab
+      title: 'VueUse1',
+      // any icon from Iconify, or a URL to an image
+      icon: 'i-logos-vueuse',
+      // iframe view
+      view: {
+        type: 'iframe',
+        src: 'https://vueuse.org/',
+      },
+      category: 'advanced',
+    })
+  }, 2000)
+}, 2000)

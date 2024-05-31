@@ -74,7 +74,7 @@ initViteClientHotContext().then((ctx) => {
 createMessagingRpc({
   functions,
   env: 'client',
-  preset: ['broadcast'],
+  preset: ['iframe'],
 })
 
 heartbeat()

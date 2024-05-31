@@ -56,5 +56,5 @@ window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${dev
 createMessagingRpc({
   functions,
   env: 'server',
-  preset: ['broadcast'],
+  preset: ['iframe'],
 })

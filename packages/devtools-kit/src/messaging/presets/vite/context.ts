@@ -12,7 +12,7 @@ interface ViteDevServer {
   ws?: EventEmitter
 }
 
-export const __DEVTOOLS_KIT_VITE_MESSAGING_EVENT_KEY = '__devtools-kit-messaging-event-key__'
+export const __DEVTOOLS_KIT_VITE_MESSAGING_EVENT_KEY = '__devtools-kit-vite-messaging-event-key__'
 export const __VITE_CLIENT_CONTEXT__ = 'vite:client-context'
 export const __VITE_SERVER_CONTEXT__ = 'vite:server-context'
 

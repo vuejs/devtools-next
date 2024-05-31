@@ -1,4 +1,3 @@
-import { onCustomTabsUpdated } from '@vue/devtools-core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInElectron } from '@vue/devtools-shared'
@@ -21,8 +20,6 @@ export interface CategorizedCategory {
 }
 
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
-
-let removeTabsUpdatedListener: (() => void) | null = null
 
 export function useAllTabs() {
   const state = useDevToolsState()
@@ -109,14 +106,6 @@ export function useAllTabs() {
       })
       return prev
     }, [] as Array<ModuleBuiltinTab | CustomTab>)
-  })
-
-  onDevToolsClientConnected(() => {
-    // @TODO: refactor
-    removeTabsUpdatedListener?.()
-    removeTabsUpdatedListener = onCustomTabsUpdated((data) => {
-      customTabs.value = data
-    })
   })
 
   return { categorizedTabs, flattenedTabs, enabledTabs, enabledFlattenTabs }

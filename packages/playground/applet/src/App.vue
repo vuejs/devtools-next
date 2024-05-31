@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Components } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
-import { HandShakeServer, getDevToolsState, initDevToolsSeparateWindow, initDevToolsSeparateWindowBridge, onDevToolsStateUpdated, setupDevToolsBridge } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { useDark } from '@vueuse/core'
 import { useCounterStore } from './stores'
 import Hello from './components/Hello.vue'
@@ -15,30 +15,15 @@ const appConnected = ref(false)
 const clientConnected = ref(false)
 const connected = computed(() => appConnected.value && clientConnected.value)
 
-initDevToolsSeparateWindow({
-  onConnected(channel) {
-    const bridge = initDevToolsSeparateWindowBridge(channel)
-    setupDevToolsBridge(bridge)
-    new HandShakeServer(bridge).onnConnect().then(() => {
-      bridge.emit('devtools:client-ready')
-      initVueDevToolsState()
-    })
-    bridge.on('disconnect', () => {
-      channel.close()
-      initDevToolsSeparateWindow()
-    })
-  },
-})
-
 function initVueDevToolsState() {
-  getDevToolsState().then((data) => {
-    if (data)
+  rpc.value.devtoolsState().then(([data]) => {
+    if (!data)
       return
     appConnected.value = data!.connected
     clientConnected.value = data!.clientConnected
   })
 
-  onDevToolsStateUpdated((data) => {
+  rpc.functions.on(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, (data) => {
     if (!data)
       return
     appConnected.value = data!.connected

@@ -1,5 +1,5 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { functions, initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
+import { functions, setDevToolsClientUrl } from '@vue/devtools-core'
 import { addCustomTab, createMessagingRpc, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 function normalizeUrl(url) {
@@ -52,8 +52,6 @@ body.appendChild(script)
 
 // Used in the browser extension
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
-
-initAppSeparateWindow()
 
 createMessagingRpc({
   functions,

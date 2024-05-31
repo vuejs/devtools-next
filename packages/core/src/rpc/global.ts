@@ -162,8 +162,24 @@ export const rpc = new Proxy<{
   get(target, property) {
     const _rpc = getRpc<RPCFunctions>()
     if (property === 'value')
-      return _rpc.broadcast
+      return _rpc?.broadcast
     else if (property === 'functions')
-      return _rpc.functions
+      return _rpc?.functions
   },
 })
+
+export function onRpcConnected(callback: () => void) {
+  let timer: number = null!
+
+  function heartbeat() {
+    rpc.value?.heartbeat?.().then(() => {
+      clearTimeout(timer)
+      callback()
+    }).catch(() => ({}))
+    timer = setTimeout(() => {
+      heartbeat()
+    }, 80) as unknown as number
+  }
+
+  heartbeat()
+}

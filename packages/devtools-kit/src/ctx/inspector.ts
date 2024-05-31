@@ -1,6 +1,7 @@
 import { target } from '@vue/devtools-shared'
 import type { App } from 'vue'
 import type { CustomInspectorOptions, PluginDescriptor } from '../types'
+import { getAppRecord } from '../core/component/utils'
 
 interface DevToolsKitInspector {
   options: CustomInspectorOptions
@@ -23,8 +24,7 @@ export function addInspector(inspector: CustomInspectorOptions, descriptor: Plug
     descriptor,
     treeFilter: '',
     selectedNodeId: '',
-    // @TODO: get app record by descriptor.app
-    appRecord: null,
+    appRecord: getAppRecord(descriptor.app),
   })
 }
 

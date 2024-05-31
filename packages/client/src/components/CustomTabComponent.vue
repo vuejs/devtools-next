@@ -8,7 +8,6 @@ const p = defineProps<{
 
 const props = toRefs(p)
 
-console.log(props.tab.value)
 const tabName = computed(() => props.tab.value?.name)
 
 const iframeViewVisible = ref(true)

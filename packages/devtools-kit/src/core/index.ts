@@ -1,80 +1,105 @@
-import { devtoolsState } from '../state'
-import { DevToolsEvents, apiHooks } from '../api'
+import { isNuxtApp, target } from '@vue/devtools-shared'
+import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
+import {
+  DevToolsMessagingHookKeys,
+  activeAppRecord,
+  addDevToolsAppRecord,
+  addDevToolsPluginToBuffer,
+  devtoolsAppRecords,
+  devtoolsContext,
+  devtoolsPluginBuffer,
+  devtoolsState,
+  getDevToolsEnv,
+  removeDevToolsAppRecord,
+  setActiveAppRecord,
+  setActiveAppRecordId,
+  updateDevToolsState,
+} from '../ctx'
+import { onLegacyDevToolsPluginApiAvailable } from '../compat'
+import { DevToolsHooks } from '../types'
+import { createAppRecord } from './app'
+import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
+import { normalizeRouterInfo } from './router'
 
 export function initDevTools() {
-  // devtoolsState.vitePluginDetected = getDevToolsEnv().vitePluginDetected
+  updateDevToolsState({
+    vitePluginDetected: getDevToolsEnv().vitePluginDetected,
+  })
 
-  // const isDevToolsNext = target.__VUE_DEVTOOLS_GLOBAL_HOOK__?.id === 'vue-devtools-next'
+  const isDevToolsNext = target.__VUE_DEVTOOLS_GLOBAL_HOOK__?.id === 'vue-devtools-next'
 
-  // // de-duplicate
-  // if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isDevToolsNext)
-  //   return
+  // de-duplicate
+  if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isDevToolsNext)
+    return
 
-  // if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
-  //   target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
-  // }
-  // else {
-  //   // respect old devtools hook in nuxt application
-  //   if (!isNuxtApp) {
-  //     // override devtools hook directly
-  //     Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
-  //   }
-  // }
+  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
+  }
+  else {
+    // respect old devtools hook in nuxt application
+    if (!isNuxtApp) {
+      // override devtools hook directly
+      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
+    }
+  }
 
-  // // setup old devtools plugin (compatible with pinia, router, etc)
-  // hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
-  //   collectDevToolsPlugin(pluginDescriptor, setupFn)
-  //   const { app } = devtoolsAppRecords.active || {}
-  //   if (!app)
-  //     return
-  //   setupExternalPlugin([pluginDescriptor, setupFn], app)
-  // })
+  hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
+    addDevToolsPluginToBuffer(pluginDescriptor, setupFn)
+    const { app } = activeAppRecord ?? {}
 
-  // onLegacyDevToolsPluginApiAvailable(() => {
-  //   const normalizedPluginBuffer = devtoolsState.pluginBuffer.filter(([item]) => item.id !== 'components')
-  //   normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
-  //     target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
-  //   })
-  // })
+    if (!app)
+      return
 
-  // // create app record
-  // hook.on.vueAppInit(async (app, version) => {
-  //   const record = createAppRecord(app)
-  //   // const api = new DevToolsPluginApi()
-  //   devtoolsAppRecords.value = [
-  //     ...devtoolsAppRecords.value,
-  //     {
-  //       ...record,
-  //       app,
-  //       version,
-  //       // api,
-  //     },
-  //   ]
+    callDevToolsPluginSetupFn([pluginDescriptor, setupFn], app)
+  })
 
-  //   addDevToolsAppRecord(record)
+  onLegacyDevToolsPluginApiAvailable(() => {
+    const normalizedPluginBuffer = devtoolsPluginBuffer.filter(([item]) => item.id !== 'components')
+    normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
+      target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
+    })
+  })
 
-  //   if (devtoolsAppRecords.value.length === 1) {
-  //     setActiveAppRecord(record)
+  // create app record
+  hook.on.vueAppInit(async (app, version) => {
+    const appRecord = createAppRecord(app)
+    const normalizedAppRecord = {
+      ...appRecord,
+      app,
+      version,
+    }
+    addDevToolsAppRecord(normalizedAppRecord)
 
-  //     await _setActiveAppRecord(devtoolsAppRecords.value[0])
-  //     devtoolsState.connected = true
-  //     devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
-  //   }
-  // })
+    if (devtoolsAppRecords.length === 1) {
+      setActiveAppRecord(normalizedAppRecord)
+      setActiveAppRecordId(normalizedAppRecord.id)
+      normalizeRouterInfo(normalizedAppRecord, activeAppRecord)
+    }
 
-  // hook.on.vueAppUnmount(async (app) => {
-  //   const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
-  //   // #356 should disconnect when all apps are unmounted
-  //   if (activeRecords.length === 0) {
-  //     devtoolsState.connected = false
-  //     return
-  //   }
-  //   devtoolsAppRecords.value = activeRecords
-  //   if (devtoolsAppRecords.active.app === app)
-  //     await _setActiveAppRecord(activeRecords[0])
-  // })
+    setupDevToolsPlugin(...createComponentsDevToolsPlugin(normalizedAppRecord.app))
+    registerDevToolsPlugin(normalizedAppRecord.app)
 
-  // subscribeDevToolsHook()
+    updateDevToolsState({
+      connected: true,
+    })
+  })
+
+  hook.on.vueAppUnmount(async (app) => {
+    const activeRecords = devtoolsAppRecords.filter(appRecord => appRecord.app !== app)
+
+    if (activeRecords.length === 0) {
+      updateDevToolsState({
+        connected: false,
+      })
+    }
+
+    removeDevToolsAppRecord(app)
+    if (activeAppRecord.value.app === app) {
+      setActiveAppRecord(activeRecords[0])
+    }
+  })
+
+  subscribeDevToolsHook()
 }
 
 export function onDevToolsClientConnected(fn: () => void) {
@@ -85,7 +110,7 @@ export function onDevToolsClientConnected(fn: () => void) {
       return
     }
 
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
+    devtoolsContext.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED, ({ state }) => {
       if (state.connected && state.clientConnected) {
         fn()
         resolve()

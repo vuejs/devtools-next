@@ -1,6 +1,4 @@
 import { isBrowser, target } from '@vue/devtools-shared'
-import { Bridge } from '../../core/src/bridge'
-import { prepareInjection } from '../../core/src/injection'
 import { devtools } from '../../devtools-kit/src/index'
 
 export function init(io) {
@@ -12,22 +10,6 @@ export function init(io) {
 
   // @TODO: de-duplicate
   devtools.init()
-
-  const bridge = new Bridge({
-    tracker(fn) {
-      socket.on('vue-devtools:message', (data) => {
-        fn(data)
-      })
-    },
-    trigger(data) {
-      socket.emit('vue-devtools:message', data)
-    },
-  })
-
-  socket.on('connect', () => {
-    prepareInjection(bridge)
-    socket.emit('vue-devtools:init')
-  })
 
   // Global disconnect handler. Fires in two cases:
   // - after calling above socket.disconnect()

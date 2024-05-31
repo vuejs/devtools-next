@@ -12,7 +12,7 @@ export function useDevToolsState() {
   const tabs = ref<CustomTab[]>([])
   const commands = ref<CustomCommand[]>([])
   const vitePluginDetected = ref(false)
-  const appRecords = ref<Array<DevtoolsBridgeAppRecord>>([])
+  const appRecords = ref<Array<AppRecord>>([])
   const activeAppRecordId = ref('')
 
   // @TODO: types

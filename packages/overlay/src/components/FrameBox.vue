@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import { useEventListener } from '@vueuse/core'
-
-import { useFrameState, waitBridgeReady } from '~/composables'
+import { onRpcConnected, rpc } from '@vue/devtools-core'
+import { useFrameState } from '~/composables'
 import { PANEL_MAX, PANEL_MIN } from '~/constants'
 
 const props = defineProps<{
@@ -24,9 +24,8 @@ const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
 
-waitBridgeReady().then((bridge) => {
-  // @TODO: add type
-  bridge.on('update-client-state', (v) => {
+onRpcConnected(() => {
+  rpc.functions.on('update-client-state', (v) => {
     updateState({
       minimizePanelInactive: v.minimizePanelInteractive,
       closeOnOutsideClick: v.closeOnOutsideClick,

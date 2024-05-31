@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { parse } from '@vue/devtools-kit'
-import { rpc } from '@vue/devtools-core'
+import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()
@@ -27,6 +26,16 @@ watchEffect(() => {
   document.documentElement.style.fontSize = `${scale * 15}px`
 })
 
+onRpcConnected(() => {
+  watchEffect(() => {
+    rpc.value.emit('update-client-state', {
+      minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
+      closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
+      showFloatingPanel: devtoolsClientState.value.showPanel,
+    })
+  })
+})
+
 watch(devtoolsReady, (v) => {
   if (v) {
     router.replace(clientState.value.isFirstVisit ? '/' : clientState.value.route)
@@ -46,23 +55,10 @@ useEventListener('keydown', (e) => {
     rpc.value.emit('toggle-panel')
 })
 
-function getInspectorState() {
-  rpc.value.getInspectorState({
-    inspectorId: 'components',
-    nodeId: 'app-1:root',
-  }).then(([res]) => {
-    console.log('state', parse(res))
-  })
-}
-
 watchEffect(() => {
   activeAppRecords.value = _appRecords.value
   activeAppRecordId.value = _activeAppRecordId.value
 })
-
-// onViteRpcConnected(async () => {
-//   console.log(await viteRpc.value.getStaticAssets())
-// })
 
 onDevToolsConnected(() => {
   rpc.value.initDevToolsServerListener()
@@ -84,13 +80,25 @@ onDevToolsConnected(() => {
   })
 })
 
-// watchEffect(() => {
-//   bridge.value.emit('update-client-state', {
-//     minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
-//     closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
-//     showFloatingPanel: devtoolsClientState.value.showPanel,
-//   })
-// })
+// register commands
+const { copy } = useCopy()
+const eyeDropper = useEyeDropper({})
+
+registerCommands(() => [
+  ...(eyeDropper.isSupported.value
+    ? [{
+        id: 'action:eye-dropper',
+        title: 'Color Picker',
+        icon: 'i-carbon-eyedropper',
+        action: async () => {
+          rpc.value.emit('toggle-panel', false)
+          const { sRGBHex } = await eyeDropper.open() || {}
+          if (sRGBHex)
+            copy(sRGBHex)
+        },
+      }]
+    : []),
+])
 </script>
 
 <template>

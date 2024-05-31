@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
-import { isInChromePanel } from '@vue/devtools-shared'
 import { rpc } from '@vue/devtools-core'
-
-// #region view mode
-const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
-const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
-const { toggle: toggleViewMode } = useToggleViewMode()
-// #endregion
 
 const router = useRouter()
 
@@ -79,9 +72,6 @@ watch(activeAppRecordId, (id) => {
       </template>
       <VueButton outlined type="primary" @click="refreshPage">
         Refresh Page
-      </VueButton>
-      <VueButton v-if="viewModeSwitchVisible" outlined type="primary" @click="toggleViewMode('overlay')">
-        Switch to Overlay Mode
       </VueButton>
     </div>
   </div>

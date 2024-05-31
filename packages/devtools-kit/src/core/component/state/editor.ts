@@ -1,7 +1,8 @@
 import type { MaybeRef, Ref } from 'vue'
 import { isReactive, isRef, toRaw } from 'vue'
 import { getComponentInstance } from '../utils'
-import { devtoolsContext } from '../../../state'
+import { activeAppRecord } from '../../../ctx'
+import { EditStatePayload } from '../../../types'
 
 import type { InspectorStateEditorPayload, PropPath } from '../types'
 
@@ -72,7 +73,7 @@ export class StateEditor {
     return object != null && Object.prototype.hasOwnProperty.call(object, sections[0])
   }
 
-  createDefaultSetCallback(state: InspectorStateEditorPayload['state']) {
+  createDefaultSetCallback(state: EditStatePayload) {
     return (object: Recordable, field: string | number, value: unknown) => {
       if (state.remove || state.newKey) {
         if (Array.isArray(object))
@@ -151,7 +152,7 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
   const { path, nodeId, state, type } = payload
   // assert data types, currently no...
   // if (!['data', 'props', 'computed', 'setup'].includes(dataType))
-  const instance = getComponentInstance(devtoolsContext.appRecord!, nodeId)
+  const instance = getComponentInstance(activeAppRecord.value, nodeId)
   if (!instance)
     return
 
@@ -169,6 +170,7 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
     if (state.type === 'object' && type === 'reactive') {
       // prevent loss of reactivity
     }
+    // @ts-expect-error skip type check
     stateEditor.set(target, targetPath, state.value, stateEditor.createDefaultSetCallback(state))
   }
 }

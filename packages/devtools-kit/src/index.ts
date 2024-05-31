@@ -1,40 +1,35 @@
-import { devtoolsContext as _devtoolsContext, initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
-import { toggleComponentInspectorEnabled } from '../src2/core/component-inspector'
-import { addCustomCommand, addCustomTab, removeCustomCommand } from '../src2/ctx'
-import { toggleHighPerfMode } from '../src2/core/high-perf-mode'
-import { setOpenInEditorBaseUrl } from '../src2/core/open-in-editor'
-import { onDevToolsClientConnected } from '../src2/core'
+import { initDevTools, onDevToolsClientConnected } from './core'
+import { toggleComponentInspectorEnabled } from './core/component-inspector'
+import { setupDevToolsPlugin } from './core/plugin'
+import { addCustomCommand, addCustomTab, devtoolsContext, removeCustomCommand } from './ctx'
+import { toggleHighPerfMode } from './core/high-perf-mode'
+import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 import { hook } from './hook'
-import { devtoolsContext, devtoolsState } from './state'
-// import { setupDevToolsPlugin } from './api'
 
-export * from '../src2/index'
-export type * from '../src2/types'
-export type * from '../src2/core/open-in-editor'
-export type * from '../src2/core/component-highlighter'
-export type * from '../src2/core/component-inspector'
-export type * from '../src2/core/component/types'
-
-export type DevToolsType = any
-
-export { parse, stringify } from '../src2/shared'
-export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '../src2/core/component/state/format'
-export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from '../src2/core/component/state/constants'
+export * from './core'
+export * from './core/plugin'
+export * from './ctx'
+export * from './messaging'
+export type * from './types'
+export type * from './core/open-in-editor'
+export type * from './core/component-highlighter'
+export type * from './core/component-inspector'
+export type * from './core/component/types'
+export { parse, stringify } from './shared'
+export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
+export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from './core/component/state/constants'
 export { isPlainObject } from './core/component/state/is'
 
 export const devtools = {
-  state: devtoolsState as any,
-  context: devtoolsContext as any,
-  hook: hook as any,
+  hook,
   init: () => {
-    // initDevTools()
-    _initDevTools()
+    initDevTools()
   },
   get ctx() {
-    return _devtoolsContext
+    return devtoolsContext
   },
   get api() {
-    return devtoolsContext.api as any
+    return devtoolsContext.api
   },
 }
 

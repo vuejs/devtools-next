@@ -1,5 +1,5 @@
-import { Bridge } from '../../core/src/bridge'
-import { initDevTools } from '../client/devtools-panel'
+// import { Bridge } from '../../core/src/bridge'
+// import { initDevTools } from '../client/devtools-panel'
 import { VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const connectionInfo: {
@@ -97,34 +97,34 @@ chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_U
   }
   // for browser extension
   else {
-    initDevTools({
-      connect(cb) {
-        if (chrome.runtime?.id === undefined)
-          return
-        injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
-          // connect to background to setup proxy
-          connect()
+    // initDevTools({
+    //   connect(cb) {
+    //     if (chrome.runtime?.id === undefined)
+    //       return
+    //     injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
+    //       // connect to background to setup proxy
+    //       connect()
 
-          const bridge = new Bridge({
-            tracker(fn: any) {
-              connectionInfo.port.onMessage.addListener(fn)
-              connectionInfo.listeners.push(fn)
-            },
-            trigger(data) {
-              if (connectionInfo.disconnected)
-                return
+    //       const bridge = new Bridge({
+    //         tracker(fn: any) {
+    //           connectionInfo.port.onMessage.addListener(fn)
+    //           connectionInfo.listeners.push(fn)
+    //         },
+    //         trigger(data) {
+    //           if (connectionInfo.disconnected)
+    //             return
 
-              connectionInfo.port?.postMessage(data)
-            },
-          })
+    //           connectionInfo.port?.postMessage(data)
+    //         },
+    //       })
 
-          cb(bridge)
-        })
-      },
-      reload(fn) {
-        chrome.devtools.network.onNavigated.addListener(fn)
-      },
-    })
+    //       cb(bridge)
+    //     })
+    //   },
+    //   reload(fn) {
+    //     chrome.devtools.network.onNavigated.addListener(fn)
+    //   },
+    // })
   }
 })
 

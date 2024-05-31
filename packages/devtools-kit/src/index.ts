@@ -1,24 +1,25 @@
 import { devtoolsContext as _devtoolsContext, initDevTools as _initDevTools, setupDevToolsPlugin } from '../src2/index'
 import { toggleComponentInspectorEnabled } from '../src2/core/component-inspector'
 import { addCustomCommand, addCustomTab, removeCustomCommand } from '../src2/ctx'
-import { onDevToolsClientConnected } from './core'
+import { toggleHighPerfMode } from '../src2/core/high-perf-mode'
+import { setOpenInEditorBaseUrl } from '../src2/core/open-in-editor'
+import { onDevToolsClientConnected } from '../src2/core'
 import { hook } from './hook'
 import { devtoolsContext, devtoolsState } from './state'
 // import { setupDevToolsPlugin } from './api'
-import { toggleHighPerfMode } from './core/high-perf-mode'
-import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 
 export * from '../src2/index'
 export type * from '../src2/types'
-export type * from './core/open-in-editor'
-export type * from './core/component-highlighter'
+export type * from '../src2/core/open-in-editor'
+export type * from '../src2/core/component-highlighter'
 export type * from '../src2/core/component-inspector'
+export type * from '../src2/core/component/types'
 
 export type DevToolsType = any
 
-export { parse, stringify } from './shared'
-export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
-export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from './core/component/state/constants'
+export { parse, stringify } from '../src2/shared'
+export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '../src2/core/component/state/format'
+export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from '../src2/core/component/state/constants'
 export { isPlainObject } from './core/component/state/is'
 
 export const devtools = {

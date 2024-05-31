@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { getInspectorState, getInspectorTree, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import type { InspectorNodeTag, InspectorState } from '@vue/devtools-kit'
+import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import Navbar from '~/components/basic/Navbar.vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
@@ -16,11 +16,8 @@ const { expanded: expandedStateNodes } = createExpandedContext('pinia-store-stat
 const inspectorId = 'pinia'
 
 const selected = ref('')
-const tree = ref<{ id: string, label: string, tags: InspectorNodeTag[] }[]>([])
-const state = ref<{
-  state?: InspectorState[]
-  getters?: InspectorState[]
-}>({})
+const tree = ref<CustomInspectorNode[]>([])
+const state = ref<CustomInspectorState>({})
 
 const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
@@ -33,7 +30,8 @@ function filterEmptyState(data: Record<string, unknown[] | undefined>) {
 }
 
 function getPiniaState(nodeId: string) {
-  getInspectorState({ inspectorId, nodeId }).then((data) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId }).then(([data]) => {
+    // @ts-expect-error skip type check
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
@@ -49,7 +47,7 @@ watch(selected, () => {
 })
 
 const getPiniaInspectorTree = () => {
-  getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
+  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then(([_data]) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length)
@@ -59,23 +57,36 @@ const getPiniaInspectorTree = () => {
 }
 getPiniaInspectorTree()
 
-onInspectorTreeUpdated((data) => {
-  if (!data?.data.length || data.inspectorId !== inspectorId)
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+  const data = parse(_data) as {
+    inspectorId: string
+    rootNodes: CustomInspectorNode[]
+  }
+  if (data.inspectorId !== inspectorId || !data.rootNodes.length)
     return
-  tree.value = data.data as unknown as { id: string, label: string, tags: InspectorNodeTag[] }[]
-  if (!selected.value && data.data.length) {
-    selected.value = data.data[0].id
-    getPiniaState(data.data[0].id)
+  tree.value = data.rootNodes as unknown as CustomInspectorNode[]
+  if (!selected.value && data.rootNodes.length) {
+    selected.value = data.rootNodes[0].id
+    getPiniaState(data.rootNodes[0].id)
   }
 })
 
-onInspectorStateUpdated((data) => {
-  if (!data || !data?.state?.length || data.inspectorId !== inspectorId)
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
+  const data = parse(_data) as {
+    inspectorId: string
+    state: CustomInspectorState
+    nodeId: string
+  }
+
+  if (data.inspectorId !== inspectorId)
     return
 
+  const _state = data.state
+
+  // @ts-expect-error skip type check
   state.value = filterEmptyState({
-    state: data.state,
-    getters: data.getters,
+    state: _state.state,
+    getters: _state.getters,
   })
   expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 })
@@ -94,6 +105,7 @@ onInspectorStateUpdated((data) => {
       </Pane>
       <Pane size="60">
         <div h-full select-none overflow-scroll class="no-scrollbar">
+          <!-- @vue-expect-error  -->
           <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
           <Empty v-else>
             No Data

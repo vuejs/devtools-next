@@ -70,13 +70,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'vuex',
       title: 'vuex',
     },
-    {
-      icon: 'i-carbon-language',
-      name: 'i18n',
-      order: -100,
-      path: 'i18n',
-      title: 'I18n Resources',
-    },
+    // {
+    //   icon: 'i-carbon-language',
+    //   name: 'i18n',
+    //   order: -100,
+    //   path: 'i18n',
+    //   title: 'I18n Resources',
+    // },
   ]],
   ['advanced', [
     {
@@ -103,7 +103,7 @@ const moduleDetectivesMapping = {
   pinia: 'pinia',
   vuex: 'vuex',
   router: 'vueRouter',
-  i18n: 'vueI18n',
+  // i18n: 'vueI18n',
 } satisfies Record<string, keyof Detective>
 
 export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {

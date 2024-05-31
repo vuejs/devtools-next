@@ -2,7 +2,7 @@ import { debounce } from 'perfect-debounce'
 import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 import { hook } from '../../hook'
 import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
-import { DevToolsV6PluginAPIHookKeys, activeAppRecord, devtoolsContext } from '../../ctx'
+import { DevToolsV6PluginAPIHookKeys, activeAppRecord, devtoolsContext, devtoolsState } from '../../ctx'
 import { ComponentWalker } from '../../core/component/tree/walker'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
@@ -80,9 +80,8 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
     }, 120)
 
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
-      // @TODO: highPerfModeEnabled
-      // if (devtoolsState.highPerfModeEnabled)
-      // return
+      if (devtoolsState.highPerfModeEnabled)
+        return
 
       if (app?._instance?.type?.devtools?.hide)
         return
@@ -116,9 +115,8 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
     })
 
     const componentUpdatedCleanup = hook.on.componentUpdated(async (app, uid, parentUid, component) => {
-      // @TODO: highPerfModeEnabled
-      // if (devtoolsState.highPerfModeEnabled)
-      // return
+      if (devtoolsState.highPerfModeEnabled)
+        return
 
       if (app?._instance?.type?.devtools?.hide)
         return
@@ -152,9 +150,8 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
       debounceSendInspectorState()
     })
     const componentRemovedCleanup = hook.on.componentRemoved(async (app, uid, parentUid, component) => {
-      // @TODO: highPerfModeEnabled
-      // if (devtoolsState.highPerfModeEnabled)
-      // return
+      if (devtoolsState.highPerfModeEnabled)
+        return
 
       if (app?._instance?.type?.devtools?.hide)
         return

@@ -4,7 +4,7 @@ import { VueButton, VueDropdown, VueDropdownButton, VueIcon, vTooltip } from '@v
 import { DevToolsV6PluginAPIHookKeys, getRaw } from '@vue/devtools-kit'
 import type { CustomInspectorState, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
-import { editInspectorState, rpc } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { useClipboard } from '@vueuse/core'
 import { useStateEditorContext } from '~/composables/state-editor'
 import type { EditorAddNewPropType, EditorInputValidType } from '~/composables/state-editor'

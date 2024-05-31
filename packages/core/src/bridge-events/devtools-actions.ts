@@ -1,32 +1,5 @@
-import { toggleHighPerfMode as _toggleHighPerfMode, stringify } from '@vue/devtools-kit'
+import { stringify } from '@vue/devtools-kit'
 import { defineDevToolsAction } from '../bridge'
-
-// done
-export const checkVueInspectorDetected = defineDevToolsAction<boolean>('devtools:check-vue-inspector-detected', async (devtools) => {
-  return !!await devtools?.api?.getVueInspector?.()
-})
-
-// done
-export const enableVueInspector = defineDevToolsAction('devtools:enable-vue-inspector', async (devtools) => {
-  const inspector = await devtools?.api?.getVueInspector?.()
-  if (inspector)
-    await inspector.enable()
-})
-
-// done
-export const toggleApp = defineDevToolsAction('devtools:toggle-app', async (devtools, id: string) => {
-  await devtools.api.toggleApp(id)
-})
-
-// done
-export const editInspectorState = defineDevToolsAction('devtools:edit-inspector-state', (devtools, payload: any) => {
-  devtools.api.editInspectorState(payload)
-})
-
-// done
-export const openInEditor = defineDevToolsAction('devtools:open-in-editor', (devtools, file: string, baseUrl?: string) => {
-  devtools.api.openInEditor({ file, baseUrl })
-})
 
 // done
 export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', async (devtools, payload) => {
@@ -119,8 +92,4 @@ export const getDevToolsState = defineDevToolsAction('devtools:get-state', (devt
     })),
     activeAppRecordId: devtools.state.activeAppRecordId,
   }
-})
-
-export const toggleHighPerfMode = defineDevToolsAction('devtools:toggle-high-perf-mode', (_, payload) => {
-  _toggleHighPerfMode(payload)
 })

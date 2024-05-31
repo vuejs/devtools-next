@@ -14,6 +14,7 @@ export interface DevToolsState {
   activeAppRecordId: string
   tabs: CustomTab[]
   commands: CustomCommand[]
+  highPerfModeEnabled: boolean
 }
 
 global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
@@ -32,6 +33,7 @@ function initStateFactory() {
     activeAppRecordId: '',
     tabs: [],
     commands: [],
+    highPerfModeEnabled: false,
   }
 }
 global[STATE_KEY] ??= initStateFactory()
@@ -137,7 +139,10 @@ export function updateDevToolsState(state: Partial<DevToolsState>) {
     appRecords: devtoolsAppRecords.value,
     activeAppRecordId: activeAppRecord.id,
   }
-  if (oldState.connected !== state.connected && state.connected) {
+  if (
+    (oldState.connected !== state.connected && state.connected)
+    || (oldState.clientConnected !== state.clientConnected && state.clientConnected)
+  ) {
     callConnectedUpdatedHook(global[STATE_KEY], oldState)
   }
   Object.assign(global[STATE_KEY], state)
@@ -187,4 +192,8 @@ export function removeCustomCommand(actionId: string) {
 
   commands.splice(index, 1)
   updateAllStates()
+}
+
+export function makeAsClientConnected() {
+  updateDevToolsState({ clientConnected: true })
 }

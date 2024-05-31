@@ -35,10 +35,15 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
         app: activeAppRecord.value.app,
         state: null as CustomInspectorState | null,
       }
+
+      const ctx = {
+        currentTab: `custom-inspector:${payload.inspectorId}`,
+      }
+
       await new Promise<void>((resolve) => {
         // @ts-expect-error hookable
         hooks.callHookWith(async (callbacks) => {
-          await Promise.all(callbacks.map(cb => cb(_payload)))
+          await Promise.all(callbacks.map(cb => cb(_payload, ctx)))
           resolve()
         }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
       })

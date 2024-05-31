@@ -12,7 +12,7 @@ import Overview from '~/pages/overview.vue'
 import PiniaPage from '~/pages/pinia.vue'
 import VuexPage from '~/pages/vuex.vue'
 import RouterPage from '~/pages/router.vue'
-import I18nPage from '~/pages/i18n.vue'
+// import I18nPage from '~/pages/i18n.vue'
 import VueQueryPage from '~/pages/vue-query.vue'
 import VeeValidatePage from '~/pages/vee-validate.vue'
 import Pages from '~/pages/pages.vue'
@@ -34,7 +34,7 @@ const routes = [
   { path: '/router', component: RouterPage },
   { path: '/vue-query', component: VueQueryPage },
   { path: '/vee-validate', component: VeeValidatePage },
-  { path: '/i18n', component: I18nPage },
+  // { path: '/i18n', component: I18nPage },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },

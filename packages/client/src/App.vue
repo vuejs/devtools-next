@@ -2,7 +2,7 @@
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { parse } from '@vue/devtools-kit'
-import { onViteRpcConnected, rpc, viteRpc } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()
@@ -61,7 +61,7 @@ watchEffect(() => {
 })
 
 // onViteRpcConnected(async () => {
-//   console.log(await viteRpc.value.hi('boom'))
+//   console.log(await viteRpc.value.getStaticAssets())
 // })
 
 onDevToolsConnected(() => {

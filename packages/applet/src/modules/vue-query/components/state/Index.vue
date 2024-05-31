@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { DevToolsMessagingEvents, callInspectorAction, callInspectorNodeAction, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import { vTooltip } from '@vue/devtools-ui'
@@ -14,11 +14,6 @@ import { createExpandedContext } from '~/composables/toggle-expanded'
 
 const { expanded: expandedStateNodes } = createExpandedContext('vue-query-state')
 
-interface NodeAction {
-  icon: string
-  tooltip: string
-  actions?: (payload: unknown) => void
-}
 const inspectorId = 'vue-query'
 const nodeActions = ref<CustomInspectorOptions['nodeActions']>([])
 const actions = ref<CustomInspectorOptions['nodeActions']>([])

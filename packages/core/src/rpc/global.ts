@@ -1,4 +1,4 @@
-import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getInspector, getInspectorActions, getInspectorNodeActions, getRpc, stringify } from '@vue/devtools-kit'
+import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getInspector, getInspectorActions, getInspectorNodeActions, getRpc, makeAsClientConnected, stringify } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
 
@@ -9,6 +9,7 @@ export enum DevToolsMessagingEvents {
   INSPECTOR_STATE_UPDATED = 'inspector-state-updated',
   DEVTOOLS_STATE_UPDATED = 'devtools-state-updated',
   ROUTER_INFO_UPDATED = 'router-info-updated',
+  TIMELINE_EVENT_UPDATED = 'timeline-event-updated',
 }
 
 function getDevToolsState() {
@@ -44,7 +45,10 @@ export const functions = {
   emit: (event: string, ...args: any[]) => {
     hooks.callHook(event, ...args)
   },
-  heartbeat: () => ({}),
+  heartbeat: () => {
+    makeAsClientConnected()
+    return true
+  },
   devtoolsState: () => {
     return getDevToolsState()
   },
@@ -138,6 +142,9 @@ export const functions = {
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED, ({ state }) => {
       this.emit(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, state)
+    })
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT, (payload) => {
+      this.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, payload)
     })
   },
 

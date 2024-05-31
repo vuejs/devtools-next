@@ -1,8 +1,7 @@
 import fsp from 'node:fs/promises'
-import type { ViteInspectAPI } from 'vite-plugin-inspect'
 import { debounce } from 'perfect-debounce'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
-import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
+import { viteRpc } from '@vue/devtools-core'
 import type { AssetImporter, AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
@@ -55,8 +54,8 @@ function guessType(path: string): AssetType {
   return 'other'
 }
 
-export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer, config: ResolvedConfig }) {
-  const { rpc, server, config } = options
+export function getAssetsFunctions(options: { server: ViteDevServer, config: ResolvedConfig }) {
+  const { server, config } = options
 
   const _imageMetaCache = new Map<string, ImageMeta | undefined>()
   let cache: AssetInfo[] | null = null
@@ -125,48 +124,45 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
     return importers
   }
 
-  defineViteServerAction('assets:get-static-assets', async () => {
-    return await scan()
-  })
-
-  defineViteServerAction('assets:get-asset-importers', async (url: string) => {
-    return await getAssetImporters(url)
-  })
-
-  defineViteServerAction('assets:get-image-meta', async (filepath: string) => {
-    if (_imageMetaCache.has(filepath))
-      return _imageMetaCache.get(filepath)
-    try {
-      const meta = imageMeta(await fsp.readFile(filepath)) as ImageMeta
-      _imageMetaCache.set(filepath, meta)
-      return meta
-    }
-    catch (e) {
-      _imageMetaCache.set(filepath, undefined)
-      console.error(e)
-      return undefined
-    }
-  })
-
-  defineViteServerAction('assets:get-text-asset-content', async (filepath: string, limit = 300) => {
-    try {
-      const content = await fsp.readFile(filepath, 'utf-8')
-      return content.slice(0, limit)
-    }
-    catch (e) {
-      console.error(e)
-      return undefined
-    }
-  })
-
-  const triggerAssetsUpdated = callViteClientListener('assets:updated')
-
   const debouncedAssetsUpdated = debounce(() => {
-    triggerAssetsUpdated()
+    viteRpc.value.emit('assetsUpdated')
   }, 100)
 
   server.watcher.on('all', (event) => {
     if (event !== 'change')
       debouncedAssetsUpdated()
   })
+
+  return {
+    async getStaticAssets() {
+      return await scan()
+    },
+    async getAssetImporters(url: string) {
+      return await getAssetImporters(url)
+    },
+    async getImageMeta(filepath: string) {
+      if (_imageMetaCache.has(filepath))
+        return _imageMetaCache.get(filepath)
+      try {
+        const meta = imageMeta(await fsp.readFile(filepath)) as ImageMeta
+        _imageMetaCache.set(filepath, meta)
+        return meta
+      }
+      catch (e) {
+        _imageMetaCache.set(filepath, undefined)
+        console.error(e)
+        return undefined
+      }
+    },
+    async getTextAssetContent(filepath: string, limit = 300) {
+      try {
+        const content = await fsp.readFile(filepath, 'utf-8')
+        return content.slice(0, limit)
+      }
+      catch (e) {
+        console.error(e)
+        return undefined
+      }
+    },
+  }
 }

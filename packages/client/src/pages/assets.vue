@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
-import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
+import { onViteRpcConnected, viteRpc } from '@vue/devtools-core'
 import type { AssetInfo } from '@vue/devtools-core'
 import Fuse from 'fuse.js'
 
@@ -10,8 +10,6 @@ const navbar = ref<HTMLElement>()
 // const dropzone = ref(false)
 const view = ref('grid')
 const assets = ref<AssetInfo[]>([])
-const getStaticAssets = callViteServerAction<AssetInfo[]>('assets:get-static-assets')
-const onAssetsUpdated = defineViteClientListener('assets:updated')
 
 const uniqAssetsTypes = computed(() => {
   const results: { label: string, value: string }[] = []
@@ -80,26 +78,26 @@ const byTree = computed(() => {
   return root.children
 })
 
-let cleanupAssetsUpdatedEffect: Function
-
 function fetchAssets() {
-  getStaticAssets().then((res) => {
+  viteRpc.value.getStaticAssets().then(([res]) => {
     assets.value = res
   })
 }
 
-onDevToolsClientConnected(() => {
+function onAssetsUpdated() {
   fetchAssets()
-  cleanupAssetsUpdatedEffect = onAssetsUpdated(() => {
-    fetchAssets()
-  })
+}
+
+onViteRpcConnected(() => {
+  fetchAssets()
+  viteRpc.functions.on('assetsUpdated', onAssetsUpdated)
 })
 function toggleView() {
   view.value = view.value === 'list' ? 'grid' : 'list'
 }
 
 onUnmounted(() => {
-  cleanupAssetsUpdatedEffect?.()
+  viteRpc.functions.off('assetsUpdated', onAssetsUpdated)
 })
 </script>
 

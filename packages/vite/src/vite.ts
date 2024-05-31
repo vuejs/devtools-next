@@ -10,9 +10,7 @@ import { createViteServerMessagingRpc } from '@vue/devtools-core'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
-import { getViteConfig, setupAssetsModule, setupGraphModule } from './modules'
-
-export type * from './modules'
+import { getRpcFunctions } from './rpc'
 
 type DeepRequired<T> = {
   [P in keyof T]-?: T[P] extends object ? DeepRequired<T[P]> : Required<T[P]>;
@@ -101,19 +99,13 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
 
     // vite client <-> server messaging
     setViteServerContext(server)
-    createViteServerMessagingRpc()
 
-    // initViteServerContext(server)
-    // getViteConfig(config, pluginOptions)
-    // setupGraphModule({
-    //   rpc: inspect.api.rpc,
-    //   server,
-    // })
-    // setupAssetsModule({
-    //   rpc: inspect.api.rpc,
-    //   server,
-    //   config,
-    // })
+    const rpcFunctions = getRpcFunctions({
+      rpc: inspect.api.rpc,
+      server,
+      config,
+    })
+    createViteServerMessagingRpc(rpcFunctions)
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>

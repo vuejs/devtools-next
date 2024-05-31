@@ -1,10 +1,13 @@
 import { isNuxtApp, target } from '@vue/devtools-shared'
 import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
 import {
+  DevToolsMessagingHookKeys,
   activeAppRecord,
   addDevToolsAppRecord,
   addDevToolsPluginToBuffer,
   devtoolsAppRecords,
+  devtoolsContext,
+  devtoolsState,
   getDevToolsEnv,
   setActiveAppRecord,
   setActiveAppRecordId,
@@ -77,4 +80,21 @@ export function initDevTools() {
   // ...
   console.log('init devtools')
   subscribeDevToolsHook()
+}
+
+export function onDevToolsClientConnected(fn: () => void) {
+  return new Promise<void>((resolve) => {
+    if (devtoolsState.connected && devtoolsState.clientConnected) {
+      fn()
+      resolve()
+      return
+    }
+
+    devtoolsContext.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED, ({ state }) => {
+      if (state.connected && state.clientConnected) {
+        fn()
+        resolve()
+      }
+    })
+  })
 }

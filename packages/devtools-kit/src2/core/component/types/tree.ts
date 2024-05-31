@@ -1,25 +1,4 @@
-import type { VueAppInstance } from '../../../types'
-
-export interface InspectorNodeTag {
-  label: string
-  textColor: number
-  backgroundColor: number
-  tooltip?: string
-}
-
-export interface ComponentTreeNode {
-  uid: number | string
-  id: string
-  name: string
-  renderKey: string | number
-  inactive: boolean
-  isFragment: boolean
-  children: ComponentTreeNode[]
-  domOrder?: number[]
-  tags: InspectorNodeTag[]
-  autoOpen: boolean
-  file: string
-}
+import type { ComponentTreeNode, InspectorNodeTag, VueAppInstance } from '../../../types'
 
 export interface InspectorTreeApiPayload {
   app?: VueAppInstance

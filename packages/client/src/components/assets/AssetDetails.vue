@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import type { AssetImporter, AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
-import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
+import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
+import { viteRpc } from '@vue/devtools-core'
 import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 
@@ -10,21 +10,17 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ (...args: any): void }>()
-
 const state = useDevToolsState()
-const getImageMeta = callViteServerAction<ImageMeta>('assets:get-image-meta')
-const getTextAssetContent = callViteServerAction<string>('assets:get-text-asset-content')
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
-
-const getAssetImporters = callViteServerAction<AssetImporter[]>('assets:get-asset-importers')
-const importers = computedAsync(() => getAssetImporters(asset.value.publicPath), [])
-
+const vitePluginDetected = computed(() => state.vitePluginDetected.value)
+const importers = computedAsync(() => viteRpc.value.getAssetImporters(asset.value.publicPath).then(([res]) => res), [])
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
+
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
     return undefined
 
-  return getImageMeta(asset.value.filePath)
+  return viteRpc.value.getImageMeta(asset.value.filePath).then(([res]) => res)
 })
 
 const newTextContent = ref()
@@ -36,7 +32,7 @@ const textContent = computedAsync(async () => {
   // eslint-disable-next-line no-unused-expressions
   textContentCounter.value
 
-  const content = await getTextAssetContent(asset.value.filePath)
+  const content = await viteRpc.value.getTextAssetContent(asset.value.filePath).then(([res]) => res)
   newTextContent.value = content
   return content
 })
@@ -136,7 +132,7 @@ const supportsPreview = computed(() => {
             <div flex="~ gap-1" w-full items-center>
               <FilepathItem :filepath="asset.filePath" text-left />
               <VueIcon
-                v-if="state.vitePluginDetected.value && _vueInspectorDetected"
+                v-if="vitePluginDetected && _vueInspectorDetected"
                 v-tooltip="'Open in Editor'"
                 title="Open in Editor"
                 icon="i-carbon-launch"

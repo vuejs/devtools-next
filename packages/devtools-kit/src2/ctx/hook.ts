@@ -92,7 +92,6 @@ export interface DevToolsV6PluginAPIHookPayloads {
     oldValue: any
     settings: any
   }
-
 }
 
 export interface DevToolsV6PluginAPIHooks {
@@ -167,6 +166,7 @@ export interface DevToolsContextHookPayloads {
 export enum DevToolsMessagingHookKeys {
   SEND_INSPECTOR_TREE_TO_CLIENT = 'sendInspectorTreeToClient',
   SEND_INSPECTOR_STATE_TO_CLIENT = 'sendInspectorStateToClient',
+  SEND_TIMELINE_EVENT_TO_CLIENT = 'sendTimelineEventToClient',
   DEVTOOLS_STATE_UPDATED = 'devtoolsStateUpdated',
   DEVTOOLS_CONNECTED_UPDATED = 'devtoolsConnectedUpdated',
   ROUTER_INFO_UPDATED = 'routerInfoUpdated',
@@ -182,6 +182,7 @@ export interface DevToolsMessagingHookPayloads {
     nodeId: string
     state: CustomInspectorState
   }
+  [DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]: TimelineEventOptions
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: {
     state: DevToolsState
   }
@@ -197,6 +198,7 @@ export interface DevToolsMessagingHookPayloads {
 export interface DevToolsMessagingHooks {
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]) => void
+  [DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]) => void
   [DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]) => void
@@ -269,10 +271,15 @@ export function createDevToolsCtxHooks() {
       nodeId: inspector?.selectedNodeId || '',
       state: null,
     }
+
+    const ctx = {
+      currentTab: `custom-inspector:${inspectorId}`,
+    }
+
     await new Promise<void>((resolve) => {
       // @ts-expect-error hookable
       hooks.callHookWith(async (callbacks) => {
-        await Promise.all(callbacks.map(cb => cb(_payload)))
+        await Promise.all(callbacks.map(cb => cb(_payload, ctx)))
         resolve()
       }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
     })
@@ -305,15 +312,14 @@ export function createDevToolsCtxHooks() {
   hooks.hook(DevToolsContextHookKeys.TIMELINE_LAYER_ADDED, ({ options, plugin }) => {
     // 1. update layers
     addTimelineLayer(options, plugin.descriptor)
-
-    // 2. notify devtools client
-    // console.log('x----', options)
   })
 
   // add timeline event
   hooks.hook(DevToolsContextHookKeys.TIMELINE_EVENT_ADDED, ({ options, plugin }) => {
-    // 2. notify devtools client directly to improve performance
-    // console.log('x----', options)
+    // @ts-expect-error hookable
+    hooks.callHookWith(async (callbacks) => {
+      await Promise.all(callbacks.map(cb => cb(options)))
+    }, DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT)
   })
 
   // get component instances

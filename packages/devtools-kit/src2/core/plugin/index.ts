@@ -15,13 +15,22 @@ export function callDevToolsPluginSetupFn(plugin: [PluginDescriptor, PluginSetup
   // if (pluginDescriptor.app !== app)
   // return
 
-  setupFn(new DevToolsPluginAPI({
+  const api = new DevToolsPluginAPI({
     plugin: {
       setupFn,
       descriptor: pluginDescriptor,
     },
     ctx: devtoolsContext,
-  }))
+  })
+
+  // patch for vuex devtools
+  if (pluginDescriptor.packageName === 'vuex') {
+    api.on.editInspectorState((payload) => {
+      api.sendInspectorState(payload.inspectorId)
+    })
+  }
+
+  setupFn(api)
 }
 export function registerDevToolsPlugin(app: App) {
   devtoolsPluginBuffer.forEach((plugin) => {

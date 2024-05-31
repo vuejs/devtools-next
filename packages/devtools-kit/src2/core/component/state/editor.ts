@@ -170,6 +170,7 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
     if (state.type === 'object' && type === 'reactive') {
       // prevent loss of reactivity
     }
+    // @ts-expect-error skip type check
     stateEditor.set(target, targetPath, state.value, stateEditor.createDefaultSetCallback(state))
   }
 }

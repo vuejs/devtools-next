@@ -1,4 +1,4 @@
-import { getDevToolsState, onDevToolsStateUpdated } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import type { InjectionKey, Ref } from 'vue'
 import { inject, provide, ref } from 'vue'
 
@@ -15,12 +15,12 @@ export function createDevToolsStateContext() {
   const appRecords = ref<Array<DevtoolsBridgeAppRecord>>([])
   const activeAppRecordId = ref('')
 
-  getDevToolsState().then((data) => {
+  rpc.value.devtoolsState().then(([data]) => {
     appRecords.value = data!.appRecords
     activeAppRecordId.value = data!.activeAppRecordId!
   })
 
-  onDevToolsStateUpdated((data) => {
+  rpc.functions.on(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, (data) => {
     appRecords.value = data.appRecords
     activeAppRecordId.value = data.activeAppRecordId!
   })

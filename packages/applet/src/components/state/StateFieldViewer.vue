@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
-import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
+import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
+import { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { computed, ref, watch } from 'vue'
-import { editInspectorState } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import ChildStateViewer from './ChildStateViewer.vue'
@@ -15,7 +15,7 @@ import type { EditorAddNewPropType } from '~/composables/state-editor'
 import { useHover } from '~/composables/hover'
 
 const props = defineProps<{
-  data: InspectorState
+  data: CustomInspectorState
   depth: number
   index: string
 }>()
@@ -53,7 +53,7 @@ const normalizedDisplayedKey = computed(() => normalizedPath.value[normalizedPat
 const normalizedDisplayedValue = computed(() => {
   const directlyDisplayedValueMap = ['Reactive']
   const extraDisplayedValue = (props.data as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
-  if (directlyDisplayedValueMap.includes(extraDisplayedValue!)) {
+  if (directlyDisplayedValueMap.includes(extraDisplayedValue as string)) {
     return extraDisplayedValue
   }
 
@@ -90,7 +90,7 @@ const normalizedDisplayedChildren = computed(() => {
       ...inherit,
       editable: props.data.editable && !isUneditableType,
       creating: false,
-    })) as unknown as InspectorState[]
+    })) as unknown as CustomInspectorState[]
   }
   else if (isObject(value)) {
     displayedChildren = Object.keys(value).slice(0, limit.value).map(key => ({
@@ -105,7 +105,7 @@ const normalizedDisplayedChildren = computed(() => {
       displayedChildren = sortByKey(displayedChildren)
   }
 
-  return (displayedChildren === props.data.value ? [] : displayedChildren) as InspectorState[]
+  return (displayedChildren === props.data.value ? [] : displayedChildren) as CustomInspectorState[]
 })
 
 // has children
@@ -132,7 +132,7 @@ watch(() => editing.value, (v) => {
 
 function submit() {
   const data = props.data
-  editInspectorState({
+  rpc.value.editInspectorState({
     path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
@@ -142,7 +142,7 @@ function submit() {
       type: editingType.value,
       value: toSubmit(editingText.value, raw.value.customType),
     },
-  } satisfies InspectorStateEditorPayload)
+  } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
   toggleEditing()
 }
 
@@ -159,7 +159,7 @@ function addNewProp(type: EditorAddNewPropType) {
 
 function submitDrafting() {
   const data = props.data
-  editInspectorState({
+  rpc.value.editInspectorState({
     path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
@@ -169,7 +169,7 @@ function submitDrafting() {
       type: typeof toSubmit(draftingNewProp.value.value),
       value: toSubmit(draftingNewProp.value.value),
     },
-  } satisfies InspectorStateEditorPayload)
+  } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
   resetDrafting()
 }
 

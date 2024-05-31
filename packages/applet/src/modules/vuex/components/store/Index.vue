@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { getInspectorState, getInspectorTree, onEditInspectorState, onInspectorStateUpdated, onInspectorTreeUpdated } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import type { InspectorState, InspectorTree } from '@vue/devtools-kit'
+import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import { Pane, Splitpanes } from 'splitpanes'
 import Navbar from '~/components/basic/Navbar.vue'
 import TreeViewer from '~/components/tree/TreeViewer.vue'
@@ -14,17 +14,11 @@ const inspectorId = 'vuex'
 
 const { expanded: expandedStateNodes } = createExpandedContext('vuex-store-state')
 const selected = ref('')
-const tree = ref<Required<InspectorTree>[]>([])
-const state = ref<{
-  state: InspectorState[]
-  getters: InspectorState[]
-}>({
-  state: [],
-  getters: [],
-})
+const tree = ref<CustomInspectorNode[]>([])
+const state = ref<CustomInspectorState>({})
 
 function getVuexState(nodeId: string) {
-  getInspectorState({ inspectorId, nodeId }).then((data) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId }).then(([data]) => {
     state.value = parse(data!)
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
@@ -43,43 +37,48 @@ watch(selected, () => {
 })
 
 const selectVuexTree = (id: string) => {
-  console.log(id)
   selected.value = id
 }
 
-getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
+rpc.value.getInspectorTree({ inspectorId, filter: '' }).then(([_data]) => {
   const data = parse(_data!)
   tree.value = data
-
-  if (!selected.value && data.length) {
+  if (!selected.value && data.length)
     selected.value = data[0].id
-    getVuexState(data[0].id)
+  getVuexState(data[0].id)
+})
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+  const data = parse(_data) as {
+    inspectorId: string
+    rootNodes: CustomInspectorNode[]
+  }
+  if (data.inspectorId !== inspectorId || !data.rootNodes.length)
+    return
+  tree.value = data.rootNodes as unknown as CustomInspectorNode[]
+  if (!selected.value && data.rootNodes.length) {
+    selected.value = data.rootNodes[0].id
+    getVuexState(data.rootNodes[0].id)
   }
 })
 
-onInspectorTreeUpdated((data) => {
-  if (!data?.data.length || data.inspectorId !== inspectorId)
-    return
-  tree.value = data.data as unknown as Required<InspectorTree>[]
-  if (!selected.value && data.data.length) {
-    selected.value = data.data[0].id
-    getVuexState(data.data[0].id)
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
+  const data = parse(_data) as {
+    inspectorId: string
+    state: CustomInspectorState
+    nodeId: string
   }
-})
 
-onEditInspectorState((payload) => {
-  if (payload.inspectorId !== inspectorId)
+  if (data.inspectorId !== inspectorId)
     return
-  getVuexState(selected.value)
-})
 
-onInspectorStateUpdated((data) => {
-  if (!data || !data?.state?.length || data.inspectorId !== inspectorId)
-    return
+  const _state = data.state
+
   state.value = {
-    state: data.state,
-    getters: data.getters || [],
+    state: _state.state,
+    getters: _state.getters || [],
   }
+  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 })
 </script>
 

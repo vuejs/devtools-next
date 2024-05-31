@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import { onAddTimelineEvent } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { computed, ref } from 'vue'
 
-import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
+import type { InspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import EventList from './EventList.vue'
 import Navbar from '~/components/basic/Navbar.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -22,8 +22,8 @@ const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
 // event info + group info = [0, 1]
 expandedStateNodes.value = ['0', '1']
 
-const eventList = ref<TimelineEvent['event'][]>([])
-const groupList = ref<Map<number, TimelineEvent['event'][]>>(new Map())
+const eventList = ref<TimelineEventOptions['event'][]>([])
+const groupList = ref<Map<string | number | undefined, TimelineEventOptions['event'][]>>(new Map())
 const selectedEventIndex = ref(0)
 const selectedEventInfo = computed(() => eventList.value[selectedEventIndex.value] ?? null)
 // event info
@@ -65,7 +65,7 @@ const displayedInfo = computed(() => {
   return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, InspectorState[]>
 })
 
-function normalizeGroupList(event: TimelineEvent['event']) {
+function normalizeGroupList(event: TimelineEventOptions['event']) {
   const groupId = event.groupId
   if (groupId !== undefined) {
     groupList.value.set(groupId, groupList.value.get(groupId) ?? [])
@@ -73,7 +73,7 @@ function normalizeGroupList(event: TimelineEvent['event']) {
   }
 }
 
-onAddTimelineEvent((payload) => {
+rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, (payload) => {
   if (!payload)
     return
 

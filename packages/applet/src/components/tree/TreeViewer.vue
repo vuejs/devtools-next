@@ -39,6 +39,7 @@ function select(id: string) {
       :style=" { paddingLeft: `${15 * depth + 4}px` }"
       :class="{ 'bg-primary-600! active': selectedNodeId === item.id }"
       @click="select(item.id)"
+      @dblclick="toggleExpanded(item.id)"
     >
       <ToggleExpanded
         v-if="item?.children?.length"

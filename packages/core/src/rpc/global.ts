@@ -1,4 +1,4 @@
-import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getInspector, getInspectorActions, getInspectorNodeActions, getRpc, makeAsClientConnected, stringify } from '@vue/devtools-kit'
+import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpc, stringify, toggleClientConnected } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
 
@@ -10,6 +10,8 @@ export enum DevToolsMessagingEvents {
   DEVTOOLS_STATE_UPDATED = 'devtools-state-updated',
   ROUTER_INFO_UPDATED = 'router-info-updated',
   TIMELINE_EVENT_UPDATED = 'timeline-event-updated',
+  INSPECTOR_UPDATED = 'inspector-updated',
+  ACTIVE_APP_UNMOUNTED = 'active-app-updated',
 }
 
 function getDevToolsState() {
@@ -26,7 +28,6 @@ function getDevToolsState() {
       name: item.name,
       version: item.version,
       routerId: item.routerId,
-      moduleDetectives: item.moduleDetectives,
     })),
     activeAppRecordId: state.activeAppRecordId,
   }
@@ -46,7 +47,6 @@ export const functions = {
     hooks.callHook(event, ...args)
   },
   heartbeat: () => {
-    makeAsClientConnected()
     return true
   },
   devtoolsState: () => {
@@ -129,6 +129,15 @@ export const functions = {
     console.warn = c
     return matched
   },
+  toggleClientConnected(state: boolean) {
+    toggleClientConnected(state)
+  },
+  getCustomeInspector() {
+    return getActiveInspectors()
+  },
+  getInspectorInfo(id: string) {
+    return getInspectorInfo(id)
+  },
   // listen to devtools server events
   initDevToolsServerListener() {
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
@@ -145,6 +154,12 @@ export const functions = {
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT, (payload) => {
       this.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, payload)
+    })
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT, (payload) => {
+      this.emit(DevToolsMessagingEvents.INSPECTOR_UPDATED, payload)
+    })
+    devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT, () => {
+      this.emit(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED)
     })
   },
 

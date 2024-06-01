@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { onRpcConnected, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
+import { onDevToolsConnected, refreshCurrentPageData } from '@vue/devtools-applet'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()
 const hostEnv = useHostEnv()
-const { connected: _connected, activeAppRecordId: _activeAppRecordId, appRecords: _appRecords } = useDevToolsState()
+const { connected, clientConnected, activeAppRecordId: _activeAppRecordId, appRecords: _appRecords } = useDevToolsState()
 const clientState = devtoolsClientState
 
-const { connected } = useConnection()
-const devtoolsReady = computed(() => connected.value && _connected.value)
+const devtoolsReady = computed(() => connected.value && clientConnected.value)
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
 const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
@@ -60,7 +60,7 @@ watchEffect(() => {
   activeAppRecordId.value = _activeAppRecordId.value
 })
 
-onDevToolsConnected(() => {
+onRpcConnected(() => {
   rpc.value.initDevToolsServerListener()
   rpc.value.checkVueInspectorDetected().then(([detected]) => {
     if (detected) {
@@ -77,6 +77,14 @@ onDevToolsConnected(() => {
         }],
       )
     }
+  })
+})
+
+onDevToolsConnected(() => {
+  rpc.functions.on(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, () => {
+    router.push('/overview').then(() => {
+      refreshCurrentPageData()
+    })
   })
 })
 
@@ -99,6 +107,16 @@ registerCommands(() => [
       }]
     : []),
 ])
+
+onMounted(() => {
+  onRpcConnected(() => {
+    rpc.value.toggleClientConnected(true)
+  })
+})
+
+onUnmounted(() => {
+  rpc.value.toggleClientConnected(false)
+})
 </script>
 
 <template>

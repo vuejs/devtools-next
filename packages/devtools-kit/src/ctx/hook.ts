@@ -9,6 +9,7 @@ import type {
   DevToolsPlugin,
   EditStatePayload,
   InspectedComponentData,
+  PluginDescriptor,
   RouterInfo,
   TimelineEvent,
   TimelineEventOptions,
@@ -167,6 +168,8 @@ export enum DevToolsMessagingHookKeys {
   SEND_INSPECTOR_TREE_TO_CLIENT = 'sendInspectorTreeToClient',
   SEND_INSPECTOR_STATE_TO_CLIENT = 'sendInspectorStateToClient',
   SEND_TIMELINE_EVENT_TO_CLIENT = 'sendTimelineEventToClient',
+  SEND_INSPECTOR_TO_CLIENT = 'sendInspectorToClient',
+  SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT = 'sendActiveAppUpdatedToClient',
   DEVTOOLS_STATE_UPDATED = 'devtoolsStateUpdated',
   DEVTOOLS_CONNECTED_UPDATED = 'devtoolsConnectedUpdated',
   ROUTER_INFO_UPDATED = 'routerInfoUpdated',
@@ -183,6 +186,13 @@ export interface DevToolsMessagingHookPayloads {
     state: CustomInspectorState
   }
   [DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]: TimelineEventOptions
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT]: {
+    id: string
+    label: string
+    logo: string
+    packageName: string | undefined
+    homepage: string | undefined
+  }[]
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: {
     state: DevToolsState
   }
@@ -199,6 +209,8 @@ export interface DevToolsMessagingHooks {
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT]) => void
+  [DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT]: () => void
+  [DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED]) => void
   [DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED]) => void
   [DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]: (payload: DevToolsMessagingHookPayloads[DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED]) => void

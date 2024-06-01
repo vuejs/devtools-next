@@ -22,6 +22,7 @@ export interface CategorizedCategory {
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
 
 export function useAllTabs() {
+  const customInspectorTabs = useCustomInspectorTabs()
   const state = useDevToolsState()
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
   watchEffect(() => {
@@ -29,8 +30,7 @@ export function useAllTabs() {
   })
   const allTabs = computed(() => {
     const vitePluginDetected = state.vitePluginDetected.value
-    // @TODO: refactor
-    const tabs = [...getBuiltinTab(vitePluginDetected, activeAppRecord.value?.moduleDetectives)]
+    const tabs = [...getBuiltinTab(vitePluginDetected, customInspectorTabs.value)]
     customTabs.value.forEach((tab) => {
       const currentTab: [string, Array<ModuleBuiltinTab | CustomTab>] | undefined = tabs.find(t => t[0] === tab.category)
       if (currentTab) {
@@ -46,7 +46,7 @@ export function useAllTabs() {
         })
       }
     })
-    return tabs
+    return [...tabs]
   })
   const flattenedTabs = computed(() => {
     return allTabs.value.reduce((prev, [_, tabs]) => {

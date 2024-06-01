@@ -17,6 +17,7 @@ export function createIframeClientChannel(): MergeableChannelOptions {
   window.addEventListener('message', (event) => {
     if (event.data === 'port' && event.ports.length > 0) {
       port = event.ports[0]
+
       if (buffer.length) {
         buffer.forEach((handler) => {
           port.onmessage = (event) => {

@@ -70,7 +70,7 @@ export function initDevTools() {
     }
     addDevToolsAppRecord(normalizedAppRecord)
 
-    if (devtoolsAppRecords.length === 1) {
+    if (devtoolsAppRecords.value.length === 1) {
       setActiveAppRecord(normalizedAppRecord)
       setActiveAppRecordId(normalizedAppRecord.id)
       normalizeRouterInfo(normalizedAppRecord, activeAppRecord)
@@ -85,7 +85,7 @@ export function initDevTools() {
   })
 
   hook.on.vueAppUnmount(async (app) => {
-    const activeRecords = devtoolsAppRecords.filter(appRecord => appRecord.app !== app)
+    const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
 
     if (activeRecords.length === 0) {
       updateDevToolsState({
@@ -94,8 +94,10 @@ export function initDevTools() {
     }
 
     removeDevToolsAppRecord(app)
+
     if (activeAppRecord.value.app === app) {
       setActiveAppRecord(activeRecords[0])
+      devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT)
     }
   })
 

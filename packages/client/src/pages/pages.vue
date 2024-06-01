@@ -3,6 +3,7 @@ import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
+import { onDevToolsConnected } from '@vue/devtools-applet'
 
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)

@@ -1,9 +1,11 @@
 import { target } from '@vue/devtools-shared'
 import type { PluginDescriptor, TimelineLayerOptions } from '../types'
 import { getAppRecord } from '../core/component/utils'
+import { devtoolsInspector } from './inspector'
 
 interface DevToolsKitTimelineLayer extends TimelineLayerOptions {
   appRecord: unknown
+  descriptorId: string
 }
 
 target.__VUE_DEVTOOLS_KIT_TIMELINE_LAYERS ??= []
@@ -17,6 +19,7 @@ export const devtoolsTimelineLayers = new Proxy<DevToolsKitTimelineLayer[]>(targ
 export function addTimelineLayer(options: TimelineLayerOptions, descriptor: PluginDescriptor) {
   devtoolsTimelineLayers.push({
     ...options,
+    descriptorId: descriptor.id,
     appRecord: getAppRecord(descriptor.app),
   })
 }

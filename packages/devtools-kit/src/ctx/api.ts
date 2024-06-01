@@ -9,6 +9,7 @@ import { getComponentInspector } from '../core/component-inspector'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord, devtoolsAppRecords, setActiveAppRecord, setActiveAppRecordId } from './state'
+import { callInspectorUpdatedHook } from './inspector'
 
 export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>) {
   return {
@@ -89,11 +90,13 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
     getVueInspector: getComponentInspector,
     // toogle app
     toggleApp(id: string) {
-      const appRecord = devtoolsAppRecords.value.find(app => app.id === id)
+      const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
+
       if (appRecord) {
         setActiveAppRecord(appRecord)
         setActiveAppRecordId(id)
         normalizeRouterInfo(appRecord, activeAppRecord)
+        callInspectorUpdatedHook()
       }
     },
   }

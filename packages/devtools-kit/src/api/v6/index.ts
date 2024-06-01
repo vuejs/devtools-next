@@ -101,12 +101,20 @@ export class DevToolsV6PluginAPI {
 
   // settings
   getSettings(pluginId?: string) {
+    function _getSettings(settings) {
+      const _settings = {}
+      Object.keys(settings!).forEach((key) => {
+        _settings[key] = settings![key].defaultValue
+      })
+
+      return _settings
+    }
     if (pluginId) {
       const item = devtoolsPluginBuffer.find(item => item[0].id === pluginId)?.[0] ?? null
-      return item?.settings ?? this.plugin.descriptor.settings
+      return _getSettings(item?.settings) ?? _getSettings(this.plugin.descriptor.settings)
     }
     else {
-      return this.plugin.descriptor.settings
+      return _getSettings(this.plugin.descriptor.settings)
     }
   }
 

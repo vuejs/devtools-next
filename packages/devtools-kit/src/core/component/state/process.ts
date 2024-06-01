@@ -40,7 +40,9 @@ function mergeOptions(
 function resolveMergedOptions(
   instance: VueAppInstance,
 ) {
-  const raw = instance.type
+  const raw = instance?.type
+  if (!raw)
+    return {}
   const { mixins, extends: extendsOptions } = raw
   const globalMixins = instance.appContext.mixins
   if (!globalMixins.length && !mixins && !extendsOptions)

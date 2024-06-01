@@ -11,12 +11,27 @@ export function createIframeServerChannel(): MergeableChannelOptions {
       on: (handler) => {},
     }
   }
-  const channel = new MessageChannel()
+
+  let connected = false
+  let channel = new MessageChannel()
+  let onMessageHandler: (data: any) => void
+
+  function reconnect() {
+    channel.port1.close()
+    channel.port2.close()
+    channel = new MessageChannel()
+    channel.port1.onmessage = onMessageHandler
+  }
 
   window.addEventListener('message', (event) => {
-    if (event.data === __DEVTOOLS_KIT_IFRAME_MESSAGING_EVENT_KEY)
+    if (event.data === __DEVTOOLS_KIT_IFRAME_MESSAGING_EVENT_KEY) {
+      if (connected) {
+        reconnect()
+      }
       // @ts-expect-error type check
       event.source?.postMessage('port', '*', [channel.port2])
+      connected = true
+    }
   })
 
   return {
@@ -24,9 +39,10 @@ export function createIframeServerChannel(): MergeableChannelOptions {
       channel.port1.postMessage(SuperJSON.stringify(data))
     },
     on: (hanlder) => {
-      channel.port1.onmessage = (event) => {
+      onMessageHandler = (event) => {
         hanlder(SuperJSON.parse(event.data))
       }
+      channel.port1.onmessage = onMessageHandler
     },
   }
 }

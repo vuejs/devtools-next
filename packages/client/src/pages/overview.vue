@@ -4,6 +4,7 @@ import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
+import { onDevToolsConnected } from '@vue/devtools-applet'
 import { version } from '../../../core/package.json'
 
 const { vueVersion } = useDevToolsState()
@@ -27,12 +28,12 @@ onDevToolsConnected(() => {
   rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
     pageCount.value = data?.routes?.length || 1
   })
-})
 
-// component count getter
-rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then(([_data]) => {
-  const data = parse(_data!)
-  componentCount.value = normalizeComponentCount(data)
+  // component count getter
+  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then(([_data]) => {
+    const data = parse(_data!)
+    componentCount.value = normalizeComponentCount(data)
+  })
 })
 
 rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {

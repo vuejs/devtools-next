@@ -62,8 +62,8 @@ export const addDevToolsAppRecord = (app: AppRecord) => {
   ]
 }
 
-export const removeDevToolsAppRecord = (id: string) => {
-  global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ = devtoolsAppRecords.filter(app => app.id !== id)
+export const removeDevToolsAppRecord = (app: AppRecord['app']) => {
+  global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ = devtoolsAppRecords.value.filter(record => record.app !== app)
 }
 
 export const activeAppRecord = new Proxy<AppRecord & { value: AppRecord, id: string }>(global.__VUE_DEVTOOLS_KIT_ACTIVE_APP_RECORD__, {
@@ -194,6 +194,6 @@ export function removeCustomCommand(actionId: string) {
   updateAllStates()
 }
 
-export function makeAsClientConnected() {
-  updateDevToolsState({ clientConnected: true })
+export function toggleClientConnected(state: boolean) {
+  updateDevToolsState({ clientConnected: state })
 }

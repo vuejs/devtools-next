@@ -2,9 +2,6 @@
 import Home from './components/Home.vue'
 import State from './components/state/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
-import { createDevToolsConnectStateContext } from '~/composables/connect-state'
-
-createDevToolsConnectStateContext()
 
 const { VirtualRouterView } = registerVirtualRouter([
   {

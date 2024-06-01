@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import {
@@ -143,7 +143,7 @@ watch(activeComponentId, (id) => {
   getComponentState(id)
 })
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
+function onInspectorStateUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     state: CustomInspectorState
@@ -153,11 +153,13 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string
     return
 
   activeComponentState.value = normalizeComponentState({ state: data.state.state })
-})
+}
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
 
 getComponentsInspectorTree()
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     rootNodes: CustomInspectorNode[]
@@ -166,6 +168,13 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string)
     return
   tree.value = data.rootNodes
   expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+}
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
 })
 
 watchDebounced(filterComponentName, (v) => {

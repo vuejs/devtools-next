@@ -1,8 +1,8 @@
 import type { AppRecord, CustomCommand, CustomTab } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
-import { onDevToolsConnected } from '~/composables/connection'
+import { onDevToolsConnected } from '@vue/devtools-applet'
 
-export type DevtoolsBridgeAppRecord = Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId' | 'moduleDetectives'>
+export type DevtoolsBridgeAppRecord = Pick<AppRecord, 'name' | 'id' | 'version' | 'routerId'>
 
 // @TODO: move to applet or core
 export function useDevToolsState() {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
@@ -61,7 +61,7 @@ const getRoutesInspectorTree = () => {
 }
 getRoutesInspectorTree()
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     rootNodes: CustomInspectorNode[]
@@ -73,29 +73,9 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string)
     selected.value = data.rootNodes[0].id
     getRoutesState(data.rootNodes[0].id)
   }
-})
+}
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
-  const data = parse(_data) as {
-    inspectorId: string
-    state: CustomInspectorState
-    nodeId: string
-  }
-
-  if (data.inspectorId !== inspectorId.value)
-    return
-
-  const _state = data.state
-
-  // @ts-expect-error skip type check
-  state.value = filterEmptyState({
-    state: _state.state,
-    getters: _state.getters,
-  })
-  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
-})
-
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
+function onInspectorStateUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     state: CustomInspectorState
@@ -110,6 +90,15 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string
   // @ts-expect-error skip type check
   state.value = filterEmptyState(_state!)
   expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
+}
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
 })
 </script>
 

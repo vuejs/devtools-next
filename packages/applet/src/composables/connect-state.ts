@@ -1,47 +1,35 @@
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
-import type { ComputedRef, InjectionKey } from 'vue'
-import { computed, inject, provide, ref, watch } from 'vue'
+import { computed } from 'vue'
+import { tryOnScopeDispose, watchOnce } from '@vueuse/core'
+import { useDevToolsState } from './devtools-state'
 
-const VueDevToolsConnectStateSymbol: InjectionKey<ComputedRef<boolean>> = Symbol('VueDevToolsConnectStateSymbol')
+const fns: (() => void)[] = []
 
-export function createDevToolsConnectStateContext() {
-  const appConnected = ref(false)
-  const clientConnected = ref(false)
-  const connected = computed(() => appConnected.value && clientConnected.value)
+export function onDevToolsConnected(fn: () => void) {
+  const { connected, clientConnected } = useDevToolsState()
 
-  rpc.value.devtoolsState().then(([data]) => {
-    appConnected.value = data!.connected
-    clientConnected.value = data!.clientConnected
+  fns.push(fn)
+
+  tryOnScopeDispose(() => {
+    fns.splice(fns.indexOf(fn), 1)
   })
 
-  rpc.functions.on(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, (data) => {
-    appConnected.value = data.connected
-    clientConnected.value = data.clientConnected
-  })
+  const devtoolsReady = computed(() => clientConnected.value && connected.value)
 
-  provide(VueDevToolsConnectStateSymbol, connected)
-
-  return {
-    connected,
-  }
-}
-
-export function useDevToolsConnectState() {
-  return inject(VueDevToolsConnectStateSymbol, ref(false))
-}
-
-export function onDevToolsClientConnected(callback: () => void) {
-  const connected = useDevToolsConnectState()
-
-  if (connected.value) {
-    callback()
+  if (devtoolsReady.value) {
+    fn()
   }
   else {
-    const stop = watch(connected, (value) => {
-      if (value) {
-        stop()
-        callback()
-      }
+    watchOnce(devtoolsReady, (v) => {
+      if (v)
+        fn()
     })
   }
+
+  return () => {
+    fns.splice(fns.indexOf(fn), 1)
+  }
+}
+
+export function refreshCurrentPageData() {
+  fns.forEach(fn => fn())
 }

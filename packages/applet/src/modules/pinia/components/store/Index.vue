@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
@@ -57,7 +57,7 @@ const getPiniaInspectorTree = () => {
 }
 getPiniaInspectorTree()
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     rootNodes: CustomInspectorNode[]
@@ -69,9 +69,9 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string)
     selected.value = data.rootNodes[0].id
     getPiniaState(data.rootNodes[0].id)
   }
-})
+}
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string) => {
+function onInspectorStateUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     state: CustomInspectorState
@@ -89,6 +89,15 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, (_data: string
     getters: _state.getters,
   })
   expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
+}
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
 })
 </script>
 

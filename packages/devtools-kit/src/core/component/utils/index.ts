@@ -73,22 +73,22 @@ export function isBeingDestroyed(instance: VueAppInstance) {
  * @return {string}
  */
 export function getInstanceName(instance: VueAppInstance) {
-  const name = getComponentTypeName(instance.type || {})
+  const name = getComponentTypeName(instance?.type || {})
   if (name)
     return name
-  if (instance.root === instance)
+  if (instance?.root === instance)
     return 'Root'
   for (const key in instance.parent?.type?.components) {
-    if (instance.parent.type.components[key] === instance.type)
+    if (instance.parent.type.components[key] === instance?.type)
       return saveComponentGussedName(instance, key)
   }
 
   for (const key in instance.appContext?.components) {
-    if (instance.appContext.components[key] === instance.type)
+    if (instance.appContext.components[key] === instance?.type)
       return saveComponentGussedName(instance, key)
   }
 
-  const fileName = getComponentFileName(instance.type || {})
+  const fileName = getComponentFileName(instance?.type || {})
   if (fileName)
     return fileName
 

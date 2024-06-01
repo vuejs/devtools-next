@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { rpc } from '@vue/devtools-core'
+import { refreshCurrentPageData } from '@vue/devtools-applet'
 
 const router = useRouter()
+const route = useRoute()
 
 const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,
@@ -32,13 +34,14 @@ watchEffect(() => {
 
 const activeAppRecordName = computed(() => appRecords.value.find(app => app.value === activeAppRecordId.value)?.label ?? '')
 
-watch(activeAppRecordId, (id) => {
-  rpc.value.toggleApp(`${id}`).then(() => {
+function toggleApp(id: string) {
+  rpc.value.toggleApp(id).then(() => {
     router.push('/overview').then(() => {
       refreshCurrentPageData()
     })
   })
-})
+}
+
 // #endregion
 </script>
 
@@ -68,7 +71,7 @@ watch(activeAppRecordId, (id) => {
     </div>
     <div px3 py2 flex="~ gap2">
       <template v-if="appRecords.length > 1">
-        <VueSelect v-model="activeAppRecordId" :options="appRecords" :placeholder="activeAppRecordName || 'Toggle App'" :button-props="{ outlined: true, type: 'primary' }" />
+        <VueSelect v-model="activeAppRecordId" :options="appRecords" :placeholder="activeAppRecordName || 'Toggle App'" :button-props="{ outlined: true, type: 'primary' }" @update:model-value="toggleApp" />
       </template>
       <VueButton outlined type="primary" @click="refreshPage">
         Refresh Page

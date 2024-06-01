@@ -1,7 +1,12 @@
 import { target } from '@vue/devtools-shared'
 import type { App } from 'vue'
+import { debounce } from 'perfect-debounce'
 import type { CustomInspectorOptions, PluginDescriptor } from '../types'
 import { getAppRecord } from '../core/component/utils'
+import { activeAppRecord } from './state'
+import { DevToolsMessagingHookKeys } from './hook'
+import { devtoolsTimelineLayers } from './timeline'
+import { devtoolsContext } from '.'
 
 interface DevToolsKitInspector {
   options: CustomInspectorOptions
@@ -18,6 +23,10 @@ export const devtoolsInspector = new Proxy<DevToolsKitInspector[]>(target.__VUE_
   },
 })
 
+export const callInspectorUpdatedHook = debounce(() => {
+  devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT, getActiveInspectors())
+})
+
 export function addInspector(inspector: CustomInspectorOptions, descriptor: PluginDescriptor) {
   devtoolsInspector.push({
     options: inspector,
@@ -26,6 +35,46 @@ export function addInspector(inspector: CustomInspectorOptions, descriptor: Plug
     selectedNodeId: '',
     appRecord: getAppRecord(descriptor.app),
   })
+
+  callInspectorUpdatedHook()
+}
+
+export function getActiveInspectors() {
+  return devtoolsInspector
+    .filter(inspector => inspector.descriptor.app === activeAppRecord.value.app)
+    .filter(inspector => inspector.descriptor.id !== 'components')
+    .map((inspector) => {
+      const descriptor = inspector.descriptor
+      const options = inspector.options
+      return {
+        id: options.id,
+        label: options.label,
+        logo: `i-ic-baseline-${options.icon}`,
+        packageName: descriptor.packageName,
+        homepage: descriptor.homepage,
+      }
+    })
+}
+
+export function getInspectorInfo(id: string) {
+  const inspector = getInspector(id, activeAppRecord.value.app)
+  if (!inspector)
+    return
+  const descriptor = inspector.descriptor
+  const options = inspector.options
+  const timelineLayers = devtoolsTimelineLayers.filter(layer => layer.descriptorId === descriptor.id).map(item => ({
+    id: item.id,
+    label: item.label,
+    color: item.color,
+  }))
+  return {
+    id: options.id,
+    label: options.label,
+    logo: descriptor.logo,
+    packageName: descriptor.packageName,
+    homepage: descriptor.homepage,
+    timelineLayers,
+  }
 }
 
 export function getInspector(id: string, app?: App) {

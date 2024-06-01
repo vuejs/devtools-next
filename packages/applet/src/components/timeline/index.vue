@@ -14,7 +14,7 @@ import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 const props = defineProps<{
   layerIds: string[]
   docLink: string
-  githubRepoLink: string
+  githubRepoLink?: string
 }>()
 
 const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')

@@ -52,12 +52,4 @@ export interface AppRecord {
   instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
   routerId?: string
-  moduleDetectives?: {
-    vueQuery: boolean
-    vueRouter: boolean
-    veeValidate: boolean
-    pinia: boolean
-    vuex: boolean
-    vueI18n: boolean
-  }
 }

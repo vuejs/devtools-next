@@ -4,7 +4,6 @@ import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
-
 const { VirtualRouterView } = registerVirtualRouter([
   {
     path: '/',

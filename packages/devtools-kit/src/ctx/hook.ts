@@ -9,7 +9,6 @@ import type {
   DevToolsPlugin,
   EditStatePayload,
   InspectedComponentData,
-  PluginDescriptor,
   RouterInfo,
   TimelineEvent,
   TimelineEventOptions,

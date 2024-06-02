@@ -28,7 +28,7 @@ export function useDevToolsState() {
   }
 
   onDevToolsConnected(() => {
-    rpc.value.devtoolsState().then(([data]) => {
+    rpc.value.devtoolsState().then((data) => {
       updateState(data)
     })
     rpc.functions.on(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, (data) => {

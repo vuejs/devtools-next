@@ -13,14 +13,14 @@ const emit = defineEmits<{ (...args: any): void }>()
 const state = useDevToolsState()
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
 const vitePluginDetected = computed(() => state.vitePluginDetected.value)
-const importers = computedAsync(() => viteRpc.value.getAssetImporters(asset.value.publicPath).then(([res]) => res), [])
+const importers = computedAsync(() => viteRpc.value.getAssetImporters(asset.value.publicPath).then(res => res), [])
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 
 const imageMeta = computedAsync(() => {
   if (asset.value.type !== 'image')
     return undefined
 
-  return viteRpc.value.getImageMeta(asset.value.filePath).then(([res]) => res)
+  return viteRpc.value.getImageMeta(asset.value.filePath).then(res => res)
 })
 
 const newTextContent = ref()
@@ -32,7 +32,7 @@ const textContent = computedAsync(async () => {
   // eslint-disable-next-line no-unused-expressions
   textContentCounter.value
 
-  const content = await viteRpc.value.getTextAssetContent(asset.value.filePath).then(([res]) => res)
+  const content = await viteRpc.value.getTextAssetContent(asset.value.filePath).then(res => res)
   newTextContent.value = content
   return content
 })

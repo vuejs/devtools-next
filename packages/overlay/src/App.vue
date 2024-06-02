@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { getDevToolsClientUrl, rpc } from '@vue/devtools-core'
+import { functions, getDevToolsClientUrl } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
+import { devtools, getRpcServer, onDevToolsConnected, setIframeServerContext } from '@vue/devtools-kit'
 import { useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import FrameBox from '~/components/FrameBox.vue'
@@ -54,7 +54,8 @@ function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout =
 const vueInspector = ref()
 
 onDevToolsConnected(() => {
-  rpc.functions.on('toggle-panel', (state = !panelVisible) => {
+  const rpcServer = getRpcServer<typeof functions>()
+  rpcServer.broadcast.on('toggle-panel', (state = !panelVisible) => {
     togglePanelVisible(state)
   })
   devtools.ctx.api.getVueInspector().then((inspector) => {
@@ -72,6 +73,7 @@ function enableVueInspector() {
 
 const { iframe, getIframe } = useIframe(clientUrl, async () => {
   const iframe = getIframe()
+  setIframeServerContext(iframe)
   await waitForClientInjection(iframe)
 })
 </script>

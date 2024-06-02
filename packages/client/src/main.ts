@@ -2,8 +2,9 @@ import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 import { getViteClient } from 'vite-hot-client'
 
-import { createViteClientMessagingRpc, functions } from '@vue/devtools-core'
-import { createMessagingRpc, setViteClientContext } from '@vue/devtools-kit'
+import { isInSeparateWindow } from '@vue/devtools-shared'
+import { createViteClientRpc, functions } from '@vue/devtools-core'
+import { createRpcClient, setViteClientContext } from '@vue/devtools-kit'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
@@ -18,6 +19,7 @@ import Index from '~/pages/index.vue'
 import Settings from '~/pages/settings.vue'
 import CustomTabView from '~/pages/custom-tab-view.vue'
 import CustomInspectorTabView from '~/pages/custom-inspector-tab-view.vue'
+import WaitForConnection from '~/components/WaitForConnection.vue'
 
 import 'uno.css'
 import '~/assets/styles/main.css'
@@ -61,18 +63,33 @@ export async function initViteClientHotContext() {
 
 initViteClientHotContext().then((ctx) => {
   if (ctx) {
-    createViteClientMessagingRpc()
+    createViteClientRpc()
   }
 })
 
-createMessagingRpc({
-  functions,
-  env: 'client',
-  preset: ['iframe'],
-})
+// heartbeat()
 
-heartbeat()
+if (isInSeparateWindow) {
+  createRpcClient(functions, {
+    preset: 'broadcast',
+  })
+}
+else {
+  createRpcClient(functions, {
+    preset: 'iframe',
+  })
+}
 
-export function initDevTools() {}
+export function initDevTools() {
+  const app = createApp(App)
+  app.use(router)
+  app.mount('#app')
+}
 
-export function createConnectionApp() {}
+export function createConnectionApp(container: string = '#app', props?: Record<string, string>) {
+  const app = createApp(WaitForConnection, {
+    ...props,
+  })
+  app.mount(container)
+  return app
+}

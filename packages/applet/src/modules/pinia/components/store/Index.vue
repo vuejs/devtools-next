@@ -30,7 +30,7 @@ function filterEmptyState(data: Record<string, unknown[] | undefined>) {
 }
 
 function getPiniaState(nodeId: string) {
-  rpc.value.getInspectorState({ inspectorId, nodeId }).then(([data]) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId }).then((data) => {
     // @ts-expect-error skip type check
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
@@ -47,7 +47,7 @@ watch(selected, () => {
 })
 
 const getPiniaInspectorTree = () => {
-  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then(([_data]) => {
+  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length)

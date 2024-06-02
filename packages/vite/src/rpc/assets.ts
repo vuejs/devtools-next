@@ -1,8 +1,8 @@
 import fsp from 'node:fs/promises'
 import { debounce } from 'perfect-debounce'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
-import { viteRpc } from '@vue/devtools-core'
-import type { AssetImporter, AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
+import { getViteRpcServer } from '@vue/devtools-kit'
+import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
@@ -125,7 +125,7 @@ export function getAssetsFunctions(options: { server: ViteDevServer, config: Res
   }
 
   const debouncedAssetsUpdated = debounce(() => {
-    viteRpc.value.emit('assetsUpdated')
+    getViteRpcServer<ViteRPCFunctions>?.()?.broadcast?.emit('assetsUpdated')
   }, 100)
 
   server.watcher.on('all', (event) => {

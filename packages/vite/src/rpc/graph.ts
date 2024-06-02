@@ -1,13 +1,13 @@
 import type { ViteInspectAPI } from 'vite-plugin-inspect'
 import { debounce } from 'perfect-debounce'
 import type { ViteDevServer } from 'vite'
-import { viteRpc } from '@vue/devtools-core'
-import type { ModuleInfo } from '@vue/devtools-core'
+import type { ModuleInfo, ViteRPCFunctions } from '@vue/devtools-core'
+import { getViteRpcServer } from '@vue/devtools-kit'
 
 export function getGraphFunctions(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer }) {
   const { rpc, server } = options
   const debouncedModuleUpdated = debounce(() => {
-    viteRpc.value.emit('graphModuleUpdated')
+    getViteRpcServer<ViteRPCFunctions>?.()?.broadcast?.emit('graphModuleUpdated')
   }, 100)
 
   server.middlewares.use((_, __, next) => {

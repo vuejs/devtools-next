@@ -62,7 +62,7 @@ watchEffect(() => {
 
 onRpcConnected(() => {
   rpc.value.initDevToolsServerListener()
-  rpc.value.checkVueInspectorDetected().then(([detected]) => {
+  rpc.value.checkVueInspectorDetected().then((detected) => {
     if (detected) {
       vueInspectorDetected.value = true
       registerCommands(() =>

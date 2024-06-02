@@ -7,7 +7,7 @@ export default defineConfig({
   external: [
     'vue',
   ],
-  noExternal: ['speakingurl'],
+  noExternal: ['speakingurl', 'superjson'],
   clean: true,
   format: ['esm', 'cjs'],
   dts: true,

@@ -6,7 +6,7 @@ import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
 import { setViteServerContext } from '@vue/devtools-kit'
 import VueInspector from 'vite-plugin-vue-inspector'
-import { createViteServerMessagingRpc } from '@vue/devtools-core'
+import { createViteServerRpc } from '@vue/devtools-core'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
@@ -105,7 +105,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       server,
       config,
     })
-    createViteServerMessagingRpc(rpcFunctions)
+    createViteServerRpc(rpcFunctions)
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>

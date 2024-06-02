@@ -22,20 +22,22 @@ function normalizeComponentCount(data: CustomInspectorNode[]) {
 }
 
 onDevToolsConnected(() => {
-  rpc.value.getRouterInfo().then(([data]) => {
+  rpc.value.getRouterInfo().then((data) => {
     pageCount.value = data?.routes?.length || 1
   })
+  // @TODO: remove side effects
   rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
     pageCount.value = data?.routes?.length || 1
   })
 
   // component count getter
-  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then(([_data]) => {
+  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
     const data = parse(_data!)
     componentCount.value = normalizeComponentCount(data)
   })
 })
 
+// @TODO: remove side effects
 rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
   const data = parse(_data) as {
     inspectorId: string

@@ -7,6 +7,9 @@ import { getGraphFunctions } from './graph'
 
 export function getRpcFunctions(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer, config: ResolvedConfig }) {
   return {
+    heartbeat() {
+      return true
+    },
     ...getAssetsFunctions(options),
     ...getConfigFunctions(options.config),
     ...getGraphFunctions(

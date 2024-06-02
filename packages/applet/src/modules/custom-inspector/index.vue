@@ -46,7 +46,7 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes)
 function getInspectorInfo() {
   loading.value = true
   onDevToolsConnected(() => {
-    rpc.value.getInspectorInfo(props.id).then(([payload]) => {
+    rpc.value.getInspectorInfo(props.id).then((payload) => {
       if (!payload) {
         emit('loadError')
         return

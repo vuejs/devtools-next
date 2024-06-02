@@ -1,4 +1,4 @@
-import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpc, stringify, toggleClientConnected } from '@vue/devtools-kit'
+import { DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpcClient, getRpcServer, stringify, toggleClientConnected } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
 
@@ -140,26 +140,28 @@ export const functions = {
   },
   // listen to devtools server events
   initDevToolsServerListener() {
+    const rpcServer = getRpcServer<typeof functions>()
+    const broadcast = rpcServer.broadcast
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
-      this.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))
+      broadcast.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT, (payload) => {
-      this.emit(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, stringify(payload))
+      broadcast.emit(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, stringify(payload))
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_STATE_UPDATED, () => {
-      this.emit(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, getDevToolsState())
+      broadcast.emit(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, getDevToolsState())
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED, ({ state }) => {
-      this.emit(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, state)
+      broadcast.emit(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, state)
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT, (payload) => {
-      this.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, payload)
+      broadcast.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, payload)
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT, (payload) => {
-      this.emit(DevToolsMessagingEvents.INSPECTOR_UPDATED, payload)
+      broadcast.emit(DevToolsMessagingEvents.INSPECTOR_UPDATED, payload)
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT, () => {
-      this.emit(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED)
+      broadcast.emit(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED)
     })
   },
 
@@ -168,18 +170,21 @@ export const functions = {
 export type RPCFunctions = typeof functions
 
 export const rpc = new Proxy<{
-  value: ReturnType<typeof getRpc<RPCFunctions>>['broadcast']
-  functions: ReturnType<typeof getRpc<RPCFunctions>>['functions']
+  value: ReturnType<typeof getRpcClient<RPCFunctions>>
+  functions: ReturnType<typeof getRpcClient<RPCFunctions>>
 }>({
-  value: {} as ReturnType<typeof getRpc<RPCFunctions>>['broadcast'],
-  functions: {} as ReturnType<typeof getRpc<RPCFunctions>>['functions'],
+  value: {} as ReturnType<typeof getRpcClient<typeof functions>>,
+  functions: {} as ReturnType<typeof getRpcClient<RPCFunctions>>,
 }, {
   get(target, property) {
-    const _rpc = getRpc<RPCFunctions>()
-    if (property === 'value')
-      return _rpc?.broadcast
-    else if (property === 'functions')
-      return _rpc?.functions
+    const _rpc = getRpcClient<typeof functions>()
+    // const _rpc = getRpc<RPCFunctions>('nmd')
+    if (property === 'value') {
+      return _rpc
+    }
+    else if (property === 'functions') {
+      return _rpc.$functions
+    }
   },
 })
 

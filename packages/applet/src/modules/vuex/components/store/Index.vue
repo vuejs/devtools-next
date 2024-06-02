@@ -18,7 +18,7 @@ const tree = ref<CustomInspectorNode[]>([])
 const state = ref<CustomInspectorState>({})
 
 function getVuexState(nodeId: string) {
-  rpc.value.getInspectorState({ inspectorId, nodeId }).then(([data]) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId }).then((data) => {
     state.value = parse(data!)
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
@@ -40,7 +40,7 @@ const selectVuexTree = (id: string) => {
   selected.value = id
 }
 
-rpc.value.getInspectorTree({ inspectorId, filter: '' }).then(([_data]) => {
+rpc.value.getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
   const data = parse(_data!)
   tree.value = data
   if (!selected.value && data.length)

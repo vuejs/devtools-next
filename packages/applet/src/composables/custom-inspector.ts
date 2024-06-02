@@ -14,7 +14,7 @@ export function useCustomInspector() {
   const resiteredInspector = ref<CustomInspectorType[]>([])
   const inspectors = ref<CustomInspectorType[]>([])
   onDevToolsConnected(() => {
-    rpc.value.getCustomeInspector().then(([inspector]) => {
+    rpc.value.getCustomeInspector().then((inspector) => {
       inspectors.value = inspector
       inspectors.value.forEach((inspector) => {
         register(inspector)

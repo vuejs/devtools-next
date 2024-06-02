@@ -1,4 +1,4 @@
-import type { DevToolsContext, DevToolsEnv, DevToolsHook, DevToolsState, Router, RouterInfo } from './src/types'
+import type { DevToolsContext, DevToolsEnv, DevToolsHook, DevToolsState, RouterInfo } from './src/types'
 
 /* eslint-disable vars-on-top, no-var */
 declare global {

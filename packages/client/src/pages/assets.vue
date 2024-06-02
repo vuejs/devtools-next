@@ -79,7 +79,7 @@ const byTree = computed(() => {
 })
 
 function fetchAssets() {
-  viteRpc.value.getStaticAssets().then(([res]) => {
+  viteRpc.value.getStaticAssets().then((res) => {
     assets.value = res
   })
 }

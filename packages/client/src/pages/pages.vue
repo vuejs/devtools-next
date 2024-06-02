@@ -34,9 +34,10 @@ function navigateToRoute(path: string) {
 }
 
 onDevToolsConnected(() => {
-  rpc.value.getRouterInfo().then(([data]) => {
+  rpc.value.getRouterInfo().then((data) => {
     init(data)
   })
+  // @TODO: remove side effects
   rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
     init(data)
   })
@@ -45,7 +46,7 @@ onDevToolsConnected(() => {
 watchDebounced(routeInput, () => {
   if (routeInput.value === currentRoute.value?.path)
     return
-  rpc.value.getMatchedRoutes(routeInput.value).then(([data]) => {
+  rpc.value.getMatchedRoutes(routeInput.value).then((data) => {
     matchedRoutes.value = data
   })
 })

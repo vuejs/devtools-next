@@ -1,9 +1,8 @@
-import { createMessagingRpc, getRpc } from '@vue/devtools-kit'
+import { createRpcClient, createRpcServer, getViteRpcClient } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { AssetImporter, AssetInfo, ImageMeta, ModuleInfo } from './types'
 
 const hooks = createHooks()
-const MESSAGING_ID = 'vite-rpc'
 
 export const viteRpcFunctions = {
   on: (event: string, handler: Function) => {
@@ -18,10 +17,7 @@ export const viteRpcFunctions = {
   emit: (event: string, ...args: any[]) => {
     hooks.callHook(event, ...args)
   },
-  heartbeat: () => ({}),
-  hi(name: string) {
-    return name
-  },
+  heartbeat: () => { return true },
 }
 
 export type ViteRPCFunctions = typeof viteRpcFunctions & {
@@ -37,18 +33,20 @@ export type ViteRPCFunctions = typeof viteRpcFunctions & {
 }
 
 export const viteRpc = new Proxy<{
-  value: ReturnType<typeof getRpc<ViteRPCFunctions>>['broadcast']
-  functions: ReturnType<typeof getRpc<ViteRPCFunctions>>['functions']
+  value: ReturnType<typeof getViteRpcClient<ViteRPCFunctions>>
+  functions: ReturnType<typeof getViteRpcClient<ViteRPCFunctions>>
 }>({
-  value: {} as ReturnType<typeof getRpc<ViteRPCFunctions>>['broadcast'],
-  functions: {} as ReturnType<typeof getRpc<ViteRPCFunctions>>['functions'],
+  value: {} as ReturnType<typeof getViteRpcClient<ViteRPCFunctions>>,
+  functions: {} as ReturnType<typeof getViteRpcClient<ViteRPCFunctions>>,
 }, {
   get(target, property) {
-    const _rpc = getRpc<ViteRPCFunctions>(MESSAGING_ID)
-    if (property === 'value')
-      return _rpc?.broadcast
-    else if (property === 'functions')
-      return _rpc?.functions
+    const _rpc = getViteRpcClient<ViteRPCFunctions>()
+    if (property === 'value') {
+      return _rpc
+    }
+    else if (property === 'functions') {
+      return _rpc?.$functions
+    }
   },
 })
 
@@ -68,23 +66,14 @@ export function onViteRpcConnected(callback: () => void) {
   heartbeat()
 }
 
-export function createViteClientMessagingRpc() {
-  createMessagingRpc({
-    functions: viteRpcFunctions,
-    env: 'client',
-    id: MESSAGING_ID,
-    preset: ['vite'],
+export function createViteClientRpc() {
+  createRpcClient(viteRpcFunctions, {
+    preset: 'vite',
   })
 }
 
-export function createViteServerMessagingRpc(functions: Record<string, any>) {
-  createMessagingRpc({
-    functions: {
-      ...viteRpcFunctions,
-      ...functions,
-    },
-    env: 'server',
-    id: MESSAGING_ID,
-    preset: ['vite'],
+export function createViteServerRpc(functions: Record<string, any>) {
+  createRpcServer(functions, {
+    preset: 'vite',
   })
 }

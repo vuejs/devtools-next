@@ -403,9 +403,15 @@ importers:
       '@vue/devtools-core':
         specifier: workspace:^
         version: link:../core
+      '@vue/devtools-kit':
+        specifier: workspace:^
+        version: link:../devtools-kit
       '@vue/devtools-shared':
         specifier: workspace:^
         version: link:../shared
+      birpc:
+        specifier: ^0.2.17
+        version: 0.2.17
       electron:
         specifier: ^29.4.1
         version: 29.4.1

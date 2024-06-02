@@ -18,7 +18,7 @@ export function useDevToolsState() {
     clientConnected.value = data!.clientConnected
   }
   onRpcConnected(() => {
-    rpc.value.devtoolsState().then(([data]) => {
+    rpc.value.devtoolsState().then((data) => {
       appRecords.value = data!.appRecords
       activeAppRecordId.value = data!.activeAppRecordId!
       connected.value = data.connected

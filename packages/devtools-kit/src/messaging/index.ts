@@ -1,88 +1,153 @@
-import { BirpcGroup, createBirpcGroup } from 'birpc'
+import { BirpcReturn, createBirpc, createBirpcGroup } from 'birpc'
+import type { BirpcGroup, BirpcOptions, ChannelOptions } from 'birpc'
+import { target } from '@vue/devtools-shared'
+import { MergeableChannelOptions } from './types'
 import {
   createBroadcastChannel,
+  createElectronClientChannel,
+  createElectronProxyChannel,
+  createElectronServerChannel,
   createIframeClientChannel,
   createIframeServerChannel,
   createViteClientChannel,
   createViteServerChannel,
 } from './presets'
 
-import { getCurrentMessagingEnv, setCurrentMessagingEnv } from './env'
-import { createMessagingContext, getMessagingContext } from './context'
-
-export { createMessagingContext } from './context'
-
-export { setViteServerContext, setViteClientContext } from './presets'
-
-export * from './env'
-
-export interface CreateMessageChannelOptions {
-  preset?: string | string[]
+export type Presets = 'iframe' | 'electron' | 'vite' | 'broadcast'
+export {
+  setElectronClientContext,
+  setElectronServerContext,
+  setElectronProxyContext,
+  setViteClientContext,
+  setViteServerContext,
+  setIframeServerContext,
+} from './presets'
+export interface CreateRpcClientOptions<RemoteFunctions> {
+  options?: BirpcOptions<RemoteFunctions>
+  preset?: Presets
+  channel?: ChannelOptions
 }
 
-export async function initMessageChannel(preset: string[], id?: string) {
-  const host = getCurrentMessagingEnv(id)
-  const channels = getMessagingContext(id).channels[host]
-  for (const p of preset) {
-    if (p === 'iframe') {
-      const channel = host === 'client' ? await createIframeClientChannel() : createIframeServerChannel()
-      channels.push(channel)
-    }
-    else if (p === 'broadcast') {
-      const channel = createBroadcastChannel()
-      channels.push(channel)
-    }
-    else if (p === 'vite') {
-      const channel = host === 'client' ? createViteClientChannel() : createViteServerChannel()
-      channels.push(channel)
-    }
-  }
+export interface CreateRpcServerOptions<RemoteFunctions> {
+  options?: BirpcOptions<RemoteFunctions>
+  preset?: Presets
+  channel?: ChannelOptions
 }
 
-export async function createMessageChannel(preset: string | string[], id?: string) {
-  const p = Array.isArray(preset) ? preset : [preset]
-  initMessageChannel(p, id)
+target.__VUE_DEVTOOLS_KIT_MESSAGE_CHANNELS__ ??= []
+target.__VUE_DEVTOOLS_KIT_RPC_CLIENT__ ??= null!
+target.__VUE_DEVTOOLS_KIT_RPC_SERVER__ ??= null!
+target.__VUE_DEVTOOLS_KIT_VITE_RPC_CLIENT__ ??= null!
+target.__VUE_DEVTOOLS_KIT_VITE_RPC_SERVER__ ??= null!
+target.__VUE_DEVTOOLS_KIT_BROADCAST_RPC_SERVER__ ??= null!
+
+function setRpcClientToGlobal<R, L>(rpc: BirpcReturn<R, L>) {
+  target.__VUE_DEVTOOLS_KIT_RPC_CLIENT__ = rpc
 }
 
-export function getRpc<T extends Record<string, Function | Record<string, Function>>>(id?: string): BirpcGroup<T, T> {
-  const host = getCurrentMessagingEnv(id)
-  if (!host)
-    return null!
-  return getMessagingContext(id).rpc[host] as BirpcGroup<T, T>
+export function setRpcServerToGlobal<R, L >(rpc: BirpcGroup<R, L>) {
+  target.__VUE_DEVTOOLS_KIT_RPC_SERVER__ = rpc
 }
 
-export function setRpcToGlobal<T extends BirpcGroup<unknown, unknown>>(rpc: T, id?: string) {
-  const host = getCurrentMessagingEnv(id)
-  getMessagingContext(id).rpc[host] = rpc
+export function getRpcClient<R, L extends object = Record<string, never>>(): BirpcReturn<R, L> {
+  return target.__VUE_DEVTOOLS_KIT_RPC_CLIENT__!
 }
 
-export function createRpc<
-RemoteFunctions = Record<string, Function>,
-LocalFunctions extends Record<string, Function> = Record<string, Function>,
->(functions: LocalFunctions, id?: string) {
-  const host = getCurrentMessagingEnv(id)
-  const channels = getMessagingContext(id).channels[host]
-  const rpc = createBirpcGroup<RemoteFunctions, LocalFunctions>(functions, channels, {
+export function getRpcServer<R, L extends object = Record<string, never>>(): BirpcGroup<R, L> {
+  return target.__VUE_DEVTOOLS_KIT_RPC_SERVER__!
+}
+
+export function setViteRpcClientToGlobal<R, L>(rpc: BirpcReturn<R, L>) {
+  target.__VUE_DEVTOOLS_KIT_VITE_RPC_CLIENT__ = rpc
+}
+
+export function setViteRpcServerToGlobal<R, L >(rpc: BirpcGroup<R, L>) {
+  target.__VUE_DEVTOOLS_KIT_VITE_RPC_SERVER__ = rpc
+}
+
+export function getViteRpcClient<R, L extends object = Record<string, never>>(): BirpcReturn<R, L> {
+  return target.__VUE_DEVTOOLS_KIT_VITE_RPC_CLIENT__!
+}
+
+export function getViteRpcServer<R, L extends object = Record<string, never>>(): BirpcGroup<R, L> {
+  return target.__VUE_DEVTOOLS_KIT_VITE_RPC_SERVER__!
+}
+
+function getChannel(preset: Presets, host: 'client' | 'proxy' | 'server' = 'client'): MergeableChannelOptions {
+  const channel = {
+    iframe: {
+      client: createIframeClientChannel,
+      server: createIframeServerChannel,
+    }[host],
+    electron: {
+      client: createElectronClientChannel,
+      proxy: createElectronProxyChannel,
+      server: createElectronServerChannel,
+    }[host],
+    vite: {
+      client: createViteClientChannel,
+      server: createViteServerChannel,
+    }[host],
+    broadcast: {
+      client: createBroadcastChannel,
+      server: createBroadcastChannel,
+    }[host],
+  }[preset]
+  return channel()
+}
+
+export function createRpcClient<RemoteFunctions = Record<string, never>, LocalFunctions extends object = Record<string, never>>(functions: LocalFunctions, options: CreateRpcClientOptions<RemoteFunctions> = {}) {
+  const { channel: _channel, options: _options, preset } = options
+
+  const channel = preset ? getChannel(preset)! : _channel!
+  const rpc = createBirpc<RemoteFunctions, LocalFunctions>(functions, {
+    ..._options,
+    ...channel,
     timeout: -1,
   })
-  setRpcToGlobal<typeof rpc>(rpc, id)
+
+  // special case for vite
+  if (preset === 'vite') {
+    setViteRpcClientToGlobal<RemoteFunctions, LocalFunctions>(rpc)
+    return
+  }
+
+  setRpcClientToGlobal<RemoteFunctions, LocalFunctions>(rpc)
   return rpc
 }
 
-export interface CreateMessagingRpcOptions<T> {
-  functions: T
-  id?: string
-  env: 'client' | 'server'
-  preset?: string | string[]
+export function createRpcServer<RemoteFunctions = Record<string, never>, LocalFunctions extends object = Record<string, never>>(functions: LocalFunctions, options: CreateRpcServerOptions<RemoteFunctions> = {}) {
+  const { channel: _channel, options: _options, preset } = options
+  const channel = preset ? getChannel(preset, 'server')! : _channel!
+
+  const rpcServer = getRpcServer<RemoteFunctions, LocalFunctions>()
+  if (!rpcServer) {
+    const group = createBirpcGroup<RemoteFunctions, LocalFunctions>(functions, [channel], {
+      ..._options,
+      timeout: -1,
+    })
+
+    // special case for vite
+    if (preset === 'vite') {
+      setViteRpcServerToGlobal(group)
+      return
+    }
+
+    setRpcServerToGlobal(group)
+  }
+  else {
+    rpcServer.updateChannels((channels) => {
+      channels.push(channel)
+    })
+  }
 }
 
-export function createMessagingRpc<
-RemoteFunctions = Record<string, Function>,
-LocalFunctions extends Record<string, Function> = Record<string, Function>,
->(options: CreateMessagingRpcOptions<LocalFunctions>) {
-  const { functions, id, env, preset = ['broadcast'] } = options
-  createMessagingContext(id)
-  setCurrentMessagingEnv(env, id)
-  createMessageChannel(preset, id)
-  return createRpc<RemoteFunctions, LocalFunctions>(functions, id)
+export function createRpcProxy<RemoteFunctions = Record<string, never>, LocalFunctions extends object = Record<string, never>>(options: CreateRpcClientOptions<RemoteFunctions> = {}) {
+  const { channel: _channel, options: _options, preset } = options
+  const channel = preset ? getChannel(preset, 'proxy')! : _channel!
+  return createBirpc<RemoteFunctions, LocalFunctions>({} as LocalFunctions, {
+    ..._options,
+    ...channel,
+    timeout: -1,
+  })
 }

@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "electron": "^29.4.1",
     "execa": "^8.0.1",

@@ -25,13 +25,13 @@ const state = ref<CustomInspectorState>({})
 const emptyState = computed(() => !Object.keys(state.value).length)
 
 function getNodeActions() {
-  rpc.value.getInspectorNodeActions(inspectorId).then(([actions]) => {
+  rpc.value.getInspectorNodeActions(inspectorId).then((actions) => {
     nodeActions.value = actions
   })
 }
 
 function getActions() {
-  rpc.value.getInspectorActions(inspectorId).then(([_actions]) => {
+  rpc.value.getInspectorActions(inspectorId).then((_actions) => {
     actions.value = _actions
   })
 }
@@ -57,7 +57,7 @@ function filterEmptyState(data: CustomInspectorState) {
 }
 
 function getVeeValidateState(nodeId: string) {
-  rpc.value.getInspectorState({ inspectorId, nodeId }).then(([data]) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId }).then((data) => {
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
@@ -73,7 +73,7 @@ watch(selected, () => {
 })
 
 const getVeeValidateInspectorTree = () => {
-  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then(([_data]) => {
+  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {

@@ -3,8 +3,8 @@ import { onViteRpcConnected, viteRpc } from '@vue/devtools-core'
 import { Network } from 'vis-network'
 
 async function fetchGraph() {
-  const root = await viteRpc.value.getRoot().then(([res]) => res)
-  viteRpc.value.getGraphModules().then(([res]) => {
+  const root = await viteRpc.value.getRoot().then(res => res)
+  viteRpc.value.getGraphModules().then((res) => {
     parseGraphRawData(res, root)
   })
 }

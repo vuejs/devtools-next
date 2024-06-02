@@ -111,7 +111,7 @@ const { expanded: expandedStateNodes } = createExpandedContext('component-state'
 createSelectedContext()
 
 function getComponentsInspectorTree(filter = '') {
-  return rpc.value.getInspectorTree({ inspectorId, filter }).then(([data]) => {
+  return rpc.value.getInspectorTree({ inspectorId, filter }).then((data) => {
     const res = parse(data)
     tree.value = res
     activeComponentId.value = tree.value?.[0]?.id
@@ -133,7 +133,7 @@ function normalizeComponentState(data: { state?: any[] }) {
 }
 
 function getComponentState(id: string) {
-  rpc.value.getInspectorState({ inspectorId, nodeId: id }).then(([data]) => {
+  rpc.value.getInspectorState({ inspectorId, nodeId: id }).then((data) => {
     activeComponentState.value = normalizeComponentState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(activeComponentState.value).length }, (_, i) => `${i}`)
   })
@@ -212,7 +212,7 @@ function scrollToComponent() {
 }
 
 function getComponentRenderCode() {
-  rpc.value.getComponentRenderCode(activeComponentId.value).then(([data]) => {
+  rpc.value.getComponentRenderCode(activeComponentId.value).then((data) => {
     componentRenderCode.value = data!
   })
 }

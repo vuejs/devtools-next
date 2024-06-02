@@ -16,7 +16,7 @@ const clientConnected = ref(false)
 const connected = computed(() => appConnected.value && clientConnected.value)
 
 function initVueDevToolsState() {
-  rpc.value.devtoolsState().then(([data]) => {
+  rpc.value.devtoolsState().then((data) => {
     if (!data)
       return
     appConnected.value = data!.connected

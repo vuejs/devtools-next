@@ -34,7 +34,7 @@ function filterEmptyState(data: Record<string, unknown[] | string | undefined>) 
 }
 
 function getRoutesState(nodeId: string) {
-  rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then(([data]) => {
+  rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
     // @ts-expect-error skip type check
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
@@ -51,7 +51,7 @@ watch(selected, () => {
 })
 
 const getRoutesInspectorTree = () => {
-  rpc.value.getInspectorTree({ inspectorId: inspectorId.value, filter: '' }).then(([_data]) => {
+  rpc.value.getInspectorTree({ inspectorId: inspectorId.value, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length)

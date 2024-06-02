@@ -1,5 +1,7 @@
 // import { Bridge } from '../../core/src/bridge'
-// import { initDevTools } from '../client/devtools-panel'
+import { createRpcClient, setExtensionClientContext } from '@vue/devtools-kit'
+import { functions } from '@vue/devtools-core'
+import { initDevTools } from '../client/devtools-panel'
 import { VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const connectionInfo: {
@@ -36,6 +38,40 @@ function connect() {
     connectionInfo.disconnected = true
     connectionInfo.retryTimer = setTimeout(connect, 5000)
   }
+}
+
+function init() {
+  injectScript(chrome.runtime.getURL('dist/user-app.js'), () => {
+    initDevTools()
+
+    const port = chrome.runtime.connect({
+      name: `${chrome.devtools.inspectedWindow.tabId}`,
+    })
+
+    setExtensionClientContext(port)
+    createRpcClient(functions, {
+      preset: 'extension',
+    })
+  })
+}
+
+init()
+
+function injectScript(scriptName: string, cb: () => void) {
+  const src = `
+    (function() {
+      var script = document.constructor.prototype.createElement.call(document, 'script');
+      script.src = "${scriptName}";
+      document.documentElement.appendChild(script);
+      script.parentNode.removeChild(script);
+    })()
+  `
+  chrome.devtools.inspectedWindow.eval(src, (res, err) => {
+    if (err)
+      console.error(err)
+
+    cb()
+  })
 }
 
 chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_URL_STORAGE_KEY]).then((storage) => {
@@ -127,20 +163,3 @@ chrome.storage.local.get([VITE_PLUGIN_DETECTED_STORAGE_KEY, VITE_PLUGIN_CLIENT_U
     // })
   }
 })
-
-function injectScript(scriptName: string, cb: () => void) {
-  const src = `
-    (function() {
-      var script = document.constructor.prototype.createElement.call(document, 'script');
-      script.src = "${scriptName}";
-      document.documentElement.appendChild(script);
-      script.parentNode.removeChild(script);
-    })()
-  `
-  chrome.devtools.inspectedWindow.eval(src, (res, err) => {
-    if (err)
-      console.error(err)
-
-    cb()
-  })
-}

@@ -3,31 +3,37 @@
 // to the chrome runtime API. It serves as a proxy between the injected
 // user application and the Vue devtools panel.
 
-const port = chrome.runtime.connect({
-  name: 'content-script',
+import { createRpcProxy } from '@vue/devtools-kit'
+
+createRpcProxy({
+  preset: 'extension',
 })
 
-function sendMessageToUserApp(payload) {
-  window.postMessage({
-    source: '__VUE_DEVTOOLS_PROXY__',
-    payload,
-  }, '*')
-}
+// const port = chrome.runtime.connect({
+//   name: 'content-script',
+// })
 
-function sendMessageToDevTools(e) {
-  if (e.data && e.data.source === '__VUE_DEVTOOLS_USER_APP__')
-    port.postMessage(e.data.payload)
-}
+// function sendMessageToUserApp(payload) {
+//   window.postMessage({
+//     source: '__VUE_DEVTOOLS_PROXY__',
+//     payload,
+//   }, '*')
+// }
 
-port.onMessage.addListener(sendMessageToUserApp)
-window.addEventListener('message', sendMessageToDevTools)
-port.onDisconnect.addListener(() => {
-  window.removeEventListener('message', sendMessageToDevTools)
-  sendMessageToUserApp({
-    event: 'shutdown',
-  })
-})
+// function sendMessageToDevTools(e) {
+//   if (e.data && e.data.source === '__VUE_DEVTOOLS_USER_APP__')
+//     port.postMessage(e.data.payload)
+// }
 
-sendMessageToUserApp({
-  event: 'init',
-})
+// port.onMessage.addListener(sendMessageToUserApp)
+// window.addEventListener('message', sendMessageToDevTools)
+// port.onDisconnect.addListener(() => {
+//   window.removeEventListener('message', sendMessageToDevTools)
+//   sendMessageToUserApp({
+//     event: 'shutdown',
+//   })
+// })
+
+// sendMessageToUserApp({
+//   event: 'init',
+// })

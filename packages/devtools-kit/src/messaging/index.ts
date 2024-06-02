@@ -7,13 +7,16 @@ import {
   createElectronClientChannel,
   createElectronProxyChannel,
   createElectronServerChannel,
+  createExtensionClientChannel,
+  createExtensionProxyChannel,
+  createExtensionServerChannel,
   createIframeClientChannel,
   createIframeServerChannel,
   createViteClientChannel,
   createViteServerChannel,
 } from './presets'
 
-export type Presets = 'iframe' | 'electron' | 'vite' | 'broadcast'
+export type Presets = 'iframe' | 'electron' | 'vite' | 'broadcast' | 'extension'
 export {
   setElectronClientContext,
   setElectronServerContext,
@@ -21,6 +24,7 @@ export {
   setViteClientContext,
   setViteServerContext,
   setIframeServerContext,
+  setExtensionClientContext,
 } from './presets'
 export interface CreateRpcClientOptions<RemoteFunctions> {
   options?: BirpcOptions<RemoteFunctions>
@@ -91,6 +95,11 @@ function getChannel(preset: Presets, host: 'client' | 'proxy' | 'server' = 'clie
     broadcast: {
       client: createBroadcastChannel,
       server: createBroadcastChannel,
+    }[host],
+    extension: {
+      client: createExtensionClientChannel,
+      proxy: createExtensionProxyChannel,
+      server: createExtensionServerChannel,
     }[host],
   }[preset]
   return channel()

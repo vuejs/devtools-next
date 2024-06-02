@@ -1,3 +1,4 @@
+import { SuperJSON } from 'superjson'
 import { MergeableChannelOptions } from '../../types'
 import { __DEVTOOLS_KIT_EXTENSION_MESSAGING_EVENT_KEY__ } from './context'
 

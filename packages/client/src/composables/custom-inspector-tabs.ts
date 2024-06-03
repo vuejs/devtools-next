@@ -1,7 +1,9 @@
 import { useCustomInspector } from '@vue/devtools-applet'
+import { useDevToolsState } from '@vue/devtools-core'
 import type { ModuleBuiltinTab } from '~/types/tab'
 
 export function useCustomInspectorTabs() {
+  const state = useDevToolsState()
   const { resiteredInspector } = useCustomInspector()
 
   const customInspectorTabs = computed<ModuleBuiltinTab[]>(() => {

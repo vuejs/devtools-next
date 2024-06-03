@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
-import { onDevToolsConnected, refreshCurrentPageData } from '@vue/devtools-applet'
+import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
 useDevToolsColorMode()

@@ -1,6 +1,7 @@
 import { randomStr } from '@vue/devtools-shared'
 import { CustomCommand } from '@vue/devtools-kit'
 import { MaybeRefOrGetter } from 'vue'
+import { useDevToolsState } from '@vue/devtools-core'
 
 export interface CommandItem {
   id: string

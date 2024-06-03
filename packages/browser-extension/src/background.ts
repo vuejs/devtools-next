@@ -16,24 +16,32 @@ function initPort(portInfo: PortInfo): Record<'devtools' | 'userApp', chrome.run
 
 function devtoolsUserAppPipe(tabId: string | number) {
   const { devtools, userApp } = ports[tabId]
+  let disconnected = false
 
   function onDevtoolsMessage(message) {
-    if (process.env.NODE_ENV === 'development')
+    if (disconnected)
+      return
+    if (process.env.NODE_ENV === 'development') {
       console.log('%cdevtools -> userApp', 'color:#888;', message)
+    }
 
     userApp.postMessage(message)
   }
   devtools.onMessage.addListener(onDevtoolsMessage)
 
   function onUserAppMessage(message) {
-    if (process.env.NODE_ENV === 'development')
+    if (disconnected)
+      return
+    if (process.env.NODE_ENV === 'development') {
       console.log('%cuserApp -> devtools', 'color:#888;', message)
+    }
 
     devtools.postMessage(message)
   }
   userApp.onMessage.addListener(onUserAppMessage)
 
   function shutdown() {
+    disconnected = true
     if (!ports[tabId])
       return
     const { devtools, userApp } = ports[tabId]
@@ -41,7 +49,8 @@ function devtoolsUserAppPipe(tabId: string | number) {
     userApp.onMessage.removeListener(onUserAppMessage)
     devtools?.disconnect()
     userApp?.disconnect()
-    ports[tabId] = null!
+    delete ports[tabId]
+    // ports[tabId] = null!
   }
 
   devtools.onDisconnect.addListener(shutdown)

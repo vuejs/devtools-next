@@ -12,6 +12,8 @@ export enum DevToolsMessagingEvents {
   TIMELINE_EVENT_UPDATED = 'timeline-event-updated',
   INSPECTOR_UPDATED = 'inspector-updated',
   ACTIVE_APP_UNMOUNTED = 'active-app-updated',
+  DESTROY_DEVTOOLS_CLIENT = 'destroy-devtools-client',
+  RELOAD_DEVTOOLS_CLIENT = 'reload-devtools-client',
 }
 
 function getDevToolsState() {
@@ -198,7 +200,7 @@ export function onRpcConnected(callback: () => void) {
     }).catch(() => ({}))
     timer = setTimeout(() => {
       heartbeat()
-    }, 80) as unknown as number
+    }, 2000) as unknown as number
   }
 
   heartbeat()

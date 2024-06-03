@@ -2,7 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import archiver from 'archiver'
-import readDirGlob from 'readdir-glob'
+import readdirGlob from 'readdir-glob'
 import ProgressBar from 'progress'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -44,7 +44,8 @@ async function zip(filename: string) {
   }
   async function parseFileStats() {
     return new Promise<void>((resolve, reject) => {
-      const globber = readDirGlob(targetPkgDir, { pattern: INCLUDE_FILES, skip: EXCLUDE_DIRS, mark: true, stat: true })
+      // @ts-expect-error skip
+      const globber = readdirGlob.readdirGlob(targetPkgDir, { pattern: INCLUDE_FILES, skip: EXCLUDE_DIRS, mark: true, stat: true })
       globber.on('match', (match) => {
         if (!match.stat.isDirectory())
           status.total++

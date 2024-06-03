@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { isMacOS } from '@vue/devtools-shared'
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, onDevToolsConnected, rpc, useDevToolsState } from '@vue/devtools-core'
 import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
-import { onDevToolsConnected } from '@vue/devtools-applet'
 import { version } from '../../../core/package.json'
 
 const { vueVersion } = useDevToolsState()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, rpc, useDevToolsState } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import Navbar from '~/components/basic/Navbar.vue'
@@ -10,7 +10,6 @@ import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
-import { useDevToolsState } from '~/composables/devtools-state'
 
 const { expanded: expandedStateNodes } = createExpandedContext('routes-state')
 

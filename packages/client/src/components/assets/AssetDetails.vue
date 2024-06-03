@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
-import { viteRpc } from '@vue/devtools-core'
+import { useDevToolsState, viteRpc } from '@vue/devtools-core'
 import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 

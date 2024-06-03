@@ -3,9 +3,10 @@ import 'floating-vue/dist/style.css'
 import { getViteClient } from 'vite-hot-client'
 
 import { isInSeparateWindow } from '@vue/devtools-shared'
-import { createViteClientRpc, functions } from '@vue/devtools-core'
+import { VueDevToolsVuePlugin, createViteClientRpc, functions } from '@vue/devtools-core'
 import { createRpcClient, setViteClientContext } from '@vue/devtools-kit'
 import { createApp } from 'vue'
+import type { App as VueApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import Components from '~/pages/components.vue'
@@ -45,6 +46,7 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
+app.use(VueDevToolsVuePlugin())
 app.mount('#app')
 
 async function getViteHotContext() {
@@ -80,9 +82,12 @@ else {
   })
 }
 
+let vueApp: VueApp = null!
 export function initDevTools() {
   const app = createApp(App)
   app.use(router)
+  app.use(VueDevToolsVuePlugin())
+  vueApp = app
   app.mount('#app')
 }
 
@@ -92,4 +97,12 @@ export function createConnectionApp(container: string = '#app', props?: Record<s
   })
   app.mount(container)
   return app
+}
+
+export function disconnectDevToolsClient() {
+  vueApp?.config.globalProperties.$disconnectDevToolsClient()
+}
+
+export function reloadDevToolsClient() {
+  vueApp?.config?.globalProperties?.$getDevToolsState()
 }

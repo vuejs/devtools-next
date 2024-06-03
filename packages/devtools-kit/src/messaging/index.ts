@@ -25,6 +25,7 @@ export {
   setViteServerContext,
   setIframeServerContext,
   setExtensionClientContext,
+  getExtensionClientContext,
 } from './presets'
 export interface CreateRpcClientOptions<RemoteFunctions> {
   options?: BirpcOptions<RemoteFunctions>

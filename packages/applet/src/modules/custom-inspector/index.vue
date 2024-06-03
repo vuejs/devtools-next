@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { rpc } from '@vue/devtools-core'
+import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import Home from './components/Home.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
-import { onDevToolsConnected } from '~/composables/connect-state'
 import AppConnecting from '~/components/basic/AppConnecting.vue'
 import { VirtalRoute, registerVirtualRouter } from '~/composables/virtual-router'
 import { createCustomInspectorStateContext } from '~/composables/custom-inspector-state'
@@ -45,7 +44,7 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes)
 
 function getInspectorInfo() {
   loading.value = true
-  onDevToolsConnected(() => {
+  onRpcConnected(() => {
     rpc.value.getInspectorInfo(props.id).then((payload) => {
       if (!payload) {
         emit('loadError')

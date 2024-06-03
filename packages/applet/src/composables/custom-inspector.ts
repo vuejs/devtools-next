@@ -1,6 +1,5 @@
 import { ref } from 'vue'
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
-import { onDevToolsConnected } from './connect-state'
+import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, rpc, useDevToolsState } from '@vue/devtools-core'
 
 export interface CustomInspectorType {
   id: string
@@ -13,7 +12,7 @@ export interface CustomInspectorType {
 export function useCustomInspector() {
   const resiteredInspector = ref<CustomInspectorType[]>([])
   const inspectors = ref<CustomInspectorType[]>([])
-  onDevToolsConnected(() => {
+  onRpcConnected(() => {
     rpc.value.getCustomeInspector().then((inspector) => {
       inspectors.value = inspector
       inspectors.value.forEach((inspector) => {

@@ -1,6 +1,7 @@
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInElectron } from '@vue/devtools-shared'
+import { useDevToolsState } from '@vue/devtools-core'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
 
@@ -22,8 +23,9 @@ export interface CategorizedCategory {
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
 
 export function useAllTabs() {
-  const customInspectorTabs = useCustomInspectorTabs()
   const state = useDevToolsState()
+  const customInspectorTabs = useCustomInspectorTabs()
+
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
   watchEffect(() => {
     customTabs.value = state.tabs.value

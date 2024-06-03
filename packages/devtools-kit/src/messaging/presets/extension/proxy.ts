@@ -29,14 +29,14 @@ export function createExtensionProxyChannel(): MergeableChannelOptions {
   window.addEventListener('message', sendMessageToDevToolsClient)
   port.onDisconnect.addListener(() => {
     window.removeEventListener('message', sendMessageToDevToolsClient)
-    sendMessageToUserApp({
+    sendMessageToUserApp(SuperJSON.stringify({
       event: 'shutdown',
-    })
+    }))
   })
 
-  sendMessageToUserApp({
+  sendMessageToUserApp(SuperJSON.stringify({
     event: 'init',
-  })
+  }))
 
   return {
     post: (data) => {

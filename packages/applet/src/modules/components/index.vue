@@ -149,7 +149,7 @@ function onInspectorStateUpdated(_data: string) {
     state: CustomInspectorState
     nodeId: string
   }
-  if (data.inspectorId !== inspectorId && data.nodeId !== activeComponentId.value)
+  if (data.inspectorId !== inspectorId || data.nodeId !== activeComponentId.value)
     return
 
   activeComponentState.value = normalizeComponentState({ state: data.state.state })

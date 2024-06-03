@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isMacOS } from '@vue/devtools-shared'
+import { isInChromePanel, isInElectron, isMacOS } from '@vue/devtools-shared'
 import { DevToolsMessagingEvents, onDevToolsConnected, rpc, useDevToolsState } from '@vue/devtools-core'
 import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
@@ -127,36 +127,38 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string)
         </template>
         to toggle Command Palette
       </div>
-      <div flex="~ gap-1" cursor-default items-center justify-center pb-8 text-sm op40>
-        Press
-        <template v-if="isMacOS()">
-          <VueButton>
-            ⇧ Shift
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            ⌥ Option
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            D
-          </VueButton>
-        </template>
-        <template v-else>
-          <VueButton>
-            Shift
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            Alt
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            D
-          </VueButton>
-        </template>
-        to toggle DevTools
-      </div>
+      <template v-if="!isInElectron && !isInChromePanel">
+        <div flex="~ gap-1" cursor-default items-center justify-center pb-8 text-sm op40>
+          Press
+          <template v-if="isMacOS()">
+            <VueButton>
+              ⇧ Shift
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              ⌥ Option
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              D
+            </VueButton>
+          </template>
+          <template v-else>
+            <VueButton>
+              Shift
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              Alt
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              D
+            </VueButton>
+          </template>
+          to toggle DevTools
+        </div>
+      </template>
     </div>
   </div>
 </template>

@@ -44,8 +44,6 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
     'transition-base': 'transition-all duration-200',
-    // Preserved of `formatInspectorStateValue` in `devtools-kit` package.
-    'truncated-string-field': 'max-w-220px truncate',
 
     // selective list
     'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
@@ -63,7 +61,6 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'literal-state-type',
     'boolean-state-type',
     'null-state-type',
-    'truncated-string-field',
     'i-ic-baseline-alarm',
     'i-ic-baseline-file-download',
     'i-ic-baseline-delete',

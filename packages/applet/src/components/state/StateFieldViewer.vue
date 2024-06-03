@@ -65,7 +65,8 @@ const normalizedDisplayedValue = computed(() => {
     const _type = (props.data.value as InspectorCustomState)?._custom?.type
     const _value = type.value === 'custom' && !_type ? `"${displayedValue.value}"` : (displayedValue.value === '' ? `""` : displayedValue.value)
     const normalizedType = type.value === 'custom' && _type === 'ref' ? getInspectorStateValueType(_value) : type.value
-    const result = `<span class="${normalizedType}-state-type flex whitespace-nowrap">${_value}</span>`
+    const selectText = type.value === 'string' ? 'select-text' : ''
+    const result = `<span class="${normalizedType}-state-type flex whitespace-nowrap ${selectText}">${_value}</span>`
 
     if (extraDisplayedValue)
       return `${result} <span class="text-gray-500">(${extraDisplayedValue})</span>`

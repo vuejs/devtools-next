@@ -15,7 +15,7 @@ export const useAppStore = defineStore('app', () => {
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(10)
-  const name = ref('webfansplz!!!')
+  const name = ref('webfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplzwebfansplz!!!')
   function increment() {
     count.value++
   }

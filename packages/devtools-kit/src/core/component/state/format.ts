@@ -73,18 +73,20 @@ export function formatInspectorStateValue(value, quotes = false) {
   else if (typeof value === 'string') {
     const typeMatch = value.match(rawTypeRE)
     if (typeMatch)
-      value = escape(typeMatch[1])
+      value = escapeString(typeMatch[1])
 
     else if (quotes)
-      value = `<span>"</span>${escape(value)}<span>"</span>`
+      value = `<span>"</span><span class="truncated-string-field">${escapeString(value)}</span><span>"</span>`
 
     else
-      value = escape(value)
-
-    value = value.replace(/ /g, '&nbsp;')
-      .replace(/\n/g, '<span>\\n</span>')
+      value = `<span class="truncated-string-field">${escapeString(value)}</span>`
   }
   return value
+}
+
+function escapeString(value: string) {
+  return escape(value).replace(/ /g, '&nbsp;')
+    .replace(/\n/g, '<span>\\n</span>')
 }
 
 export function getRaw(value: InspectorState['value']): {

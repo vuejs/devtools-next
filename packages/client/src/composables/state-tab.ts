@@ -1,6 +1,6 @@
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
-import { isInElectron } from '@vue/devtools-shared'
+import { isInChromePanel, isInElectron } from '@vue/devtools-shared'
 import { useDevToolsState } from '@vue/devtools-core'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
@@ -40,7 +40,7 @@ export function useAllTabs() {
           return
 
         // @TODO: electron app support vite only tabs
-        if ((!vitePluginDetected || isInElectron) && viteOnlyTabs.includes(tab.name))
+        if ((!vitePluginDetected || isInElectron || isInChromePanel) && viteOnlyTabs.includes(tab.name))
           return
 
         currentTab[1].push({

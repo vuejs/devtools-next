@@ -81,7 +81,24 @@ const vueInspector = ref()
 onDevToolsConnected(() => {
   devtools.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector
+
+    let previousPanelVisible = panelVisible.value
+
+    vueInspector.value.onEnabled = () => {
+      previousPanelVisible = panelVisible.value
+      togglePanelVisible(undefined, false)
+    }
+
+    vueInspector.value.onDisabled = () => {
+      togglePanelVisible(undefined, previousPanelVisible)
+    }
   })
+})
+
+addEventListener('keyup', (e) => {
+  if (e.key.toLowerCase() === 'escape' && vueInspector.value?.enabled) {
+    vueInspector.value?.disable()
+  }
 })
 
 const vueInspectorEnabled = computed(() => {

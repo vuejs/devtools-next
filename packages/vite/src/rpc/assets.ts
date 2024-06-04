@@ -5,7 +5,7 @@ import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions }
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
-import { RpcFunctionCtx } from '.'
+import { RpcFunctionCtx } from './types'
 
 const defaultAllowedExtensions = [
   'png',

@@ -1,4 +1,4 @@
-import { RpcFunctionCtx } from '.'
+import { RpcFunctionCtx } from './types'
 
 export function getConfigFunctions(ctx: RpcFunctionCtx) {
   return {

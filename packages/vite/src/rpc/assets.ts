@@ -1,11 +1,11 @@
 import fsp from 'node:fs/promises'
 import { debounce } from 'perfect-debounce'
-import type { ResolvedConfig, ViteDevServer } from 'vite'
 import { getViteRpcServer } from '@vue/devtools-kit'
 import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
+import { RpcFunctionCtx } from '.'
 
 const defaultAllowedExtensions = [
   'png',
@@ -54,8 +54,8 @@ function guessType(path: string): AssetType {
   return 'other'
 }
 
-export function getAssetsFunctions(options: { server: ViteDevServer, config: ResolvedConfig }) {
-  const { server, config } = options
+export function getAssetsFunctions(ctx: RpcFunctionCtx) {
+  const { server, config } = ctx
 
   const _imageMetaCache = new Map<string, ImageMeta | undefined>()
   let cache: AssetInfo[] | null = null

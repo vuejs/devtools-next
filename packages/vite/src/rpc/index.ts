@@ -5,18 +5,19 @@ import { getAssetsFunctions } from './assets'
 import { getConfigFunctions } from './get-config'
 import { getGraphFunctions } from './graph'
 
-export function getRpcFunctions(options: { rpc: ViteInspectAPI['rpc'], server: ViteDevServer, config: ResolvedConfig }) {
+export interface RpcFunctionCtx {
+  rpc: ViteInspectAPI['rpc']
+  server: ViteDevServer
+  config: ResolvedConfig
+}
+
+export function getRpcFunctions(ctx: RpcFunctionCtx) {
   return {
     heartbeat() {
       return true
     },
-    ...getAssetsFunctions(options),
-    ...getConfigFunctions(options.config),
-    ...getGraphFunctions(
-      {
-        rpc: options.rpc,
-        server: options.server,
-      },
-    ),
+    ...getAssetsFunctions(ctx),
+    ...getConfigFunctions(ctx),
+    ...getGraphFunctions(ctx),
   }
 }

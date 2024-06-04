@@ -1,9 +1,9 @@
-import type { ResolvedConfig } from 'vite'
+import { RpcFunctionCtx } from '.'
 
-export function getConfigFunctions(config: ResolvedConfig) {
+export function getConfigFunctions(ctx: RpcFunctionCtx) {
   return {
     getRoot() {
-      return config.root
+      return ctx.config.root
     },
   }
 }

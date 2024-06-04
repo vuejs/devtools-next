@@ -113,7 +113,7 @@ registerCommands(() => [
       v-else
       class="h-full of-auto transition-base"
       :class="isUtilityView ? 'flex' : sidebarExpanded ? 'grid grid-cols-[250px_1fr]' : 'grid grid-cols-[50px_1fr]'"
-      h-full h-screen of-hidden font-sans bg-base rd-10px
+      h-full h-screen of-hidden rd-10px font-sans bg-base
     >
       <SideNav v-if="!isUtilityView" of-x-hidden of-y-auto />
       <Splitpanes

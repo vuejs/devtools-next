@@ -4,10 +4,10 @@ import type { ModuleBuiltinTab } from '~/types/tab'
 
 export function useCustomInspectorTabs() {
   const state = useDevToolsState()
-  const { resiteredInspector } = useCustomInspector()
+  const { registeredInspector } = useCustomInspector()
 
   const customInspectorTabs = computed<ModuleBuiltinTab[]>(() => {
-    return resiteredInspector.value.map((inspector, index) => {
+    return registeredInspector.value.map((inspector, index) => {
       return {
         order: index,
         // @ts-expect-error skip type check

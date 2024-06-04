@@ -39,7 +39,7 @@ export function useCustomInspector() {
   }
 
   return {
-    resiteredInspector: registeredInspector,
+    registeredInspector,
     register,
   }
 }

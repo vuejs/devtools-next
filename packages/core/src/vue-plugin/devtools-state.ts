@@ -14,11 +14,11 @@ interface DevToolsState {
   activeAppRecordId: string
 }
 
-type DevToolsReftate = {
+type DevToolsRefState = {
   [P in keyof DevToolsState]: Ref<DevToolsState[P]>
 }
 
-const VueDevToolsStateSymbol: InjectionKey<DevToolsReftate> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<DevToolsRefState> = Symbol('VueDevToolsStateSymbol')
 
 export function VueDevToolsVuePlugin() {
   return {

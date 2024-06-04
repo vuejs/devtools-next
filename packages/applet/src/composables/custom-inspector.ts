@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
 
 export interface CustomInspectorType {
@@ -12,6 +12,16 @@ export interface CustomInspectorType {
 export function useCustomInspector() {
   const registeredInspector = ref<CustomInspectorType[]>([])
   const inspectors = ref<CustomInspectorType[]>([])
+
+  function onUpdate(inspector: CustomInspectorType[]) {
+    inspectors.value = inspector
+    if (inspector.length < registeredInspector.value.length) {
+      registeredInspector.value = []
+    }
+    inspectors.value.forEach((inspector) => {
+      register(inspector)
+    })
+  }
   onRpcConnected(() => {
     rpc.value.getCustomInspector().then((inspector) => {
       inspectors.value = inspector
@@ -19,15 +29,7 @@ export function useCustomInspector() {
         register(inspector)
       })
     })
-    rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_UPDATED, (inspector: CustomInspectorType[]) => {
-      inspectors.value = inspector
-      if (inspector.length < registeredInspector.value.length) {
-        registeredInspector.value = []
-      }
-      inspectors.value.forEach((inspector) => {
-        register(inspector)
-      })
-    })
+    rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_UPDATED, onUpdate)
   })
 
   function register(inspector: CustomInspectorType) {
@@ -37,6 +39,10 @@ export function useCustomInspector() {
 
     registeredInspector.value.push(inspector)
   }
+
+  onUnmounted(() => {
+    rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_UPDATED, onUpdate)
+  })
 
   return {
     registeredInspector,

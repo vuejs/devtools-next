@@ -58,7 +58,7 @@ function filterEmptyState(data: Record<string, CustomInspectorState[]>) {
   return data
 }
 
-function getInpsectorState(nodeId: string) {
+function getInspectorState(nodeId: string) {
   rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
     state.value = filterEmptyState(parse(data!))
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
@@ -71,7 +71,7 @@ function clearInspectorState() {
 
 watch(selected, () => {
   clearInspectorState()
-  getInpsectorState(selected.value)
+  getInspectorState(selected.value)
 })
 
 const getInspectorTree = () => {
@@ -80,7 +80,7 @@ const getInspectorTree = () => {
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
-      getInpsectorState(data[0].id)
+      getInspectorState(data[0].id)
     }
   })
 }
@@ -96,7 +96,7 @@ function onInspectorTreeUpdated(_data: string) {
   tree.value = data.rootNodes
   if ((!selected.value && data.rootNodes.length) || (selected.value && !data.rootNodes.find(node => node.id === selected.value))) {
     selected.value = data.rootNodes[0].id
-    getInpsectorState(data.rootNodes[0].id)
+    getInspectorState(data.rootNodes[0].id)
   }
 }
 

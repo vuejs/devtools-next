@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Home from './components/Home.vue'
-import State from './components/state/Index.vue'
+import State from './components/state/index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 

@@ -2,7 +2,7 @@ import SuperJSON from 'superjson'
 import { MergeableChannelOptions } from '../../types'
 import { __DEVTOOLS_KIT_BROADCAST_MESSAGING_EVENT_KEY } from './context'
 
-const BROADCAST_CHANNEL_NAME = '__devtools-kit:boardcast-channel__'
+const BROADCAST_CHANNEL_NAME = '__devtools-kit:broadcast-channel__'
 
 export function createBroadcastChannel(): MergeableChannelOptions {
   const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)

@@ -10,10 +10,10 @@ export interface CustomInspectorType {
 }
 
 export function useCustomInspector() {
-  const resiteredInspector = ref<CustomInspectorType[]>([])
+  const registeredInspector = ref<CustomInspectorType[]>([])
   const inspectors = ref<CustomInspectorType[]>([])
   onRpcConnected(() => {
-    rpc.value.getCustomeInspector().then((inspector) => {
+    rpc.value.getCustomInspector().then((inspector) => {
       inspectors.value = inspector
       inspectors.value.forEach((inspector) => {
         register(inspector)
@@ -21,8 +21,8 @@ export function useCustomInspector() {
     })
     rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_UPDATED, (inspector: CustomInspectorType[]) => {
       inspectors.value = inspector
-      if (inspector.length < resiteredInspector.value.length) {
-        resiteredInspector.value = []
+      if (inspector.length < registeredInspector.value.length) {
+        registeredInspector.value = []
       }
       inspectors.value.forEach((inspector) => {
         register(inspector)
@@ -31,15 +31,15 @@ export function useCustomInspector() {
   })
 
   function register(inspector: CustomInspectorType) {
-    if (resiteredInspector.value.some(i => i.id === inspector.id)) {
+    if (registeredInspector.value.some(i => i.id === inspector.id)) {
       return
     }
 
-    resiteredInspector.value.push(inspector)
+    registeredInspector.value.push(inspector)
   }
 
   return {
-    resiteredInspector,
+    resiteredInspector: registeredInspector,
     register,
   }
 }

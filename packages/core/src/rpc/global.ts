@@ -134,7 +134,7 @@ export const functions = {
   toggleClientConnected(state: boolean) {
     toggleClientConnected(state)
   },
-  getCustomeInspector() {
+  getCustomInspector() {
     return getActiveInspectors()
   },
   getInspectorInfo(id: string) {

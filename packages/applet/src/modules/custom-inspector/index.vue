@@ -3,10 +3,10 @@ import { computed, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import Home from './components/Home.vue'
-import State from './components/state/Index.vue'
+import State from './components/state/index.vue'
 import Timeline from './components/timeline/Index.vue'
 import AppConnecting from '~/components/basic/AppConnecting.vue'
-import { VirtalRoute, registerVirtualRouter } from '~/composables/virtual-router'
+import { VirtualRoute, registerVirtualRouter } from '~/composables/virtual-router'
 import { createCustomInspectorStateContext } from '~/composables/custom-inspector-state'
 
 const props = defineProps<{
@@ -37,7 +37,7 @@ const routes = computed(() => {
       component: Timeline,
       icon: 'i-mdi:timeline-clock-outline',
     }),
-  ].filter(Boolean) as VirtalRoute[]
+  ].filter(Boolean) as VirtualRoute[]
 })
 
 const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes)

@@ -88,7 +88,7 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
     openInEditor,
     // get vue inspector
     getVueInspector: getComponentInspector,
-    // toogle app
+    // toggle app
     toggleApp(id: string) {
       const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
 

@@ -2,7 +2,6 @@ import { useCustomInspector } from '@vue/devtools-applet'
 // @ts-expect-error skip type check
 import type { CustomInspectorType } from '@vue/devtools-applet'
 
-import { useDevToolsState } from '@vue/devtools-core'
 import type { ModuleBuiltinTab } from '~/types/tab'
 
 export function useCustomInspectorTabs() {

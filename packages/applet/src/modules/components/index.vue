@@ -225,7 +225,7 @@ function scrollToActiveTreeNode() {
 <template>
   <div class="h-full w-full">
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
-      <Pane border="r base" h-full>
+      <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
             <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />

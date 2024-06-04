@@ -18,7 +18,7 @@ type DevToolsRefState = {
   [P in keyof DevToolsState]: Ref<DevToolsState[P]>
 }
 
-const VueDevToolsStateSymbol: InjectionKey<DevToolsRefState> = Symbol('VueDevToolsStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<DevToolsRefState> = Symbol.for('__VueDevToolsStateSymbol__')
 
 export function VueDevToolsVuePlugin() {
   return {

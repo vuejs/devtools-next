@@ -274,7 +274,6 @@ export function createDevToolsCtxHooks() {
 
     // 1. get inspector
     const inspector = getInspector(inspectorId, plugin.descriptor.app)
-
     // 2. get inspector state
     const _payload = {
       app: plugin.descriptor.app,
@@ -287,13 +286,15 @@ export function createDevToolsCtxHooks() {
       currentTab: `custom-inspector:${inspectorId}`,
     }
 
-    await new Promise<void>((resolve) => {
-      // @ts-expect-error hookable
-      hooks.callHookWith(async (callbacks) => {
-        await Promise.all(callbacks.map(cb => cb(_payload, ctx)))
-        resolve()
-      }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
-    })
+    if (_payload.nodeId) {
+      await new Promise<void>((resolve) => {
+        // @ts-expect-error hookable
+        hooks.callHookWith(async (callbacks) => {
+          await Promise.all(callbacks.map(cb => cb(_payload, ctx)))
+          resolve()
+        }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
+      })
+    }
 
     // @ts-expect-error hookable
     hooks.callHookWith(async (callbacks) => {

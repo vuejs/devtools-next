@@ -1,6 +1,6 @@
 import { SuperJSON } from 'superjson'
 import { MergeableChannelOptions } from '../../types'
-import { getExtensionClientContext, setExtensionClientContext } from './context'
+import { setExtensionClientContext } from './context'
 
 export function createExtensionClientChannel(): MergeableChannelOptions {
   // const port = getExtensionClientContext()

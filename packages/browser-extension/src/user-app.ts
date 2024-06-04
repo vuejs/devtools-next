@@ -1,4 +1,3 @@
-import { target } from '@vue/devtools-shared'
 import { createRpcServer } from '@vue/devtools-kit'
 import { functions } from '@vue/devtools-core'
 

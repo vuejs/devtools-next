@@ -1,8 +1,7 @@
 // import { Bridge } from '../../core/src/bridge'
-import { createRpcClient, getExtensionClientContext } from '@vue/devtools-kit'
-import { DevToolsMessagingEvents, functions, onRpcConnected, rpc } from '@vue/devtools-core'
+import { createRpcClient } from '@vue/devtools-kit'
+import { functions, onRpcConnected } from '@vue/devtools-core'
 import { disconnectDevToolsClient, initDevTools, reloadDevToolsClient } from '../client/devtools-panel'
-import { VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
 
 const connectionInfo: {
   retryTimer: NodeJS.Timeout | null

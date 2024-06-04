@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, rpc, useDevToolsState } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
 
 export interface CustomInspectorType {
   id: string

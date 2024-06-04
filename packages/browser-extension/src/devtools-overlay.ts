@@ -1,5 +1,3 @@
-import { VIEW_MODE_STORAGE_KEY, VITE_PLUGIN_CLIENT_URL_STORAGE_KEY, VITE_PLUGIN_DETECTED_STORAGE_KEY } from './../../shared/src/constants'
-
 const body = document.getElementsByTagName('body')[0]
 
 const clientUrl = chrome.runtime.getURL('../client/index.html')

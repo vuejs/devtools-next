@@ -82,6 +82,8 @@ export function initDevTools() {
     updateDevToolsState({
       connected: true,
     })
+
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.push(app)
   })
 
   hook.on.vueAppUnmount(async (app) => {
@@ -99,6 +101,7 @@ export function initDevTools() {
       setActiveAppRecord(activeRecords[0])
       devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT)
     }
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.splice(target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.indexOf(app), 1)
   })
 
   subscribeDevToolsHook()

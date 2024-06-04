@@ -29,9 +29,8 @@ body::-webkit-scrollbar {
   position: absolute;
   left: 0;
   top: 0;
-  transition: 0.2s ease;
   content: '';
-  transition: opacity 0.4s;
+  transition: opacity 0.4s ease;
   z-index: 1;
 }
 .splitpanes__splitter:hover:before {

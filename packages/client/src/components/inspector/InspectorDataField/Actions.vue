@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRaw } from 'vue'
-import { VueButton, VueDropdown, VueDropdownButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueDropdown, VueDropdownButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { getRaw } from '@vue/devtools-kit'
 import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
@@ -66,7 +66,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
 </script>
 
 <template>
-  <div class="inline pl5px">
+  <div class="flex pl5px">
     <!-- only editable will show operate actions -->
     <template v-if="!props.disableEdit && data.editable">
       <!-- input edit, number/string/object -->

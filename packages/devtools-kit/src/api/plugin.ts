@@ -3,6 +3,7 @@ import { PluginDescriptor, PluginSetupFunction } from '../types'
 import { devtoolsAppRecords, devtoolsState } from '../state'
 import { hook } from '../hook'
 import { getRouterDevToolsId } from '../core/router'
+import { getInspector } from '../core/inspector'
 import type { DevToolsPluginApi } from './api'
 
 export function collectDevToolsPlugin(pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) {
@@ -18,15 +19,6 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
   if (pluginDescriptor.app !== app)
     return
 
-  if (pluginDescriptor.packageName === 'vue-query') {
-    /**
-     * Skip it for now because plugin api doesn't support vue-query devtools plugin:
-     * https://github.com/TanStack/query/blob/main/packages/vue-query/src/devtools/devtools.ts
-     * @TODO: Need to discuss if we should be full compatible with the old devtools plugin api.
-     */
-    return
-  }
-
   // edge case for router plugin
   if (pluginDescriptor.packageName === 'vue-router') {
     const id = getRouterDevToolsId(`${pluginDescriptor.id}`)
@@ -37,11 +29,30 @@ export function setupExternalPlugin(plugin: [PluginDescriptor, PluginSetupFuncti
       }))
     }
   }
-  setupFn(api)
+
+  // @TODO: re-design the plugin api
+  const extendedApi = new Proxy(api, {
+    get(target, prop, receiver) {
+      if (prop === 'getSettings') {
+        return function () {
+          const _settings = {}
+          Object.keys(pluginDescriptor.settings!).forEach((key) => {
+            _settings[key] = pluginDescriptor.settings![key].defaultValue
+          })
+
+          return _settings
+        }
+      }
+      return Reflect.get(target, prop, receiver)
+    },
+    set(target, prop, value, receiver) {
+      return Reflect.set(target, prop, value, receiver)
+    },
+  })
+  setupFn(extendedApi)
 }
 
-export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
-  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
+export function updatePluginDetectives() {
   devtoolsAppRecords.value = devtoolsAppRecords.value.map((record) => {
     const globalProperties = record.app?.config?.globalProperties
     if (!globalProperties)
@@ -50,10 +61,18 @@ export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
     return {
       ...record,
       moduleDetectives: {
+        vueQuery: !!getInspector('vue-query'),
+        veeValidate: !!getInspector('vee-validate-inspector'),
         vueRouter: !!globalProperties.$router,
         pinia: !!globalProperties.$pinia,
         vueI18n: !!globalProperties.$i18n,
+        vuex: !!globalProperties.$store,
       },
     }
   })
+}
+
+export function registerPlugin(app: App<any>, api: DevToolsPluginApi) {
+  devtoolsState.pluginBuffer.forEach(plugin => setupExternalPlugin(plugin, app, api))
+  updatePluginDetectives()
 }

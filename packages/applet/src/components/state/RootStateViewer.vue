@@ -11,8 +11,10 @@ const props = withDefaults(defineProps<{
   nodeId: string
   inspectorId: string
   disableEdit?: boolean
+  expandedStateId?: string
 }>(), {
   disableEdit: false,
+  expandedStateId: '',
 })
 
 function initEditorContext() {
@@ -28,15 +30,7 @@ watchEffect(() => {
   context.value = initEditorContext()
 })
 
-const { expanded, toggleExpanded } = useToggleExpanded()
-
-watchEffect(() => {
-  // Expand the root level by default
-  Object.keys(props.data).forEach((_, index) => {
-    if (!expanded.value.includes(`${index}`))
-      toggleExpanded(`${index}`)
-  })
-})
+const { expanded, toggleExpanded } = useToggleExpanded(props.expandedStateId)
 </script>
 
 <template>

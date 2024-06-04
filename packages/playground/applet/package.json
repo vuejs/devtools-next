@@ -1,28 +1,31 @@
 {
   "name": "playground-applet",
-  "version": "7.0.25",
+  "type": "module",
+  "version": "7.2.1",
   "private": true,
   "scripts": {
     "dev": "vite"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.198",
+    "@iconify/json": "^2.2.214",
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
-    "unplugin-auto-import": "^0.17.5",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "unplugin-auto-import": "^0.17.6",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/devtools-applet": "workspace:*",
     "@vue/devtools-core": "workspace:*",
     "@vue/devtools-kit": "workspace:*",
-    "sass": "^1.74.1",
-    "serve": "^14.2.1",
-    "typescript": "^5.4.4",
-    "vite": "^5.2.8",
-    "vite-plugin-inspect": "^0.8.3",
+    "@vue/devtools-shared": "workspace:*",
+    "sass": "^1.77.2",
+    "serve": "^14.2.3",
+    "typescript": "^5.4.5",
+    "unocss": "^0.60.3",
+    "vite": "^5.2.11",
+    "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

@@ -22,7 +22,7 @@ export function getFunctionDetails(func: Function) {
   return {
     _custom: {
       type: 'function' satisfies customTypeEnums,
-      displayText: `<span style="opacity:.5;">function</span> ${escape(name)}${args}`,
+      displayText: `<span style="opacity:.5;margin-right:5px;">function</span> <span style="white-space:nowrap;">${escape(name)}${args}</span>`,
       tooltipText: string.trim() ? `<pre>${string}</pre>` : null,
     },
   }
@@ -79,7 +79,7 @@ export function getSetDetails(val: Set<unknown>) {
   }
 }
 
-function getCatchedGetters(store) {
+function getCaughtGetters(store) {
   const getters = {}
 
   const origGetters = store.getters || {}
@@ -131,7 +131,7 @@ export function getStoreDetails(store) {
       displayText: 'Store',
       value: {
         state: store.state,
-        getters: getCatchedGetters(store),
+        getters: getCaughtGetters(store),
       },
       fields: {
         abstract: true,

@@ -1,9 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "// build //": {},
+    "// prepare:type //": {},
+    "// stub //": {},
     "@vue/devtools#stub": {
+      "cache": false,
       "dependsOn": [
-        "^@vue/devtools-electron#stub"
+        "@vue/devtools-electron#stub"
       ]
     },
     "@vue/devtools-browser-extension#build": {
@@ -36,12 +40,30 @@
         "dist/{app|cli|index|devtools|user-app}.d.ts"
       ]
     },
+    "@vue/devtools-electron#stub": {
+      "cache": false,
+      "dependsOn": [
+        "@vue/devtools-client#stub",
+        "^stub"
+      ]
+    },
+    "@vue/devtools-ui#build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/index.?{c|m}js",
+        "dist/theme.?{c|m}js",
+        "dist/types/**/*.d.ts"
+      ]
+    },
     "build": {
       "dependsOn": [
         "^build"
       ],
       "outputs": [
-        "dist/**/*.?{c|m}js"
+        "dist/**/*.?{c|m}js",
+        "dist/**/*.d.ts"
       ]
     },
     "dev": {
@@ -65,7 +87,8 @@
         "^build"
       ],
       "outputs": [
-        "dist/**"
+        "dist/**/*.d.ts",
+        "dist/**/*.?{c|m}js"
       ]
     }
   }

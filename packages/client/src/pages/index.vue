@@ -11,7 +11,7 @@ function visit() {
 </script>
 
 <template>
-  <PanelGrids flex="~ col gap3" relative h-screen w-full items-center justify-center text-center>
+  <div flex="~ col gap3" relative h-screen w-full items-center justify-center text-center>
     <p my2 text-3em text-primary-600 font-bold font-stylish>
       👋 Hi there, welcome to Vue DevTools!
     </p>
@@ -29,5 +29,5 @@ function visit() {
     <VueButton type="primary" @click="visit">
       <span>Get Started</span>
     </VueButton>
-  </PanelGrids>
+  </div>
 </template>

@@ -2,12 +2,13 @@
 import type { Ref } from 'vue'
 import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 
 import('./setup/unocss-runtime')
 
 // @TODO: fix browser extension cross-origin localStorage issue
-useColorMode()
+useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()
 const { connected, clientConnected } = useDevToolsState()
@@ -94,6 +95,7 @@ registerCommands(() => [
         title: 'Color Picker',
         icon: 'i-carbon-eyedropper',
         action: async () => {
+          bridge.value.emit('toggle-panel', false)
           const { sRGBHex } = await eyeDropper.open() || {}
           if (sRGBHex)
             copy(sRGBHex)

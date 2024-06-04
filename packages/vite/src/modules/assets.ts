@@ -3,7 +3,7 @@ import type { ViteInspectAPI } from 'vite-plugin-inspect'
 import { debounce } from 'perfect-debounce'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import { callViteClientListener, defineViteServerAction } from '@vue/devtools-core'
-import type { AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
+import type { AssetImporter, AssetInfo, AssetType, ImageMeta } from '@vue/devtools-core'
 import fg from 'fast-glob'
 import { join, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
@@ -40,15 +40,15 @@ const defaultAllowedExtensions = [
 ]
 
 function guessType(path: string): AssetType {
-  if (/\.(png|jpe?g|jxl|gif|svg|webp|avif|ico|bmp|tiff?)$/i.test(path))
+  if (/\.(?:png|jpe?g|jxl|gif|svg|webp|avif|ico|bmp|tiff?)$/i.test(path))
     return 'image'
-  if (/\.(mp4|webm|ogv|mov|avi|flv|wmv|mpg|mpeg|mkv|3gp|3g2|ts|mts|m2ts|vob|ogm|ogx|rm|rmvb|asf|amv|divx|m4v|svi|viv|f4v|f4p|f4a|f4b)$/i.test(path))
+  if (/\.(?:mp4|webm|ogv|mov|avi|flv|wmv|mpg|mpeg|mkv|3gp|3g2|ts|mts|m2ts|vob|ogm|ogx|rm|rmvb|asf|amv|divx|m4v|svi|viv|f4v|f4p|f4a|f4b)$/i.test(path))
     return 'video'
-  if (/\.(mp3|wav|ogg|flac|aac|wma|alac|ape|ac3|dts|tta|opus|amr|aiff|au|mid|midi|ra|rm|wv|weba|dss|spx|vox|tak|dsf|dff|dsd|cda)$/i.test(path))
+  if (/\.(?:mp3|wav|ogg|flac|aac|wma|alac|ape|ac3|dts|tta|opus|amr|aiff|au|mid|midi|ra|rm|wv|weba|dss|spx|vox|tak|dsf|dff|dsd|cda)$/i.test(path))
     return 'audio'
-  if (/\.(woff2?|eot|ttf|otf|ttc|pfa|pfb|pfm|afm)/i.test(path))
+  if (/\.(?:woff2?|eot|ttf|otf|ttc|pfa|pfb|pfm|afm)/i.test(path))
     return 'font'
-  if (/\.(json[5c]?|te?xt|[mc]?[jt]sx?|md[cx]?|markdown|ya?ml|toml)/i.test(path))
+  if (/\.(?:json[5c]?|te?xt|[mc]?[jt]sx?|md[cx]?|markdown|ya?ml|toml)/i.test(path))
     return 'text'
   if (/\.wasm/i.test(path))
     return 'wasm'
@@ -107,8 +107,30 @@ export function setupAssetsModule(options: { rpc: ViteInspectAPI['rpc'], server:
     return cache
   }
 
+  async function getAssetImporters(url: string) {
+    const importers: AssetImporter[] = []
+
+    const moduleGraph = server.moduleGraph
+    const module = await moduleGraph.getModuleByUrl(url)
+
+    if (module) {
+      for (const importer of module.importers) {
+        importers.push({
+          url: importer.url,
+          id: importer.id,
+        })
+      }
+    }
+
+    return importers
+  }
+
   defineViteServerAction('assets:get-static-assets', async () => {
     return await scan()
+  })
+
+  defineViteServerAction('assets:get-asset-importers', async (url: string) => {
+    return await getAssetImporters(url)
   })
 
   defineViteServerAction('assets:get-image-meta', async (filepath: string) => {

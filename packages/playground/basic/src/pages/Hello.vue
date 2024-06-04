@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAppStore } from '../stores'
+import DynamicApp from '../components/DynamicApp.vue'
 
 const app = useAppStore()
 </script>
@@ -10,6 +11,10 @@ const app = useAppStore()
     <button class="w-30 cursor-pointer" @click="app.increment()">
       Increment count
     </button>
+
+    <div>
+      DynamicApp: <DynamicApp />
+    </div>
   </div>
 </template>
 

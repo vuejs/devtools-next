@@ -47,6 +47,7 @@ const keys = [
     :close-outside="false"
     :permanent="true"
     :content-blur="true"
+    position="absolute"
     mount-to=".graph-body"
   >
     <div class="w-300px" h-full of-auto>

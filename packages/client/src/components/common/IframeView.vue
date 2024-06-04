@@ -1,13 +1,18 @@
 <script lang="ts">
+import { useDevToolsColorMode } from '@vue/devtools-ui'
+
 const iframeCacheMap = new Map<string, HTMLIFrameElement>()
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   src: string
-}>()
+  inline?: boolean
+}>(), {
+  inline: false,
+})
 
-const colorMode = useColorMode()
+const { colorMode } = useDevToolsColorMode()
 const anchor = ref<HTMLDivElement>()
 const key = computed(() => props.src)
 const iframeEl = ref<HTMLIFrameElement>()
@@ -18,6 +23,7 @@ onMounted(() => {
   if (iframeCacheMap.get(key.value)) {
     iframeEl.value = iframeCacheMap.get(key.value)!
     iframeEl.value.style.visibility = 'visible'
+    iframeEl.value.style.opacity = '1'
     iframeLoaded.value = true
   }
   else {
@@ -36,19 +42,36 @@ onMounted(() => {
     catch (e) {
       iframeEl.value.style.opacity = '1'
     }
+
     document.body.appendChild(iframeEl.value)
     nextTick(updateIframeBox)
   }
+
+  // should force update the iframe visible on conflict(inline mode is unmounted after global mode is mounted)
+  const timer = setTimeout(resolveConflictVisible, 100)
   setTimeout(syncColorMode, 100)
+
+  onUnmounted(() => {
+    clearTimeout(timer)
+  })
 })
 
 watchEffect(updateIframeBox)
 watchEffect(syncColorMode)
 
 onUnmounted(() => {
-  if (iframeEl.value)
+  if (iframeEl.value) {
     iframeEl.value.style.visibility = 'hidden'
+    iframeEl.value.style.opacity = '0'
+  }
 })
+
+function resolveConflictVisible() {
+  if (!iframeEl.value)
+    return
+  iframeEl.value.style.visibility = 'visible'
+  iframeEl.value.style.opacity = '1'
+}
 
 function syncColorMode() {
   if (!iframeEl.value || !iframeEl.value.contentWindow)
@@ -70,7 +93,7 @@ function updateIframeBox() {
     left: `${box.left}px`,
     top: `${box.top}px`,
     width: `${box.width}px`,
-    height: `${box.height}px`,
+    height: `${props.inline ? box.height - box.top : box.height}px`,
     outline: 'none',
   })
 }

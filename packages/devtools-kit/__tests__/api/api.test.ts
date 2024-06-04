@@ -94,6 +94,8 @@ describe('devtools api', () => {
       // Originated from https://github.com/vuejs/devtools-next/blob/main/packages/devtools-kit/src/plugins/component.ts#L20-L24
       const componentInspector = {
         id: 'components',
+        nodeActions: [],
+        actions: [],
         nodeId: '',
         filter: '',
         treeFilterPlaceholder: 'Search components',
@@ -101,6 +103,8 @@ describe('devtools api', () => {
       const inspectorData = {
         id: 'vueuse',
         label: 'VueUse',
+        actions: [],
+        nodeActions: [],
         nodeId: '',
         filter: '',
         treeFilterPlaceholder: 'Search',

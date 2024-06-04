@@ -4,12 +4,12 @@
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
 
-import { VTooltip } from 'floating-vue'
+import { vTooltip } from 'floating-vue'
 
 export * from './components'
 export * from './composables'
 export * from './types'
 
 export {
-  VTooltip,
+  vTooltip,
 }

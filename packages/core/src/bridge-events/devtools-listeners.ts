@@ -64,6 +64,18 @@ export const onInspectorStateUpdated = defineDevToolsListener<{ inspectorId: str
   })
 })
 
+export const onComponentUpdated = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-component-updated', (devtools, callback) => {
+  devtools.api.on.componentUpdated(() => {
+    callback()
+  })
+})
+
+export const onEditInspectorState = defineDevToolsListener<{ inspectorId: string, state?: InspectorState[], getters?: InspectorState[] }>('devtools:on-edit-inspector-state', (devtools, callback) => {
+  devtools.api.on.editInspectorState(async (payload) => {
+    await callback(payload)
+  })
+})
+
 export const onRouterInfoUpdated = defineDevToolsListener<RouterInfo>('devtools:on-router-info-updated', (devtools, callback) => {
   devtools.api.on.routerInfoUpdated((payload) => {
     callback(payload)

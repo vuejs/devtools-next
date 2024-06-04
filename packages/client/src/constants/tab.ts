@@ -33,13 +33,6 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'assets',
       title: 'Assets',
     },
-    {
-      icon: 'i-icon-park-outline:vertical-timeline',
-      name: 'timeline',
-      order: -100,
-      path: 'timeline',
-      title: 'Timeline',
-    },
   ]],
   ['modules', [
     {
@@ -56,7 +49,27 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
-
+    {
+      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
+      name: 'vueQuery',
+      order: -100,
+      path: 'vue-query',
+      title: 'VueQuery',
+    },
+    {
+      icon: 'https://vee-validate.logaretm.com/v4/logo.png',
+      name: 'veeValidate',
+      order: -100,
+      path: 'vee-validate',
+      title: 'Vee Validate',
+    },
+    {
+      icon: 'i-ic-baseline-storage',
+      name: 'vuex',
+      order: -100,
+      path: 'vuex',
+      title: 'vuex',
+    },
     {
       icon: 'i-carbon-language',
       name: 'i18n',
@@ -85,7 +98,10 @@ export const viteOnlyTabs = [
 type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
 
 const moduleDetectivesMapping = {
+  vueQuery: 'vueQuery',
+  veeValidate: 'veeValidate',
   pinia: 'pinia',
+  vuex: 'vuex',
   router: 'vueRouter',
   i18n: 'vueI18n',
 } satisfies Record<string, keyof Detective>
@@ -108,3 +124,5 @@ export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: Devtools
     ? tab
     : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }
+
+export const CUSTOM_TAB_VIEW = 'custom-tab-view'

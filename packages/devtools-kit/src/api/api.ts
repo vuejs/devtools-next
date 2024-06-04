@@ -2,7 +2,7 @@ import { TimelineLayerItem, addTimelineLayer } from '../core/timeline'
 import { InspectorApiPayload, addInspector, getInspector, updateInspector } from '../core/inspector'
 import { toggleActiveAppRecord } from '../core/app-record'
 import type { VueAppInstance } from '../types'
-import { highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
+import { cancelInspectComponentHighLighter, highlight as highlightElement, inspectComponentHighLighter, scrollToComponent, toggleComponentHighLighter, unhighlight as unhighlightElement } from '../core/component-highlighter'
 import { devtoolsContext } from '../state'
 import { now as nowFn, stringify } from '../shared'
 import { StateEditor } from '../core/component/state/editor'
@@ -14,10 +14,12 @@ import type { CustomCommand } from '../core/custom-command'
 import { getComponentInspector } from '../core/component-inspector'
 import type { OpenInEditorOptions } from '../core/open-in-editor'
 import { openInEditor } from '../core/open-in-editor'
+import { getComponentInstance } from '../core/component/utils'
 
 import { DevToolsEventParams, DevToolsEvents, apiHooks } from './hook'
 import { on } from './on'
 import { remove } from './off'
+import { updatePluginDetectives } from './plugin'
 
 export { collectDevToolsPlugin } from './plugin'
 
@@ -47,7 +49,40 @@ export class DevToolsPluginApi {
       nodeId: '',
       filter: '',
       treeFilterPlaceholder: payload.treeFilterPlaceholder || '',
+      actions: payload.actions || [],
+      nodeActions: payload.nodeActions || [],
     })
+    updatePluginDetectives()
+  }
+
+  // get inspector node action
+  getInspectorNodeActions(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    return inspector?.nodeActions?.map(({ icon, tooltip }) => ({ icon, tooltip })) || []
+  }
+
+  // call inspector node action
+  callInspectorNodeAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector && inspector.nodeActions) {
+      const item = inspector.nodeActions[actionIndex]
+      item.action?.(nodeId)
+    }
+  }
+
+  // get inspector action
+  getInspectorActions(inspectorId: string) {
+    const inspector = getInspector(inspectorId)
+    return inspector?.actions?.map(({ icon, tooltip }) => ({ icon, tooltip })) || []
+  }
+
+  // call inspector action
+  callInspectorAction(inspectorId: string, actionIndex: number, nodeId: string) {
+    const inspector = getInspector(inspectorId)
+    if (inspector && inspector.actions) {
+      const item = inspector.actions[actionIndex]
+      item.action?.(nodeId)
+    }
   }
 
   highlightElement(instance: VueAppInstance) {
@@ -93,18 +128,22 @@ export class DevToolsPluginApi {
       nodeId,
     }
 
+    const ctx = {
+      currentTab: `custom-inspector:${inspectorId}`,
+    }
+
     updateInspector(inspectorId!, {
       nodeId,
     })
     // @ts-expect-error hookable
     apiHooks.callHookWith((callbacks) => {
-      callbacks.forEach(cb => cb(_payload))
+      callbacks.forEach(cb => cb(_payload, ctx))
     }, DevToolsEvents.GET_INSPECTOR_STATE)
 
     // @ts-expect-error TODO: types
     const state = _payload.state
 
-    delete state.instance
+    delete state?.instance
     return state
   }
 
@@ -165,12 +204,6 @@ export class DevToolsPluginApi {
     return nowFn()
   }
 
-  getSettings() {
-    return {
-      logStoreChanges: null,
-    }
-  }
-
   // #endregion compatible with old devtools
 
   //  #region highlighter
@@ -182,8 +215,19 @@ export class DevToolsPluginApi {
     return inspectComponentHighLighter()
   }
 
+  cancelInspectComponentInspector() {
+    return cancelInspectComponentHighLighter()
+  }
+
   scrollToComponent(...params: DevToolsEventParams<DevToolsEvents.SCROLL_TO_COMPONENT>) {
     return scrollToComponent(...params)
+  }
+
+  getComponentRenderCode(id: string) {
+    const instance = getComponentInstance(devtoolsContext.appRecord!, id)
+    if (instance)
+      // @ts-expect-error skip type check
+      return !(instance?.type instanceof Function) ? instance.render.toString() : instance.type.toString()
   }
 
   getComponentBoundingRect(...params: DevToolsEventParams<DevToolsEvents.GET_COMPONENT_BOUNDING_RECT>) {

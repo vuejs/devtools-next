@@ -29,6 +29,22 @@ export const getInspectorTree = defineDevToolsAction('devtools:inspector-tree', 
   return stringify(res) as string
 })
 
+export const getInspectorNodeActions = defineDevToolsAction('devtools:inspector-node-actions', (devtools, payload) => {
+  return devtools.api.getInspectorNodeActions(payload)
+})
+
+export const callInspectorNodeAction = defineDevToolsAction('devtools:call-inspector-node-action', (devtools, inspectorId: string, actionIndex: number, nodeId: string) => {
+  return devtools.api.callInspectorNodeAction(inspectorId, actionIndex, nodeId)
+})
+
+export const getInspectorActions = defineDevToolsAction('devtools:inspector-actions', (devtools, payload) => {
+  return devtools.api.getInspectorActions(payload)
+})
+
+export const callInspectorAction = defineDevToolsAction('devtools:call-inspector-action', (devtools, inspectorId: string, actionIndex: number, nodeId: string) => {
+  return devtools.api.callInspectorAction(inspectorId, actionIndex, nodeId)
+})
+
 export const getComponentBoundingRect = defineDevToolsAction('devtools:get-component-bounding-rect', (devtools, payload) => {
   return devtools.api.getComponentBoundingRect(payload)
 })
@@ -37,12 +53,20 @@ export const inspectComponentInspector = defineDevToolsAction('devtools:inspect-
   return devtools.api.inspectComponentInspector()
 })
 
+export const cancelInspectComponentInspector = defineDevToolsAction('devtools:cancel-inspect-component-inspector', (devtools) => {
+  return devtools.api.cancelInspectComponentInspector()
+})
+
 export const toggleComponentInspector = defineDevToolsAction('devtools:toggle-component-inspector', (devtools, payload) => {
   return devtools.api.toggleComponentInspector(payload)
 })
 
 export const scrollToComponent = defineDevToolsAction('devtools:scroll-to-component', (devtools, payload) => {
   return devtools.api.scrollToComponent(payload)
+})
+
+export const getComponentRenderCode = defineDevToolsAction('devtools:get-component-render-code', (devtools, payload) => {
+  return devtools.api.getComponentRenderCode(payload)
 })
 
 export const getInspectorState = defineDevToolsAction('devtools:inspector-state', async (devtools, payload) => {

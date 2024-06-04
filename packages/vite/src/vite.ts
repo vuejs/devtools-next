@@ -42,34 +42,42 @@ export interface VitePluginVueDevToolsOptions {
   appendTo?: string | RegExp
 
   /**
-   * Customize openInEditor host (e.g. http://localhost:3000)
-   * @default false
-   */
-  openInEditorHost?: string | false
-
-  /**
-   * DevTools client host (e.g. http://localhost:3000)
-   * useful for projects that use a reverse proxy
-   * @default false
-   */
-  clientHost?: string | false
-
-  /**
-   * Enable Vue Component Inspector
+   * Enable vue component inspector
    *
    * @default true
    */
   componentInspector?: boolean | VitePluginInspectorOptions
+
+  /**
+   * Target editor when open in editor (v7.2.0+)
+   *
+   * @default code (Visual Studio Code)
+   */
+  launchEditor?: 'appcode' | 'atom' | 'atom-beta' | 'brackets' | 'clion' | 'code' | 'code-insiders' | 'codium' | 'emacs' | 'idea' | 'notepad++' | 'pycharm' | 'phpstorm' | 'rubymine' | 'sublime' | 'vim' | 'visualstudio' | 'webstorm' | 'rider' | string
+
+  /**
+   * Customize openInEditor host
+   * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
+   */
+  openInEditorHost?: string | false
+
+  /**
+   * DevTools client host
+   * useful for projects that use a reverse proxy
+   * @default false
+   * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
+   */
+  clientHost?: string | false
 }
 
-const defaultOptions: DeepRequired<VitePluginVueDevToolsOptions> = {
+const defaultOptions: VitePluginVueDevToolsOptions = {
   appendTo: '',
-  openInEditorHost: false,
-  clientHost: false,
   componentInspector: true,
+  launchEditor: process.env.LAUNCH_EDITOR ?? 'code',
 }
 
-function mergeOptions(options: VitePluginVueDevToolsOptions): DeepRequired<VitePluginVueDevToolsOptions> {
+function mergeOptions(options: VitePluginVueDevToolsOptions): VitePluginVueDevToolsOptions {
   return Object.assign({}, defaultOptions, options)
 }
 
@@ -111,7 +119,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       const urls = server.resolvedUrls!
       const keys = normalizeComboKeyPrint('option-shift-d')
       _printUrls()
-      for (const url of urls?.local)
+      for (const url of urls.local)
         console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Open ${colorUrl(`${url}__devtools__/`)} as a separate window`)}`)
       console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }
@@ -137,24 +145,20 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     },
     async load(id) {
       if (id === 'virtual:vue-devtools-options')
-        return `export default ${JSON.stringify({ base: config.base, clientHost: pluginOptions.clientHost, componentInspector: pluginOptions.componentInspector })}`
+        return `export default ${JSON.stringify({ base: config.base, componentInspector: pluginOptions.componentInspector })}`
     },
-    transform(code, id) {
-      const { root, base } = config
-
-      const projectPath = `${root}${base}`
-
-      if (!id.startsWith(projectPath))
+    transform(code, id, options) {
+      if (options?.ssr)
         return
 
       const { appendTo } = pluginOptions
-
       const [filename] = id.split('?', 2)
+
       if (appendTo
         && (
           (typeof appendTo === 'string' && filename.endsWith(appendTo))
           || (appendTo instanceof RegExp && appendTo.test(filename))))
-        code = `${code}\nimport 'virtual:vue-devtools-path:overlay.js'`
+        code = `import 'virtual:vue-devtools-path:overlay.js';\n${code}`
 
       return code
     },
@@ -177,6 +181,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
           pluginOptions.componentInspector && {
             tag: 'script',
             injectTo: 'head-prepend',
+            launchEditor: pluginOptions.launchEditor,
             attrs: {
               type: 'module',
               src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,
@@ -194,10 +199,10 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     pluginOptions.componentInspector && VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
+      launchEditor: pluginOptions.launchEditor,
       ...typeof pluginOptions.componentInspector === 'boolean'
         ? {}
         : pluginOptions.componentInspector,
-      openInEditorHost: pluginOptions.openInEditorHost,
       appendTo: pluginOptions.appendTo || 'manually',
     }) as PluginOption,
     plugin,

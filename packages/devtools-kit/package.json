@@ -1,9 +1,14 @@
 {
   "name": "@vue/devtools-kit",
   "type": "module",
-  "version": "7.0.25",
+  "version": "7.2.1",
   "author": "webfansplz",
   "license": "MIT",
+  "repository": {
+    "directory": "packages/devtools-kit",
+    "type": "git",
+    "url": "git+https://github.com/vuejs/devtools-next.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -34,7 +39,7 @@
   },
   "devDependencies": {
     "@types/speakingurl": "^13.0.6",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
   }
 }

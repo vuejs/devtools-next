@@ -3,7 +3,7 @@ import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload 
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { editInspectorState } from '@vue/devtools-core'
-import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import Actions from './InspectorDataField/Actions.vue'
 import type { EditorAddNewPropType } from '~/composables/inspector'
 

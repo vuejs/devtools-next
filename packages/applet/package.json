@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-applet",
   "type": "module",
-  "version": "7.0.25",
+  "version": "7.2.1",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -14,14 +14,11 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "files": [
-    "**.d.ts",
     "dist"
   ],
   "scripts": {
-    "build": "vite build && pnpm types",
-    "prepare:type": "pnpm types",
-    "stub": "vite build --watch",
-    "types": "vue-tsc --declaration --emitDeclarationOnly -p ./tsconfig.json"
+    "build": "vite build",
+    "stub": "vite build --watch"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -31,14 +28,17 @@
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "@vue/devtools-ui": "workspace:^",
+    "lodash-es": "^4.17.21",
     "perfect-debounce": "^1.0.0",
+    "shiki": "1.6.0",
     "splitpanes": "^3.1.5",
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
     "unplugin-vue": "^5.0.5",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
-    "vue-tsc": "^1.8.27"
+    "vite-plugin-dts": "^3.9.1",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
   }
 }

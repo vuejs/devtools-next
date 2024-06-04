@@ -2,6 +2,7 @@ import type { ModuleInfo } from '@vue/devtools-core'
 import { DataSet } from 'vis-network/standalone'
 import type { Edge, Node, Options } from 'vis-network'
 import { deepClone } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 
 // #region file types
 export const fileTypes = {
@@ -52,7 +53,7 @@ export function useFileTypes() {
 // #endregion
 
 // #region graph options
-const isDark = useDark()
+const { isDark } = useDevToolsColorMode()
 
 export const graphOptions = computed<Options>(() => ({
   nodes: {
@@ -176,7 +177,8 @@ function checkReferenceIsValid(modId: string) {
   return refer ? refer.some(ref => checkIsValidModule(ref.mod)) : true
 }
 
-const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^\/]+$)/
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const EXTRACT_LAST_THREE_MOD_ID_RE = /(?:.*\/){3}([^/]+$)/
 
 function updateGraph() {
   graphNodes.clear()
@@ -268,7 +270,7 @@ function getEdge(modId: string, dep: string) {
 
 function removeVerbosePath(path: string) {
   // remove query, hash, and duplicate slash
-  return path.replace(/\?.*$/, '').replace(/\#.*$/, '').replace(/\/{2,}/g, '/')
+  return path.replace(/\?.*$/, '').replace(/#.*$/, '').replace(/\/{2,}/g, '/')
 }
 
 function isVueStyleFile(path: string) {

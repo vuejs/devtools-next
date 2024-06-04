@@ -45,7 +45,7 @@ onDevToolsClientConnected(() => {
 </script>
 
 <template>
-  <PanelGrids h-screen w-full flex of-auto>
+  <div h-full w-full flex of-auto>
     <div flex="~ col gap2" ma h-full max-w-300 w-full px20>
       <div flex-auto />
 
@@ -153,5 +153,5 @@ onDevToolsClientConnected(() => {
         to toggle DevTools
       </div>
     </div>
-  </PanelGrids>
+  </div>
 </template>

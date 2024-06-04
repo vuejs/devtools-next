@@ -17,6 +17,7 @@ export enum DevToolsEvents {
   TOGGLE_COMPONENT_HIGHLIGHTER = 'component-highlighter:toggle',
   GET_COMPONENT_BOUNDING_RECT = 'component-bounding-rect:get',
   SCROLL_TO_COMPONENT = 'scroll-to-component',
+  GET_COMPONENT_RENDER_CODE = 'component-render-code:get',
   GET_INSPECTOR_TREE = 'inspector-tree:get',
   SEND_INSPECTOR_TREE = 'inspector-tree:send',
   GET_INSPECTOR_STATE = 'inspector-state:get',
@@ -36,6 +37,7 @@ export interface DevToolsEvent {
   // highlighter
   [DevToolsEvents.TOGGLE_COMPONENT_HIGHLIGHTER]: (payload: ComponentHighLighterOptions) => void
   [DevToolsEvents.SCROLL_TO_COMPONENT]: (payload: ScrollToComponentOptions) => void
+  [DevToolsEvents.GET_COMPONENT_RENDER_CODE]: (id: string) => void
   [DevToolsEvents.GET_COMPONENT_BOUNDING_RECT]: (payload: ComponentBoundingRectApiPayload) => void
   // state
   [DevToolsEvents.DEVTOOLS_STATE_UPDATED]: (state: DevToolsState, oldState: DevToolsState) => void
@@ -46,10 +48,10 @@ export interface DevToolsEvent {
     app: VueAppInstance | undefined
     instanceData: InspectorStateApiPayload['state']
   }) => void
-  [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => void
+  [DevToolsEvents.GET_INSPECTOR_TREE]: (payload: InspectorTreeApiPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_TREE]: (payload: { inspectorId: string, data: InspectorTreeApiPayload['rootNodes'] }) => void
-  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload) => void
-  [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => void
+  [DevToolsEvents.GET_INSPECTOR_STATE]: (payload: InspectorStateApiPayload, ctx: { currentTab: string }) => Promise<void>
+  [DevToolsEvents.EDIT_INSPECTOR_STATE]: (payload: InspectorStateEditorPayload) => Promise<void>
   [DevToolsEvents.SEND_INSPECTOR_STATE]: (payload: string) => void
   [DevToolsEvents.VISIT_COMPONENT_TREE]: (payload: {
     componentInstance: VueAppInstance | undefined
@@ -67,3 +69,10 @@ export interface DevToolsEvent {
 export type DevToolsEventParams<T extends keyof DevToolsEvent> = Parameters<DevToolsEvent[T]>
 
 export const apiHooks: Hookable<DevToolsEvent, HookKeys<DevToolsEvent>> = target.__VUE_DEVTOOLS_API_HOOK ??= createHooks<DevToolsEvent>()
+
+export const instanceHooks: (() => void)[] = []
+
+export const registerInstanceHook = (...args: Parameters<(typeof apiHooks)['hook']>) => {
+  const unregister = apiHooks.hook(...args)
+  instanceHooks.push(unregister)
+}

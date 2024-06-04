@@ -148,10 +148,11 @@ function processSetupState(instance: VueAppInstance) {
 
       let result: Partial<InspectorState>
 
-      // @TODO: need to re-design this?
       let isOtherType = typeof value === 'function'
-        || typeof value?.render === 'function'
-        || typeof value?.__asyncLoader === 'function'
+        || typeof value?.render === 'function' // Components
+        || typeof value?.__asyncLoader === 'function' // Components
+        || (typeof value === 'object' && value && ('setup' in value || 'props' in value)) // Components
+        || /^v[A-Z]/.test(key) // Directives
 
       if (rawData) {
         const info = getSetupStateType(rawData)

@@ -36,7 +36,7 @@ export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.ap
       devtoolsContext.api = _value.api!
       // @ts-expect-error expected type
       devtoolsContext.inspector = _value.inspector ?? []
-      normalizeRouterInfo(value)
+      normalizeRouterInfo(value, devtoolsState)
       devtoolsContext.routerInfo = devtoolsRouterInfo
     }
 
@@ -52,7 +52,7 @@ export const devtoolsAppRecords = new Proxy<DevToolsAppRecords>(devtoolsState.ap
   },
 })
 
-export const appRecordInfo = target.__VUE_DEVTOOLS_NEXT_APP_RECROD_INFO__ ??= {
+export const appRecordInfo = target.__VUE_DEVTOOLS_NEXT_APP_RECORD_INFO__ ??= {
   id: 0,
   appIds: new Set<string>(),
 }

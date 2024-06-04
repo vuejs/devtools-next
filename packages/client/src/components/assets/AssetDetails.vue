@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import type { AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
+import type { AssetImporter, AssetInfo, CodeSnippet, ImageMeta } from '@vue/devtools-core'
 import { callViteServerAction, useDevToolsState } from '@vue/devtools-core'
-import { VueButton, VueIcon, VTooltip as vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 
 const props = defineProps<{
@@ -15,6 +15,9 @@ const state = useDevToolsState()
 const getImageMeta = callViteServerAction<ImageMeta>('assets:get-image-meta')
 const getTextAssetContent = callViteServerAction<string>('assets:get-text-asset-content')
 const asset = useVModel(props, 'modelValue', emit, { passive: true })
+
+const getAssetImporters = callViteServerAction<AssetImporter[]>('assets:get-asset-importers')
+const importers = computedAsync(() => getAssetImporters(asset.value.publicPath), [])
 
 const _vueInspectorDetected = computed(() => vueInspectorDetected.value)
 const imageMeta = computedAsync(() => {
@@ -211,6 +214,30 @@ const supportsPreview = computed(() => {
             Last modified
           </td>
           <td>{{ new Date(asset.mtime).toLocaleString() }} <span op70>({{ timeAgo }})</span></td>
+        </tr>
+        <tr>
+          <td w-30 ws-nowrap pr5 text-right align-top op50>
+            Importers
+          </td>
+          <td>
+            <template v-if="importers.length > 0">
+              <div v-for="importer in importers" :key="importer.url" flex="~ gap-1" w-full items-center>
+                <FilepathItem :filepath="importer.id || importer.url" text-left />
+                <VueIcon
+                  v-if="state.vitePluginDetected.value && _vueInspectorDetected && importer.id"
+                  v-tooltip="'Open in Editor'"
+                  title="Open in Editor"
+                  icon="i-carbon-launch"
+                  action flex-none
+                  :border="false"
+                  @click="openInEditor(importer.id!)"
+                />
+              </div>
+            </template>
+            <template v-else>
+              None
+            </template>
+          </td>
         </tr>
       </tbody>
     </table>

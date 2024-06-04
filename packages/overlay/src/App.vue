@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useColorMode } from '@vueuse/core'
 import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
 import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
-import Frame from '~/components/FrameBox.vue'
+import FrameBox from '~/components/FrameBox.vue'
 
 type ViewMode = 'xs' | 'default' | 'fullscreen'
+const anchorEle = ref<HTMLDivElement>()
 const panelEle = ref<HTMLDivElement>()
-const mode = useColorMode()
+const { colorMode: mode } = useDevToolsColorMode({
+  selector: anchorEle,
+})
 const panelState = ref<{
   viewMode: ViewMode
 }>({
@@ -78,7 +81,24 @@ const vueInspector = ref()
 onDevToolsConnected(() => {
   devtools.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector
+
+    let previousPanelVisible = panelVisible.value
+
+    vueInspector.value.onEnabled = () => {
+      previousPanelVisible = panelVisible.value
+      togglePanelVisible(undefined, false)
+    }
+
+    vueInspector.value.onDisabled = () => {
+      togglePanelVisible(undefined, previousPanelVisible)
+    }
   })
+})
+
+addEventListener('keyup', (e) => {
+  if (e.key.toLowerCase() === 'escape' && vueInspector.value?.enabled) {
+    vueInspector.value?.disable()
+  }
 })
 
 const vueInspectorEnabled = computed(() => {
@@ -98,6 +118,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
 <template>
   <div
     v-show="state.preferShowFloatingPanel ? overlayVisible : panelVisible"
+    ref="anchorEle"
     class="vue-devtools__anchor" :style="[anchorStyle, cssVars]" :class="{
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,
@@ -143,7 +164,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
     </div>
 
     <!-- iframe -->
-    <Frame
+    <FrameBox
       :style="iframeStyle" :is-dragging="isDragging" :client="{
         close: closePanel,
         getIFrame: getIframe,

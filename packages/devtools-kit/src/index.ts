@@ -6,6 +6,7 @@ import { addCustomTab } from './core/custom-tab'
 import { addCustomCommand, removeCustomCommand } from './core/custom-command'
 import { toggleComponentInspectorEnabled } from './core/component-inspector'
 import { toggleHighPerfMode } from './core/high-perf-mode'
+import { setOpenInEditorBaseUrl } from './core/open-in-editor'
 
 export type * from './core/custom-tab'
 export type * from './core/custom-command'
@@ -28,7 +29,8 @@ export interface DevToolsType {
 
 export { parse, stringify } from './shared'
 export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
-export { UNDEFINED } from './core/component/state/constants'
+export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from './core/component/state/constants'
+export { isPlainObject } from './core/component/state/is'
 
 export const devtools = {
   state: devtoolsState,
@@ -50,4 +52,5 @@ export {
   setDevToolsEnv,
   toggleComponentInspectorEnabled,
   toggleHighPerfMode,
+  setOpenInEditorBaseUrl,
 }

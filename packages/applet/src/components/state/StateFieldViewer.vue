@@ -23,7 +23,11 @@ const props = defineProps<{
 const STATE_FIELDS_LIMIT_SIZE = 30
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 // display value
-const displayedValue = computed(() => formatInspectorStateValue(props.data.value))
+const displayedValue = computed(() => formatInspectorStateValue(props.data.value, false, {
+  customClass: {
+    string: 'max-w-120 truncate',
+  },
+}))
 const type = computed(() => getInspectorStateValueType(props.data.value))
 const raw = computed(() => getRaw(props.data.value))
 const { expanded, toggleExpanded } = useToggleExpanded()

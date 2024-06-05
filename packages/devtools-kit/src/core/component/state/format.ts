@@ -46,7 +46,11 @@ export function getInspectorStateValueType(value, raw = true) {
   }
 }
 
-export function formatInspectorStateValue(value, quotes = false) {
+export function formatInspectorStateValue(value, quotes = false, options?: {
+  // Support more types if needed
+  customClass?: Partial<Record<'string', string>>
+}) {
+  const { customClass } = options ?? {}
   let result
   const type = getInspectorStateValueType(value, false)
   if (type !== 'custom' && value?._custom)
@@ -58,7 +62,7 @@ export function formatInspectorStateValue(value, quotes = false) {
   }
   else if (type === 'custom') {
     // For digging out nested custom name.
-    const nestedName = value._custom.value?._custom && formatInspectorStateValue(value._custom.value)
+    const nestedName = value._custom.value?._custom && formatInspectorStateValue(value._custom.value, quotes, options)
     return nestedName || value._custom.displayText || value._custom.display
   }
   else if (type === 'array') {
@@ -72,19 +76,28 @@ export function formatInspectorStateValue(value, quotes = false) {
   }
   else if (typeof value === 'string') {
     const typeMatch = value.match(rawTypeRE)
-    if (typeMatch)
-      value = escape(typeMatch[1])
+    if (typeMatch) {
+      value = escapeString(typeMatch[1])
+    }
 
-    else if (quotes)
-      value = `<span>"</span>${escape(value)}<span>"</span>`
+    else if (quotes) {
+      value = `<span>"</span>${
+        customClass?.string ? `<span class=${customClass.string}>${escapeString(value)}</span>` : escapeString(value)
+      }<span>"</span>`
+    }
 
-    else
-      value = escape(value)
-
-    value = value.replace(/ /g, '&nbsp;')
-      .replace(/\n/g, '<span>\\n</span>')
+    else {
+      value = customClass?.string
+        ? `<span class="${customClass?.string ?? ''}">${escapeString(value)}</span>`
+        : escapeString(value)
+    }
   }
   return value
+}
+
+function escapeString(value: string) {
+  return escape(value).replace(/ /g, '&nbsp;')
+    .replace(/\n/g, '<span>\\n</span>')
 }
 
 export function getRaw(value: InspectorState['value']): {

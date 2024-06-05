@@ -136,7 +136,7 @@ watch(() => editing.value, (v) => {
   }
 })
 
-async async function submit() {
+async function submit() {
   const data = props.data
   await rpc.value.editInspectorState({
     path: normalizedPath.value,

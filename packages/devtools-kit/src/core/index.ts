@@ -17,7 +17,7 @@ import {
 } from '../ctx'
 import { onLegacyDevToolsPluginApiAvailable } from '../compat'
 import { DevToolsHooks } from '../types'
-import { createAppRecord } from './app'
+import { createAppRecord, removeAppRecordId } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
 import { normalizeRouterInfo } from './router'
 
@@ -96,6 +96,8 @@ export function initDevTools() {
     }
 
     removeDevToolsAppRecord(app)
+
+    removeAppRecordId(app)
 
     if (activeAppRecord.value.app === app) {
       setActiveAppRecord(activeRecords[0])

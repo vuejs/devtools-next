@@ -19,6 +19,14 @@ function getAppRootInstance(app: VueAppInstance['appContext']['app']) {
     return app._container?._vnode?.component
 }
 
+export function removeAppRecordId(app: VueAppInstance['appContext']['app']) {
+  const id = app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__
+  if (id != null) {
+    appRecordInfo.appIds.delete(id)
+    appRecordInfo.id--
+  }
+}
+
 function getAppRecordId(app: VueAppInstance['appContext']['app'], defaultId?: string): string {
   if (app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__ != null)
     return app.__VUE_DEVTOOLS_NEXT_APP_RECORD_ID__

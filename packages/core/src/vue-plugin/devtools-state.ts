@@ -61,7 +61,7 @@ export function createDevToolsStateContext() {
       rpc.value.devtoolsState().then((data) => {
         updateState(data as DevToolsState)
       })
-      rpc.functions.off(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, updateState)
+      rpc.functions.on(DevToolsMessagingEvents.DEVTOOLS_STATE_UPDATED, updateState)
     })
   }
 

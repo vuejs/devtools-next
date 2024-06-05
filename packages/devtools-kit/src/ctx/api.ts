@@ -93,8 +93,8 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
       const appRecord = devtoolsAppRecords.value.find(record => record.id === id)
 
       if (appRecord) {
-        setActiveAppRecord(appRecord)
         setActiveAppRecordId(id)
+        setActiveAppRecord(appRecord)
         normalizeRouterInfo(appRecord, activeAppRecord)
         callInspectorUpdatedHook()
       }

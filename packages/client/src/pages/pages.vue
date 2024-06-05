@@ -36,10 +36,7 @@ onDevToolsConnected(() => {
   rpc.value.getRouterInfo().then((data) => {
     init(data)
   })
-  // @TODO: remove side effects
-  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
-    init(data)
-  })
+  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, init)
 })
 
 watchDebounced(routeInput, () => {
@@ -48,6 +45,10 @@ watchDebounced(routeInput, () => {
   rpc.value.getMatchedRoutes(routeInput.value).then((data) => {
     matchedRoutes.value = data
   })
+})
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, init)
 })
 </script>
 

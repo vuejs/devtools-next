@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 
 import type { InspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import EventList from './EventList.vue'
@@ -73,7 +73,7 @@ function normalizeGroupList(event: TimelineEventOptions['event']) {
   }
 }
 
-rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, (payload) => {
+function onTimelineEventUpdated(payload) {
   if (!payload)
     return
 
@@ -83,6 +83,12 @@ rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, (payload) => {
 
   eventList.value.push(event)
   normalizeGroupList(event)
+}
+
+rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEventUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEventUpdated)
 })
 </script>
 

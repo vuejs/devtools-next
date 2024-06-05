@@ -20,24 +20,11 @@ function normalizeComponentCount(data: CustomInspectorNode[]) {
   return count
 }
 
-onDevToolsConnected(() => {
-  rpc.value.getRouterInfo().then((data) => {
-    pageCount.value = data?.routes?.length || 1
-  })
-  // @TODO: remove side effects
-  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, (data) => {
-    pageCount.value = data?.routes?.length || 1
-  })
+function onRouterInfoUpdated(data) {
+  pageCount.value = data?.routes?.length || 1
+}
 
-  // component count getter
-  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
-    const data = parse(_data!)
-    componentCount.value = normalizeComponentCount(data)
-  })
-})
-
-// @TODO: remove side effects
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string) => {
+function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
     rootNodes: CustomInspectorNode[]
@@ -46,6 +33,26 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, (_data: string)
     return
 
   componentCount.value = normalizeComponentCount(data.rootNodes)
+}
+
+onDevToolsConnected(() => {
+  rpc.value.getRouterInfo().then((data) => {
+    pageCount.value = data?.routes?.length || 1
+  })
+  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, onRouterInfoUpdated)
+
+  // component count getter
+  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
+    const data = parse(_data!)
+    componentCount.value = normalizeComponentCount(data)
+  })
+})
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+  rpc.functions.off(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, onRouterInfoUpdated)
 })
 </script>
 

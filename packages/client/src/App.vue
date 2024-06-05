@@ -79,12 +79,14 @@ onRpcConnected(() => {
   })
 })
 
-onDevToolsConnected(() => {
-  rpc.functions.on(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, () => {
-    router.push('/overview').then(() => {
-      refreshCurrentPageData()
-    })
+function onActiveAppUnmounted() {
+  router.push('/overview').then(() => {
+    refreshCurrentPageData()
   })
+}
+
+onDevToolsConnected(() => {
+  rpc.functions.on(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, onActiveAppUnmounted)
 })
 
 // register commands
@@ -115,6 +117,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   rpc.value.toggleClientConnected(false)
+  rpc.functions.off(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, onActiveAppUnmounted)
 })
 </script>
 

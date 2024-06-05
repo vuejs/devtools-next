@@ -25,7 +25,7 @@ const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 // display value
 const displayedValue = computed(() => formatInspectorStateValue(props.data.value, false, {
   customClass: {
-    string: 'max-w-220px truncate',
+    string: 'max-w-120 truncate',
   },
 }))
 const type = computed(() => getInspectorStateValueType(props.data.value))

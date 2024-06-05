@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, VueSwitch } from '@vue/devtools-ui'
-import { isInChromePanel } from '@vue/devtools-shared'
+// import { isInChromePanel } from '@vue/devtools-shared'
 
 // #region view mode
-const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
-const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
-const { toggle: toggleViewMode } = useToggleViewMode()
+// const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
+// const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
+// const { toggle: toggleViewMode } = useToggleViewMode()
 // #endregion
 
 const { categorizedTabs: categories } = useAllTabs()
@@ -162,9 +162,9 @@ const minimizePanelInteractiveLabel = computed(() => {
                 <div i-carbon-sun dark:i-carbon-moon translate-y--1px /> {{ isDark ? 'Dark' : 'Light' }}
               </VueButton>
             </VueDarkToggle>
-            <VueButton v-if="viewModeSwitchVisible" outlined type="primary" @click="toggleViewMode('overlay')">
+            <!-- <VueButton v-if="viewModeSwitchVisible" outlined type="primary" @click="toggleViewMode('overlay')">
               Switch to Overlay Mode
-            </VueButton>
+            </VueButton> -->
           </div>
           <div mx--2 my1 h-1px border="b base" op75 />
           <p>UI Scale</p>

@@ -1,42 +1,33 @@
-import { initDevTools, onDevToolsClientConnected, onDevToolsConnected } from './core'
-import { hook } from './hook'
-import { devtoolsContext, devtoolsState, setDevToolsEnv } from './state'
-import { setupDevToolsPlugin } from './api'
-import { addCustomTab } from './core/custom-tab'
-import { addCustomCommand, removeCustomCommand } from './core/custom-command'
+import { initDevTools, onDevToolsClientConnected } from './core'
 import { toggleComponentInspectorEnabled } from './core/component-inspector'
+import { setupDevToolsPlugin } from './core/plugin'
+import { addCustomCommand, addCustomTab, devtoolsContext, removeCustomCommand } from './ctx'
 import { toggleHighPerfMode } from './core/high-perf-mode'
 import { setOpenInEditorBaseUrl } from './core/open-in-editor'
+import { hook } from './hook'
 
-export type * from './core/custom-tab'
-export type * from './core/custom-command'
-export type * from './core/timeline'
+export * from './core'
+export * from './core/plugin'
+export * from './ctx'
+export * from './messaging'
+export type * from './types'
 export type * from './core/open-in-editor'
 export type * from './core/component-highlighter'
-export type * from './core/component/types'
 export type * from './core/component-inspector'
-export type * from './core/inspector'
-export type * from './types'
-
-export interface DevToolsType {
-  state: typeof devtoolsState
-  context: typeof devtoolsContext
-  hook: typeof hook
-  init: typeof initDevTools
-  get api(): typeof devtoolsContext.api
-
-}
-
+export type * from './core/component/types'
 export { parse, stringify } from './shared'
 export { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from './core/component/state/format'
 export { UNDEFINED, INFINITY, NAN, NEGATIVE_INFINITY } from './core/component/state/constants'
 export { isPlainObject } from './core/component/state/is'
 
 export const devtools = {
-  state: devtoolsState,
-  context: devtoolsContext,
   hook,
-  init: initDevTools,
+  init: () => {
+    initDevTools()
+  },
+  get ctx() {
+    return devtoolsContext
+  },
   get api() {
     return devtoolsContext.api
   },
@@ -44,12 +35,10 @@ export const devtools = {
 
 export {
   onDevToolsClientConnected,
-  onDevToolsConnected,
   addCustomTab,
   addCustomCommand,
   removeCustomCommand,
   setupDevToolsPlugin,
-  setDevToolsEnv,
   toggleComponentInspectorEnabled,
   toggleHighPerfMode,
   setOpenInEditorBaseUrl,

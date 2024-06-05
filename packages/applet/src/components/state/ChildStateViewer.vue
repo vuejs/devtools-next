@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { InspectorState } from '@vue/devtools-kit'
+import type { CustomInspectorState } from '@vue/devtools-kit'
 import StateFieldViewer from './StateFieldViewer.vue'
 
 withDefaults(defineProps<{
-  data: InspectorState[]
+  data: CustomInspectorState[]
   depth: number
   index: string
 }>(), {

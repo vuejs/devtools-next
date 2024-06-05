@@ -55,13 +55,15 @@
   "version_name": "0.0.0",
   "web_accessible_resources": [
     {
+      "extension_ids": [],
       "matches": [
         "<all_urls>"
       ],
       "resources": [
         "dist/*",
         "client/*",
-        "overlay/*"
+        "overlay/*",
+        "pages/*"
       ]
     }
   ]

@@ -10,7 +10,11 @@ const tab = computed(() => flattenedTabs.value.find(tab => tabName.value === tab
 
 onMounted(() => {
   if (!tab.value) {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
+      if (tab.value) {
+        clearTimeout(timer)
+        return
+      }
       router.replace('/overview')
     }, 2000)
   }

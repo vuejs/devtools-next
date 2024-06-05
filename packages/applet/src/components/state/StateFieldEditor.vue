@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, ref, toRaw } from 'vue'
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon, vTooltip } from '@vue/devtools-ui'
-import { getRaw } from '@vue/devtools-kit'
-import type { InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
+import { DevToolsV6PluginAPIHookKeys, getRaw } from '@vue/devtools-kit'
+import type { CustomInspectorState, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
 import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
-import { editInspectorState } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { useClipboard } from '@vueuse/core'
 import { useStateEditorContext } from '~/composables/state-editor'
 import type { EditorAddNewPropType, EditorInputValidType } from '~/composables/state-editor'
 
 const props = withDefaults(defineProps<{
-  data: InspectorState
+  data: CustomInspectorState & { key?: string }
   hovering: boolean
   depth: number
   showAddIfNeeded?: boolean
@@ -45,7 +45,7 @@ const buttonClass = computed(() => ({
 }))
 
 function quickEdit(v: unknown, remove: boolean = false) {
-  editInspectorState({
+  rpc.value.editInspectorState({
     path: props.data.path || [props.data.key],
     inspectorId: state.value.inspectorId,
     type: props.data.stateType!,
@@ -56,7 +56,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       type: dataType.value,
       remove,
     },
-  } satisfies InspectorStateEditorPayload)
+  } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
 }
 
 function quickEditNum(v: number | string, offset: 1 | -1) {
@@ -147,7 +147,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
           </VueDropdownButton>
           <VueDropdownButton
             @click="() => {
-              copy(data.key)
+              copy(data.key!)
             }"
           >
             <template #icon>

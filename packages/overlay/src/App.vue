@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Bridge, getDevToolsClientUrl, prepareInjection } from '@vue/devtools-core'
+import { functions, getDevToolsClientUrl } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
-import { devtools, onDevToolsConnected } from '@vue/devtools-kit'
-import { registerBridge, useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
+import { devtools, getRpcServer, onDevToolsConnected, setIframeServerContext } from '@vue/devtools-kit'
+import { useFrameState, useIframe, usePanelVisible, usePosition } from '~/composables'
 import { checkIsSafari } from '~/utils'
 import FrameBox from '~/components/FrameBox.vue'
 
@@ -43,43 +43,22 @@ const { updateState, state } = useFrameState()
 function waitForClientInjection(iframe: HTMLIFrameElement, retry = 50, timeout = 200): Promise<void> | void {
   return new Promise((resolve) => {
     iframe?.contentWindow?.postMessage('__VUE_DEVTOOLS_CREATE_CLIENT__', '*')
-    const bridge = new Bridge({
-      tracker(fn) {
-        if (!overlayVisible.value)
-          return
-
-        window.addEventListener('message', (e) => {
-          if (e.data.source === '__VUE_DEVTOOLS_CLIENT__')
-            fn(e.data.data)
-        })
-      },
-      trigger(data) {
-        if (!overlayVisible.value)
-          return
-
-        iframe?.contentWindow?.postMessage({
-          source: '__VUE_DEVTOOLS_USER_APP__',
-          data,
-        }, '*')
-      },
-    })
-
-    prepareInjection(bridge)
-    registerBridge(bridge)
 
     window.addEventListener('message', (data) => {
       if (data.data === '__VUE_DEVTOOLS_CLIENT_READY__')
         resolve()
     })
-
-    bridge.on('toggle-panel', togglePanelVisible)
   })
 }
 
 const vueInspector = ref()
 
 onDevToolsConnected(() => {
-  devtools.api.getVueInspector().then((inspector) => {
+  const rpcServer = getRpcServer<typeof functions>()
+  rpcServer.broadcast.on('toggle-panel', (state = !panelVisible) => {
+    togglePanelVisible(state)
+  })
+  devtools.ctx.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector
 
     let previousPanelVisible = panelVisible.value
@@ -111,6 +90,7 @@ function enableVueInspector() {
 
 const { iframe, getIframe } = useIframe(clientUrl, async () => {
   const iframe = getIframe()
+  setIframeServerContext(iframe)
   await waitForClientInjection(iframe)
 })
 </script>
@@ -142,7 +122,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
           <path fill="#35495E" d="M50.56 0L128 133.12L204.8 0h-47.36L128 51.2L97.92 0H50.56Z" />
         </svg>
       </div>
-      <template v-if="devtools.state.vitePluginDetected && vueInspectorEnabled">
+      <template v-if="devtools.ctx.state.vitePluginDetected && vueInspectorEnabled">
         <div class="vue-devtools__panel-content vue-devtools__panel-divider" />
         <div
           class="vue-devtools__anchor-btn vue-devtools__panel-content vue-devtools__inspector-button"

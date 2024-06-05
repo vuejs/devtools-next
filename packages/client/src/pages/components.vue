@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { Components as ComponentsPanel } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
-import { useDevToolsBridge } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { openInEditor } from '../composables/open-in-editor'
 
-const bridge = useDevToolsBridge()
 function onInspectComponentStart() {
-  bridge.value.emit('toggle-panel', false)
+  rpc.value.emit('toggle-panel', false)
 }
 
 function onInspectComponentEnd() {
-  bridge.value.emit('toggle-panel', true)
+  rpc.value.emit('toggle-panel', true)
 }
 </script>
 

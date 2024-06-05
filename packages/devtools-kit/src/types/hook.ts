@@ -1,5 +1,6 @@
 import type { App } from 'vue'
-import type { AppRecord, PluginDescriptor, PluginSetupFunction, VueAppInstance } from './app'
+import type { PluginDescriptor, PluginSetupFunction } from './plugin'
+import type { AppRecord, VueAppInstance } from './app'
 
 type HookAppInstance = App & VueAppInstance
 export enum DevToolsHooks {
@@ -40,7 +41,7 @@ export interface DevToolsHook {
   once: <T extends Function>(event: DevToolsHooks, handler: T) => void
   off: <T extends Function>(event: DevToolsHooks, handler: T) => void
   appRecords: AppRecord[]
-  apps: Record<number, { componentCount: number }>
+  apps: any
   cleanupBuffer?: (matchArg: unknown) => boolean
 }
 

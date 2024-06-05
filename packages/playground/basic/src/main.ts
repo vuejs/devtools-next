@@ -2,6 +2,9 @@ import { createPinia } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import { addCustomCommand } from '@vue/devtools-api'
+import { devtools } from '@vue/devtools'
+
 import store from './stores/vuexStore'
 
 import App from './App.vue'
@@ -17,7 +20,7 @@ const pinia = createPinia()
 
 const app = createApp(App)
 
-// devtools.connect()
+devtools.connect()
 
 const routes: RouteRecordRaw[] = [
   {
@@ -65,16 +68,16 @@ app.use(store)
 app.mount('#app')
 // }, 2000)
 
-// setTimeout(() => {
-//   addCustomCommand({
-//     id: 'vueuse',
-//     title: 'VueUse',
-//     action: {
-//       type: 'url',
-//       src: 'https://vueuse.org/',
-//     },
-//   })
-// }, 2000)
+setTimeout(() => {
+  addCustomCommand({
+    id: 'vueuse',
+    title: 'VueUse',
+    action: {
+      type: 'url',
+      src: 'https://vueuse.org/',
+    },
+  })
+}, 2000)
 
 // setTimeout(() => {
 //   addCustomTab({
@@ -91,4 +94,20 @@ app.mount('#app')
 //     },
 //     category: 'advanced',
 //   })
+//   setTimeout(() => {
+//     addCustomTab({
+//     // unique identifier
+//       name: 'vue-use1',
+//       // title to display in the tab
+//       title: 'VueUse1',
+//       // any icon from Iconify, or a URL to an image
+//       icon: 'i-logos-vueuse',
+//       // iframe view
+//       view: {
+//         type: 'iframe',
+//         src: 'https://vueuse.org/',
+//       },
+//       category: 'advanced',
+//     })
+//   }, 2000)
 // }, 2000)

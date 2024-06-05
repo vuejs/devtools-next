@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import { onAddTimelineEvent } from '@vue/devtools-core'
-import { computed, ref } from 'vue'
+import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
+import { computed, onUnmounted, ref } from 'vue'
 
-import type { InspectorState, TimelineEvent } from '@vue/devtools-kit'
+import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import EventList from './EventList.vue'
 import Navbar from '~/components/basic/Navbar.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -14,7 +14,7 @@ import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 const props = defineProps<{
   layerIds: string[]
   docLink: string
-  githubRepoLink: string
+  githubRepoLink?: string
 }>()
 
 const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
@@ -22,20 +22,20 @@ const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
 // event info + group info = [0, 1]
 expandedStateNodes.value = ['0', '1']
 
-const eventList = ref<TimelineEvent['event'][]>([])
-const groupList = ref<Map<number, TimelineEvent['event'][]>>(new Map())
+const eventList = ref<TimelineEventOptions['event'][]>([])
+const groupList = ref<Map<string | number | undefined, TimelineEventOptions['event'][]>>(new Map())
 const selectedEventIndex = ref(0)
 const selectedEventInfo = computed(() => eventList.value[selectedEventIndex.value] ?? null)
 // event info
 const normalizedEventInfo = computed(() => {
-  const info: InspectorState[] = []
+  const info: CustomInspectorState[] = []
   for (const key in selectedEventInfo.value?.data) {
     info.push({
       key,
       type: key,
       editable: false,
       value: selectedEventInfo.value.data[key]!,
-    })
+    } as unknown as CustomInspectorState)
   }
   return info
 })
@@ -62,10 +62,10 @@ const normalizedGroupInfo = computed(() => {
 
 // normalize display info
 const displayedInfo = computed(() => {
-  return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, InspectorState[]>
+  return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, CustomInspectorState[]>
 })
 
-function normalizeGroupList(event: TimelineEvent['event']) {
+function normalizeGroupList(event: TimelineEventOptions['event']) {
   const groupId = event.groupId
   if (groupId !== undefined) {
     groupList.value.set(groupId, groupList.value.get(groupId) ?? [])
@@ -73,7 +73,7 @@ function normalizeGroupList(event: TimelineEvent['event']) {
   }
 }
 
-onAddTimelineEvent((payload) => {
+function onTimelineEventUpdated(payload) {
   if (!payload)
     return
 
@@ -83,6 +83,12 @@ onAddTimelineEvent((payload) => {
 
   eventList.value.push(event)
   normalizeGroupList(event)
+}
+
+rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEventUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEventUpdated)
 })
 </script>
 

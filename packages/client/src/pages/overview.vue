@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { isMacOS } from '@vue/devtools-shared'
-import { getInspectorTree, getRouterInfo, onInspectorTreeUpdated, onRouterInfoUpdated, useDevToolsState } from '@vue/devtools-core'
-import type { ComponentTreeNode } from '@vue/devtools-kit'
+import { isInChromePanel, isInElectron, isMacOS } from '@vue/devtools-shared'
+import { DevToolsMessagingEvents, onDevToolsConnected, rpc, useDevToolsState } from '@vue/devtools-core'
+import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
 import { VueButton } from '@vue/devtools-ui'
-
 import { version } from '../../../core/package.json'
 
 const { vueVersion } = useDevToolsState()
 const pageCount = ref(1)
 const componentCount = ref(0)
 
-function normalizeComponentCount(data: ComponentTreeNode[]) {
+function normalizeComponentCount(data: CustomInspectorNode[]) {
   let count = 0
   for (const node of data) {
     count++
@@ -21,26 +20,39 @@ function normalizeComponentCount(data: ComponentTreeNode[]) {
   return count
 }
 
-onDevToolsClientConnected(() => {
-  // page count getter
-  getRouterInfo().then((_data) => {
-    const data = JSON.parse(_data!)
+function onRouterInfoUpdated(data) {
+  pageCount.value = data?.routes?.length || 1
+}
+
+function onInspectorTreeUpdated(_data: string) {
+  const data = parse(_data) as {
+    inspectorId: string
+    rootNodes: CustomInspectorNode[]
+  }
+  if (data.inspectorId !== 'components')
+    return
+
+  componentCount.value = normalizeComponentCount(data.rootNodes)
+}
+
+onDevToolsConnected(() => {
+  rpc.value.getRouterInfo().then((data) => {
     pageCount.value = data?.routes?.length || 1
   })
-  onRouterInfoUpdated((data) => {
-    pageCount.value = data?.routes?.length || 1
-  })
+  rpc.functions.on(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, onRouterInfoUpdated)
 
   // component count getter
-  getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
+  rpc.value.getInspectorTree({ inspectorId: 'components', filter: '' }).then((_data) => {
     const data = parse(_data!)
     componentCount.value = normalizeComponentCount(data)
   })
-  onInspectorTreeUpdated((data) => {
-    if (!data?.data?.length || data.inspectorId !== 'components')
-      return
-    componentCount.value = normalizeComponentCount(data.data)
-  })
+})
+
+rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+
+onUnmounted(() => {
+  rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+  rpc.functions.off(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, onRouterInfoUpdated)
 })
 </script>
 
@@ -122,36 +134,38 @@ onDevToolsClientConnected(() => {
         </template>
         to toggle Command Palette
       </div>
-      <div flex="~ gap-1" cursor-default items-center justify-center pb-8 text-sm op40>
-        Press
-        <template v-if="isMacOS()">
-          <VueButton>
-            ⇧ Shift
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            ⌥ Option
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            D
-          </VueButton>
-        </template>
-        <template v-else>
-          <VueButton>
-            Shift
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            Alt
-          </VueButton>
-          <span>+</span>
-          <VueButton>
-            D
-          </VueButton>
-        </template>
-        to toggle DevTools
-      </div>
+      <template v-if="!isInElectron && !isInChromePanel">
+        <div flex="~ gap-1" cursor-default items-center justify-center pb-8 text-sm op40>
+          Press
+          <template v-if="isMacOS()">
+            <VueButton>
+              ⇧ Shift
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              ⌥ Option
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              D
+            </VueButton>
+          </template>
+          <template v-else>
+            <VueButton>
+              Shift
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              Alt
+            </VueButton>
+            <span>+</span>
+            <VueButton>
+              D
+            </VueButton>
+          </template>
+          to toggle DevTools
+        </div>
+      </template>
     </div>
   </div>
 </template>

@@ -12,7 +12,7 @@ export default defineConfig({
     vue(),
     commonjs(),
     VueDevTools({
-      launchEditor: 'code',
+      // launchEditor: 'code',
     }),
     Unocss(),
     AutoImport({

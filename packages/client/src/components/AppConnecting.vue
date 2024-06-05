@@ -28,7 +28,7 @@ import VueLogo from '~/assets/images/vue-logo.svg'
 
 .outer,
 .inner {
-  --at-apply: transform rounded-50% bg-primary-500 bg-opacity-10;
+  --at-apply: transform rounded-[50%] bg-primary-500 bg-opacity-10;
 }
 .outer {
   --at-apply: p-6;

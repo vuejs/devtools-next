@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
-import { isInChromePanel } from '@vue/devtools-shared'
-import { toggleApp, useDevToolsState } from '@vue/devtools-core'
-
-// #region view mode
-const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
-const viewModeSwitchVisible = computed(() => viewMode.value === 'panel' && isInChromePanel)
-const { toggle: toggleViewMode } = useToggleViewMode()
-// #endregion
+import { refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
 
 const router = useRouter()
+const route = useRoute()
 
 const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,
@@ -33,15 +27,20 @@ const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
 })))
 
 const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
+watchEffect(() => {
+  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+})
+
 const activeAppRecordName = computed(() => appRecords.value.find(app => app.value === activeAppRecordId.value)?.label ?? '')
 
-watch(activeAppRecordId, (id) => {
-  toggleApp(`${id}`).then(() => {
+function toggleApp(id: string) {
+  rpc.value.toggleApp(id).then(() => {
     router.push('/overview').then(() => {
       refreshCurrentPageData()
     })
   })
-})
+}
+
 // #endregion
 </script>
 
@@ -71,13 +70,10 @@ watch(activeAppRecordId, (id) => {
     </div>
     <div px3 py2 flex="~ gap2">
       <template v-if="appRecords.length > 1">
-        <VueSelect v-model="activeAppRecordId" :options="appRecords" :placeholder="activeAppRecordName || 'Toggle App'" :button-props="{ outlined: true, type: 'primary' }" />
+        <VueSelect v-model="activeAppRecordId" :options="appRecords" :placeholder="activeAppRecordName || 'Toggle App'" :button-props="{ outlined: true, type: 'primary' }" @update:model-value="toggleApp" />
       </template>
       <VueButton outlined type="primary" @click="refreshPage">
         Refresh Page
-      </VueButton>
-      <VueButton v-if="viewModeSwitchVisible" outlined type="primary" @click="toggleViewMode('overlay')">
-        Switch to Overlay Mode
       </VueButton>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { target } from '@vue/devtools-shared'
-import { devtoolsState } from '../../state'
+import { devtoolsState } from '../../ctx/state'
 
 export interface OpenInEditorOptions {
   baseUrl?: string

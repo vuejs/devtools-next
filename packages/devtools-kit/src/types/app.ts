@@ -1,46 +1,6 @@
-import type { App, ComponentInternalInstance, ComponentOptions, SuspenseBoundary } from 'vue'
-import type { DevToolsPluginApi } from '../api'
+import type { ComponentInternalInstance, ComponentOptions, SuspenseBoundary } from 'vue'
 
-export type PluginApi = DevToolsPluginApi
-
-export declare type PluginSettingsItem = {
-  label: string
-  description?: string
-} & ({
-  type: 'boolean'
-  defaultValue: boolean
-} | {
-  type: 'choice'
-  defaultValue: string | number
-  options: {
-    value: string | number
-    label: string
-  }[]
-  component?: 'select' | 'button-group'
-} | {
-  type: 'text'
-  defaultValue: string
-})
-
-export interface PluginDescriptor {
-  id: string
-  label: string
-  app: App<any>
-  packageName?: string
-  homepage?: string
-  componentStateTypes?: string[]
-  logo?: string
-  disableAppScope?: boolean
-  disablePluginScope?: boolean
-  /**
-   * Run the plugin setup and expose the api even if the devtools is not opened yet.
-   * Useful to record timeline events early.
-   */
-  enableEarlyProxy?: boolean
-  settings?: Record<string, PluginSettingsItem>
-}
-
-export type PluginSetupFunction = (api: PluginApi) => void
+export type App = any
 
 export type VueAppInstance = ComponentInternalInstance & {
   type: {
@@ -82,23 +42,14 @@ export type VueAppInstance = ComponentInternalInstance & {
   setupState: Record<string, unknown>
   provides: Record<string | symbol, unknown>
   ctx: Record<string, unknown>
-} & App<any>
+} & App
 export interface AppRecord {
-  id: string | number
+  id: string
   name: string
   app?: App
   version?: string
   types?: Record<string, string | symbol>
   instanceMap: Map<string, VueAppInstance>
   rootInstance: VueAppInstance
-  api?: PluginApi
   routerId?: string
-  moduleDetectives?: {
-    vueQuery: boolean
-    vueRouter: boolean
-    veeValidate: boolean
-    pinia: boolean
-    vuex: boolean
-    vueI18n: boolean
-  }
 }

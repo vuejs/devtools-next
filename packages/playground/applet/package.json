@@ -1,7 +1,7 @@
 {
   "name": "playground-applet",
   "type": "module",
-  "version": "7.2.1",
+  "version": "7.3.0-beta.1",
   "private": true,
   "scripts": {
     "dev": "vite"

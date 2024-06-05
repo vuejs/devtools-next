@@ -38,13 +38,32 @@ export default defineConfig({
       async closeBundle() {
         // copy
         const overlayFile = resolve(__dirname, './dist')
+
+        const overlayJsFile = resolve(__dirname, './dist/devtools-overlay.js')
+        const overlayMjsFile = resolve(__dirname, './dist/devtools-overlay.mjs')
+
+        fse.copyFileSync(overlayJsFile, overlayMjsFile)
+
+        // Browser extension keep using js file
         fse.copySync(
           overlayFile,
           resolve(__dirname, '../browser-extension/overlay'),
+          {
+            filter: (file) => {
+              return !file.endsWith('.mjs')
+            },
+          },
         )
+
+        // Vite using mjs file to skip some commonjs -> es6 plugins
         fse.copySync(
           overlayFile,
           resolve(__dirname, '../vite/src/overlay'),
+          {
+            filter: (file) => {
+              return !file.endsWith('.js')
+            },
+          },
         )
       },
     },

@@ -37,6 +37,7 @@ const [filtered, toggleFiltered] = useToggle(true)
 const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
 const componentRenderCode = ref('')
+const componentRenderCodeVisible = ref(false)
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -147,6 +148,9 @@ function getComponentState(id: string) {
 
 watch(activeComponentId, (id) => {
   getComponentState(id)
+  if (componentRenderCodeVisible.value) {
+    getComponentRenderCode()
+  }
 })
 
 onInspectorStateUpdated((data) => {
@@ -206,6 +210,7 @@ function scrollToComponent() {
 function getComponentRenderCode() {
   getComponentRenderCodeAction(activeComponentId.value).then((data) => {
     componentRenderCode.value = data!
+    componentRenderCodeVisible.value = true
   })
 }
 
@@ -220,12 +225,17 @@ function scrollToActiveTreeNode() {
     selected?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, 300)
 }
+
+function closeComponentRenderCode() {
+  componentRenderCode.value = ''
+  componentRenderCodeVisible.value = false
+}
 </script>
 
 <template>
   <div class="h-full w-full">
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
-      <Pane border="r base" h-full>
+      <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
             <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
@@ -265,7 +275,7 @@ function scrollToActiveTreeNode() {
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
-        <ComponentRenderCode v-if="componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = ''" />
+        <ComponentRenderCode v-if="componentRenderCodeVisible && componentRenderCode" :code="componentRenderCode" @close="closeComponentRenderCode" />
       </Pane>
     </Splitpanes>
 

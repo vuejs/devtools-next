@@ -8,13 +8,16 @@
   },
   "dependencies": {
     "@iconify/json": "^2.2.216",
+    "@tresjs/core": "^4.0.2",
     "@vueuse/core": "^10.10.0",
     "pinia": "^2.1.7",
+    "three": "^0.165.0",
     "unplugin-auto-import": "^0.17.6",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@types/three": "^0.165.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/devtools-applet": "workspace:*",
     "@vue/devtools-core": "workspace:*",

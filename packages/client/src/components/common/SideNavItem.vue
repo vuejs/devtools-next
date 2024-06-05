@@ -54,6 +54,7 @@ function onClick() {
         <TabIcon
           text-xl
           :icon="tab.icon"
+          :fallback="tab.fallbackIcon"
           title="Settings"
           :show-title="false"
         />

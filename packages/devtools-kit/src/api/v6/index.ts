@@ -4,6 +4,7 @@ import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginA
 import { devtoolsPluginBuffer } from '../../ctx/plugin'
 import { devtoolsHooks } from '../../hook'
 import { DevToolsHooks } from '../../types'
+import { getActiveInspectors } from '../../ctx/inspector'
 
 export class DevToolsV6PluginAPI {
   private plugin: DevToolsPlugin
@@ -54,18 +55,23 @@ export class DevToolsV6PluginAPI {
 
   // component inspector
   notifyComponentUpdate(instance?: ComponentInstance) {
-    if (instance) {
-      const args = [
-        instance.appContext.app,
-        instance.uid,
-        instance.parent?.uid,
-        instance,
-      ] as const
-      devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED, ...args)
-    }
-    else {
-      // @ts-expect-error skip type check
-      devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED)
+    const inspector = getActiveInspectors().find(i => i.packageName === this.plugin.descriptor.packageName)
+    if (inspector?.id) {
+      // @TODO: handler
+      if (instance) {
+        const args = [
+          instance.appContext.app,
+          instance.uid,
+          instance.parent?.uid,
+          instance,
+        ] as const
+        devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED, ...args)
+      }
+      else {
+        // @ts-expect-error skip type check
+        devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED)
+      }
+      this.hooks.callHook(DevToolsContextHookKeys.SEND_INSPECTOR_STATE, { inspectorId: inspector.id, plugin: this.plugin })
     }
   }
 

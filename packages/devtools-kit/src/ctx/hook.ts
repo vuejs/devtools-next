@@ -189,6 +189,7 @@ export interface DevToolsMessagingHookPayloads {
     id: string
     label: string
     logo: string
+    icon: string
     packageName: string | undefined
     homepage: string | undefined
   }[]

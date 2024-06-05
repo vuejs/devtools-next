@@ -57,7 +57,7 @@ const { expanded, toggleExpanded } = useToggleExpanded(props.expandedStateId)
       <div
         v-if="item?.length && expanded.includes(`${index}`)"
       >
-        <ChildStateViewer :data="item" :index="`${index}`" />
+        <ChildStateViewer :data="item" :index="`${index}`" :expanded-state-id="expandedStateId" />
       </div>
     </div>
   </div>

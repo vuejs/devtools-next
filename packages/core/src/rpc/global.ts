@@ -69,6 +69,9 @@ export const functions = {
   async editInspectorState(payload: DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE]) {
     return await devtools.ctx.api.editInspectorState(payload)
   },
+  sendInspectorState(id: string) {
+    return devtools.ctx.api.sendInspectorState(id)
+  },
   inspectComponentInspector() {
     return devtools.ctx.api.inspectComponentInspector()
   },

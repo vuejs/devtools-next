@@ -44,8 +44,8 @@ const buttonClass = computed(() => ({
   'opacity-0': !props.hovering,
 }))
 
-function quickEdit(v: unknown, remove: boolean = false) {
-  rpc.value.editInspectorState({
+async function quickEdit(v: unknown, remove: boolean = false) {
+  await rpc.value.editInspectorState({
     path: props.data.path || [props.data.key],
     inspectorId: state.value.inspectorId,
     type: props.data.stateType!,
@@ -57,6 +57,7 @@ function quickEdit(v: unknown, remove: boolean = false) {
       remove,
     },
   } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
+  await rpc.value.sendInspectorState(state.value.inspectorId)
 }
 
 function quickEditNum(v: number | string, offset: 1 | -1) {

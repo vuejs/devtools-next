@@ -13,6 +13,7 @@ export function useCustomInspectorTabs() {
         order: index,
         name: inspector.id,
         icon: inspector.logo,
+        fallbackIcon: inspector.icon,
         title: inspector.label,
         path: `${CUSTOM_INSPECTOR_TAB_VIEW}/${inspector.id}`,
         category: 'modules',

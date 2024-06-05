@@ -1,23 +1,31 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   icon?: string
   title?: string
   showTitle?: boolean
+  fallback?: string
 }>(), {
   showTitle: true,
 })
+
+const _icon = ref<string | undefined>(props.icon)
+
+function onLoadError() {
+  _icon.value = props.fallback
+}
 </script>
 
 <template>
   <img
-    v-if="icon && (icon.startsWith('/') || icon.match(/^https?:/))"
+    v-if="_icon && (_icon.startsWith('/') || _icon.match(/^https?:/))"
     :style="{
       width: '1em',
       height: '1em',
     }"
     v-bind="$attrs"
-    :src="icon"
+    :src="_icon"
     :alt="title"
+    @error="onLoadError"
   >
   <div
     v-else
@@ -26,7 +34,7 @@ withDefaults(defineProps<{
       height: '1em',
     }"
     v-bind="$attrs"
-    :class="icon || 'i-carbon-bring-forward'"
+    :class="_icon || 'i-carbon-bring-forward'"
     :title="showTitle ? title : undefined"
   />
 </template>

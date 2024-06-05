@@ -18,6 +18,7 @@ const props = defineProps<{
   data: CustomInspectorState
   depth: number
   index: string
+  expandedStateId?: string
 }>()
 
 const STATE_FIELDS_LIMIT_SIZE = 30
@@ -30,7 +31,7 @@ const displayedValue = computed(() => formatInspectorStateValue(props.data.value
 }))
 const type = computed(() => getInspectorStateValueType(props.data.value))
 const raw = computed(() => getRaw(props.data.value))
-const { expanded, toggleExpanded } = useToggleExpanded()
+const { expanded, toggleExpanded } = useToggleExpanded(props.expandedStateId ?? '')
 
 // custom state format class
 const stateFormatClass = computed(() => {
@@ -135,9 +136,9 @@ watch(() => editing.value, (v) => {
   }
 })
 
-function submit() {
+async async function submit() {
   const data = props.data
-  rpc.value.editInspectorState({
+  await rpc.value.editInspectorState({
     path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
@@ -148,6 +149,7 @@ function submit() {
       value: toSubmit(editingText.value, raw.value.customType),
     },
   } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
+  await rpc.value.sendInspectorState(state.value.inspectorId)
   toggleEditing()
 }
 
@@ -162,9 +164,9 @@ function addNewProp(type: EditorAddNewPropType) {
   addNewPropApi(type, raw.value.value)
 }
 
-function submitDrafting() {
+async function submitDrafting() {
   const data = props.data
-  rpc.value.editInspectorState({
+  await rpc.value.editInspectorState({
     path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
@@ -175,6 +177,7 @@ function submitDrafting() {
       value: toSubmit(draftingNewProp.value.value),
     },
   } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
+  await rpc.value.sendInspectorState(state.value.inspectorId)
   resetDrafting()
 }
 

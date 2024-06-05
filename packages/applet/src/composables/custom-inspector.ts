@@ -5,6 +5,7 @@ export interface CustomInspectorType {
   id: string
   label: string
   logo: string
+  icon: string
   packageName: string | undefined
   homepage: string | undefined
 }

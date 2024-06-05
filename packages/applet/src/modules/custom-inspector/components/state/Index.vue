@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import { vTooltip } from '@vue/devtools-ui'
 import Navbar from '~/components/basic/Navbar.vue'
-import SelectiveList from '~/components/basic/SelectiveList.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { useCustomInspectorState } from '~/composables/custom-inspector-state'
+import ComponentTree from '~/components/tree/TreeViewer.vue'
 
-const { expanded: expandedStateNodes } = createExpandedContext('vue-query-state')
+const { expanded: expandedTreeNodes } = createExpandedContext()
+const { expanded: expandedStateNodes } = createExpandedContext('custom-inspector-state')
 
 const customInspectState = useCustomInspectorState()
 
@@ -21,10 +22,33 @@ const inspectorId = computed(() => customInspectState.value.id!)
 const nodeActions = ref<CustomInspectorOptions['nodeActions']>([])
 const actions = ref<CustomInspectorOptions['nodeActions']>([])
 
-const selected = ref('')
 const tree = ref<CustomInspectorNode[]>([])
+const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[0]) : [])
+const selected = ref('')
+
 const state = ref<Record<string, CustomInspectorState[]>>({})
 const emptyState = computed(() => !Object.keys(state.value).length)
+
+// tree
+function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
+  path.push(node.id)
+  if (node.children?.length === 0)
+    linkedList.push([...path])
+
+  node.children?.forEach((child) => {
+    dfs(child, path, linkedList)
+  })
+  path.pop()
+  return linkedList
+}
+
+function getNodesByDepth(list: string[][], depth: number) {
+  const nodes: string[] = []
+  list.forEach((item) => {
+    nodes.push(...item.slice(0, depth + 1))
+  })
+  return [...new Set(nodes)]
+}
 
 function getNodeActions() {
   rpc.value.getInspectorNodeActions(inspectorId.value).then((actions) => {
@@ -80,6 +104,7 @@ const getInspectorTree = () => {
     tree.value = data
     if (!selected.value && data.length) {
       selected.value = data[0].id
+      expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
       getInspectorState(data[0].id)
     }
   })
@@ -94,10 +119,11 @@ function onInspectorTreeUpdated(_data: string) {
   if (!data.rootNodes.length || data.inspectorId !== inspectorId.value)
     return
   tree.value = data.rootNodes
-  if ((!selected.value && data.rootNodes.length) || (selected.value && !data.rootNodes.find(node => node.id === selected.value))) {
-    selected.value = data.rootNodes[0].id
-    getInspectorState(data.rootNodes[0].id)
-  }
+  expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+  // if ((!selected.value && data.rootNodes.length) || (selected.value && !data.rootNodes.find(node => node.id === selected.value))) {
+  //   selected.value = data.rootNodes[0].id
+  //   getInspectorState(data.rootNodes[0].id)
+  // }
 }
 
 function onInspectorStateUpdated(_data: string) {
@@ -106,17 +132,19 @@ function onInspectorStateUpdated(_data: string) {
     state: CustomInspectorState
     nodeId: string
   }
-  if (data.inspectorId !== inspectorId.value || !data.state)
+  if (data.inspectorId !== inspectorId.value || !data.state || data.nodeId !== selected.value)
     return
 
   const { inspectorId: _inspectorId, ...filtered } = data.state
 
   state.value = filterEmptyState(filtered as any)
-  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
+  // expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 }
 
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
-rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
+onRpcConnected(() => {
+  rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
+  rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
+})
 
 onUnmounted(() => {
   rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
@@ -140,7 +168,7 @@ onUnmounted(() => {
                 </div>
               </div>
             </div>
-            <SelectiveList v-model="selected" :data="tree" />
+            <ComponentTree v-model="selected" :data="tree" />
           </div>
         </Pane>
         <Pane size="60">
@@ -152,7 +180,7 @@ onUnmounted(() => {
                 </div>
               </div>
             </div>
-            <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="vue-query-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
+            <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="custom-inspector-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
             <Empty v-else>
               No Data
             </Empty>

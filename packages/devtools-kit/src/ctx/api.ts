@@ -7,9 +7,9 @@ import { openInEditor } from '../core/open-in-editor'
 import { normalizeRouterInfo } from '../core/router'
 import { getComponentInspector } from '../core/component-inspector'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
-import { DevToolsV6PluginAPIHookKeys } from './hook'
+import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord, devtoolsAppRecords, setActiveAppRecord, setActiveAppRecordId } from './state'
-import { callInspectorUpdatedHook } from './inspector'
+import { callInspectorUpdatedHook, getInspector } from './inspector'
 
 export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>) {
   return {
@@ -60,10 +60,19 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
           stateEditor.set(obj, path, value, cb || stateEditor.createDefaultSetCallback(payload.state))
         },
       }
+
       // @ts-expect-error hookable
       hooks.callHookWith((callbacks) => {
         callbacks.forEach(cb => cb(_payload))
       }, DevToolsV6PluginAPIHookKeys.EDIT_INSPECTOR_STATE)
+    },
+    // send inspector state
+    sendInspectorState(inspectorId: string) {
+      const inspector = getInspector(inspectorId)
+      hooks.callHook(DevToolsContextHookKeys.SEND_INSPECTOR_STATE, { inspectorId, plugin: {
+        descriptor: inspector!.descriptor,
+        setupFn: () => ({}),
+      } })
     },
     // inspect component inspector
     inspectComponentInspector() {

@@ -6,6 +6,7 @@ import { createRpcClient } from '@vue/devtools-kit'
 import { useDark } from '@vueuse/core'
 import { useCounterStore } from './stores'
 import Hello from './components/Hello.vue'
+import Tres from './components/Tres.vue'
 
 const isDark = useDark()
 // user app
@@ -37,12 +38,12 @@ function initVueDevToolsState() {
 }
 
 onRpcConnected(() => {
-  initVueDevToolsState()
+  // initVueDevToolsState()
 })
 </script>
 
 <template>
-  <div class="h-screen w-screen flex flex-col items-center justify-center">
+  <!-- <div class="h-screen w-screen flex flex-col items-center justify-center">
     <div i-carbon-sun dark:i-carbon-moon translate-y--1px @click="isDark = !isDark" />
 
     <div select-none>
@@ -56,6 +57,6 @@ onRpcConnected(() => {
         Connecting...
       </div>
     </div>
-  </div>
-  <Hello />
+  </div> -->
+  <Tres />
 </template>

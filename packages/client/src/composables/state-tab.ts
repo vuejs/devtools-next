@@ -39,7 +39,6 @@ export function useAllTabs() {
         if (currentTab[1].some(t => t.name === tab.name))
           return
 
-        // @TODO: electron app support vite only tabs
         if ((!vitePluginDetected || isInElectron || isInChromePanel) && viteOnlyTabs.includes(tab.name))
           return
 

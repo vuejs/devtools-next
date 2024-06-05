@@ -59,7 +59,6 @@ export const functions = {
     return stringify(res) as string
   },
   async getInspectorState(payload: Pick<DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE], 'inspectorId' | 'nodeId'>) {
-    // @TODO: refactor this to use the new API
     const inspector = getInspector(payload.inspectorId)
     if (inspector)
       inspector.selectedNodeId = payload.nodeId

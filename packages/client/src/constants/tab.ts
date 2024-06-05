@@ -87,7 +87,6 @@ export function getBuiltinTab(viteDetected: boolean, customInspectorTabs: Module
     }
   })
 
-  // @TODO: electron app support vite only tabs
   return (viteDetected && (!isInElectron && !isInChromePanel))
     ? tab
     : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])

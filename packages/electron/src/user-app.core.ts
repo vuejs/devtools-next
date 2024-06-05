@@ -10,7 +10,6 @@ export function init(io) {
   const fullHost = port ? `${host}:${port}` : host
   const socket = createSocket(fullHost)
 
-  // @TODO: de-duplicate
   devtools.init()
 
   // Global disconnect handler. Fires in two cases:

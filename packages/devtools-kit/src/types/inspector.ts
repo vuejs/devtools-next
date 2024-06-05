@@ -41,6 +41,8 @@ export interface CustomInspectorNode {
   label: string
   children?: CustomInspectorNode[]
   tags?: InspectorNodeTag[]
+  name?: string
+  file?: string
 }
 
 export interface CustomInspectorState {

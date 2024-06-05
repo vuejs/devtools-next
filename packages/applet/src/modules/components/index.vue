@@ -65,7 +65,7 @@ function getTargetLinkedNodes(list: string[][], target: string) {
 }
 
 const inspectorId = 'components'
-const tree = ref<CustomInspectorNode[]>([])
+const tree = ref<Array<CustomInspectorNode>>([])
 const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[0]) : [])
 const activeComponentState = ref<Record<string, any[]>>({})
 const activeComponentId = ref('')

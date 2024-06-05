@@ -3,7 +3,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { computed, onUnmounted, ref } from 'vue'
 
-import type { InspectorState, TimelineEventOptions } from '@vue/devtools-kit'
+import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import EventList from './EventList.vue'
 import Navbar from '~/components/basic/Navbar.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -28,14 +28,14 @@ const selectedEventIndex = ref(0)
 const selectedEventInfo = computed(() => eventList.value[selectedEventIndex.value] ?? null)
 // event info
 const normalizedEventInfo = computed(() => {
-  const info: InspectorState[] = []
+  const info: CustomInspectorState[] = []
   for (const key in selectedEventInfo.value?.data) {
     info.push({
       key,
       type: key,
       editable: false,
       value: selectedEventInfo.value.data[key]!,
-    })
+    } as unknown as CustomInspectorState)
   }
   return info
 })
@@ -62,7 +62,7 @@ const normalizedGroupInfo = computed(() => {
 
 // normalize display info
 const displayedInfo = computed(() => {
-  return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, InspectorState[]>
+  return { 'Event Info': normalizedEventInfo.value, ...(normalizedGroupInfo.value && { 'Group Info': normalizedGroupInfo.value }) } as unknown as Record<string, CustomInspectorState[]>
 })
 
 function normalizeGroupList(event: TimelineEventOptions['event']) {

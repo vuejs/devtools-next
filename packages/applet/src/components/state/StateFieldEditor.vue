@@ -10,7 +10,7 @@ import { useStateEditorContext } from '~/composables/state-editor'
 import type { EditorAddNewPropType, EditorInputValidType } from '~/composables/state-editor'
 
 const props = withDefaults(defineProps<{
-  data: CustomInspectorState
+  data: CustomInspectorState & { key?: string }
   hovering: boolean
   depth: number
   showAddIfNeeded?: boolean
@@ -147,7 +147,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
           </VueDropdownButton>
           <VueDropdownButton
             @click="() => {
-              copy(data.key)
+              copy(data.key!)
             }"
           >
             <template #icon>

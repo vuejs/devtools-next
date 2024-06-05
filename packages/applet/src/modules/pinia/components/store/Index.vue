@@ -17,7 +17,7 @@ const inspectorId = 'pinia'
 
 const selected = ref('')
 const tree = ref<CustomInspectorNode[]>([])
-const state = ref<CustomInspectorState>({})
+const state = ref<Record<string, CustomInspectorState[]>>({})
 
 const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
@@ -114,7 +114,6 @@ onUnmounted(() => {
       </Pane>
       <Pane size="60">
         <div h-full select-none overflow-scroll class="no-scrollbar">
-          <!-- @vue-expect-error  -->
           <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
           <Empty v-else>
             No Data

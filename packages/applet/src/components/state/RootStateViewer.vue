@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue'
-import type { InspectorState } from '@vue/devtools-kit'
+import type { CustomInspectorState } from '@vue/devtools-kit'
 import ChildStateViewer from './ChildStateViewer.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useToggleExpanded } from '~/composables/toggle-expanded'
 import { createStateEditorContext } from '~/composables/state-editor'
 
 const props = withDefaults(defineProps<{
-  data: Record<string, InspectorState[]>
+  data: Record<string, CustomInspectorState[]>
   nodeId: string
   inspectorId: string
   disableEdit?: boolean

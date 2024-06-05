@@ -20,7 +20,7 @@ const inspectorId = computed(() => customInspectState.value.id!)
 
 const selected = ref('')
 const tree = ref<CustomInspectorNode[]>([])
-const state = ref<CustomInspectorState>({})
+const state = ref<Record<string, CustomInspectorState[]>>({})
 
 function filterEmptyState(data: Record<string, unknown[] | string | undefined>) {
   for (const key in data) {
@@ -112,7 +112,6 @@ onUnmounted(() => {
       </Pane>
       <Pane size="60">
         <div h-full select-none overflow-scroll class="no-scrollbar">
-          <!-- @vue-expect-error -->
           <RootStateViewer v-if="selected" class="p3" :data="state" node-id="" inspector-id="router" expanded-state-id="routes-state" />
           <Empty v-else>
             No Data

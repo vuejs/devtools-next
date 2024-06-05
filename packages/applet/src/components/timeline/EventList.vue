@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { TimelineEvent } from '@vue/devtools-kit'
+import type { TimelineEventOptions } from '@vue/devtools-kit'
 import { computed } from 'vue'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import { formatTime } from '~/utils'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 const props = defineProps<{
-  data: Array<TimelineEvent['event'] & { color?: string, id?: number }>
+  data: Array<TimelineEventOptions['event'] & { color?: string, id?: number }>
 }>()
 
 const selected = defineModel()
@@ -19,7 +19,7 @@ const normalizedData = computed(() => {
     if (item.groupId !== currentGroupId || currentColorIndex === -1)
       currentColorIndex = (currentColorIndex + 1) % colors.length
 
-    currentGroupId = item.groupId ?? currentGroupId
+    currentGroupId = item.groupId as number ?? currentGroupId
 
     item.id = index
     item.color = colors[currentColorIndex]

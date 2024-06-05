@@ -61,7 +61,6 @@
     "play:ui": "turbo dev --filter=./packages/playground/ui",
     "play:multi-app": "turbo dev --filter=./packages/playground/multi-app",
     "play:webpack": "turbo dev --filter=./packages/playground/webpack",
-    "play:termui": "turbo dev --filter=./packages/playground/termui",
     "docs": "pnpm -C docs run docs:dev",
     "docs:build": "pnpm -C docs run docs:build",
     "zip": "tsx ./scripts/extension-zip.ts",

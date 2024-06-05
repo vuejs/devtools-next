@@ -106,7 +106,7 @@ function onInspectorStateUpdated(_data: string) {
     state: CustomInspectorState
     nodeId: string
   }
-  if (data.inspectorId !== inspectorId.value)
+  if (data.inspectorId !== inspectorId.value || !data.state)
     return
 
   const { inspectorId: _inspectorId, ...filtered } = data.state

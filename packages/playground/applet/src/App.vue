@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Components } from '@vue/devtools-applet'
 import '@vue/devtools-applet/style.css'
-import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
+import { DevToolsMessagingEvents, functions, onRpcConnected, rpc } from '@vue/devtools-core'
+import { createRpcClient } from '@vue/devtools-kit'
 import { useDark } from '@vueuse/core'
 import { useCounterStore } from './stores'
 import Hello from './components/Hello.vue'
@@ -9,6 +10,10 @@ import Hello from './components/Hello.vue'
 const isDark = useDark()
 // user app
 const counterStore = useCounterStore()
+
+createRpcClient(functions, {
+  preset: 'broadcast',
+})
 
 // devtools
 const appConnected = ref(false)
@@ -30,6 +35,10 @@ function initVueDevToolsState() {
     clientConnected.value = data!.clientConnected
   })
 }
+
+onRpcConnected(() => {
+  initVueDevToolsState()
+})
 </script>
 
 <template>

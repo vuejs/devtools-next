@@ -37,6 +37,7 @@ const [filtered, toggleFiltered] = useToggle(true)
 const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
 const componentRenderCode = ref('')
+const showComponentRenderCode = ref(false)
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -147,6 +148,9 @@ function getComponentState(id: string) {
 
 watch(activeComponentId, (id) => {
   getComponentState(id)
+  if (showComponentRenderCode.value) {
+    getComponentRenderCode()
+  }
 })
 
 onInspectorStateUpdated((data) => {
@@ -206,6 +210,7 @@ function scrollToComponent() {
 function getComponentRenderCode() {
   getComponentRenderCodeAction(activeComponentId.value).then((data) => {
     componentRenderCode.value = data!
+    showComponentRenderCode.value = true
   })
 }
 
@@ -265,7 +270,7 @@ function scrollToActiveTreeNode() {
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
-        <ComponentRenderCode v-if="componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = ''" />
+        <ComponentRenderCode v-if="showComponentRenderCode && componentRenderCode" :code="componentRenderCode" @close="componentRenderCode = '';showComponentRenderCode = false" />
       </Pane>
     </Splitpanes>
 

@@ -23,7 +23,11 @@ const props = defineProps<{
 const STATE_FIELDS_LIMIT_SIZE = 30
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 // display value
-const displayedValue = computed(() => formatInspectorStateValue(props.data.value))
+const displayedValue = computed(() => formatInspectorStateValue(props.data.value, false, {
+  customClass: {
+    string: 'max-w-120 truncate',
+  },
+}))
 const type = computed(() => getInspectorStateValueType(props.data.value))
 const raw = computed(() => getRaw(props.data.value))
 const { expanded, toggleExpanded } = useToggleExpanded()
@@ -137,7 +141,7 @@ function submit() {
     path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: null!,
       type: editingType.value,
@@ -164,7 +168,7 @@ function submitDrafting() {
     path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: draftingNewProp.value.key,
       type: typeof toSubmit(draftingNewProp.value.value),

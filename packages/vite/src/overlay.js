@@ -41,7 +41,7 @@ link.href = `${overlayDir}/devtools-overlay.css`
 
 // create script
 const script = document.createElement('script')
-script.src = `${overlayDir}/devtools-overlay.js`
+script.src = `${overlayDir}/devtools-overlay.mjs`
 script.type = 'module'
 
 // append to head

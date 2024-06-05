@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import { inject, provide, ref } from 'vue'
+import { computed, inject, provide, ref } from 'vue'
 
 interface StateEditorContext {
   nodeId: string
@@ -40,7 +40,7 @@ export function useStateEditor() {
       editing.value = !editing.value
     },
     editingType,
-    nodeId: state.value.nodeId,
+    nodeId: computed(() => state.value.nodeId),
   }
 }
 

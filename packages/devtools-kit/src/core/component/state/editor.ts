@@ -161,10 +161,13 @@ export async function editComponentState(payload: InspectorStateEditorPayload, s
   let target: Record<string, unknown> | undefined
 
   // TODO: props
-  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(path[0])) {
-    // Setup
+
+  // 1. check if is setup
+  if (instance.devtoolsRawSetupState && Object.keys(instance.devtoolsRawSetupState).includes(path[0]))
     target = instance.devtoolsRawSetupState
-  }
+  // 2. check if is options
+  if (instance.data && Object.keys(instance.data).includes(path[0]))
+    target = instance.data
 
   if (target && targetPath) {
     if (state.type === 'object' && type === 'reactive') {

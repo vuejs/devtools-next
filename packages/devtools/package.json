@@ -36,5 +36,8 @@
   "dependencies": {
     "@vue/devtools-electron": "workspace:^",
     "@vue/devtools-kit": "workspace:^"
+  },
+  "publishConfig": {
+    "tag": "next"
   }
 }

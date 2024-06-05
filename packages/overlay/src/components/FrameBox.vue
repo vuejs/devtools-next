@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { onRpcConnected, rpc } from '@vue/devtools-core'
+import { onRpcSeverReady, rpcServer } from '@vue/devtools-core'
 import { useFrameState } from '~/composables'
 import { PANEL_MAX, PANEL_MIN } from '~/constants'
 
@@ -24,13 +24,16 @@ const { state, updateState } = useFrameState()
 const container = ref<HTMLElement>()
 const isResizing = ref<false | { top?: boolean, left?: boolean, right?: boolean, bottom?: boolean }>(false)
 
-onRpcConnected(() => {
-  rpc.functions.on('update-client-state', (v) => {
-    updateState({
-      minimizePanelInactive: v.minimizePanelInteractive,
-      closeOnOutsideClick: v.closeOnOutsideClick,
-      preferShowFloatingPanel: v.showFloatingPanel,
-    })
+onRpcSeverReady(() => {
+  // @ts-expect-error skip
+  rpcServer.functions.on('update-client-state', (v) => {
+    if (v) {
+      updateState({
+        minimizePanelInactive: v.minimizePanelInteractive,
+        closeOnOutsideClick: v.closeOnOutsideClick,
+        preferShowFloatingPanel: v.showFloatingPanel,
+      })
+    }
   })
 })
 

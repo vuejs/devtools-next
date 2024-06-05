@@ -142,7 +142,7 @@ export const functions = {
   },
   // listen to devtools server events
   initDevToolsServerListener() {
-    const rpcServer = getRpcServer<typeof functions>()
+    const rpcServer = getRpcServer<RPCFunctions>()
     const broadcast = rpcServer.broadcast
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT, (payload) => {
       broadcast.emit(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, stringify(payload))
@@ -179,8 +179,7 @@ export const rpc = new Proxy<{
   functions: {} as ReturnType<typeof getRpcClient<RPCFunctions>>,
 }, {
   get(target, property) {
-    const _rpc = getRpcClient<typeof functions>()
-    // const _rpc = getRpc<RPCFunctions>('nmd')
+    const _rpc = getRpcClient<RPCFunctions>()
     if (property === 'value') {
       return _rpc
     }
@@ -190,18 +189,58 @@ export const rpc = new Proxy<{
   },
 })
 
+export const rpcServer = new Proxy<{
+  value: ReturnType<typeof getRpcServer<RPCFunctions>>
+  functions: ReturnType<typeof getRpcServer<RPCFunctions>>
+}>({
+  value: {} as ReturnType<typeof getRpcServer<typeof functions>>,
+  functions: {} as ReturnType<typeof getRpcServer<RPCFunctions>>,
+}, {
+  get(target, property) {
+    const _rpc = getRpcServer<RPCFunctions>()
+    if (property === 'value') {
+      return _rpc
+    }
+    else if (property === 'functions') {
+      return _rpc.functions
+    }
+  },
+})
+
 export function onRpcConnected(callback: () => void) {
   let timer: number = null!
+  let retryCount = 0
 
   function heartbeat() {
     rpc.value?.heartbeat?.().then(() => {
-      clearTimeout(timer)
       callback()
-    }).catch(() => ({}))
-    timer = setTimeout(() => {
-      heartbeat()
-    }, 2000) as unknown as number
+      clearTimeout(timer)
+    }).catch(() => {
+    })
   }
 
+  timer = setInterval(() => {
+    if (retryCount >= 20) {
+      clearTimeout(timer)
+    }
+    retryCount++
+    heartbeat()
+  }, retryCount * 80) as unknown as number
   heartbeat()
+}
+
+export function onRpcSeverReady(callback: () => void) {
+  let timer: number = null!
+  const timeout = 120
+
+  function heartbeat() {
+    if (rpcServer.value.clients.length > 0) {
+      callback()
+      clearTimeout(timer)
+    }
+  }
+
+  timer = setInterval(() => {
+    heartbeat()
+  }, timeout) as unknown as number
 }

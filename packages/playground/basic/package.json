@@ -17,6 +17,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
     "@tanstack/vue-query-devtools": "^5.38.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/devtools": "workspace:^",

@@ -16,7 +16,7 @@ import type {
 } from '../types'
 import { highlight, unhighlight } from '../core/component-highlighter'
 import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
-import { getInstanceName } from '../core/component/utils'
+import { getComponentInstance, getInstanceName } from '../core/component/utils'
 import { addInspector, getInspector } from './inspector'
 import { addTimelineLayer } from './timeline'
 import { DevToolsState, activeAppRecord } from './state'
@@ -230,6 +230,9 @@ export interface DevToolsContextHooks extends DevToolsV6PluginAPIHooks {
   [DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT]: () => void
 }
 
+const MAX_$VM = 10
+const $vmQueue: any[] = []
+
 export function createDevToolsCtxHooks() {
   const hooks = createHooks<DevToolsContextHooks & DevToolsMessagingHooks>()
   hooks.hook(DevToolsContextHookKeys.ADD_INSPECTOR, ({ inspector, plugin }) => {
@@ -295,6 +298,25 @@ export function createDevToolsCtxHooks() {
           resolve()
         }, DevToolsV6PluginAPIHookKeys.GET_INSPECTOR_STATE)
       })
+
+      // Expose instance data to window
+      // Copied from https://github.com/vuejs/devtools/blob/f03590025b0b4910cf539531c91384be51a8f8fa/packages/app-backend-core/src/component.ts#L57-L72
+      const instance = getComponentInstance(activeAppRecord.value, _payload.nodeId)
+      if (typeof window !== 'undefined' && instance) {
+        const win = window as any
+        win.$vm = instance
+
+        // $vm0, $vm1, $vm2, ...
+        if ($vmQueue[0] !== instance) {
+          if ($vmQueue.length >= MAX_$VM) {
+            $vmQueue.pop()
+          }
+          for (let i = $vmQueue.length; i > 0; i--) {
+            win[`$vm${i}`] = $vmQueue[i] = $vmQueue[i - 1]
+          }
+          win.$vm0 = $vmQueue[0] = instance
+        }
+      }
     }
 
     // @ts-expect-error hookable

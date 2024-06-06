@@ -10,8 +10,10 @@ import { useSelect } from '~/composables/select'
 withDefaults(defineProps<{
   data: ComponentTreeNode[] | InspectorTree[]
   depth: number
+  withTag: boolean
 }>(), {
   depth: 0,
+  withTag: false,
 })
 const selectedNodeId = defineModel()
 const { expanded, toggleExpanded } = useToggleExpanded()
@@ -50,16 +52,16 @@ function select(id: string) {
       <!-- placeholder -->
       <span v-else pl5 />
       <span font-state-field text-4>
-        <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
+        <span v-if="withTag" class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
         <span group-hover:text-white class="ws-nowrap [.active_&]:(text-white)">{{ normalizeLabel(item) }}</span>
-        <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
+        <span v-if="withTag" class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
       </span>
       <NodeTag v-for="(_item, _index) in item.tags" :key="_index" :tag="_item" />
     </div>
     <div
       v-if="item?.children?.length && expanded.includes(item.id)"
     >
-      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" />
+      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" :with-tag="withTag" />
     </div>
   </div>
 </template>

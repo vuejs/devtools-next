@@ -46,6 +46,19 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
   return linkedList
 }
 
+function flattenTreeNodes(tree: CustomInspectorNode[]) {
+  const res: CustomInspectorNode[] = []
+  const find = (treeNode: CustomInspectorNode[]) => {
+    treeNode.forEach((item) => {
+      res.push(item)
+      if (item.children?.length)
+        find(item.children)
+    })
+  }
+  find(tree)
+  return res
+}
+
 function getNodesByDepth(list: string[][], depth: number) {
   const nodes: string[] = []
   list.forEach((item) => {
@@ -67,6 +80,8 @@ function getTargetLinkedNodes(list: string[][], target: string) {
 const inspectorId = 'components'
 const tree = ref<Array<CustomInspectorNode>>([])
 const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[0]) : [])
+const flattenedTreeNodes = computed(() => flattenTreeNodes(tree.value))
+const flattenedTreeNodesIds = computed(() => flattenedTreeNodes.value.map(node => node.id))
 const activeComponentState = ref<Record<string, any[]>>({})
 const activeComponentId = ref('')
 const activeTreeNode = computed(() => {
@@ -171,7 +186,11 @@ function onInspectorTreeUpdated(_data: string) {
   if (data.inspectorId !== inspectorId)
     return
   tree.value = data.rootNodes
-  expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+
+  if (!flattenedTreeNodesIds.value.includes(activeComponentId.value)) {
+    activeComponentId.value = tree.value?.[0]?.id
+    expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+  }
 }
 
 rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
@@ -259,7 +278,7 @@ function closeComponentRenderCode() {
             </button>
           </div>
           <div ref="componentTreeContainer" class="no-scrollbar flex-1 select-none overflow-scroll">
-            <ComponentTree v-model="activeComponentId" :data="tree" />
+            <ComponentTree v-model="activeComponentId" :data="tree" :with-tag="true" />
           </div>
         </div>
       </Pane>

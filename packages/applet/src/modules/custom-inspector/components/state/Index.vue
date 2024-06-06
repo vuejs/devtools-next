@@ -24,6 +24,8 @@ const actions = ref<CustomInspectorOptions['nodeActions']>([])
 
 const tree = ref<CustomInspectorNode[]>([])
 const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[0]) : [])
+const flattenedTreeNodes = computed(() => flattenTreeNodes(tree.value))
+const flattenedTreeNodesIds = computed(() => flattenedTreeNodes.value.map(node => node.id))
 const selected = ref('')
 
 const state = ref<Record<string, CustomInspectorState[]>>({})
@@ -48,6 +50,19 @@ function getNodesByDepth(list: string[][], depth: number) {
     nodes.push(...item.slice(0, depth + 1))
   })
   return [...new Set(nodes)]
+}
+
+function flattenTreeNodes(tree: CustomInspectorNode[]) {
+  const res: CustomInspectorNode[] = []
+  const find = (treeNode: CustomInspectorNode[]) => {
+    treeNode.forEach((item) => {
+      res.push(item)
+      if (item.children?.length)
+        find(item.children)
+    })
+  }
+  find(tree)
+  return res
 }
 
 function getNodeActions() {
@@ -119,11 +134,11 @@ function onInspectorTreeUpdated(_data: string) {
   if (!data.rootNodes.length || data.inspectorId !== inspectorId.value)
     return
   tree.value = data.rootNodes
-  expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
-  // if ((!selected.value && data.rootNodes.length) || (selected.value && !data.rootNodes.find(node => node.id === selected.value))) {
-  //   selected.value = data.rootNodes[0].id
-  //   getInspectorState(data.rootNodes[0].id)
-  // }
+
+  if (!flattenedTreeNodesIds.value.includes(selected.value)) {
+    selected.value = tree.value?.[0]?.id
+    expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
+  }
 }
 
 function onInspectorStateUpdated(_data: string) {
@@ -160,20 +175,22 @@ onUnmounted(() => {
     <template v-if="tree.length">
       <Splitpanes class="flex-1 overflow-auto">
         <Pane border="r base" size="40" h-full>
-          <div h-full select-none overflow-scroll class="no-scrollbar">
-            <div v-if="actions?.length" class="flex justify-end pb-1" border="b dashed base">
+          <div class="h-full flex flex-col p2">
+            <div v-if="actions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
               <div class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
                   <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
                 </div>
               </div>
             </div>
-            <ComponentTree v-model="selected" :data="tree" />
+            <div class="no-scrollbar flex-1 select-none overflow-scroll">
+              <ComponentTree v-model="selected" :data="tree" />
+            </div>
           </div>
         </Pane>
         <Pane size="60">
           <div class="h-full flex flex-col p2">
-            <div v-if="nodeActions?.length" class="flex justify-end pb-1" border="b dashed base">
+            <div v-if="nodeActions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
               <div class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in nodeActions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callNodeAction(index)">
                   <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />

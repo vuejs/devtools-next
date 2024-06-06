@@ -24,9 +24,9 @@ function onImageLoadError() {
       <!-- Banner -->
       <div flex="~ col" mt-20 items-center>
         <div flex="~" mt--10 items-center justify-center>
-          <span>
+          <span class="mr-1">
             <span v-if="!imageLoaded" class="inline-block w20" />
-            <img v-show="imageLoaded && !imageLoadedError" :src="state.logo" :alt="`${state.label} Logo`" class="inline-block w20" @error="onImageLoadError" @load="onImageLoad">
+            <img v-show="imageLoaded && !imageLoadedError" :src="state.logo" :alt="`${state.label} Logo`" class="inline-block h16" @error="onImageLoadError" @load="onImageLoad">
             <span v-if="imageLoadedError" class="mr2 inline-block min-w-20 text-center text-10 font-600">{{ state.label }}</span>
           </span>
           <span>

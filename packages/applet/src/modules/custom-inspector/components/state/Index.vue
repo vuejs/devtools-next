@@ -153,7 +153,6 @@ function onInspectorStateUpdated(_data: string) {
   const { inspectorId: _inspectorId, ...filtered } = data.state
 
   state.value = filterEmptyState(filtered as any)
-  // expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 }
 
 onRpcConnected(() => {

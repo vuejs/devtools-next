@@ -127,7 +127,6 @@ function onInspectorStateUpdated(_data: string) {
 
   // @ts-expect-error skip type check
   state.value = filterEmptyState(_state!)
-  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 }
 
 rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)

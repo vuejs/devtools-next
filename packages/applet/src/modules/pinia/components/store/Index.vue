@@ -131,7 +131,6 @@ function onInspectorStateUpdated(_data: string) {
     state: _state.state,
     getters: _state.getters,
   })
-  expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
 }
 
 rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)

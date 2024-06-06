@@ -222,12 +222,12 @@ export function onRpcConnected(callback: () => void) {
   }
 
   timer = setInterval(() => {
-    if (retryCount >= 20) {
+    if (retryCount >= 30) {
       clearTimeout(timer)
     }
     retryCount++
     heartbeat()
-  }, retryCount * 80) as unknown as number
+  }, retryCount * 200 + 200) as unknown as number
   heartbeat()
 }
 

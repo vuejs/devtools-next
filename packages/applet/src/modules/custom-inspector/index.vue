@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import Home from './components/Home.vue'
@@ -68,6 +68,10 @@ watch(() => props.id, () => {
   getInspectorInfo()
 }, {
   immediate: true,
+})
+
+onUnmounted(() => {
+  rpc.value.unhighlight()
 })
 </script>
 

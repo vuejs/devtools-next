@@ -1,4 +1,4 @@
-const MAX_SERIALIZED_SIZE = 512 * 1024 // 1MB
+const MAX_SERIALIZED_SIZE = 2 * 1024 * 1024 // 2MB
 
 function encode(data: Record<string, unknown>, replacer: ((this: any, key: string, value: any) => any) | null, list: unknown[], seen: Map<unknown, number>) {
   let stored, key, value, i, l

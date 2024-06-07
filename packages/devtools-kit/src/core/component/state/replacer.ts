@@ -3,6 +3,8 @@ import { getBigIntDetails, getComponentDefinitionDetails, getDateDetails, getFun
 import { isVueInstance } from './is'
 import { sanitize } from './util'
 
+const seenInstance = new WeakSet()
+
 export function stringifyReplacer(key: string) {
   // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
   // @TODO: need to check if it will cause any other issues
@@ -75,6 +77,11 @@ export function stringifyReplacer(key: string) {
       return getRouterDetails(val)
     }
     else if (isVueInstance(val as Record<string, unknown>)) {
+      const componentVal = getInstanceDetails(val)
+      if (seenInstance.has(val)) {
+        return `[[CircularRef]] <${componentVal._custom.displayText}>`
+      }
+      seenInstance.add(val)
       return getInstanceDetails(val)
     }
     // @ts-expect-error skip type check

@@ -82,7 +82,7 @@ export function stringifyReplacer(key: string) {
         return `[[CircularRef]] <${componentVal._custom.displayText}>`
       }
       seenInstance.add(val)
-      return getInstanceDetails(val)
+      return componentVal
     }
     // @ts-expect-error skip type check
     else if (typeof val.render === 'function') {

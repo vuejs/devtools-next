@@ -162,7 +162,7 @@ export const functions = {
       broadcast.emit(DevToolsMessagingEvents.ROUTER_INFO_UPDATED, state)
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_TIMELINE_EVENT_TO_CLIENT, (payload) => {
-      broadcast.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, payload)
+      broadcast.emit(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, stringify(payload))
     })
     devtools.ctx.hooks.hook(DevToolsMessagingHookKeys.SEND_INSPECTOR_TO_CLIENT, (payload) => {
       broadcast.emit(DevToolsMessagingEvents.INSPECTOR_UPDATED, payload)

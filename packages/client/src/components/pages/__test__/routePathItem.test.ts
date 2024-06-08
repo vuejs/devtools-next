@@ -18,6 +18,9 @@ describe('component: RoutePathItem', () => {
     expect(parseExpressRoute('/foo/:id+')).toEqual(['/foo/', ':id+'])
     expect(parseExpressRoute('/foo/:id/bar')).toEqual(['/foo/', ':id', '/bar'])
     expect(parseExpressRoute('/foo/:id')).toEqual(['/foo/', ':id'])
+    expect(parseExpressRoute('/:id(\\d+)+')).toEqual(['/', ':id(\\d+)+'])
+    expect(parseExpressRoute('/:id(\\d+)*')).toEqual(['/', ':id(\\d+)*'])
+    expect(parseExpressRoute('/:id(\\d+)*/:name+')).toEqual(['/', ':id(\\d+)*', '/', ':name+'])
     // Example from Vue Router documentation
     // https://router.vuejs.org/guide/essentials/dynamic-matching.html#Catch-all-404-Not-found-Route
     expect(parseExpressRoute('/foo-:bar(.*)')).toEqual(['/foo-', ':bar(.*)'])

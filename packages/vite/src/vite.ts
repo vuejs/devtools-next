@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import * as fs from 'node:fs'
 import { normalizePath } from 'vite'
 import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
@@ -76,6 +77,8 @@ function mergeOptions(options: VitePluginVueDevToolsOptions): VitePluginVueDevTo
   return Object.assign({}, defaultOptions, options)
 }
 
+const devtoolsNextResourceSymbolString = '?__vue-devtools-next-resource'
+
 export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOptions): PluginOption {
   const vueDevtoolsPath = getVueDevtoolsPath()
   const inspect = Inspect({
@@ -87,8 +90,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
   let config: ResolvedConfig
 
   function configureServer(server: ViteDevServer) {
-    const base = (server.config.base) || '/'
-    server.middlewares.use(`${base}__devtools__`, sirv(DIR_CLIENT, {
+    server.middlewares.use(`${server.config.base || ''}__devtools__`, sirv(DIR_CLIENT, {
       single: true,
       dev: true,
     }))
@@ -132,12 +134,19 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       }
       else if (importee.startsWith('virtual:vue-devtools-path:')) {
         const resolved = importee.replace('virtual:vue-devtools-path:', `${vueDevtoolsPath}/`)
-        return resolved
+        return `${resolved}${devtoolsNextResourceSymbolString}`
       }
     },
     async load(id) {
-      if (id === 'virtual:vue-devtools-options')
-        return `export default ${JSON.stringify({ base: config.base, componentInspector: pluginOptions.componentInspector })}`
+      if (id === 'virtual:vue-devtools-options') {
+        return `export default ${JSON.stringify({ base: config.server.origin, componentInspector: pluginOptions.componentInspector })}`
+      }
+      else if (id.endsWith(devtoolsNextResourceSymbolString)) {
+        const { query, filename } = parseVueRequest(id.slice(0, -devtoolsNextResourceSymbolString.length))
+        if (query.type)
+          return
+        return await fs.promises.readFile(filename, 'utf-8')
+      }
     },
     transform(code, id, options) {
       if (options?.ssr)
@@ -167,7 +176,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
             injectTo: 'head-prepend',
             attrs: {
               type: 'module',
-              src: `${config.base || '/'}@id/virtual:vue-devtools-path:overlay.js`,
+              src: `${config.server.origin || ''}/@id/virtual:vue-devtools-path:overlay.js`,
             },
           },
           // inject inspector script manually to ensure it's loaded after vue-devtools
@@ -177,7 +186,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
             launchEditor: pluginOptions.launchEditor,
             attrs: {
               type: 'module',
-              src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,
+              src: `${config.server.origin || ''}/@id/virtual:vue-inspector-path:load.js`,
             },
           },
         ].filter(Boolean),
@@ -200,4 +209,43 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     }) as PluginOption,
     plugin,
   ].filter(Boolean)
+}
+
+export interface VueQuery {
+  vue?: boolean
+  src?: boolean
+  type?: 'script' | 'template' | 'style' | 'custom'
+  index?: number
+  lang?: string
+  raw?: boolean
+  from?: string
+  isJsx?: boolean
+}
+
+// Copied from vite-plugin-vue-inspector
+export function parseVueRequest(id: string) {
+  const [filename] = id.split('?', 2)
+  const url = new URL(id, 'https://devtools.vuejs.org/')
+  const query = Object.fromEntries(url.searchParams.entries()) as VueQuery
+  if (query.vue != null)
+    query.vue = true
+
+  if (query.src != null)
+    query.src = true
+
+  if (query.index != null)
+    query.index = Number(query.index)
+
+  if (query.raw != null)
+    query.raw = true
+
+  if (Object.prototype.hasOwnProperty.call(query, 'lang.tsx')
+    || Object.prototype.hasOwnProperty.call(query, 'lang.jsx')) {
+    query.isJsx = true
+  }
+
+  return {
+    filename,
+    query,
+  }
 }

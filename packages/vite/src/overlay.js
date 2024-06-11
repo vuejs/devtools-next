@@ -3,7 +3,7 @@ import { functions, setDevToolsClientUrl } from '@vue/devtools-core'
 import { addCustomTab, createRpcServer, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 function normalizeUrl(url) {
-  return new URL(`${vueDevToolsOptions.base || '/'}${url}`, import.meta.url).toString()
+  return new URL(`${vueDevToolsOptions.base || ''}/${url}`, import.meta.url).toString()
 }
 
 const overlayDir = normalizeUrl(`@id/virtual:vue-devtools-path:overlay`)

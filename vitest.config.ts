@@ -1,8 +1,16 @@
 import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
-  plugins: [Vue()],
+  plugins: [Vue(), AutoImport({
+    imports: [
+      'vue',
+      'vue-router',
+      '@vueuse/core',
+    ],
+    dts: true,
+  })],
   define: {
     __DEV__: true,
     __FEATURE_PROD_DEVTOOLS__: true,

@@ -6,6 +6,7 @@ import { DevToolsV6PluginAPIHookKeys, activeAppRecord, devtoolsContext, devtools
 import { ComponentWalker } from '../../core/component/tree/walker'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
+import { exposeInstanceToWindow } from '../vm'
 
 const INSPECTOR_ID = 'components'
 
@@ -58,6 +59,8 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
         }, DevToolsV6PluginAPIHookKeys.INSPECT_COMPONENT)
         // @ts-expect-error skip type @TODO
         payload.state = result
+
+        exposeInstanceToWindow(componentInstance)
       }
     })
 

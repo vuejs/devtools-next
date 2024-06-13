@@ -4,6 +4,7 @@ import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { computed, onUnmounted, ref } from 'vue'
 
 import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
+import { parse } from '@vue/devtools-kit'
 import EventList from './EventList.vue'
 import Navbar from '~/components/basic/Navbar.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -73,7 +74,8 @@ function normalizeGroupList(event: TimelineEventOptions['event']) {
   }
 }
 
-function onTimelineEventUpdated(payload) {
+function onTimelineEventUpdated(_payload) {
+  const payload = parse(_payload)
   if (!payload)
     return
 

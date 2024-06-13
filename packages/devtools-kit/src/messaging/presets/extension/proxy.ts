@@ -21,7 +21,10 @@ export function createExtensionProxyChannel(): MergeableChannelOptions {
 
   function sendMessageToDevToolsClient(e: MessageEvent) {
     if (e.data && e.data.source === __DEVTOOLS_KIT_EXTENSION_MESSAGING_EVENT_KEY__.SERVER_TO_PROXY) {
-      port.postMessage(e.data.payload)
+      try {
+        port.postMessage(e.data.payload)
+      }
+      catch (e) {}
     }
   }
 

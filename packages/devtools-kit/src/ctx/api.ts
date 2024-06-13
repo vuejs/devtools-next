@@ -1,8 +1,10 @@
 import type { HookKeys, Hookable } from 'hookable'
+import { target } from '@vue/devtools-shared'
 import type { CustomInspectorState } from '../types'
 import { StateEditor } from '../core/component/state/editor'
 import { cancelInspectComponentHighLighter, inspectComponentHighLighter, scrollToComponent } from '../core/component-highlighter'
 import { getComponentInstance } from '../core/component/utils'
+import { getRootElementsFromComponentInstance } from '../core/component/tree/el'
 import { openInEditor } from '../core/open-in-editor'
 import { normalizeRouterInfo } from '../core/router'
 import { getComponentInspector } from '../core/component-inspector'
@@ -106,6 +108,16 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
         setActiveAppRecord(appRecord)
         normalizeRouterInfo(appRecord, activeAppRecord)
         callInspectorUpdatedHook()
+      }
+    },
+    // inspect dom
+    inspectDOM(instanceId: string) {
+      const instance = getComponentInstance(activeAppRecord.value, instanceId)
+      if (instance) {
+        const [el] = getRootElementsFromComponentInstance(instance)
+        if (el) {
+          target.__VUE_DEVTOOLS_INSPECT_DOM_TARGET__ = el
+        }
       }
     },
   }

@@ -1,6 +1,6 @@
 import { Replacer } from '../core/component/state/replacer'
 
-const MAX_SERIALIZED_SIZE = 512 * 1024 // 1MB
+const MAX_SERIALIZED_SIZE = 2 * 1024 * 1024 // 2MB
 
 function isObject(_data: unknown, proto: string): _data is Record<string, unknown> {
   return proto === '[object Object]'

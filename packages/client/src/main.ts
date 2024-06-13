@@ -3,7 +3,7 @@ import 'floating-vue/dist/style.css'
 import { getViteClient } from 'vite-hot-client'
 
 import { isInSeparateWindow } from '@vue/devtools-shared'
-import { VueDevToolsVuePlugin, createViteClientRpc, functions } from '@vue/devtools-core'
+import { VueDevToolsVuePlugin, createViteClientRpc, functions, rpc } from '@vue/devtools-core'
 import { createRpcClient, setViteClientContext } from '@vue/devtools-kit'
 import { createApp } from 'vue'
 import type { App as VueApp } from 'vue'
@@ -104,5 +104,6 @@ export function disconnectDevToolsClient() {
 }
 
 export function reloadDevToolsClient() {
+  rpc.value.initDevToolsServerListener()
   vueApp?.config?.globalProperties?.$getDevToolsState()
 }

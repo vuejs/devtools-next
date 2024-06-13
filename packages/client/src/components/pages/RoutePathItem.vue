@@ -11,7 +11,7 @@ const emit = defineEmits<{
 }>()
 
 function parseExpressRoute(route: string) {
-  return route.split(/(:\w+[\?\*]?)/).filter(Boolean)
+  return route.split(/(:\w+[?*+]?(?:\([^)]*\))?[?*+]?)/).filter(Boolean)
 }
 
 const partsInput = ref<string[]>([])

@@ -28,7 +28,7 @@ export function kebabize(str: string) {
 }
 
 export function basename(filename: string, ext: string): string {
-  const normalizedFilename = filename.replace(/^[a-zA-Z]:/, '').replace(/\\/g, '/')
+  const normalizedFilename = filename.replace(/^[a-z]:/i, '').replace(/\\/g, '/')
   const lastSlashIndex = normalizedFilename.lastIndexOf('/')
   const baseNameWithExt = normalizedFilename.substring(lastSlashIndex + 1)
 

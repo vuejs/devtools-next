@@ -1,5 +1,5 @@
 import { target } from '@vue/devtools-shared'
-import { devtoolsContext } from '../../../state'
+import { activeAppRecord } from '../../../ctx'
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, specialTypeRE, symbolRE } from './constants'
 
 export function reviveSet(val) {
@@ -38,7 +38,7 @@ export function revive(val) {
   else if (val && val._custom) {
     const { _custom: custom } = val
     if (custom.type === 'component')
-      return devtoolsContext.appRecord?.instanceMap.get(custom.id)
+      return activeAppRecord.value.instanceMap.get(custom.id)
     else if (custom.type === 'map')
       return reviveMap(val)
     else if (custom.type === 'set')

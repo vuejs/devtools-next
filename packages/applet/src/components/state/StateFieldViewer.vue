@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { InspectorCustomState, InspectorState, InspectorStateEditorPayload } from '@vue/devtools-kit'
-import { formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
+import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
+import { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { computed, ref, watch } from 'vue'
-import { editInspectorState } from '@vue/devtools-core'
+import { rpc } from '@vue/devtools-core'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import ChildStateViewer from './ChildStateViewer.vue'
@@ -15,18 +15,23 @@ import type { EditorAddNewPropType } from '~/composables/state-editor'
 import { useHover } from '~/composables/hover'
 
 const props = defineProps<{
-  data: InspectorState
+  data: CustomInspectorState
   depth: number
   index: string
+  expandedStateId?: string
 }>()
 
 const STATE_FIELDS_LIMIT_SIZE = 30
 const limit = ref(STATE_FIELDS_LIMIT_SIZE)
 // display value
-const displayedValue = computed(() => formatInspectorStateValue(props.data.value))
+const displayedValue = computed(() => formatInspectorStateValue(props.data.value, false, {
+  customClass: {
+    string: 'max-w-120 truncate',
+  },
+}))
 const type = computed(() => getInspectorStateValueType(props.data.value))
 const raw = computed(() => getRaw(props.data.value))
-const { expanded, toggleExpanded } = useToggleExpanded()
+const { expanded, toggleExpanded } = useToggleExpanded(props.expandedStateId ?? '')
 
 // custom state format class
 const stateFormatClass = computed(() => {
@@ -53,7 +58,7 @@ const normalizedDisplayedKey = computed(() => normalizedPath.value[normalizedPat
 const normalizedDisplayedValue = computed(() => {
   const directlyDisplayedValueMap = ['Reactive']
   const extraDisplayedValue = (props.data as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
-  if (directlyDisplayedValueMap.includes(extraDisplayedValue!)) {
+  if (directlyDisplayedValueMap.includes(extraDisplayedValue as string)) {
     return extraDisplayedValue
   }
 
@@ -65,7 +70,8 @@ const normalizedDisplayedValue = computed(() => {
     const _type = (props.data.value as InspectorCustomState)?._custom?.type
     const _value = type.value === 'custom' && !_type ? `"${displayedValue.value}"` : (displayedValue.value === '' ? `""` : displayedValue.value)
     const normalizedType = type.value === 'custom' && _type === 'ref' ? getInspectorStateValueType(_value) : type.value
-    const result = `<span class="${normalizedType}-state-type flex whitespace-nowrap">${_value}</span>`
+    const selectText = type.value === 'string' ? 'select-text' : ''
+    const result = `<span class="${normalizedType}-state-type flex whitespace-nowrap ${selectText}">${_value}</span>`
 
     if (extraDisplayedValue)
       return `${result} <span class="text-gray-500">(${extraDisplayedValue})</span>`
@@ -90,7 +96,7 @@ const normalizedDisplayedChildren = computed(() => {
       ...inherit,
       editable: props.data.editable && !isUneditableType,
       creating: false,
-    })) as unknown as InspectorState[]
+    })) as unknown as CustomInspectorState[]
   }
   else if (isObject(value)) {
     displayedChildren = Object.keys(value).slice(0, limit.value).map(key => ({
@@ -105,7 +111,7 @@ const normalizedDisplayedChildren = computed(() => {
       displayedChildren = sortByKey(displayedChildren)
   }
 
-  return (displayedChildren === props.data.value ? [] : displayedChildren) as InspectorState[]
+  return (displayedChildren === props.data.value ? [] : displayedChildren) as CustomInspectorState[]
 })
 
 // has children
@@ -130,19 +136,20 @@ watch(() => editing.value, (v) => {
   }
 })
 
-function submit() {
+async function submit() {
   const data = props.data
-  editInspectorState({
+  await rpc.value.editInspectorState({
     path: normalizedPath.value,
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: null!,
       type: editingType.value,
       value: toSubmit(editingText.value, raw.value.customType),
     },
-  } satisfies InspectorStateEditorPayload)
+  } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
+  await rpc.value.sendInspectorState(state.value.inspectorId)
   toggleEditing()
 }
 
@@ -157,19 +164,20 @@ function addNewProp(type: EditorAddNewPropType) {
   addNewPropApi(type, raw.value.value)
 }
 
-function submitDrafting() {
+async function submitDrafting() {
   const data = props.data
-  editInspectorState({
+  await rpc.value.editInspectorState({
     path: [...normalizedPath.value, draftingNewProp.value.key],
     inspectorId: state.value.inspectorId,
     type: data.stateType!,
-    nodeId,
+    nodeId: nodeId.value,
     state: {
       newKey: draftingNewProp.value.key,
       type: typeof toSubmit(draftingNewProp.value.value),
       value: toSubmit(draftingNewProp.value.value),
     },
-  } satisfies InspectorStateEditorPayload)
+  } as unknown as DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.EDIT_COMPONENT_STATE])
+  await rpc.value.sendInspectorState(state.value.inspectorId)
   resetDrafting()
 }
 

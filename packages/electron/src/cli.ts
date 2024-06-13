@@ -6,7 +6,7 @@ const appPath = decodeURIComponent(resolve(new URL('../dist/app.cjs', import.met
 const argv = process.argv.slice(2)
 
 const result = execaSync(electron as unknown as string, [appPath].concat(argv), {
-  stdio: 'ignore',
+  stdio: 'inherit',
   windowsHide: false,
 })
 

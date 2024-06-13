@@ -1,30 +1,38 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { checkVueInspectorDetected, enableVueInspector, useDevToolsBridge, useDevToolsState } from '@vue/devtools-core'
-import { isInChromePanel } from '@vue/devtools-shared'
-import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
+import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
 
 import('./setup/unocss-runtime')
-
-// @TODO: fix browser extension cross-origin localStorage issue
 useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()
-const { connected, clientConnected } = useDevToolsState()
+const hostEnv = useHostEnv()
+const { connected, clientConnected, activeAppRecordId: _activeAppRecordId, appRecords: _appRecords } = useDevToolsState()
 const clientState = devtoolsClientState
 
-const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
-const viewModeSwitchVisible = computed(() => viewMode.value === 'overlay' && isInChromePanel)
-const bridge = useDevToolsBridge()
-
+const devtoolsReady = computed(() => connected.value && clientConnected.value)
 const isUtilityView = computed(() => route.path.startsWith('/__') || route.path === '/')
 const sidebarExpanded = computed(() => clientState.value.expandSidebar)
-const devtoolsReady = computed(() => clientConnected.value && connected.value)
+const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
+const splitScreenSize = computed({
+  get: () => clientState.value.splitScreen.size,
+  set: v => clientState.value.splitScreen.size = v,
+})
 
 watchEffect(() => {
   const scale = devtoolsClientState.value.scale
   document.documentElement.style.fontSize = `${scale * 15}px`
+})
+
+onRpcConnected(() => {
+  watchEffect(() => {
+    rpc.value.emit('update-client-state', {
+      minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
+      closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
+      showFloatingPanel: devtoolsClientState.value.showPanel,
+    })
+  })
 })
 
 watch(devtoolsReady, (v) => {
@@ -43,50 +51,47 @@ watch(devtoolsReady, (v) => {
 
 useEventListener('keydown', (e) => {
   if (e.code === 'KeyD' && e.altKey && e.shiftKey)
-    bridge.value.emit('toggle-panel')
+    rpc.value.emit('toggle-panel')
 })
 
 watchEffect(() => {
-  bridge.value.emit('update-client-state', {
-    minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
-    closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
-    showFloatingPanel: devtoolsClientState.value.showPanel,
+  activeAppRecords.value = _appRecords.value
+  activeAppRecordId.value = _activeAppRecordId.value
+})
+
+onRpcConnected(() => {
+  rpc.value.initDevToolsServerListener()
+  rpc.value.checkVueInspectorDetected().then((detected) => {
+    if (detected) {
+      vueInspectorDetected.value = true
+      registerCommands(() =>
+        [{
+          id: 'action:vue-inspector',
+          title: 'Inspector',
+          icon: 'i-carbon-select-window',
+          action: async () => {
+            rpc.value.emit('toggle-panel', false)
+            await rpc.value.enableVueInspector()
+          },
+        }],
+      )
+    }
   })
 })
 
-const splitScreenEnabled = computed(() => clientState.value.splitScreen.enabled)
-const splitScreenSize = computed({
-  get: () => clientState.value.splitScreen.size,
-  set: v => clientState.value.splitScreen.size = v,
-})
+function onActiveAppUnmounted() {
+  router.push('/overview').then(() => {
+    refreshCurrentPageData()
+  })
+}
 
-// setup active app
-const devtoolsState = useDevToolsState()
-watchEffect(() => {
-  activeAppRecords.value = devtoolsState.appRecords.value
-  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+onDevToolsConnected(() => {
+  rpc.functions.on(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, onActiveAppUnmounted)
 })
 
 // register commands
 const { copy } = useCopy()
 const eyeDropper = useEyeDropper({})
-
-checkVueInspectorDetected().then((detected) => {
-  if (detected) {
-    vueInspectorDetected.value = true
-    registerCommands(() =>
-      [{
-        id: 'action:vue-inspector',
-        title: 'Inspector',
-        icon: 'i-carbon-select-window',
-        action: async () => {
-          bridge.value.emit('toggle-panel', false)
-          await enableVueInspector()
-        },
-      }],
-    )
-  }
-})
 
 registerCommands(() => [
   ...(eyeDropper.isSupported.value
@@ -95,6 +100,7 @@ registerCommands(() => [
         title: 'Color Picker',
         icon: 'i-carbon-eyedropper',
         action: async () => {
+          rpc.value.emit('toggle-panel', false)
           const { sRGBHex } = await eyeDropper.open() || {}
           if (sRGBHex)
             copy(sRGBHex)
@@ -102,12 +108,22 @@ registerCommands(() => [
       }]
     : []),
 ])
+
+onMounted(() => {
+  onRpcConnected(() => {
+    rpc.value.toggleClientConnected(true)
+  })
+})
+
+onUnmounted(() => {
+  rpc.value.toggleClientConnected(false)
+  rpc.functions.off(DevToolsMessagingEvents.ACTIVE_APP_UNMOUNTED, onActiveAppUnmounted)
+})
 </script>
 
 <template>
   <main class="fixed inset-0 h-screen w-screen $ui-bg-base">
     <AppConnecting v-if="!devtoolsReady" />
-    <ViewModeSwitch v-else-if="viewModeSwitchVisible" />
     <div
       v-else
       class="h-full of-auto transition-base"

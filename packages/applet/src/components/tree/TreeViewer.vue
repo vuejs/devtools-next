@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentTreeNode } from '@vue/devtools-kit'
+import type { ComponentTreeNode, InspectorTree } from '@vue/devtools-kit'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import ComponentTreeViewer from '~/components/tree/TreeViewer.vue'
 import NodeTag from '~/components/basic/NodeTag.vue'
@@ -8,14 +8,20 @@ import { useToggleExpanded } from '~/composables/toggle-expanded'
 import { useSelect } from '~/composables/select'
 
 withDefaults(defineProps<{
-  data: ComponentTreeNode[]
+  data: ComponentTreeNode[] | InspectorTree[]
   depth: number
+  withTag: boolean
 }>(), {
   depth: 0,
+  withTag: false,
 })
 const selectedNodeId = defineModel()
 const { expanded, toggleExpanded } = useToggleExpanded()
 const { select: _select } = useSelect()
+
+function normalizeLabel(item: ComponentTreeNode | InspectorTree) {
+  return ('name' in item && item?.name) || ('label' in item && item.label)
+}
 
 function select(id: string) {
   selectedNodeId.value = id
@@ -35,6 +41,7 @@ function select(id: string) {
       :style=" { paddingLeft: `${15 * depth + 4}px` }"
       :class="{ 'bg-primary-600! active': selectedNodeId === item.id }"
       @click="select(item.id)"
+      @dblclick="toggleExpanded(item.id)"
     >
       <ToggleExpanded
         v-if="item?.children?.length"
@@ -45,16 +52,16 @@ function select(id: string) {
       <!-- placeholder -->
       <span v-else pl5 />
       <span font-state-field text-4>
-        <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
-        <span group-hover:text-white class="ws-nowrap [.active_&]:(text-white)">{{ item.name }}</span>
-        <span class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
+        <span v-if="withTag" class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
+        <span group-hover:text-white class="ws-nowrap [.active_&]:(text-white)">{{ normalizeLabel(item) }}</span>
+        <span v-if="withTag" class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&gt;</span>
       </span>
       <NodeTag v-for="(_item, _index) in item.tags" :key="_index" :tag="_item" />
     </div>
     <div
       v-if="item?.children?.length && expanded.includes(item.id)"
     >
-      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" />
+      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" :with-tag="withTag" />
     </div>
   </div>
 </template>

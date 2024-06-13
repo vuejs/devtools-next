@@ -53,8 +53,8 @@ export const vueBuiltins = new Set([
 ])
 
 export const symbolRE = /^\[native Symbol Symbol\((.*)\)\]$/
-export const rawTypeRE = /^\[object (\w+)]$/
-export const specialTypeRE = /^\[native (\w+) (.*?)(<>((.|\s)*))?\]$/
+export const rawTypeRE = /^\[object (\w+)\]$/
+export const specialTypeRE = /^\[native (\w+) (.*?)(<>(([\s\S])*))?\]$/
 export const fnTypeRE = /^(?:function|class) (\w+)/
 export const MAX_STRING_SIZE = 10000
 export const MAX_ARRAY_SIZE = 5000

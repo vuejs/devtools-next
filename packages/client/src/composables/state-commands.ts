@@ -1,7 +1,7 @@
 import { randomStr } from '@vue/devtools-shared'
 import { CustomCommand } from '@vue/devtools-kit'
 import { MaybeRefOrGetter } from 'vue'
-import { onCustomCommandsUpdated, useDevToolsState } from '@vue/devtools-core'
+import { useDevToolsState } from '@vue/devtools-core'
 
 export interface CommandItem {
   id: string
@@ -19,7 +19,6 @@ function uniqueById(items: CommandItem[]): CommandItem[] {
 }
 
 const registeredCommands = reactive(new Map<string, MaybeRefOrGetter<CommandItem[]>>())
-let removeCommandsUpdatedListener: (() => void) | null = null
 
 // @unocss-include
 export function useCommands() {
@@ -31,13 +30,6 @@ export function useCommands() {
 
   watchEffect(() => {
     customCommands.value = state.commands.value || []
-  })
-
-  onDevToolsClientConnected(() => {
-    removeCommandsUpdatedListener?.()
-    removeCommandsUpdatedListener = onCustomCommandsUpdated((data) => {
-      customCommands.value = data
-    })
   })
 
   const fixedCommands: CommandItem[] = [

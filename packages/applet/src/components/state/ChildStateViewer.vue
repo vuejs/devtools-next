@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import type { InspectorState } from '@vue/devtools-kit'
+import type { CustomInspectorState } from '@vue/devtools-kit'
 import StateFieldViewer from './StateFieldViewer.vue'
 
 withDefaults(defineProps<{
-  data: InspectorState[]
+  data: CustomInspectorState[]
   depth: number
   index: string
+  expandedStateId?: string
 }>(), {
   depth: 0,
+  expandedStateId: '',
 })
 </script>
 
@@ -17,7 +19,7 @@ withDefaults(defineProps<{
       v-for="(item, i) in data"
       :key="i"
     >
-      <StateFieldViewer :data="item" :depth="depth + 1" :index="`${index}-${i}`" />
+      <StateFieldViewer :data="item" :depth="depth + 1" :index="`${index}-${i}`" :expanded-state-id="expandedStateId" />
     </div>
   </div>
 </template>

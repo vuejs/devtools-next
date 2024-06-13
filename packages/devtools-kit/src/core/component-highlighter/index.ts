@@ -1,6 +1,6 @@
 import type { VueAppInstance } from '../../types'
 import { getComponentId, getComponentInstance, getInstanceName } from '../component/utils'
-import { devtoolsContext } from '../../state'
+import { activeAppRecord } from '../../ctx'
 import { getRootElementsFromComponentInstance } from '../component/tree/el'
 import { getComponentBoundingRect } from '../component/state/bounding-rect'
 import type { ComponentHighLighterOptions, ScrollToComponentOptions } from './types'
@@ -129,7 +129,7 @@ function update(options: ComponentHighLighterOptions) {
 
 export function toggleComponentHighLighter(options: ComponentHighLighterOptions) {
   if (options.visible) {
-    const instance = getComponentInstance(devtoolsContext.appRecord!, options.id)
+    const instance = getComponentInstance(activeAppRecord.value!, options.id)
     if (instance && (options.bounds.width || options.bounds.height)) {
       const name = getInstanceName(instance)
       const el = getContainerElement()
@@ -178,7 +178,7 @@ function selectComponentFn(e: MouseEvent, cb) {
   e.preventDefault()
   e.stopPropagation()
   if (inspectInstance) {
-    const app = devtoolsContext.appRecord?.app as unknown as VueAppInstance
+    const app = activeAppRecord.value?.app as unknown as VueAppInstance
     getComponentId({
       app,
       uid: app.uid,
@@ -219,7 +219,7 @@ export function inspectComponentHighLighter() {
 }
 
 export function scrollToComponent(options: ScrollToComponentOptions) {
-  const instance = getComponentInstance(devtoolsContext.appRecord!, options.id)
+  const instance = getComponentInstance(activeAppRecord.value!, options.id)
   if (instance) {
     const [el] = getRootElementsFromComponentInstance(instance)
     // @ts-expect-error type mismatch

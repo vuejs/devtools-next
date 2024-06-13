@@ -61,5 +61,13 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'literal-state-type',
     'boolean-state-type',
     'null-state-type',
+    'i-ic-baseline-alarm',
+    'i-ic-baseline-file-download',
+    'i-ic-baseline-delete',
+    'i-ic-baseline-settings-backup-restore',
+    'i-ic-baseline-hourglass-empty',
+    'i-ic-baseline-error-outline',
+    'i-ic-baseline-done-outline',
+    'i-ic-baseline-delete-sweep',
   ],
 }])) as any

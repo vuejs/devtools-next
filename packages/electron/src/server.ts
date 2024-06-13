@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createApp, eventHandler, toNodeListener } from 'h3'
 import { Server } from 'socket.io'
+import { createRpcProxy, setElectronProxyContext } from '@vue/devtools-kit'
 
 const port = process.env.PORT || 8098
 export function init() {
@@ -24,6 +25,11 @@ export function init() {
   })
 
   io.on('connection', (socket) => {
+    setElectronProxyContext(socket)
+    createRpcProxy({
+      preset: 'electron',
+    })
+
     // Disconnect any previously connected apps
     socket.broadcast.emit('vue-devtools:disconnect-user-app')
 
@@ -38,10 +44,6 @@ export function init() {
     socket.on('disconnect', (reason) => {
       if (reason.indexOf('client'))
         socket.broadcast.emit('vue-devtools-disconnect-devtools')
-    })
-
-    socket.on('vue-devtools:message', (data) => {
-      socket.broadcast.emit('vue-devtools:message', data)
     })
   })
 

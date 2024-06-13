@@ -124,3 +124,16 @@ describe('format: toSubmit', () => {
     expect(serialized).toStrictEqual(value.target)
   })
 })
+
+describe('format: customClass', () => {
+  it.each([
+    { value: 'string-value', target: '<span class="custom-class">string-value</span>' },
+  ])('value: $value should be serialized to target with custom class', (value) => {
+    const serialized = format.formatInspectorStateValue(value.value, false, {
+      customClass: {
+        string: 'custom-class',
+      },
+    })
+    expect(serialized).toStrictEqual(value.target)
+  })
+})

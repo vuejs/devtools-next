@@ -10,12 +10,14 @@ export default defineConfig(mergeConfig(baseConfig, {
   },
   build: {
     emptyOutDir: false,
+    outDir: 'dist/devtools-client-lib',
     lib: {
       entry: resolve(__dirname, './src/index.ts'),
       name: 'devtoolsPanel',
       fileName: () => 'devtools-panel.js',
       formats: ['es'],
     },
+    cssMinify: true,
     rollupOptions: {
       output: {
         assetFileNames: 'devtools-panel.[ext]',
@@ -41,7 +43,7 @@ export default defineConfig(mergeConfig(baseConfig, {
       enforce: 'post',
       closeBundle() {
         // copy
-        const clientFile = resolve(__dirname, './dist')
+        const clientFile = resolve(__dirname, './dist/devtools-client-lib')
         ;['../browser-extension/client', '../electron/client'].forEach((dir) => {
           fse.copySync(clientFile, resolve(__dirname, dir))
         })

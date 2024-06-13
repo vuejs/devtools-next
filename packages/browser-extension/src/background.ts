@@ -16,24 +16,32 @@ function initPort(portInfo: PortInfo): Record<'devtools' | 'userApp', chrome.run
 
 function devtoolsUserAppPipe(tabId: string | number) {
   const { devtools, userApp } = ports[tabId]
+  let disconnected = false
 
   function onDevtoolsMessage(message) {
-    if (process.env.NODE_ENV === 'development')
+    if (disconnected)
+      return
+    if (process.env.NODE_ENV === 'development') {
       console.log('%cdevtools -> userApp', 'color:#888;', message)
+    }
 
     userApp.postMessage(message)
   }
   devtools.onMessage.addListener(onDevtoolsMessage)
 
   function onUserAppMessage(message) {
-    if (process.env.NODE_ENV === 'development')
+    if (disconnected)
+      return
+    if (process.env.NODE_ENV === 'development') {
       console.log('%cuserApp -> devtools', 'color:#888;', message)
+    }
 
     devtools.postMessage(message)
   }
   userApp.onMessage.addListener(onUserAppMessage)
 
   function shutdown() {
+    disconnected = true
     if (!ports[tabId])
       return
     const { devtools, userApp } = ports[tabId]
@@ -41,7 +49,8 @@ function devtoolsUserAppPipe(tabId: string | number) {
     userApp.onMessage.removeListener(onUserAppMessage)
     devtools?.disconnect()
     userApp?.disconnect()
-    ports[tabId] = null!
+    delete ports[tabId]
+    // ports[tabId] = null!
   }
 
   devtools.onDisconnect.addListener(shutdown)
@@ -86,14 +95,15 @@ chrome.runtime.onMessage.addListener((req, sender) => {
     chrome.action.setIcon({
       tabId: sender.tab.id,
       path: {
-        16: `../icons/16${suffix}.png`,
-        48: `../icons/48${suffix}.png`,
-        128: `../icons/128${suffix}.png`,
+        16: chrome.runtime.getURL(`icons/16${suffix}.png`),
+        48: chrome.runtime.getURL(`icons/48${suffix}.png`),
+        128: chrome.runtime.getURL(`icons/128${suffix}.png`),
       },
     })
+
     chrome.action.setPopup({
       tabId: sender.tab.id,
-      popup: req.devtoolsEnabled ? `../popups/enabled${suffix}.html` : `../popups/disabled${suffix}.html`,
+      popup: req.devtoolsEnabled ? chrome.runtime.getURL(`popups/enabled${suffix}.html`) : chrome.runtime.getURL(`popups/disabled${suffix}.html`),
     })
   }
 })

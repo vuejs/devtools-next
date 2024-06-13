@@ -6,25 +6,25 @@
     "not ie 11"
   ],
   "name": "webpack-playground",
-  "version": "7.1.3",
+  "version": "7.3.0-beta.3",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "core-js": "^3.37.0",
-    "vue": "^3.4.26"
+    "core-js": "^3.37.1",
+    "vue": "^3.4.27"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/eslint-parser": "^7.24.5",
+    "@babel/core": "^7.24.7",
+    "@babel/eslint-parser": "^7.24.7",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/devtools": "workspace:*",
     "@vue/devtools-api": "workspace:*",
-    "eslint": "^9.1.1",
-    "eslint-plugin-vue": "^9.25.0"
+    "eslint": "^9.4.0",
+    "eslint-plugin-vue": "^9.26.0"
   },
   "eslintConfig": {
     "env": {

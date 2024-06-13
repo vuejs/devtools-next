@@ -1,3 +1,3 @@
-export * from './api'
-export * from './plugin'
-export * from './hook'
+import { DevToolsV6PluginAPI } from './v6'
+
+export const DevToolsPluginAPI = DevToolsV6PluginAPI

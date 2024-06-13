@@ -1,5 +1,4 @@
-import type { DevtoolsBridgeAppRecord } from '@vue/devtools-core'
-import { deepClone, isInElectron } from '@vue/devtools-shared'
+import { deepClone, isInChromePanel, isInElectron } from '@vue/devtools-shared'
 import type { ModuleBuiltinTab } from '~/types'
 
 // @unocss-include
@@ -49,14 +48,6 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       path: 'pinia',
       title: 'Pinia',
     },
-
-    {
-      icon: 'i-carbon-language',
-      name: 'i18n',
-      order: -100,
-      path: 'i18n',
-      title: 'I18n Resources',
-    },
   ]],
   ['advanced', [
     {
@@ -75,31 +66,31 @@ export const viteOnlyTabs = [
   'vite-inspect',
 ]
 
-type Detective = NonNullable<DevtoolsBridgeAppRecord['moduleDetectives']>
-
-const moduleDetectivesMapping = {
-  pinia: 'pinia',
-  router: 'vueRouter',
-  i18n: 'vueI18n',
-} satisfies Record<string, keyof Detective>
-
-export function isDetected(moduleDetectives: Detective, tab: ModuleBuiltinTab) {
-  const key = tab.name
-  return key in moduleDetectivesMapping && moduleDetectives[moduleDetectivesMapping[key]]
-}
-
-export function getBuiltinTab(viteDetected: boolean, moduleDetectives?: DevtoolsBridgeAppRecord['moduleDetectives']): [string, ModuleBuiltinTab[]][] {
+export function getBuiltinTab(viteDetected: boolean, customInspectorTabs: ModuleBuiltinTab[]): [string, ModuleBuiltinTab[]][] {
   const tab = deepClone(builtinTab)
   // filter out modules that are not detected
   tab.forEach((item) => {
-    if (item[0] === 'modules')
-      item[1] = item[1].filter(t => moduleDetectives ? isDetected(moduleDetectives, t) : true)
+    if (item[0] === 'modules') {
+      // integration pinia and router tabs
+      item[1] = item[1].filter((t) => {
+        if (t.name === 'router') {
+          return customInspectorTabs.findIndex(item => item.name.startsWith('router-inspector')) > -1
+        }
+        else if (t.name === 'pinia') {
+          return customInspectorTabs.findIndex(item => item.name === 'pinia') > -1
+        }
+        return true
+      })
+      const normalizedCustomInspectorTabs = customInspectorTabs.filter(item => !(item.name.startsWith('router-inspector') || item.name === 'pinia'))
+
+      item[1] = [...item[1], ...normalizedCustomInspectorTabs]
+    }
   })
 
-  // @TODO: electron app support vite only tabs
-  return (viteDetected && !isInElectron)
+  return (viteDetected && (!isInElectron && !isInChromePanel))
     ? tab
     : tab.map(([_, tabs]) => [_, tabs.filter(t => !viteOnlyTabs.includes(t.name))])
 }
 
 export const CUSTOM_TAB_VIEW = 'custom-tab-view'
+export const CUSTOM_INSPECTOR_TAB_VIEW = 'custom-inspector-tab-view'

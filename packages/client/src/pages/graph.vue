@@ -1,27 +1,21 @@
 <script setup lang="ts">
-import { callViteServerAction, defineViteClientListener } from '@vue/devtools-core'
+import { onViteRpcConnected, viteRpc } from '@vue/devtools-core'
 import { Network } from 'vis-network'
-import type { ModuleInfo } from '@vue/devtools-core'
-
-const getRoot = callViteServerAction<string>('get-vite-root')
-const getGraph = callViteServerAction<ModuleInfo[]>('graph:get-modules')
-
-const onModuleUpdated = defineViteClientListener('graph:module-updated')
 
 async function fetchGraph() {
-  const root = await getRoot()
-  getGraph().then((res) => {
+  const root = await viteRpc.value.getRoot().then(res => res)
+  viteRpc.value.getGraphModules().then((res) => {
     parseGraphRawData(res, root)
   })
 }
 
-let cleanupModuleUpdatedEffect: Function
-
-onDevToolsClientConnected(() => {
+function onModuleUpdated() {
   fetchGraph()
-  cleanupModuleUpdatedEffect = onModuleUpdated(() => {
-    fetchGraph()
-  })
+}
+
+onViteRpcConnected(() => {
+  fetchGraph()
+  viteRpc.functions.on('graphModuleUpdated', onModuleUpdated)
 })
 
 const container = ref<HTMLDivElement>()
@@ -58,7 +52,7 @@ onMounted(() => {
 onUnmounted(() => {
   cleanupGraphRelatedStates()
   networkRef.value?.destroy()
-  cleanupModuleUpdatedEffect?.()
+  viteRpc.functions.off('graphModuleUpdated', onModuleUpdated)
 })
 
 const navbarRef = ref<HTMLElement>()

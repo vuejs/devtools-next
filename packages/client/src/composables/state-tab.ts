@@ -1,7 +1,7 @@
-import { onCustomTabsUpdated, useDevToolsState } from '@vue/devtools-core'
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
-import { isInElectron } from '@vue/devtools-shared'
+import { isInChromePanel, isInElectron } from '@vue/devtools-shared'
+import { useDevToolsState } from '@vue/devtools-core'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
 
@@ -22,22 +22,24 @@ export interface CategorizedCategory {
 
 export type CategorizedTabs = [CategorizedCategory, CategorizedTab[]][]
 
-let removeTabsUpdatedListener: (() => void) | null = null
-
 export function useAllTabs() {
   const state = useDevToolsState()
+  const customInspectorTabs = useCustomInspectorTabs()
+
   const customTabs = ref<CustomTab[]>(state.tabs.value || [])
+  watchEffect(() => {
+    customTabs.value = state.tabs.value
+  })
   const allTabs = computed(() => {
     const vitePluginDetected = state.vitePluginDetected.value
-    const tabs = [...getBuiltinTab(vitePluginDetected, activeAppRecord.value?.moduleDetectives)]
+    const tabs = [...getBuiltinTab(vitePluginDetected, customInspectorTabs.value)]
     customTabs.value.forEach((tab) => {
       const currentTab: [string, Array<ModuleBuiltinTab | CustomTab>] | undefined = tabs.find(t => t[0] === tab.category)
       if (currentTab) {
         if (currentTab[1].some(t => t.name === tab.name))
           return
 
-        // @TODO: electron app support vite only tabs
-        if ((!vitePluginDetected || isInElectron) && viteOnlyTabs.includes(tab.name))
+        if ((!vitePluginDetected || isInElectron || isInChromePanel) && viteOnlyTabs.includes(tab.name))
           return
 
         currentTab[1].push({
@@ -45,7 +47,7 @@ export function useAllTabs() {
         })
       }
     })
-    return tabs
+    return [...tabs]
   })
   const flattenedTabs = computed(() => {
     return allTabs.value.reduce((prev, [_, tabs]) => {
@@ -105,13 +107,6 @@ export function useAllTabs() {
       })
       return prev
     }, [] as Array<ModuleBuiltinTab | CustomTab>)
-  })
-
-  onDevToolsClientConnected(() => {
-    removeTabsUpdatedListener?.()
-    removeTabsUpdatedListener = onCustomTabsUpdated((data) => {
-      customTabs.value = data
-    })
   })
 
   return { categorizedTabs, flattenedTabs, enabledTabs, enabledFlattenTabs }

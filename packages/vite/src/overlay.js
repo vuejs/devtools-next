@@ -1,6 +1,6 @@
 import vueDevToolsOptions from 'virtual:vue-devtools-options'
-import { initAppSeparateWindow, setDevToolsClientUrl } from '@vue/devtools-core'
-import { addCustomTab, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
+import { functions, setDevToolsClientUrl } from '@vue/devtools-core'
+import { addCustomTab, createRpcServer, devtools, setDevToolsEnv, setOpenInEditorBaseUrl, toggleComponentInspectorEnabled } from '@vue/devtools-kit'
 
 function normalizeUrl(url) {
   return new URL(`${vueDevToolsOptions.base || '/'}${url}`, import.meta.url).toString()
@@ -41,7 +41,7 @@ link.href = `${overlayDir}/devtools-overlay.css`
 
 // create script
 const script = document.createElement('script')
-script.src = `${overlayDir}/devtools-overlay.js`
+script.src = `${overlayDir}/devtools-overlay.mjs`
 script.type = 'module'
 
 // append to head
@@ -53,4 +53,10 @@ body.appendChild(script)
 // Used in the browser extension
 window.__VUE_DEVTOOLS_VITE_PLUGIN_CLIENT_URL__ = `${window.location.origin}${devtoolsClientUrl}`
 
-initAppSeparateWindow()
+createRpcServer(functions, {
+  preset: 'iframe',
+})
+
+createRpcServer(functions, {
+  preset: 'broadcast',
+})

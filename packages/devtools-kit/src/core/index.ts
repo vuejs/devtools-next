@@ -1,13 +1,30 @@
 import { isNuxtApp, target } from '@vue/devtools-shared'
-import { createDevToolsHook, devtoolsHooks, hook, subscribeDevToolsHook } from '../hook'
-import { DevToolsHooks } from '../types'
-import { devtoolsAppRecords, devtoolsState, getDevToolsEnv } from '../state'
-import { DevToolsEvents, DevToolsPluginApi, apiHooks, collectDevToolsPlugin, setupExternalPlugin } from '../api'
+import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
+import {
+  DevToolsMessagingHookKeys,
+  activeAppRecord,
+  addDevToolsAppRecord,
+  addDevToolsPluginToBuffer,
+  devtoolsAppRecords,
+  devtoolsContext,
+  devtoolsPluginBuffer,
+  devtoolsState,
+  getDevToolsEnv,
+  removeDevToolsAppRecord,
+  setActiveAppRecord,
+  setActiveAppRecordId,
+  updateDevToolsState,
+} from '../ctx'
 import { onLegacyDevToolsPluginApiAvailable } from '../compat'
-import { createAppRecord, setActiveAppRecord } from './app-record'
+import { DevToolsHooks } from '../types'
+import { createAppRecord, removeAppRecordId } from './app'
+import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
+import { normalizeRouterInfo } from './router'
 
 export function initDevTools() {
-  devtoolsState.vitePluginDetected = getDevToolsEnv().vitePluginDetected
+  updateDevToolsState({
+    vitePluginDetected: getDevToolsEnv().vitePluginDetected,
+  })
 
   const isDevToolsNext = target.__VUE_DEVTOOLS_GLOBAL_HOOK__?.id === 'vue-devtools-next'
 
@@ -26,17 +43,18 @@ export function initDevTools() {
     }
   }
 
-  // setup old devtools plugin (compatible with pinia, router, etc)
   hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
-    collectDevToolsPlugin(pluginDescriptor, setupFn)
-    const { app, api } = devtoolsAppRecords.active || {}
-    if (!app || !api)
+    addDevToolsPluginToBuffer(pluginDescriptor, setupFn)
+    const { app } = activeAppRecord ?? {}
+
+    if (!app)
       return
-    setupExternalPlugin([pluginDescriptor, setupFn], app, api)
+
+    callDevToolsPluginSetupFn([pluginDescriptor, setupFn], app)
   })
 
   onLegacyDevToolsPluginApiAvailable(() => {
-    const normalizedPluginBuffer = devtoolsState.pluginBuffer.filter(([item]) => item.id !== 'components')
+    const normalizedPluginBuffer = devtoolsPluginBuffer.filter(([item]) => item.id !== 'components')
     normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
       target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
     })
@@ -44,55 +62,51 @@ export function initDevTools() {
 
   // create app record
   hook.on.vueAppInit(async (app, version) => {
-    const record = createAppRecord(app)
-    const api = new DevToolsPluginApi()
-    devtoolsAppRecords.value = [
-      ...devtoolsAppRecords.value,
-      {
-        ...record,
-        app,
-        version,
-        api,
-      },
-    ]
-
-    if (devtoolsAppRecords.value.length >= 1) {
-      await setActiveAppRecord(devtoolsAppRecords.value[0])
-      devtoolsState.connected = true
-      devtoolsHooks.callHook(DevToolsHooks.APP_CONNECTED)
+    const appRecord = createAppRecord(app)
+    const normalizedAppRecord = {
+      ...appRecord,
+      app,
+      version,
     }
+    addDevToolsAppRecord(normalizedAppRecord)
+
+    if (devtoolsAppRecords.value.length === 1) {
+      setActiveAppRecord(normalizedAppRecord)
+      setActiveAppRecordId(normalizedAppRecord.id)
+      normalizeRouterInfo(normalizedAppRecord, activeAppRecord)
+    }
+
+    setupDevToolsPlugin(...createComponentsDevToolsPlugin(normalizedAppRecord.app))
+    registerDevToolsPlugin(normalizedAppRecord.app)
+
+    updateDevToolsState({
+      connected: true,
+    })
+
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.push(app)
   })
 
   hook.on.vueAppUnmount(async (app) => {
     const activeRecords = devtoolsAppRecords.value.filter(appRecord => appRecord.app !== app)
-    // #356 should disconnect when all apps are unmounted
+
     if (activeRecords.length === 0) {
-      devtoolsState.connected = false
-      return
+      updateDevToolsState({
+        connected: false,
+      })
     }
-    devtoolsAppRecords.value = activeRecords
-    if (devtoolsAppRecords.active.app === app)
-      await setActiveAppRecord(activeRecords[0])
+
+    removeDevToolsAppRecord(app)
+
+    removeAppRecordId(app)
+
+    if (activeAppRecord.value.app === app) {
+      setActiveAppRecord(activeRecords[0])
+      devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT)
+    }
+    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.splice(target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.indexOf(app), 1)
   })
 
   subscribeDevToolsHook()
-}
-
-export function onDevToolsConnected(fn: () => void) {
-  return new Promise<void>((resolve) => {
-    if (devtoolsState.connected) {
-      fn()
-      resolve()
-      return
-    }
-
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
-      if (state.connected) {
-        fn()
-        resolve()
-      }
-    })
-  })
 }
 
 export function onDevToolsClientConnected(fn: () => void) {
@@ -103,7 +117,7 @@ export function onDevToolsClientConnected(fn: () => void) {
       return
     }
 
-    apiHooks.hook(DevToolsEvents.DEVTOOLS_CONNECTED_UPDATED, (state) => {
+    devtoolsContext.hooks.hook(DevToolsMessagingHookKeys.DEVTOOLS_CONNECTED_UPDATED, ({ state }) => {
       if (state.connected && state.clientConnected) {
         fn()
         resolve()

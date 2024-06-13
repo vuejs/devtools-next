@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { defineModel } from 'vue'
-import type { InspectorNodeTag } from '@vue/devtools-kit'
+import type { CustomInspectorNode } from '@vue/devtools-kit'
 import NodeTag from '~/components/basic/NodeTag.vue'
 
-defineProps<{ data: { id: string, label: string, tags: InspectorNodeTag[] }[] }>()
+defineProps<{ data: CustomInspectorNode[] }>()
 
 const selected = defineModel()
 

@@ -4,18 +4,13 @@ import { normalizePath } from 'vite'
 import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
 import Inspect from 'vite-plugin-inspect'
+import { setViteServerContext } from '@vue/devtools-kit'
 import VueInspector from 'vite-plugin-vue-inspector'
-import { initViteServerContext } from '@vue/devtools-core'
+import { createViteServerRpc } from '@vue/devtools-core'
 import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
-import { getViteConfig, setupAssetsModule, setupGraphModule } from './modules'
-
-export type * from './modules'
-
-type DeepRequired<T> = {
-  [P in keyof T]-?: T[P] extends object ? DeepRequired<T[P]> : Required<T[P]>;
-}
+import { getRpcFunctions } from './rpc'
 
 function getVueDevtoolsPath() {
   const pluginPath = normalizePath(path.dirname(fileURLToPath(import.meta.url)))
@@ -42,31 +37,39 @@ export interface VitePluginVueDevToolsOptions {
   appendTo?: string | RegExp
 
   /**
-   * Customize openInEditor host (e.g. http://localhost:3000)
+   * Enable vue component inspector
+   *
+   * @default true
+   */
+  componentInspector?: boolean | VitePluginInspectorOptions
+
+  /**
+   * Target editor when open in editor (v7.2.0+)
+   *
+   * @default code (Visual Studio Code)
+   */
+  launchEditor?: 'appcode' | 'atom' | 'atom-beta' | 'brackets' | 'clion' | 'code' | 'code-insiders' | 'codium' | 'emacs' | 'idea' | 'notepad++' | 'pycharm' | 'phpstorm' | 'rubymine' | 'sublime' | 'vim' | 'visualstudio' | 'webstorm' | 'rider' | string
+
+  /**
+   * Customize openInEditor host
    * @default false
    * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   openInEditorHost?: string | false
 
   /**
-   * DevTools client host (e.g. http://localhost:3000)
+   * DevTools client host
    * useful for projects that use a reverse proxy
    * @default false
    * @deprecated This option is deprecated and removed in 7.1.0. The plugin now automatically detects the correct host.
    */
   clientHost?: string | false
-
-  /**
-   * Enable Vue Component Inspector
-   *
-   * @default true
-   */
-  componentInspector?: boolean | VitePluginInspectorOptions
 }
 
 const defaultOptions: VitePluginVueDevToolsOptions = {
   appendTo: '',
   componentInspector: true,
+  launchEditor: process.env.LAUNCH_EDITOR ?? 'code',
 }
 
 function mergeOptions(options: VitePluginVueDevToolsOptions): VitePluginVueDevToolsOptions {
@@ -91,17 +94,14 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     }))
 
     // vite client <-> server messaging
-    initViteServerContext(server)
-    getViteConfig(config, pluginOptions)
-    setupGraphModule({
-      rpc: inspect.api.rpc,
-      server,
-    })
-    setupAssetsModule({
+    setViteServerContext(server)
+
+    const rpcFunctions = getRpcFunctions({
       rpc: inspect.api.rpc,
       server,
       config,
     })
+    createViteServerRpc(rpcFunctions)
 
     const _printUrls = server.printUrls
     const colorUrl = (url: string) =>
@@ -149,8 +149,9 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       if (appendTo
         && (
           (typeof appendTo === 'string' && filename.endsWith(appendTo))
-          || (appendTo instanceof RegExp && appendTo.test(filename))))
+          || (appendTo instanceof RegExp && appendTo.test(filename)))) {
         code = `import 'virtual:vue-devtools-path:overlay.js';\n${code}`
+      }
 
       return code
     },
@@ -173,6 +174,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
           pluginOptions.componentInspector && {
             tag: 'script',
             injectTo: 'head-prepend',
+            launchEditor: pluginOptions.launchEditor,
             attrs: {
               type: 'module',
               src: `${config.base || '/'}@id/virtual:vue-inspector-path:load.js`,
@@ -190,6 +192,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     pluginOptions.componentInspector && VueInspector({
       toggleComboKey: '',
       toggleButtonVisibility: 'never',
+      launchEditor: pluginOptions.launchEditor,
       ...typeof pluginOptions.componentInspector === 'boolean'
         ? {}
         : pluginOptions.componentInspector,

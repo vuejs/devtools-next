@@ -123,7 +123,7 @@ export function stringifyCircularAutoChunks(data: Record<string, unknown>, repla
     // no circular references, JSON.stringify can handle this
     result = arguments.length === 1
       ? JSON.stringify(data)
-      : JSON.stringify(data, (...args) => replacer?.(...args), space!)
+      : JSON.stringify(data, (k, v) => replacer?.(k, v), space!)
   }
   catch (e) {
     // handle circular references

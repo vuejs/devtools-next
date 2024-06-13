@@ -1,14 +1,41 @@
+import { Replacer } from '../core/component/state/replacer'
+
 const MAX_SERIALIZED_SIZE = 512 * 1024 // 1MB
 
-function encode(data: Record<string, unknown>, replacer: ((this: any, key: string, value: any) => any) | null, list: unknown[], seen: Map<unknown, number>) {
-  let stored, key, value, i, l
+function isObject(_data: unknown, proto: string): _data is Record<string, unknown> {
+  return proto === '[object Object]'
+}
+
+function isArray(_data: unknown, proto: string): _data is unknown[] {
+  return proto === '[object Array]'
+}
+
+/**
+ * This function is used to serialize object with handling circular references.
+ *
+ * ```ts
+ * const obj = { a: 1, b: { c: 2 }, d: obj }
+ * const result = stringifyCircularAutoChunks(obj) // call `encode` inside
+ * console.log(result) // [{"a":1,"b":2,"d":3},{"c":4},2,3]
+ * ```
+ *
+ * Each object is stored in a list and the index is used to reference the object.
+ * With seen map, we can check if the object is already stored in the list to avoid circular references.
+ */
+function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen: Map<unknown, number>, seenVueInstanceSet: Set<any>): number {
+  let stored: Record<string, number> | number[]
+  let key: string
+  let value: unknown
+  let i: number
+  let l: number
+
   const seenIndex = seen.get(data)
   if (seenIndex != null)
     return seenIndex
 
   const index = list.length
   const proto = Object.prototype.toString.call(data)
-  if (proto === '[object Object]') {
+  if (isObject(data, proto)) {
     stored = {}
     seen.set(data, index)
     list.push(stored)
@@ -19,18 +46,18 @@ function encode(data: Record<string, unknown>, replacer: ((this: any, key: strin
         // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
         // @TODO: need to check if it will cause any other issues
         if (key === 'compilerOptions')
-          return
+          return index
         value = data[key]
         if (replacer)
-          value = replacer.call(data, key, value)
+          value = replacer.call(data, key, value, seenVueInstanceSet)
       }
       catch (e) {
         value = e
       }
-      stored[key] = encode(value, replacer, list, seen)
+      stored[key] = encode(value, replacer, list, seen, seenVueInstanceSet)
     }
   }
-  else if (proto === '[object Array]') {
+  else if (isArray(data, proto)) {
     stored = []
     seen.set(data, index)
     list.push(stored)
@@ -38,12 +65,12 @@ function encode(data: Record<string, unknown>, replacer: ((this: any, key: strin
       try {
         value = data[i]
         if (replacer)
-          value = replacer.call(data, i, value)
+          value = replacer.call(data, i, value, seenVueInstanceSet)
       }
       catch (e) {
         value = e
       }
-      stored[i] = encode(value, replacer, list, seen)
+      stored[i] = encode(value, replacer, list, seen, seenVueInstanceSet)
     }
   }
   else {
@@ -79,14 +106,16 @@ function decode(list: unknown[] | string, reviver: ((this: any, key: string, val
   }
 }
 
-export function stringifyCircularAutoChunks(data: Record<string, unknown>, replacer: ((this: any, key: string, value: any) => any) | null = null, space: number | null = null) {
+export function stringifyCircularAutoChunks(data: Record<string, unknown>, replacer: Replacer | null = null, space: number | null = null) {
   let result: string
   try {
+    // no circular references, JSON.stringify can handle this
     result = arguments.length === 1
       ? JSON.stringify(data)
-      : JSON.stringify(data, replacer!, space!)
+      : JSON.stringify(data, replacer as any, space!)
   }
   catch (e) {
+    // handle circular references
     result = stringifyStrictCircularAutoChunks(data, replacer!, space!)
   }
   if (result.length > MAX_SERIALIZED_SIZE) {
@@ -100,9 +129,9 @@ export function stringifyCircularAutoChunks(data: Record<string, unknown>, repla
   return result
 }
 
-export function stringifyStrictCircularAutoChunks(data: Record<string, unknown>, replacer: ((this: any, key: string, value: any) => any) | null = null, space: number | null = null) {
+export function stringifyStrictCircularAutoChunks(data: Record<string, unknown>, replacer: Replacer | null = null, space: number | null = null) {
   const list = []
-  encode(data, replacer, list, new Map())
+  encode(data, replacer, list, new Map(), new Set())
   return space
     ? ` ${JSON.stringify(list, null, space)}`
     : ` ${JSON.stringify(list)}`

@@ -612,6 +612,19 @@ importers:
         specifier: workspace:*
         version: link:../../vite
 
+  packages/playground/circular-state:
+    dependencies:
+      vue:
+        specifier: ^3.4.27
+        version: 3.4.27(typescript@5.4.5)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^5.0.5
+        version: 5.0.5(vite@5.2.13(@types/node@20.14.2)(sass@1.77.4)(terser@5.26.0))(vue@3.4.27(typescript@5.4.5))
+      vite-plugin-vue-devtools:
+        specifier: workspace:*
+        version: link:../../vite
+
   packages/playground/multi-app:
     dependencies:
       '@vueuse/core':

@@ -3,9 +3,9 @@ import { getBigIntDetails, getComponentDefinitionDetails, getDateDetails, getFun
 import { isVueInstance } from './is'
 import { sanitize } from './util'
 
-const seenInstance = new WeakSet()
+export type Replacer = (this: any, key: string | number, value: any, seenInstance: Set<any>) => any
 
-export function stringifyReplacer(key: string) {
+export function stringifyReplacer(key: string | number, _value: any, seenInstance: Set<any>) {
   // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
   // @TODO: need to check if it will cause any other issues
   if (key === 'compilerOptions')

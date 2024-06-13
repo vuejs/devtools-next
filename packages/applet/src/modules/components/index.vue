@@ -234,6 +234,13 @@ function scrollToComponent() {
   rpc.value.scrollToComponent(activeComponentId.value)
 }
 
+function inspectDOM() {
+  rpc.value.inspectDOM(activeComponentId.value).then(() => {
+    // @ts-expect-error skip type check
+    chrome.devtools.inspectedWindow.eval('inspect(window.__VUE_DEVTOOLS_INSPECT_DOM_TARGET__)')
+  })
+}
+
 function getComponentRenderCode() {
   rpc.value.getComponentRenderCode(activeComponentId.value).then((data) => {
     componentRenderCode.value = data!
@@ -297,6 +304,7 @@ function closeComponentRenderCode() {
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
+              <i v-if="isInChromePanel" v-tooltip.bottom="'Inspect DOM'" class="i-material-symbols-light:menu-open h-5 w-5 cursor-pointer hover:(op-70)" @click="inspectDOM" />
               <i v-if="activeTreeNodeFilePath && !isInChromePanel" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>

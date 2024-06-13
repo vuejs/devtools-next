@@ -84,6 +84,9 @@ export const functions = {
   scrollToComponent(id: string) {
     return devtools.ctx.api.scrollToComponent(id)
   },
+  inspectDOM(id: string) {
+    return devtools.ctx.api.inspectDOM(id)
+  },
   getInspectorNodeActions(id: string) {
     return getInspectorNodeActions(id)
   },

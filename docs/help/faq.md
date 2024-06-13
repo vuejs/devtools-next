@@ -79,3 +79,24 @@ export default defineConfig({
   ],
 })
 ```
+
+## How to work with [WXT](https://wxt.dev/)?
+
+```ts
+// wxt.config.ts
+import { defineConfig } from 'wxt'
+import vue from '@vitejs/plugin-vue'
+import devtools from 'vite-plugin-vue-devtools'
+
+export default defineConfig({
+  vite: () => ({
+    plugins: [
+      vue(),
+      devtools({
+        // your app entrypoint (wherever you call createApp())
+        appendTo: '/entrypoints/popup/main.ts',
+      }),
+    ],
+  }),
+})
+```

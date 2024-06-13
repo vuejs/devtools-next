@@ -12,10 +12,6 @@ import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
 import { getRpcFunctions } from './rpc'
 
-type DeepRequired<T> = {
-  [P in keyof T]-?: T[P] extends object ? DeepRequired<T[P]> : Required<T[P]>;
-}
-
 function getVueDevtoolsPath() {
   const pluginPath = normalizePath(path.dirname(fileURLToPath(import.meta.url)))
   return pluginPath.replace(/\/dist$/, '/\/src')

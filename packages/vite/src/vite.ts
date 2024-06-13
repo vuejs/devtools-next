@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'node:url'
+import { URL, fileURLToPath, format } from 'node:url'
 import path from 'node:path'
 import { normalizePath } from 'vite'
 import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
@@ -111,8 +111,13 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       const urls = server.resolvedUrls!
       const keys = normalizeComboKeyPrint('option-shift-d')
       _printUrls()
-      for (const url of urls.local)
-        console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Open ${colorUrl(`${url}__devtools__/`)} as a separate window`)}`)
+      for (const url of urls.local) {
+        const urlString = `${url}/__devtools__/`
+        const parsedUrl = new URL(urlString)
+        parsedUrl.pathname = path.normalize(parsedUrl.pathname).replace(/\\/g, '/')
+        const devtoolsUrl = format(parsedUrl)
+        console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Open ${colorUrl(`${devtoolsUrl}`)} as a separate window`)}`)
+      }
       console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }
   }

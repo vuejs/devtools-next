@@ -16,7 +16,7 @@ function isArray(_data: unknown, proto: string): _data is unknown[] {
  * ```ts
  * const obj = { a: 1, b: { c: 2 }, d: obj }
  * const result = stringifyCircularAutoChunks(obj) // call `encode` inside
- * console.log(result) // [{"a":1,"b":2,"d":3},{"c":4},2,3]
+ * console.log(result) // [{"a":1,"b":2,"d":0},1,{"c":4},2]
  * ```
  *
  * Each object is stored in a list and the index is used to reference the object.

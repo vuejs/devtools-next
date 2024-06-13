@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
+import { isInChromePanel, sortByKey } from '@vue/devtools-shared'
 import {
   DevToolsMessagingEvents,
   rpc,
@@ -9,7 +10,6 @@ import {
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
 import { VueInput, vTooltip } from '@vue/devtools-ui'
-import { sortByKey } from '@vue/devtools-shared'
 import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
@@ -297,7 +297,7 @@ function closeComponentRenderCode() {
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
-              <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
+              <i v-if="activeTreeNodeFilePath && !isInChromePanel" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />

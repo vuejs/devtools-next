@@ -28,7 +28,6 @@ function isArray(_data: unknown, proto: string): _data is unknown[] {
  * by using `seenVueInstance` and `depth` to avoid infinite loop.
  */
 function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen: Map<unknown, number>, depth = 0, seenVueInstance = new Map<any, number>()): number {
-  console.log('encode', data)
   let stored: Record<string, number> | number[]
   let key: string
   let value: unknown

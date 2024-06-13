@@ -1,3 +1,4 @@
+import { isVueInstance } from '../core/component/state/is'
 import { Replacer } from '../core/component/state/replacer'
 
 const MAX_SERIALIZED_SIZE = 2 * 1024 * 1024 // 2MB
@@ -21,8 +22,13 @@ function isArray(_data: unknown, proto: string): _data is unknown[] {
  *
  * Each object is stored in a list and the index is used to reference the object.
  * With seen map, we can check if the object is already stored in the list to avoid circular references.
+ *
+ * Note: here we have a special case for Vue instance.
+ * We check if a vue instance includes itself in its properties and skip it
+ * by using `seenVueInstance` and `depth` to avoid infinite loop.
  */
-function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen: Map<unknown, number>, seenVueInstanceSet: Set<any>): number {
+function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen: Map<unknown, number>, depth = 0, seenVueInstance = new Map<any, number>()): number {
+  console.log('encode', data)
   let stored: Record<string, number> | number[]
   let key: string
   let value: unknown
@@ -42,19 +48,25 @@ function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen:
     const keys = Object.keys(data)
     for (i = 0, l = keys.length; i < l; i++) {
       key = keys[i]
+      value = data[key]
+      const isVm = value != null && isObject(value, Object.prototype.toString.call(data)) && isVueInstance(value)
       try {
         // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
         // @TODO: need to check if it will cause any other issues
         if (key === 'compilerOptions')
           return index
-        value = data[key]
-        if (replacer)
-          value = replacer.call(data, key, value, seenVueInstanceSet)
+        if (replacer) {
+          value = replacer.call(data, key, value, depth, seenVueInstance)
+        }
       }
       catch (e) {
         value = e
       }
-      stored[key] = encode(value, replacer, list, seen, seenVueInstanceSet)
+      stored[key] = encode(value, replacer, list, seen, depth + 1, seenVueInstance)
+      // delete vue instance if its properties have been processed
+      if (isVm) {
+        seenVueInstance.delete(value)
+      }
     }
   }
   else if (isArray(data, proto)) {
@@ -65,12 +77,12 @@ function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen:
       try {
         value = data[i]
         if (replacer)
-          value = replacer.call(data, i, value, seenVueInstanceSet)
+          value = replacer.call(data, i, value, depth, seenVueInstance)
       }
       catch (e) {
         value = e
       }
-      stored[i] = encode(value, replacer, list, seen, seenVueInstanceSet)
+      stored[i] = encode(value, replacer, list, seen, depth + 1, seenVueInstance)
     }
   }
   else {
@@ -112,7 +124,7 @@ export function stringifyCircularAutoChunks(data: Record<string, unknown>, repla
     // no circular references, JSON.stringify can handle this
     result = arguments.length === 1
       ? JSON.stringify(data)
-      : JSON.stringify(data, replacer as any, space!)
+      : JSON.stringify(data, (...args) => replacer?.(...args), space!)
   }
   catch (e) {
     // handle circular references
@@ -131,7 +143,7 @@ export function stringifyCircularAutoChunks(data: Record<string, unknown>, repla
 
 export function stringifyStrictCircularAutoChunks(data: Record<string, unknown>, replacer: Replacer | null = null, space: number | null = null) {
   const list = []
-  encode(data, replacer, list, new Map(), new Set())
+  encode(data, replacer, list, new Map())
   return space
     ? ` ${JSON.stringify(list, null, space)}`
     : ` ${JSON.stringify(list)}`

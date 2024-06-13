@@ -7,7 +7,7 @@ it('encode', () => {
       ctx: {
         props: {},
       },
-      vnode: [],
+      vnode: [] as any[],
       type: {
         props: [],
       },
@@ -38,6 +38,8 @@ it('encode', () => {
     key: '$currentInstance2',
     value: vueInstanceLike,
   })
+
+  vueInstanceLike._.vnode.push(vueInstanceLike)
 
   expect(stringifyStrictCircularAutoChunks(vueInstanceLike, stringifyReplacer)).toMatchSnapshot()
 })

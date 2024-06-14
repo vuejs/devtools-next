@@ -50,6 +50,11 @@ const routes: RouteRecordRaw[] = [
     component: VeeValidate,
     name: 'vee-validate',
   },
+  {
+    path: '/circular-state',
+    component: () => import('./pages/CircularState.vue'),
+    name: 'circular-state',
+  },
 ]
 
 const router = createRouter({

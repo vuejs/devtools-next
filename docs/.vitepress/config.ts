@@ -18,7 +18,7 @@ const GUIDES: DefaultTheme.NavItemWithLink[] = [
 const HELP: DefaultTheme.NavItemWithLink[] = [
   { text: 'Contributing', link: '/help/contributing' },
   { text: 'FAQ', link: '/help/faq' },
-  { text: 'Trouble Shooting', link: '/help/trouble-shooting' },
+  { text: 'Troubleshooting', link: '/help/troubleshooting' },
 ]
 
 const PLUGINS: DefaultTheme.NavItemWithLink[] = [

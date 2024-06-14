@@ -44,7 +44,7 @@ export default defineConfig(mergeConfig(baseConfig, {
       closeBundle() {
         // copy
         const clientFile = resolve(__dirname, './dist/devtools-client-lib')
-        ;['../browser-extension/client', '../electron/client'].forEach((dir) => {
+        ;['../chrome-extension/client', '../electron/client'].forEach((dir) => {
           fse.copySync(clientFile, resolve(__dirname, dir))
         })
       },

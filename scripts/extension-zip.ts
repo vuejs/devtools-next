@@ -6,7 +6,7 @@ import readdirGlob from 'readdir-glob'
 import ProgressBar from 'progress'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const targetPkgDir = path.join(__dirname, '../packages/browser-extension')
+const targetPkgDir = path.join(__dirname, '../packages/chrome-extension')
 const INCLUDE_FILES = [
   'client/**',
   'dist/**',

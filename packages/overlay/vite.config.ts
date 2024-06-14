@@ -47,7 +47,7 @@ export default defineConfig({
         // Browser extension keep using js file
         fse.copySync(
           overlayFile,
-          resolve(__dirname, '../browser-extension/overlay'),
+          resolve(__dirname, '../chrome-extension/overlay'),
           {
             filter: (file) => {
               return !file.endsWith('.mjs')

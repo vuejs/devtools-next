@@ -1,5 +1,5 @@
 {
-  "name": "@vue/devtools-browser-extension",
+  "name": "@vue/devtools-chrome-extension",
   "type": "module",
   "version": "7.3.0-beta.3",
   "private": true,

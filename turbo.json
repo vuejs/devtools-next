@@ -8,7 +8,7 @@
         "@vue/devtools-electron#stub"
       ]
     },
-    "@vue/devtools-browser-extension#build": {
+    "@vue/devtools-chrome-extension#build": {
       "dependsOn": [
         "@vue/devtools-client#build",
         "^build"
@@ -24,7 +24,7 @@
       "outputs": [
         "dist/**",
         "../electron/client/**",
-        "../browser-extension/client/**",
+        "../chrome-extension/client/**",
         "../vite/client/**"
       ]
     },

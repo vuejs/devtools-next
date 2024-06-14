@@ -3,7 +3,7 @@ node_modules
 ci.yml
 release.yml
 **.svg
-packages/browser-extension/overlay/*
+packages/chrome-extension/overlay/*
 packages/vite/src/overlay/*
-packages/browser-extension/client/*
+packages/chrome-extension/client/*
 eslint.config.js

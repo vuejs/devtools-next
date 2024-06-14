@@ -89,8 +89,8 @@ components.d.ts
 
 # Project
 
-packages/browser-extension/overlay/**/*
-packages/browser-extension/client/**/*
+packages/chrome-extension/overlay/**/*
+packages/chrome-extension/client/**/*
 packages/electron/client/**/*
 packages/vite/src/overlay/**/*
 packages/vite/client/**/*

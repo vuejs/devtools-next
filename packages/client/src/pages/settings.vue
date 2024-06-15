@@ -89,7 +89,7 @@ const minimizePanelInteractiveLabel = computed(() => {
       icon="i-carbon-settings-adjust"
       text="DevTools Settings"
     />
-    <div grid="~ md:cols-2 gap-x-10 gap-y-3" max-w-300>
+    <div grid="~ md:cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-x-10 gap-y-3" max-w-300>
       <div flex="~ col gap-2">
         <h3 text-lg>
           Tabs

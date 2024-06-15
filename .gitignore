@@ -91,6 +91,8 @@ components.d.ts
 
 packages/chrome-extension/overlay/**/*
 packages/chrome-extension/client/**/*
+packages/firefox-extension/client/**/*
+packages/firefox-extension/overlay/**/*
 packages/electron/client/**/*
 packages/vite/src/overlay/**/*
 packages/vite/client/**/*

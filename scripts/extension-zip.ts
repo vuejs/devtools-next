@@ -6,7 +6,6 @@ import readdirGlob from 'readdir-glob'
 import ProgressBar from 'progress'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const targetPkgDir = path.join(__dirname, '../packages/chrome-extension')
 const INCLUDE_FILES = [
   'client/**',
   'dist/**',
@@ -14,6 +13,8 @@ const INCLUDE_FILES = [
   'overlay/**',
   'pages/**',
   'popups/**',
+  'devtools-background.html',
+  'devtools-panel.html',
   'manifest.json',
   'package.json',
 ]
@@ -31,7 +32,9 @@ function bytesToSize(bytes) {
   return `${size} ${sizes[i]}`
 }
 
-async function zip(filename: string) {
+async function zip(filename: string, target: string) {
+  const targetPkgDir = path.join(__dirname, `../packages/${target}-extension`)
+
   const archive = archiver('zip', { zlib: { level: 9 } })
   const output = fs.createWriteStream(path.join(__dirname, '../dist', `${filename}`))
 
@@ -130,4 +133,5 @@ async function zip(filename: string) {
 
 fs.rmSync(path.join(__dirname, '../dist'), { recursive: true, force: true })
 fs.mkdirSync(path.join(__dirname, '../dist'))
-await zip('devtools-chrome.zip')
+await zip('devtools-chrome.zip', 'chrome')
+await zip('devtools-firefox.zip', 'firefox')

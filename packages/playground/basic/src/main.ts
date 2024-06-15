@@ -3,7 +3,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { addCustomCommand } from '@vue/devtools-api'
-import { devtools } from '@vue/devtools'
 
 import store from './stores/vuexStore'
 
@@ -20,7 +19,7 @@ const pinia = createPinia()
 
 const app = createApp(App)
 
-devtools.connect()
+// devtools.connect()
 
 const routes: RouteRecordRaw[] = [
   {

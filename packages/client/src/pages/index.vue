@@ -19,12 +19,12 @@ function visit() {
       <DevToolsLogo mr-0.5 inline-block h-8 translate-y--1.1 align-mid /> is a set of visual tools that help you to know your Vue app better, and enhance your
       development experience with Vue. Enjoy!<br>
     </p>
-    <!-- <p mb6 op50>
+    <p mb6 op50>
       Learn more at
-      <a href="https://devtools.vuejs.org/" target="_blank" rel="noopener noreferrer" n="primary">
-        devtools.vuejs.org
+      <a href="https://devtools-next.vuejs.org/" target="_blank" rel="noopener noreferrer" n="primary">
+        devtools-next.vuejs.org
       </a>
-    </p> -->
+    </p>
 
     <VueButton type="primary" @click="visit">
       <span>Get Started</span>

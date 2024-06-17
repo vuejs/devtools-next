@@ -422,8 +422,8 @@ importers:
         specifier: workspace:^
         version: link:../shared
       electron:
-        specifier: ^29.4.2
-        version: 29.4.2
+        specifier: ^31.0.1
+        version: 31.0.1
       execa:
         specifier: ^8.0.1
         version: 8.0.1
@@ -4661,8 +4661,8 @@ packages:
   electron-to-chromium@1.4.779:
     resolution: {integrity: sha512-oaTiIcszNfySXVJzKcjxd2YjPxziAd+GmXyb2HbidCeFo6Z88ygOT7EimlrEQhM2U08VhSrbKhLOXP0kKUCZ6g==}
 
-  electron@29.4.2:
-    resolution: {integrity: sha512-XyIkuWQguwY8hGtLg0j5Q4Fqphdbh0ctBsKCSVzJ/R7Z2+2WN/oQ1M+zYwchmfiDgiuL3EKkrBrfPdxXYdMr+A==}
+  electron@31.0.1:
+    resolution: {integrity: sha512-2eBcp4iqLkTsml6mMq+iqrS5u3kJ/2mpOLP7Mj7lo0uNK3OyfNqRS9z1ArsHjBF2/HV250Te/O9nKrwQRTX/+g==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -12787,7 +12787,7 @@ snapshots:
 
   electron-to-chromium@1.4.779: {}
 
-  electron@29.4.2:
+  electron@31.0.1:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 20.14.2

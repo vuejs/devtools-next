@@ -23,12 +23,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --clean",
+    "build": "NODE_ENV='production' && tsup --clean",
     "prepare:type": "tsup --dts-only",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
-  },
-  "peerDependencies": {
-    "vue": "^3.0.0"
   },
   "dependencies": {
     "@vue/devtools-shared": "workspace:^",

@@ -9,7 +9,7 @@ export function createRule<MessageIds extends string, RuleOptions extends any[]>
 
 export function isTypeImport(node: TSESTree.ImportDeclaration) {
   return node.importKind === 'type'
-    && node.specifiers.filter((s) => {
+    || node.specifiers.filter((s) => {
       if (s.type !== 'ImportSpecifier')
         return true
       if (s.importKind !== 'type')

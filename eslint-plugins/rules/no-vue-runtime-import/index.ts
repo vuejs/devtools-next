@@ -34,7 +34,7 @@ export default createRule<'no-vue-runtime-import', [{ prefer: string }]>({
           messageId: 'no-vue-runtime-import',
           loc: node.source.loc,
           data: {
-            prefer: options?.prefer ?? '<set prefer in your eslint>',
+            prefer: options?.prefer ?? '<set prefer in your eslint config>',
           },
         })
       },

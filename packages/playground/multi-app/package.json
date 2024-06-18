@@ -7,19 +7,19 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@vueuse/core": "^10.10.0",
+    "@vueuse/core": "^10.11.0",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.6",
-    "vue": "^3.4.27",
+    "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "sass": "^1.77.4",
+    "sass": "^1.77.6",
     "serve": "^14.2.3",
     "typescript": "^5.4.5",
-    "unocss": "^0.60.4",
-    "vite": "^5.2.13",
+    "unocss": "^0.61.0",
+    "vite": "^5.3.1",
     "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-vue-devtools": "workspace:*"
   }

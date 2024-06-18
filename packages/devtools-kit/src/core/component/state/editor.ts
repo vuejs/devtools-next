@@ -1,5 +1,5 @@
 import type { MaybeRef, Ref } from 'vue'
-import { isReactive, isRef, toRaw } from 'vue'
+import { isReactive, isRef, toRaw } from '../../../shared/stub-vue'
 import { getComponentInstance } from '../utils'
 import { activeAppRecord } from '../../../ctx'
 import { EditStatePayload } from '../../../types'

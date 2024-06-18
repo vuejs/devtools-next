@@ -80,6 +80,7 @@
     "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.2",
+    "@typescript-eslint/utils": "^7.13.1",
     "@unocss/eslint-plugin": "^0.60.4",
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",

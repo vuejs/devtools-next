@@ -26,7 +26,7 @@ export default createRule<'no-vue-runtime-import', [{ prefer: string }]>({
 
         const shouldSkip = isTypeImport(node)
 
-        if (node.importKind === 'type' || shouldSkip || importSource !== 'vue')
+        if (shouldSkip || importSource !== 'vue')
           return
 
         context.report({

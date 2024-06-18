@@ -68,7 +68,7 @@
     "docs": "pnpm -C docs run docs:dev",
     "docs:build": "pnpm -C docs run docs:build",
     "zip": "tsx ./scripts/extension-zip.ts",
-    "release-extension": "tsx ./scripts/release-extension.ts && nr zip",
+    "release-extension": "nr build && tsx ./scripts/release-extension.ts && nr zip",
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
   "devDependencies": {

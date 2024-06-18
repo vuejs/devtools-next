@@ -9,6 +9,7 @@
   "dependencies": {
     "@tanstack/vue-query": "^5.41.0",
     "@vueuse/core": "^10.10.0",
+    "element-plus": "^2.7.5",
     "pinia": "^2.1.7",
     "unplugin-auto-import": "^0.17.6",
     "vee-validate": "^4.13.1",

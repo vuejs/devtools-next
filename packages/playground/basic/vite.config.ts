@@ -5,7 +5,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import inspect from 'vite-plugin-inspect'
-
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -21,6 +21,7 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
       ],
+      resolvers: [ElementPlusResolver()],
     }),
     inspect(),
   ],

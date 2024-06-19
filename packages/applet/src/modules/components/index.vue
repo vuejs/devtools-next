@@ -150,7 +150,10 @@ function normalizeComponentState(data: { state?: any[] }) {
 
 function getComponentState(id: string) {
   rpc.value.getInspectorState({ inspectorId, nodeId: id }).then((data) => {
-    activeComponentState.value = normalizeComponentState(parse(data!))
+    const parsedData = parse(data!)
+    if (!parsedData)
+      return
+    activeComponentState.value = normalizeComponentState(parsedData)
     expandedStateNodes.value = Array.from({ length: Object.keys(activeComponentState.value).length }, (_, i) => `${i}`)
   })
 }

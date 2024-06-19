@@ -99,7 +99,10 @@ function filterEmptyState(data: Record<string, CustomInspectorState[]>) {
 
 function getInspectorState(nodeId: string) {
   rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
-    state.value = filterEmptyState(parse(data!))
+    const parsedData = parse(data!)
+    if (!parsedData)
+      return
+    state.value = filterEmptyState(parsedData)
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }

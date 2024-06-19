@@ -70,8 +70,11 @@ function filterEmptyState(data: Record<string, unknown[] | string | undefined>) 
 
 function getRoutesState(nodeId: string) {
   rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
+    const parsedData = parse(data!)
+    if (!parsedData)
+      return
     // @ts-expect-error skip type check
-    state.value = filterEmptyState(parse(data!))
+    state.value = filterEmptyState(parsedData)
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }

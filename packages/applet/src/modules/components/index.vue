@@ -9,7 +9,7 @@ import {
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
-import { VueInput, vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueDialog, VueInput, vTooltip } from '@vue/devtools-ui'
 import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
@@ -272,11 +272,11 @@ function closeComponentRenderCode() {
       <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
-            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
-            <button px-1 @click="inspectComponentInspector">
+            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." class="flex-1 text-13px" />
+            <button v-tooltip.bottom="'Select component in the page'" px-1 class="hover:(color-#00dc82)" @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                style="height: 1.1em; width: 1.1em;color:#00dc82;"
+                style="height: 1.1em; width: 1.1em;"
                 class="op-80 hover:(op-100)"
                 viewBox="0 0 24 24"
               >
@@ -293,13 +293,13 @@ function closeComponentRenderCode() {
         <div class="h-full flex flex-col p2">
           <div class="flex py2">
             <!-- component name -->
-            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
+            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-13px">
               <span class="text-gray-400 dark:text-gray-600">&lt;</span>
               <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis ws-nowrap [.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 
-            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." flex-1 />
+            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." class="flex-1 text-13px" />
 
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
@@ -315,7 +315,7 @@ function closeComponentRenderCode() {
     </Splitpanes>
 
     <!-- inspect-component dialog -->
-    <!-- <VueDialog v-model="inspectComponentTipVisible" title="" height="12rem" :closable="false">
+    <VueDialog v-if="isInChromePanel" v-model="inspectComponentTipVisible" title="" height="12rem" :closable="false">
       <div class="h-full flex flex-col items-center justify-center gap-2">
         <span class="block">
           <svg
@@ -338,7 +338,7 @@ function closeComponentRenderCode() {
           </VueButton>
         </div>
       </template>
-    </VueDialog> -->
+    </VueDialog>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-ui",
   "type": "module",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -37,20 +37,20 @@
   },
   "dependencies": {
     "@vue/devtools-shared": "workspace:*",
-    "@vueuse/components": "^10.10.0",
-    "@vueuse/core": "^10.10.0",
-    "@vueuse/integrations": "^10.10.0",
+    "@vueuse/components": "^10.11.0",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/integrations": "^10.11.0",
     "colord": "^2.9.3",
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
-    "@types/node": "^20.14.2",
-    "@unocss/reset": "^0.60.4",
+    "@types/node": "^20.14.5",
+    "@unocss/reset": "^0.61.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.17",
-    "unocss": "^0.60.4",
+    "unocss": "^0.61.0",
     "vite-plugin-dts": "^3.9.1"
   }
 }

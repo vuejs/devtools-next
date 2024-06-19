@@ -119,7 +119,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
       </template>
     </template>
     <!-- delete prop, only appear if depth > 0 -->
-    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit(rawValue, true)">
+    <VueButton v-if="!props.disableEdit && depth > 0 && data.editable" v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit(rawValue, true)">
       <template #icon>
         <VueIcon icon="i-material-symbols-delete-rounded" />
       </template>

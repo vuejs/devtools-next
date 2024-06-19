@@ -39,9 +39,12 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
   if (node.children?.length === 0)
     linkedList.push([...path])
 
-  node.children?.forEach((child) => {
-    dfs(child, path, linkedList)
-  })
+  if (Array.isArray(node.children)) {
+    node.children.forEach((child) => {
+      dfs(child, path, linkedList)
+    })
+  }
+
   path.pop()
   return linkedList
 }
@@ -49,7 +52,7 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
 function flattenTreeNodes(tree: CustomInspectorNode[]) {
   const res: CustomInspectorNode[] = []
   const find = (treeNode: CustomInspectorNode[]) => {
-    treeNode.forEach((item) => {
+    treeNode?.forEach((item) => {
       res.push(item)
       if (item.children?.length)
         find(item.children)
@@ -61,7 +64,7 @@ function flattenTreeNodes(tree: CustomInspectorNode[]) {
 
 function getNodesByDepth(list: string[][], depth: number) {
   const nodes: string[] = []
-  list.forEach((item) => {
+  list?.forEach((item) => {
     nodes.push(...item.slice(0, depth + 1))
   })
   return [...new Set(nodes)]

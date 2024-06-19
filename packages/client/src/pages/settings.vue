@@ -19,11 +19,6 @@ const {
   scrollableSidebar,
 } = toRefs(toReactive(devtoolsClientState))
 
-watchEffect(() => {
-  console.log('devtools', devtoolsClientState.value.showPanel)
-  console.log('aaa', showPanel)
-})
-
 // #region settings
 const scaleOptions = [
   ['Tiny', 12 / 15],

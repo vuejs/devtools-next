@@ -10,7 +10,7 @@ import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, 
 
 const { categorizedTabs: categories } = useAllTabs()
 
-const { scale, interactionCloseOnOutsideClick, showPanel, minimizePanelInteractive, expandSidebar, scrollableSidebar } = toRefs(devtoolsClientState.value)
+const { scale, interactionCloseOnOutsideClick, showPanel, minimizePanelInteractive, expandSidebar, scrollableSidebar } = toRefs(toReactive(devtoolsClientState))
 
 // #region settings
 const scaleOptions = [

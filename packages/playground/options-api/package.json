@@ -1,7 +1,7 @@
 {
   "name": "playground-options-api",
   "type": "module",
-  "version": "7.3.1",
+  "version": "7.3.2",
   "private": true,
   "scripts": {
     "dev": "vite"

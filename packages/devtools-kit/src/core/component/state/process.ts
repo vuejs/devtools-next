@@ -269,7 +269,7 @@ function processInject(instance: VueAppInstance, mergedType: Record<string, unkn
 function processRefs(instance: VueAppInstance) {
   return Object.keys(instance.refs)
     .map(key => ({
-      type: 'refs',
+      type: 'template refs',
       key,
       value: returnError(() => instance.refs[key]),
     }))

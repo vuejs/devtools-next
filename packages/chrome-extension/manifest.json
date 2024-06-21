@@ -33,7 +33,7 @@
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "description": "DevTools browser extension for Vue.js",
   "devtools_page": "pages/devtools-background.html",

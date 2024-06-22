@@ -43,7 +43,7 @@
     "128": "icons/128-beta.png"
   },
   "manifest_version": 2,
-  "name": "Vue.js devtools",
+  "name": "Vue.js devtools (beta)",
   "permissions": [
     "<all_urls>"
   ],

@@ -7,7 +7,6 @@ init({
       presetIcons({
         prefix: ['i-', ''],
         collections: {},
-        cdn: 'https://esm.sh/',
         scale: 1.2,
         extraProperties: {
           'display': 'inline-block',

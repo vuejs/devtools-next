@@ -278,7 +278,7 @@ function processRefs(instance: VueAppInstance) {
 function processEventListeners(instance: VueAppInstance) {
   const emitsDefinition = instance.type.emits
   const declaredEmits = Array.isArray(emitsDefinition) ? emitsDefinition : Object.keys(emitsDefinition ?? {})
-  const keys = Object.keys(instance.vnode.props ?? {})
+  const keys = Object.keys(instance?.vnode?.props ?? {})
   const result: InspectorState[] = []
   for (const key of keys) {
     const [prefix, ...eventNameParts] = key.split(/(?=[A-Z])/)

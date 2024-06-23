@@ -17,6 +17,7 @@ import Drawer from './Drawer.vue'
 import Overlay from './Overlay.vue'
 import Notification from './Notification.vue'
 import Tooltip from './Tooltip.vue'
+import IcIcon from './IcIcon.vue'
 
 export {
   Badge as VueBadge,
@@ -38,6 +39,7 @@ export {
   Switch as VueSwitch,
   Notification as VueNotification,
   Tooltip as VueTooltip,
+  IcIcon as VueIcIcon,
 }
 
 export type * from './Button.vue'

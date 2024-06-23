@@ -813,6 +813,9 @@ importers:
       '@histoire/plugin-vue':
         specifier: ^0.17.17
         version: 0.17.17(histoire@0.17.17(@types/node@20.14.5)(sass@1.77.6)(terser@5.26.0)(vite@5.3.1(@types/node@20.14.5)(sass@1.77.6)(terser@5.26.0)))(vite@5.3.1(@types/node@20.14.5)(sass@1.77.6)(terser@5.26.0))(vue@3.4.29(typescript@5.4.5))
+      '@iconify-json/ic':
+        specifier: ^1.1.17
+        version: 1.1.17
       '@types/node':
         specifier: ^20.14.5
         version: 20.14.5
@@ -2246,6 +2249,9 @@ packages:
   '@humanwhocodes/retry@0.3.0':
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/ic@1.1.17':
+    resolution: {integrity: sha512-EvAjZzVESmN36zlyefylePUNaU2BQ3eRKVZ6KQSQ2bG01ppoZaiFZRri74VTyvp5Mlv2yn68ux1fgCoT+etGmA==}
 
   '@iconify/json@2.2.220':
     resolution: {integrity: sha512-EpKZAK99E5qmgeOS5XOxzlzPaYXOkhLneypLFvbKIU3/KGmxGS/k6pgaEX6wTId4oF2HPGBDJnXyvckHiOHQiA==}
@@ -10030,6 +10036,10 @@ snapshots:
   '@humanwhocodes/object-schema@2.0.3': {}
 
   '@humanwhocodes/retry@0.3.0': {}
+
+  '@iconify-json/ic@1.1.17':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/json@2.2.220':
     dependencies:

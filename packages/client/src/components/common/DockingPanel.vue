@@ -3,7 +3,6 @@ import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
 
 const router = useRouter()
-const route = useRoute()
 
 const expandSidebar = computed({
   get: () => devtoolsClientState.value.expandSidebar,

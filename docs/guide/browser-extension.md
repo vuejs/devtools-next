@@ -13,7 +13,7 @@ The extension is in beta, remove or disable any existing versions and install th
   border="~ solid base" flex="~ flex-row items-center"
 >
   <a
-    href="https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?hl=zh-CN&utm_source=ext_sidebar"
+    href="https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?utm_source=ext_sidebar"
     class="group text-! h-full w-full flex cursor-pointer list-none items-center rounded pr-5 hover:b-$vp-c-brand-1 text-$vp-c-text-1! decoration-none!"
     target="_blank"
   >

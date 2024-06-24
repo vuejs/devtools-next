@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import Home from './components/Home.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
@@ -25,9 +23,9 @@ const { VirtualRouterView } = registerVirtualRouter([
     component: Timeline,
     icon: 'i-mdi:timeline-clock-outline',
   },
-])
-
-const routePath = ref('/')
+], {
+  defaultRoutePath: '/store',
+})
 </script>
 
 <template>

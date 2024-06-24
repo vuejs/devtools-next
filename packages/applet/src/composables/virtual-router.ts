@@ -6,9 +6,19 @@ export interface VirtualRoute { path: string, component: Component, icon?: strin
 const VirtualRouteKey: InjectionKey<Ref<{ path: string }>> = Symbol('VirtualRouteKey')
 const VirtualRoutesKey: InjectionKey<ComputedRef<VirtualRoute[]>> = Symbol('VirtualRoutesKey')
 
-export function registerVirtualRouter(routes: MaybeRef<VirtualRoute[]>) {
+export function registerVirtualRouter<
+  const Routes extends VirtualRoute[],
+  RoutePaths extends Routes[number]['path'] = Routes[number]['path'],
+>(
+  routes: MaybeRef<Routes>,
+  props?: {
+    defaultRoutePath?: RoutePaths
+  },
+) {
+  const defaultRoutePath = props?.defaultRoutePath ?? '/'
+
   const route = ref<{ path: string, icon?: string }>({
-    path: '/',
+    path: defaultRoutePath,
   })
 
   const _routes = computed(() => toValue(routes))
@@ -27,7 +37,7 @@ export function registerVirtualRouter(routes: MaybeRef<VirtualRoute[]>) {
   })
 
   function restoreRouter() {
-    route.value.path = '/'
+    route.value.path = defaultRoutePath
   }
 
   provide(VirtualRouteKey, route)

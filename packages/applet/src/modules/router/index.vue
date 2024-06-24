@@ -31,7 +31,9 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter([
     component: Timeline,
     icon: 'i-mdi:timeline-clock-outline',
   },
-])
+], {
+  defaultRoutePath: '/routes',
+})
 
 function getInspectorInfo() {
   loading.value = true

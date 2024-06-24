@@ -192,6 +192,7 @@ function selectComponentFn(e: MouseEvent, cb) {
 let inspectComponentHighLighterSelectFn: (e: MouseEvent) => void = null!
 
 export function cancelInspectComponentHighLighter() {
+  unhighlight()
   window.removeEventListener('mouseover', inspectFn)
   window.removeEventListener('click', inspectComponentHighLighterSelectFn, true)
   inspectComponentHighLighterSelectFn = null!

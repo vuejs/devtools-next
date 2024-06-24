@@ -18,7 +18,7 @@ import {
 import { onLegacyDevToolsPluginApiAvailable } from '../compat'
 import { DevToolsHooks } from '../types'
 import { createAppRecord, removeAppRecordId } from './app'
-import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, setupDevToolsPlugin } from './plugin'
+import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, removeRegisteredPluginApp, setupDevToolsPlugin } from './plugin'
 import { normalizeRouterInfo } from './router'
 
 export function initDevTools() {
@@ -74,10 +74,9 @@ export function initDevTools() {
       setActiveAppRecord(normalizedAppRecord)
       setActiveAppRecordId(normalizedAppRecord.id)
       normalizeRouterInfo(normalizedAppRecord, activeAppRecord)
+      registerDevToolsPlugin(normalizedAppRecord.app)
     }
-
     setupDevToolsPlugin(...createComponentsDevToolsPlugin(normalizedAppRecord.app))
-    registerDevToolsPlugin(normalizedAppRecord.app)
 
     updateDevToolsState({
       connected: true,
@@ -104,6 +103,7 @@ export function initDevTools() {
       devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.SEND_ACTIVE_APP_UNMOUNTED_TO_CLIENT)
     }
     target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.splice(target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.indexOf(app), 1)
+    removeRegisteredPluginApp(app)
   })
 
   subscribeDevToolsHook()

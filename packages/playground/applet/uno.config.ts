@@ -16,7 +16,6 @@ export default defineConfig({
     presetIcons({
       prefix: ['i-', ''],
       collections: {},
-      cdn: 'https://esm.sh/',
       scale: 1.2,
     }),
   ],

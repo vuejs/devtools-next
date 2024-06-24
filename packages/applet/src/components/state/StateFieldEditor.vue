@@ -3,9 +3,9 @@ import { computed, ref, toRaw } from 'vue'
 import { VueButton, VueDropdown, VueDropdownButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { DevToolsV6PluginAPIHookKeys, getRaw } from '@vue/devtools-kit'
 import type { CustomInspectorState, DevToolsV6PluginAPIHookPayloads } from '@vue/devtools-kit'
-import type { ButtonProps } from '@vue/devtools-ui/dist/types/src/components/Button'
 import { rpc } from '@vue/devtools-core'
 import { useClipboard } from '@vueuse/core'
+import type { ButtonProps } from '@vue/devtools-ui'
 import { useStateEditorContext } from '~/composables/state-editor'
 import type { EditorAddNewPropType, EditorInputValidType } from '~/composables/state-editor'
 
@@ -119,7 +119,7 @@ function quickEditNum(v: number | string, offset: 1 | -1) {
       </template>
     </template>
     <!-- delete prop, only appear if depth > 0 -->
-    <VueButton v-if="!props.disableEdit && depth > 0" v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit(rawValue, true)">
+    <VueButton v-if="!props.disableEdit && depth > 0 && data.editable" v-bind="iconButtonProps" :class="buttonClass" @click.stop="quickEdit(rawValue, true)">
       <template #icon>
         <VueIcon icon="i-material-symbols-delete-rounded" />
       </template>

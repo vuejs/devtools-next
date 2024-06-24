@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-core",
   "type": "module",
-  "version": "7.3.0-beta.3",
+  "version": "7.3.4",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
@@ -26,6 +26,9 @@
     "prepare:type": "tsup --dts-only",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
   "dependencies": {
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
@@ -35,6 +38,6 @@
     "vite-hot-client": "^0.2.3"
   },
   "devDependencies": {
-    "vue": "^3.4.27"
+    "vue": "^3.4.29"
   }
 }

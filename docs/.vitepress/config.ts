@@ -18,6 +18,7 @@ const GUIDES: DefaultTheme.NavItemWithLink[] = [
 const HELP: DefaultTheme.NavItemWithLink[] = [
   { text: 'Contributing', link: '/help/contributing' },
   { text: 'FAQ', link: '/help/faq' },
+  { text: 'Troubleshooting', link: '/help/troubleshooting' },
 ]
 
 const PLUGINS: DefaultTheme.NavItemWithLink[] = [
@@ -65,7 +66,7 @@ export default defineConfig({
       },
       {
         text: 'Playground',
-        link: 'https://stackblitz.com/github/vuejs/create-vue-templates/tree/main/devtools',
+        link: 'https://stackblitz.com/github/vuejs/create-vue-templates/tree/main/devtools-router-pinia',
       },
     ],
 

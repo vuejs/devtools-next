@@ -55,8 +55,8 @@ const vueInspector = ref()
 
 onDevToolsConnected(() => {
   const rpcServer = getRpcServer<typeof functions>()
-  rpcServer.broadcast.on('toggle-panel', (state = !panelVisible) => {
-    togglePanelVisible(state)
+  rpcServer.functions.on('toggle-panel', (state = !panelVisible) => {
+    togglePanelVisible(undefined, state)
   })
   devtools.ctx.api.getVueInspector().then((inspector) => {
     vueInspector.value = inspector

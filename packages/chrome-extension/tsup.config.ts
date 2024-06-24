@@ -15,6 +15,5 @@ export default defineConfig({
   },
   clean: true,
   format: ['iife'],
-  dts: true,
-  shims: true,
+  minify: true,
 })

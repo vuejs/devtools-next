@@ -9,7 +9,7 @@ import {
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
-import { VueInput, vTooltip } from '@vue/devtools-ui'
+import { VueButton, VueDialog, VueInput, vTooltip } from '@vue/devtools-ui'
 import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
@@ -39,9 +39,12 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
   if (node.children?.length === 0)
     linkedList.push([...path])
 
-  node.children?.forEach((child) => {
-    dfs(child, path, linkedList)
-  })
+  if (Array.isArray(node.children)) {
+    node.children.forEach((child) => {
+      dfs(child, path, linkedList)
+    })
+  }
+
   path.pop()
   return linkedList
 }
@@ -49,7 +52,7 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
 function flattenTreeNodes(tree: CustomInspectorNode[]) {
   const res: CustomInspectorNode[] = []
   const find = (treeNode: CustomInspectorNode[]) => {
-    treeNode.forEach((item) => {
+    treeNode?.forEach((item) => {
       res.push(item)
       if (item.children?.length)
         find(item.children)
@@ -61,7 +64,7 @@ function flattenTreeNodes(tree: CustomInspectorNode[]) {
 
 function getNodesByDepth(list: string[][], depth: number) {
   const nodes: string[] = []
-  list.forEach((item) => {
+  list?.forEach((item) => {
     nodes.push(...item.slice(0, depth + 1))
   })
   return [...new Set(nodes)]
@@ -150,7 +153,10 @@ function normalizeComponentState(data: { state?: any[] }) {
 
 function getComponentState(id: string) {
   rpc.value.getInspectorState({ inspectorId, nodeId: id }).then((data) => {
-    activeComponentState.value = normalizeComponentState(parse(data!))
+    const parsedData = parse(data!)
+    if (!parsedData)
+      return
+    activeComponentState.value = normalizeComponentState(parsedData)
     expandedStateNodes.value = Array.from({ length: Object.keys(activeComponentState.value).length }, (_, i) => `${i}`)
   })
 }
@@ -272,15 +278,15 @@ function closeComponentRenderCode() {
       <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
-            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." flex-1 />
-            <button px-1 @click="inspectComponentInspector">
+            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." class="flex-1 text-13px" />
+            <button v-tooltip.bottom="'Select component in the page'" px-1 class="hover:(color-#00dc82)" @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                style="height: 1.1em; width: 1.1em;color:#00dc82;"
-                class="hover:(op-80)"
+                style="height: 1.1em; width: 1.1em;"
+                class="op-80 hover:(op-100)"
                 viewBox="0 0 24 24"
               >
-                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r=".5" fill="currentColor" /><path d="M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0m7-9v2m-9 7h2m7 7v2m7-9h2" /></g>
+                <path fill="currentColor" d="M10.611 10.611a1 1 0 0 1 1.11-.208l8.839 3.889a1 1 0 0 1-.14 1.88l-3.338.91l-.91 3.338a1 1 0 0 1-1.88.14l-3.89-8.84a1 1 0 0 1 .209-1.109M17 3a3 3 0 0 1 3 3v3a1 1 0 1 1-2 0V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h3a1 1 0 1 1 0 2H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3zm-3.73 10.269l1.715 3.9l.318-1.164a1 1 0 0 1 .701-.702l1.165-.318l-3.9-1.716Z" />
               </svg>
             </button>
           </div>
@@ -293,13 +299,13 @@ function closeComponentRenderCode() {
         <div class="h-full flex flex-col p2">
           <div class="flex py2">
             <!-- component name -->
-            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-4">
+            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-13px">
               <span class="text-gray-400 dark:text-gray-600">&lt;</span>
               <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis ws-nowrap [.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 
-            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." flex-1 />
+            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." class="flex-1 text-13px" />
 
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
@@ -315,7 +321,7 @@ function closeComponentRenderCode() {
     </Splitpanes>
 
     <!-- inspect-component dialog -->
-    <!-- <VueDialog v-model="inspectComponentTipVisible" title="" height="12rem" :closable="false">
+    <VueDialog v-if="isInChromePanel" v-model="inspectComponentTipVisible" title="" height="12rem" :closable="false">
       <div class="h-full flex flex-col items-center justify-center gap-2">
         <span class="block">
           <svg
@@ -338,7 +344,7 @@ function closeComponentRenderCode() {
           </VueButton>
         </div>
       </template>
-    </VueDialog> -->
+    </VueDialog>
   </div>
 </template>
 

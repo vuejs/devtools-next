@@ -3,7 +3,9 @@ import { getBigIntDetails, getComponentDefinitionDetails, getDateDetails, getFun
 import { isVueInstance } from './is'
 import { sanitize } from './util'
 
-export function stringifyReplacer(key: string) {
+export type Replacer = (this: any, key: string | number, value: any, depth?: number, seenInstance?: Map</* instance */any, /* depth */number>) => any
+
+export function stringifyReplacer(key: string | number, _value: any, depth?: number, seenInstance?: Map<any, number>) {
   // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
   // @TODO: need to check if it will cause any other issues
   if (key === 'compilerOptions')
@@ -75,7 +77,13 @@ export function stringifyReplacer(key: string) {
       return getRouterDetails(val)
     }
     else if (isVueInstance(val as Record<string, unknown>)) {
-      return getInstanceDetails(val)
+      const componentVal = getInstanceDetails(val)
+      const parentInstanceDepth = seenInstance?.get(val)
+      if (parentInstanceDepth && parentInstanceDepth < depth!) {
+        return `[[CircularRef]] <${componentVal._custom.displayText}>`
+      }
+      seenInstance?.set(val, depth!)
+      return componentVal
     }
     // @ts-expect-error skip type check
     else if (typeof val.render === 'function') {

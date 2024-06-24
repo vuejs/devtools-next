@@ -1,0 +1,24 @@
+{
+  "name": "@vue/devtools-chrome-extension",
+  "type": "module",
+  "version": "7.0.0-beta.2",
+  "private": true,
+  "author": "webfansplz",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsup",
+    "dev": "cross-env NODE_ENV=development tsup --watch"
+  },
+  "dependencies": {
+    "@vue/devtools-core": "workspace:^",
+    "@vue/devtools-kit": "workspace:^",
+    "@vue/devtools-shared": "workspace:^"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vue": "^3.4.29"
+  }
+}

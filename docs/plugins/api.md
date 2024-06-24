@@ -2,6 +2,11 @@
 
 Plugins API for easier DevTools integrations.
 
+:::tip
+
+Since v7.3.0, we are fully compatible with the v6 plugin API. You can check out the [API documentation](https://devtools.vuejs.org/plugin/api-reference.html) here.
+:::
+
 ## Installation
 
 ::: code-group
@@ -114,7 +119,3 @@ onDevToolsClientConnected(() => {
   console.log('devtools client connected')
 })
 ```
-
-:::tip
-For the [Legacy DevTools API](https://devtools.vuejs.org/plugin/api-reference.html), we have provided a certain level of compatibility, but cannot guarantee complete compatibility.
-:::

@@ -4,9 +4,6 @@ export default defineConfig({
   entryPoints: [
     'src/index.ts',
   ],
-  external: [
-    'vue',
-  ],
   noExternal: ['speakingurl', 'superjson'],
   clean: true,
   format: ['esm', 'cjs'],

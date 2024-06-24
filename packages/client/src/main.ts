@@ -2,7 +2,7 @@ import '@unocss/reset/tailwind.css'
 import 'floating-vue/dist/style.css'
 import { getViteClient } from 'vite-hot-client'
 
-import { isInSeparateWindow } from '@vue/devtools-shared'
+import { isInChromePanel, isInSeparateWindow } from '@vue/devtools-shared'
 import { VueDevToolsVuePlugin, createViteClientRpc, functions, rpc } from '@vue/devtools-core'
 import { createRpcClient, setViteClientContext } from '@vue/devtools-kit'
 import { createApp } from 'vue'
@@ -50,7 +50,7 @@ app.use(VueDevToolsVuePlugin())
 app.mount('#app')
 
 async function getViteHotContext() {
-  if (import.meta.url?.includes('chrome-extension://'))
+  if (isInChromePanel)
     return
 
   const viteClient = await getViteClient(`${location.pathname.split('/__devtools__')[0] || ''}/`.replace(/\/\//g, '/'), false)

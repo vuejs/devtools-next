@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-api",
   "type": "module",
-  "version": "7.3.0-beta.3",
+  "version": "7.3.4",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {

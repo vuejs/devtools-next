@@ -1,4 +1,4 @@
-import { resolve } from 'node:path'
+import { relative, resolve } from 'node:path'
 import { defineConfig, mergeConfig } from 'vite'
 import fse from 'fs-extra'
 import baseConfig from './vite.base.config'
@@ -15,7 +15,10 @@ export default defineConfig(mergeConfig(baseConfig, {
         const clientFile = resolve(__dirname, './dist')
 
         ;['../vite/client'].forEach((dir) => {
-          fse.copySync(clientFile, resolve(__dirname, dir))
+          fse.copySync(clientFile, resolve(__dirname, dir), { filter: (src) => {
+            const relativePath = relative(clientFile, src)
+            return !relativePath.includes('devtools-client-lib')
+          } })
         })
       },
     },

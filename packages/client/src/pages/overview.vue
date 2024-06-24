@@ -66,7 +66,7 @@ onUnmounted(() => {
         <div flex="~" mt--10 items-center justify-center>
           <DevToolsLogo h-18 />
         </div>
-        <div mb6 mt--1 text-center text-sm flex="~ gap-1">
+        <div v-if="!isInChromePanel" mb6 mt--1 text-center text-sm flex="~ gap-1">
           <span op40>
             Vue DevTools
           </span>

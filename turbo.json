@@ -1,6 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "ui": "stream",
   "tasks": {
     "@vue/devtools#stub": {
       "cache": false,
@@ -8,7 +7,7 @@
         "@vue/devtools-electron#stub"
       ]
     },
-    "@vue/devtools-browser-extension#build": {
+    "@vue/devtools-chrome-extension#build": {
       "dependsOn": [
         "@vue/devtools-client#build",
         "^build"
@@ -24,7 +23,8 @@
       "outputs": [
         "dist/**",
         "../electron/client/**",
-        "../browser-extension/client/**",
+        "../chrome-extension/client/**",
+        "../firefox-extension/client/**",
         "../vite/client/**"
       ]
     },
@@ -43,6 +43,15 @@
       "dependsOn": [
         "@vue/devtools-client#stub",
         "^stub"
+      ]
+    },
+    "@vue/devtools-firefox-extension#build": {
+      "dependsOn": [
+        "@vue/devtools-client#build",
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
       ]
     },
     "@vue/devtools-ui#build": {
@@ -89,5 +98,6 @@
         "dist/**/*.?{c|m}js"
       ]
     }
-  }
+  },
+  "ui": "stream"
 }

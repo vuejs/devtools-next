@@ -39,3 +39,23 @@ export {
   Notification as VueNotification,
   Tooltip as VueTooltip,
 }
+
+export type * from './Button.vue'
+export type * from './Badge.vue'
+export type * from './LoadingIndicator.vue'
+export type * from './Icon.vue'
+export type * from './DarkToggle.vue'
+export type * from './Card.vue'
+export type * from './Dialog.vue'
+export type * from './Input.vue'
+export type * from './FormField.vue'
+export type * from './Dropdown.vue'
+export type * from './DropdownButton.vue'
+export type * from './Confirm.vue'
+export type * from './Select.vue'
+export type * from './Switch.vue'
+export type * from './Checkbox.vue'
+export type * from './Drawer.vue'
+export type * from './Overlay.vue'
+export type * from './Notification.vue'
+export type * from './Tooltip.vue'

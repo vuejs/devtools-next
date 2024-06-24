@@ -10,7 +10,7 @@ const router = useVirtualRouter()
 </script>
 
 <template>
-  <div border="b base" class="h10 h40px flex items-center justify-between px3">
+  <div border="b base" class="flex items-center justify-between px3">
     <div>
       <slot>
         <i class="i-ep:back cursor-pointer op70 text-base hover:op100" @click="router.push('/')" />

@@ -188,7 +188,7 @@ async function submitDrafting() {
   <div>
     <div
       ref="containerRef"
-      class="font-state-field flex items-center text-13px"
+      class="font-state-field flex items-center text-3.5"
       :class="[hasChildren && 'cursor-pointer hover:(bg-active)']"
       :style="{ paddingLeft: `${depth * 15 + 4}px` }"
       @click="toggleExpanded(`${depth}-${index}`)"

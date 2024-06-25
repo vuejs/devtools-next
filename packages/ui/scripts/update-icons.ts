@@ -22,7 +22,7 @@ const icVersion = devDependencies['@iconify-json/ic'].slice(1) /* remove ^ prefi
 
 if (targetIcVersion === icVersion) {
   console.log('No need to update ic icons')
-  // process.exit(0)
+  process.exit(0)
 }
 
 const withIcVersionComment = (s: string) => `// Generated from @iconify-json/ic@${icVersion}\n\n${s}`

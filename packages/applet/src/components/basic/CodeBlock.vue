@@ -61,4 +61,7 @@ const rendered = computed(() => {
   text-align: right;
   --at-apply: 'text-truegray:50';
 }
+.code-block pre:focus-visible {
+  outline: none;
+}
 </style>

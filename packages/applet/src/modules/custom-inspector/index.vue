@@ -2,7 +2,7 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
-import Home from './components/Home.vue'
+import About from './components/About.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import AppConnecting from '~/components/basic/AppConnecting.vue'
@@ -20,12 +20,6 @@ const loading = ref(false)
 const routes = computed(() => {
   return [
     {
-      path: '/',
-      name: 'Home',
-      component: Home,
-      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
-    },
-    {
       path: '/state',
       name: 'State',
       component: State,
@@ -37,6 +31,12 @@ const routes = computed(() => {
       component: Timeline,
       icon: 'i-mdi:timeline-clock-outline',
     }),
+    {
+      path: '/about',
+      name: 'About',
+      component: About,
+      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
+    },
   ].filter(Boolean) as VirtualRoute[]
 })
 

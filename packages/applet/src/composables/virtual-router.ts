@@ -15,7 +15,7 @@ export function registerVirtualRouter<
     defaultRoutePath?: RoutePaths
   },
 ) {
-  const defaultRoutePath = props?.defaultRoutePath ?? '/'
+  const defaultRoutePath = props?.defaultRoutePath ?? toValue(routes)[0].path
 
   const route = ref<{ path: string, icon?: string }>({
     path: defaultRoutePath,

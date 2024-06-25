@@ -278,7 +278,7 @@ function closeComponentRenderCode() {
       <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
-            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." class="flex-1 text-13px" />
+            <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." class="flex-1 text-3.5" />
             <button v-tooltip.bottom="'Select component in the page'" px-1 class="hover:(color-#00dc82)" @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -299,13 +299,13 @@ function closeComponentRenderCode() {
         <div class="h-full flex flex-col p2">
           <div class="flex py2">
             <!-- component name -->
-            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-13px">
+            <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-3.5">
               <span class="text-gray-400 dark:text-gray-600">&lt;</span>
               <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis ws-nowrap [.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 
-            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." class="flex-1 text-13px" />
+            <VueInput v-model="filterStateName" :loading-debounce-time="250" placeholder="Filter State..." class="flex-1 text-3.5" />
 
             <div class="flex items-center gap-2 px-1">
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />

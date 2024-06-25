@@ -6,20 +6,20 @@
   "license": "MIT",
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/types/src/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
     "./style.css": "./dist/style.css",
     "./theme": {
-      "types": "./dist/types/theme.d.ts",
+      "types": "./dist/types/theme/index.d.ts",
       "import": "./dist/theme.js",
       "require": "./dist/theme.cjs"
     }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/src/index.d.ts",
   "files": [
     "dist"
   ],

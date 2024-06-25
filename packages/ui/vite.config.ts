@@ -12,7 +12,6 @@ export default defineConfig({
     vue(),
     unocss(),
     dts({
-      rollupTypes: true,
       cleanVueFileName: true,
       include: ['src', 'theme'],
       outDir: 'dist/types',

@@ -8,6 +8,8 @@ import { HstVue } from '@histoire/plugin-vue'
 import unocss from 'unocss/vite'
 import dts from 'vite-plugin-dts'
 
+const IcIconDataPath = path.resolve(__dirname, './src/constants/ic-icons.ts')
+
 export default defineConfig({
   plugins: [
     vue(),
@@ -40,7 +42,7 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             return 'vendor'
           }
-          if (id === path.resolve(__dirname, './src/constants/ic-icons.ts')) {
+          if (id === IcIconDataPath) {
             return 'ic-icons-data'
           }
         },

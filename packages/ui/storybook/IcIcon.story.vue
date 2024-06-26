@@ -5,7 +5,7 @@ import IcIcon from '../src/components/IcIcon.vue'
 <template>
   <Story>
     <div class="box-border py30px">
-      <IcIcon class="text-4xl text-white" name="baseline-5g" />
+      <IcIcon class="text-48px" name="baseline-5g" />
     </div>
   </Story>
 </template>

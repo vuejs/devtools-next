@@ -4,21 +4,24 @@ import { icIcons } from '../constants/ic-icons'
 
 const props = defineProps<{
   name: string
+  size?: number
+  color?: string
   class?: string
 }>()
-
-const iconSvgCss = computed(() => icIcons[props.name] ?? '')
-const iconSvgUrl = computed(() => `url("data:image/svg+xml;utf8,${iconSvgCss.value}")`)
+const IconPath = computed(() => icIcons[props.name] ?? '')
+const styles = computed(() => ({
+  ...(props.size && {
+    width: `${props.size}px`,
+    height: `${props.size}px`,
+  }),
+  ...(props.color && {
+    color: props.color,
+  }),
+}))
 </script>
 
 <template>
-  <div
-    :class="[props.class]" :style="{
-      background: `${iconSvgUrl} no-repeat`,
-      backgroundSize: '100% 100%',
-      backgroundColor: 'transparent',
-      width: '1em',
-      height: '1em',
-    }"
-  />
+  <div>
+    <svg class="custom-svg h-1em w-1em" :class="props.class" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" :style="styles" v-html="IconPath" />
+  </div>
 </template>

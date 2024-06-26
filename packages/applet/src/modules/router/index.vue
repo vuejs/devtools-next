@@ -27,7 +27,7 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter([
   },
   {
     path: '/about',
-    name: 'Home',
+    name: 'About',
     component: About,
     icon: 'i-ri-route-line',
   },

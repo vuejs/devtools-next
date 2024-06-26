@@ -2,26 +2,24 @@
 import { computed } from 'vue'
 import { icIcons } from '../constants/ic-icons'
 
+/**
+ * Use font-size and color to style the icon
+ */
+
 const props = defineProps<{
   name: string
-  size?: number
-  color?: string
-  class?: string
 }>()
-const IconPath = computed(() => icIcons[props.name] ?? '')
-const styles = computed(() => ({
-  ...(props.size && {
-    width: `${props.size}px`,
-    height: `${props.size}px`,
-  }),
-  ...(props.color && {
-    color: props.color,
-  }),
-}))
+
+const icon = computed(() => props.name)
+const IconPath = computed(() => icIcons[icon.value] ?? '')
 </script>
 
 <template>
   <div>
-    <svg class="custom-svg h-1em w-1em" :class="props.class" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" :style="styles" v-html="IconPath" />
+    <svg
+      class="custom-svg h-1em w-1em"
+      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      v-html="IconPath"
+    />
   </div>
 </template>

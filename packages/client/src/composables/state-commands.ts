@@ -36,7 +36,7 @@ export function useCommands() {
     {
       id: 'fixed:settings',
       title: 'Settings',
-      icon: 'carbon-settings-adjust',
+      icon: 'i-carbon-settings-adjust',
       action: () => {
         router.push('/settings')
       },

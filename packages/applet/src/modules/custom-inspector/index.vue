@@ -23,7 +23,6 @@ const routes = computed(() => {
       path: '/',
       name: 'Home',
       component: Home,
-      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
     },
     {
       path: '/state',

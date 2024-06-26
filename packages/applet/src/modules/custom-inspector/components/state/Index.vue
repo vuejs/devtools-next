@@ -4,7 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
-import { vTooltip } from '@vue/devtools-ui'
+import { VueIcIcon, vTooltip } from '@vue/devtools-ui'
 import Navbar from '~/components/basic/Navbar.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -184,7 +184,7 @@ onUnmounted(() => {
             <div v-if="actions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
               <div class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
-                  <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
+                  <VueIcIcon :name="`baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
                 </div>
               </div>
             </div>
@@ -198,7 +198,7 @@ onUnmounted(() => {
             <div v-if="nodeActions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
               <div class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in nodeActions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callNodeAction(index)">
-                  <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
+                  <VueIcIcon :name="`baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
                 </div>
               </div>
             </div>

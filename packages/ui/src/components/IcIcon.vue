@@ -10,8 +10,7 @@ const props = defineProps<{
   name: string
 }>()
 
-const icon = computed(() => props.name)
-const IconPath = computed(() => icIcons[icon.value] ?? '')
+const IconPath = computed(() => icIcons[props.name] ?? '')
 </script>
 
 <template>

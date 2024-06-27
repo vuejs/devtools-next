@@ -165,20 +165,20 @@ export function onDevToolsConnected(fn: () => void) {
   })
 }
 
+const resolveIcon = (icon?: string) => {
+  if (!icon)
+    return
+  if (icon.startsWith('baseline-')) {
+    // for custom-tab, we use `custom-ic-` prefix
+    return `custom-ic-${icon}`
+  }
+  return icon
+}
+
 export function addCustomTab(tab: CustomTab) {
   const tabs = global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__
   if (tabs.some((t: CustomTab) => t.name === tab.name))
     return
-
-  const resolveIcon = (icon?: string) => {
-    if (!icon)
-      return
-    if (icon.startsWith('baseline-')) {
-      // for custom-tab, we use `custom-ic-` prefix
-      return `custom-ic-${tab.icon}`
-    }
-    return icon
-  }
 
   tabs.push({
     ...tab,
@@ -192,7 +192,10 @@ export function addCustomCommand(action: CustomCommand) {
   if (commands.some((t: CustomCommand) => t.id === action.id))
     return
 
-  commands.push(action)
+  commands.push({
+    ...action,
+    icon: resolveIcon(action.icon),
+  })
   updateAllStates()
 }
 

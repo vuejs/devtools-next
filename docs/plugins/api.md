@@ -65,7 +65,7 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify Ic Baseline
+  // any icon from material design icons
   icon: 'auto-awesome',
   action: {
     type: 'url',
@@ -79,7 +79,7 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify Ic Baseline
+  // any icon from material design icons
   icon: 'auto-awesome',
   // submenu, which is shown when the menu is clicked
   children: [

@@ -42,7 +42,7 @@ addCustomTab({
   // title to display in the tab
   title: 'VueUse',
   // any icon from Iconify Ic Baseline
-  icon: 'baseline-auto-awesome',
+  icon: 'auto-awesome',
   // iframe view
   view: {
     type: 'iframe',
@@ -66,7 +66,7 @@ addCustomCommand({
   // title to display in the command
   title: 'VueUse',
   // any icon from Iconify Ic Baseline
-  icon: 'baseline-auto-awesome',
+  icon: 'auto-awesome',
   action: {
     type: 'url',
     src: 'https://vueuse.org/'
@@ -80,7 +80,7 @@ addCustomCommand({
   // title to display in the command
   title: 'VueUse',
   // any icon from Iconify Ic Baseline
-  icon: 'baseline-auto-awesome',
+  icon: 'auto-awesome',
   // submenu, which is shown when the menu is clicked
   children: [
     {

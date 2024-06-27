@@ -170,7 +170,20 @@ export function addCustomTab(tab: CustomTab) {
   if (tabs.some((t: CustomTab) => t.name === tab.name))
     return
 
-  tabs.push(tab)
+  const resolveIcon = (icon?: string) => {
+    if (!icon)
+      return
+    if (icon.startsWith('baseline-')) {
+      // for custom-tab, we use `custom-ic-` prefix
+      return `custom-ic-${tab.icon}`
+    }
+    return icon
+  }
+
+  tabs.push({
+    ...tab,
+    icon: resolveIcon(tab.icon),
+  })
   updateAllStates()
 }
 

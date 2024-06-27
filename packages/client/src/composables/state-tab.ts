@@ -1,6 +1,7 @@
 import type { MaybeRef } from 'vue'
 import type { CustomTab } from '@vue/devtools-kit'
 import { isInChromePanel, isInElectron } from '@vue/devtools-shared'
+import equal from 'fast-deep-equal'
 import { useDevToolsState } from '@vue/devtools-core'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
@@ -26,9 +27,14 @@ export function useAllTabs() {
   const state = useDevToolsState()
   const customInspectorTabs = useCustomInspectorTabs()
 
-  const customTabs = ref<CustomTab[]>(state.tabs.value || [])
-  watchEffect(() => {
-    customTabs.value = state.tabs.value
+  let cachedCustomTabs: CustomTab[] = []
+
+  const customTabs = computed(() => {
+    if (equal(state.tabs.value, cachedCustomTabs))
+      // Optimized computed value
+      return cachedCustomTabs
+    cachedCustomTabs = state.tabs.value
+    return state.tabs.value
   })
   const allTabs = computed(() => {
     const vitePluginDetected = state.vitePluginDetected.value

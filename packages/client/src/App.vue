@@ -3,7 +3,6 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
 
-import('./setup/unocss-runtime')
 useDevToolsColorMode()
 const router = useRouter()
 const route = useRoute()

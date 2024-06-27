@@ -169,10 +169,10 @@ const resolveIcon = (icon?: string) => {
   if (!icon)
     return
   if (icon.startsWith('baseline-')) {
-    // for custom-tab, we use `custom-ic-` prefix
     return `custom-ic-${icon}`
   }
-  return icon
+  // for custom-tab, we use `custom-ic-` prefix
+  return `custom-ic-baseline-${icon}`
 }
 
 export function addCustomTab(tab: CustomTab) {

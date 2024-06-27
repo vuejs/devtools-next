@@ -235,9 +235,6 @@ importers:
       '@unocss/preset-icons':
         specifier: ^0.61.0
         version: 0.61.0
-      '@unocss/runtime':
-        specifier: ^0.61.0
-        version: 0.61.0
       '@vue/devtools-applet':
         specifier: workspace:^
         version: link:../applet
@@ -3012,9 +3009,6 @@ packages:
   '@unocss/rule-utils@0.61.0':
     resolution: {integrity: sha512-MCdmfhE6Q9HSWjWqi2sx5/nnKyOEhfhoo+pVumHIqkHQICQ/LuKioFf7Y7e5ycqjFE/7dC2hKGZJ8WTMGIOMwA==}
     engines: {node: '>=14'}
-
-  '@unocss/runtime@0.61.0':
-    resolution: {integrity: sha512-t0juOEMY+Bt37eIDSjaYoxMPZcvPsH/BSgt4Ca9sau22tjJOnFl/dNmoEeTxYSF5YEsxjn4/gp39SJG8WEhIIQ==}
 
   '@unocss/scope@0.61.0':
     resolution: {integrity: sha512-uDk84LX2meZHskSvy0Mad7jgF0Be6el16F9DKYYvxlUxlzu/mCj6PQpQrXi8uZ2+O3akneHFqAbO6ewYShKdQA==}
@@ -10918,12 +10912,6 @@ snapshots:
     dependencies:
       '@unocss/core': 0.61.0
       magic-string: 0.30.10
-
-  '@unocss/runtime@0.61.0':
-    dependencies:
-      '@unocss/core': 0.61.0
-      '@unocss/preset-attributify': 0.61.0
-      '@unocss/preset-uno': 0.61.0
 
   '@unocss/scope@0.61.0': {}
 

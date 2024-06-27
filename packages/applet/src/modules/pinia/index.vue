@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import Home from './components/Home.vue'
+import About from './components/About.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
 const { VirtualRouterView } = registerVirtualRouter([
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    icon: 'i-logos-pinia',
-  },
   {
     path: '/store',
     name: 'Store',
@@ -25,9 +17,15 @@ const { VirtualRouterView } = registerVirtualRouter([
     component: Timeline,
     icon: 'i-mdi:timeline-clock-outline',
   },
-])
-
-const routePath = ref('/')
+  {
+    path: '/',
+    name: 'About',
+    component: About,
+    icon: 'i-logos-pinia',
+  },
+], {
+  defaultRoutePath: '/store',
+})
 </script>
 
 <template>

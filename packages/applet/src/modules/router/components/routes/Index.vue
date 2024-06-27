@@ -4,6 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
+import { until } from '@vueuse/core'
 import Navbar from '~/components/basic/Navbar.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -102,7 +103,8 @@ const getRoutesInspectorTree = () => {
     }
   })
 }
-getRoutesInspectorTree()
+
+until(inspectorId).toBeTruthy().then(getRoutesInspectorTree)
 
 function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {

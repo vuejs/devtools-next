@@ -171,6 +171,9 @@ const resolveIcon = (icon?: string) => {
   if (icon.startsWith('baseline-')) {
     return `custom-ic-${icon}`
   }
+  // devtools internal custom tab icons are starts with `i-` prefix, render as it is set in unocss safelist
+  if (icon.startsWith('i-'))
+    return icon
   // for custom-tab, we use `custom-ic-` prefix
   return `custom-ic-baseline-${icon}`
 }

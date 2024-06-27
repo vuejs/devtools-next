@@ -74,7 +74,7 @@ setTimeout(() => {
   addCustomCommand({
     id: 'vueuse',
     title: 'VueUse',
-    icon: 'baseline-auto-awesome',
+    icon: 'auto-awesome',
     action: {
       type: 'url',
       src: 'https://vueuse.org/',

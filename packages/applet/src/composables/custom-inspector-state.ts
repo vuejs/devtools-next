@@ -9,7 +9,7 @@ type CustomInspectorState = Partial<{
   timelineLayerIds: string[]
 }>
 
-const VueDevToolsStateSymbol: InjectionKey<Ref<CustomInspectorState>> = Symbol('VueDevToolsCustomInspectorStateSymbol')
+const VueDevToolsStateSymbol: InjectionKey<Ref<CustomInspectorState>> = Symbol.for('VueDevToolsCustomInspectorStateSymbol')
 
 export function useCustomInspectorState() {
   return inject(VueDevToolsStateSymbol)!

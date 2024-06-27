@@ -31,7 +31,7 @@ $ bun add -D @vue/devtools-api
 
 ## `addCustomTab`
 
-You can choose any icon from [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline).
+You can choose any icon from [Material Design Icons](https://fonts.google.com/icons) or [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline), for example `star`.
 
 ```ts
 import { addCustomTab } from '@vue/devtools-api'
@@ -54,7 +54,7 @@ addCustomTab({
 
 ## `addCustomCommand`
 
-You can choose any icon from [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline).
+You can choose any icon from [Material Design Icons](https://fonts.google.com/icons) or [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline), for example `star`.
 
 ```ts
 import { addCustomCommand } from '@vue/devtools-api'

@@ -31,6 +31,8 @@ $ bun add -D @vue/devtools-api
 
 ## `addCustomTab`
 
+You can choose any icon from [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline).
+
 ```ts
 import { addCustomTab } from '@vue/devtools-api'
 
@@ -39,8 +41,8 @@ addCustomTab({
   name: 'vue-use',
   // title to display in the tab
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from Iconify Ic Baseline
+  icon: 'baseline-auto-awesome',
   // iframe view
   view: {
     type: 'iframe',
@@ -52,6 +54,8 @@ addCustomTab({
 
 ## `addCustomCommand`
 
+You can choose any icon from [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline).
+
 ```ts
 import { addCustomCommand } from '@vue/devtools-api'
 
@@ -61,8 +65,8 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from Iconify Ic Baseline
+  icon: 'baseline-auto-awesome',
   action: {
     type: 'url',
     src: 'https://vueuse.org/'
@@ -75,14 +79,13 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from Iconify Ic Baseline
+  icon: 'baseline-auto-awesome',
   // submenu, which is shown when the menu is clicked
   children: [
     {
       id: 'vueuse:github',
       title: 'Github',
-      icon: 'i-carbon-logo-github',
       action: {
         type: 'url',
         src: 'https://github.com/vueuse/vueuse'
@@ -91,7 +94,6 @@ addCustomCommand({
     {
       id: 'vueuse:website',
       title: 'Website',
-      icon: 'i-logos-vueuse',
       action: {
         type: 'url',
         src: 'https://vueuse.org/'

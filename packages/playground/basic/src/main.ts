@@ -31,7 +31,6 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/hello',
-    // component: Hello,
     component: () => import('./pages/Hello.vue'),
     name: 'hello',
   },
@@ -62,7 +61,6 @@ const router = createRouter({
   routes,
 })
 
-// setTimeout(() => {
 app.use(VueQueryPlugin, {
   enableDevtoolsV6Plugin: true,
 })
@@ -71,48 +69,15 @@ app.use(pinia)
 app.use(store)
 
 app.mount('#app')
-// }, 2000)
 
 setTimeout(() => {
   addCustomCommand({
     id: 'vueuse',
     title: 'VueUse',
+    icon: 'baseline-auto-awesome',
     action: {
       type: 'url',
       src: 'https://vueuse.org/',
     },
   })
 }, 2000)
-
-// setTimeout(() => {
-//   addCustomTab({
-//   // unique identifier
-//     name: 'vue-use',
-//     // title to display in the tab
-//     title: 'VueUse',
-//     // any icon from Iconify, or a URL to an image
-//     icon: 'i-logos-vueuse',
-//     // iframe view
-//     view: {
-//       type: 'iframe',
-//       src: 'https://vueuse.org/',
-//     },
-//     category: 'advanced',
-//   })
-//   setTimeout(() => {
-//     addCustomTab({
-//     // unique identifier
-//       name: 'vue-use1',
-//       // title to display in the tab
-//       title: 'VueUse1',
-//       // any icon from Iconify, or a URL to an image
-//       icon: 'i-logos-vueuse',
-//       // iframe view
-//       view: {
-//         type: 'iframe',
-//         src: 'https://vueuse.org/',
-//       },
-//       category: 'advanced',
-//     })
-//   }, 2000)
-// }, 2000)

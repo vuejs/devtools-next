@@ -42,7 +42,7 @@ addCustomTab({
   // title to display in the tab
   title: 'VueUse',
   // any icon from material design icons or a URL to an image
-  icon: 'auto-awesome',
+  icon: 'https://vueuse.org/favicon.svg',
   // iframe view
   view: {
     type: 'iframe',

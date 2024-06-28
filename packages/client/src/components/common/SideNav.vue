@@ -12,6 +12,9 @@ const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSid
 const { enabledTabs, flattenedTabs } = useAllTabs()
 
 const ITEM_HEIGHT = 45
+const INIT_DISTANCE = 6
+const DIF_DISTANCE = 200
+
 const { height: windowHeight } = useWindowSize()
 const containerCapacity = computed(() => {
   const containerHeight = windowHeight.value - 130
@@ -40,6 +43,21 @@ onClickOutside(
   },
   { detectIframe: true },
 )
+
+const distance = ref(INIT_DISTANCE)
+
+watch(
+  () => devtoolsClientState.value.expandSidebar,
+  (expandSidebar) => {
+    if (expandSidebar) {
+      distance.value = DIF_DISTANCE + INIT_DISTANCE
+    }
+    else {
+      distance.value = INIT_DISTANCE - DIF_DISTANCE
+    }
+  },
+
+)
 </script>
 
 <template>
@@ -50,7 +68,7 @@ onClickOutside(
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
     >
-      <VueDropdown placement="left-start" :distance="6" :skidding="5" trigger="click" :shown="showDocking" class="w-full">
+      <VueDropdown placement="left-start" :distance :skidding="5" trigger="click" :shown="showDocking" class="w-full">
         <button
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"

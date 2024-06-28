@@ -1,4 +1,4 @@
-import { target as global } from '@vue/devtools-shared'
+import { target as global, isUrlString } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
 import type { AppRecord, CustomCommand, CustomTab } from '../types'
 import { DevToolsMessagingHookKeys } from './hook'
@@ -165,12 +165,29 @@ export function onDevToolsConnected(fn: () => void) {
   })
 }
 
+const resolveIcon = (icon?: string) => {
+  if (!icon)
+    return
+  if (icon.startsWith('baseline-')) {
+    return `custom-ic-${icon}`
+  }
+  // devtools internal custom tab icons are starts with `i-` prefix, render as it is set in unocss safelist
+  // or if it's a url
+  if (icon.startsWith('i-') || isUrlString(icon))
+    return icon
+  // for custom-tab, we use `custom-ic-` prefix
+  return `custom-ic-baseline-${icon}`
+}
+
 export function addCustomTab(tab: CustomTab) {
   const tabs = global.__VUE_DEVTOOLS_KIT_CUSTOM_TABS__
   if (tabs.some((t: CustomTab) => t.name === tab.name))
     return
 
-  tabs.push(tab)
+  tabs.push({
+    ...tab,
+    icon: resolveIcon(tab.icon),
+  })
   updateAllStates()
 }
 
@@ -179,7 +196,16 @@ export function addCustomCommand(action: CustomCommand) {
   if (commands.some((t: CustomCommand) => t.id === action.id))
     return
 
-  commands.push(action)
+  commands.push({
+    ...action,
+    icon: resolveIcon(action.icon),
+    children: action.children
+      ? action.children.map((child: CustomCommand) => ({
+        ...child,
+        icon: resolveIcon(child.icon),
+      }))
+      : undefined,
+  })
   updateAllStates()
 }
 

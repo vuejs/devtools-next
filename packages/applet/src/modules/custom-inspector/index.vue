@@ -35,7 +35,6 @@ const routes = computed(() => {
       path: '/about',
       name: 'About',
       component: About,
-      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
     },
   ].filter(Boolean) as VirtualRoute[]
 })

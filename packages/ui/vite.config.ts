@@ -1,11 +1,14 @@
 /// <reference types="histoire" />
 
 import { readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { HstVue } from '@histoire/plugin-vue'
 import unocss from 'unocss/vite'
 import dts from 'vite-plugin-dts'
+
+const IcIconDataPath = path.resolve(__dirname, './src/constants/ic-icons.ts')
 
 export default defineConfig({
   plugins: [
@@ -34,6 +37,14 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue',
+        },
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+          if (id === IcIconDataPath) {
+            return 'ic-icons-data'
+          }
         },
       },
     },

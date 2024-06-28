@@ -49,6 +49,15 @@ export function sortByKey(state: unknown[]) {
   })
 }
 
+const HTTP_URL_RE = /^https?:\/\//
+
+/**
+ * Check a string is start with `/` or a valid http url
+ */
+export function isUrlString(str: string) {
+  return str.startsWith('/') || HTTP_URL_RE.test(str)
+}
+
 /**
  * @copyright [rfdc](https://github.com/davidmarkclements/rfdc)
  * @description A really fast deep clone alternative

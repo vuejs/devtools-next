@@ -31,6 +31,8 @@ $ bun add -D @vue/devtools-api
 
 ## `addCustomTab`
 
+You can choose any icon from [Material Design Icons](https://fonts.google.com/icons) or [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline), for example `star`.
+
 ```ts
 import { addCustomTab } from '@vue/devtools-api'
 
@@ -39,8 +41,8 @@ addCustomTab({
   name: 'vue-use',
   // title to display in the tab
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from material design icons or a URL to an image
+  icon: 'https://vueuse.org/favicon.svg',
   // iframe view
   view: {
     type: 'iframe',
@@ -52,6 +54,8 @@ addCustomTab({
 
 ## `addCustomCommand`
 
+You can choose any icon from [Material Design Icons](https://fonts.google.com/icons) or [Iconify Ic Baseline](https://icones.netlify.app/collection/ic?variant=Baseline), for example `star`.
+
 ```ts
 import { addCustomCommand } from '@vue/devtools-api'
 
@@ -61,8 +65,8 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from material design icons or a URL to an image
+  icon: 'https://vueuse.org/favicon.svg',
   action: {
     type: 'url',
     src: 'https://vueuse.org/'
@@ -75,14 +79,13 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from Iconify, or a URL to an image
-  icon: 'i-logos-vueuse',
+  // any icon from material design icons or a URL to an image
+  icon: 'https://vueuse.org/favicon.svg',
   // submenu, which is shown when the menu is clicked
   children: [
     {
       id: 'vueuse:github',
       title: 'Github',
-      icon: 'i-carbon-logo-github',
       action: {
         type: 'url',
         src: 'https://github.com/vueuse/vueuse'
@@ -91,7 +94,7 @@ addCustomCommand({
     {
       id: 'vueuse:website',
       title: 'Website',
-      icon: 'i-logos-vueuse',
+      icon: 'auto-awesome',
       action: {
         type: 'url',
         src: 'https://vueuse.org/'

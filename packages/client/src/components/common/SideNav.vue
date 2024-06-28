@@ -22,9 +22,11 @@ const overflowTabs = computed(() => flattenedTabs.value.slice(containerCapacity.
 const categorizedInlineTabs = getCategorizedTabs(inlineTabs, enabledTabs)
 const categorizedOverflowTabs = getCategorizedTabs(overflowTabs, enabledTabs)
 
-const displayedTabs = computed(() => (sidebarScrollable.value || sidebarExpanded.value)
-  ? enabledTabs.value
-  : categorizedInlineTabs.value)
+const displayedTabs = computed(() =>
+  (sidebarScrollable.value || sidebarExpanded.value)
+    ? enabledTabs.value
+    : categorizedInlineTabs.value,
+)
 
 onClickOutside(
   panel,

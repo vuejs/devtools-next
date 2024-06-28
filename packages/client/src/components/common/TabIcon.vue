@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isUrlString } from '@vue/devtools-shared'
 import { VueIcIcon } from '@vue/devtools-ui'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +23,7 @@ const CUSTOM_IC_ICON_PREFIX = 'custom-ic-'
 
 <template>
   <img
-    v-if="_icon && (_icon.startsWith('/') || _icon.match(/^https?:/))"
+    v-if="_icon && isUrlString(_icon)"
     :style="{
       width: '1em',
       height: '1em',

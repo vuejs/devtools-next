@@ -68,5 +68,10 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'i-ic-baseline-error-outline',
     'i-ic-baseline-done-outline',
     'i-ic-baseline-delete-sweep',
+    'i-ic-baseline-restore',
+    'i-ic-baseline-content-copy',
+    'i-ic-baseline-content-paste',
+    'i-ic-baseline-save',
+    'i-ic-baseline-folder-open',
   ],
 }])) as any

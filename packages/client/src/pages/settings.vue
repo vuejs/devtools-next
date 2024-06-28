@@ -125,7 +125,7 @@ const minimizePanelInteractiveLabel = computed(() => {
                 @update:model-value="(v: boolean) => toggleTab(tab.name, v)"
               >
                 <div flex="~ gap-2" flex-auto items-center justify-start pr-4 text-sm>
-                  <TabIcon text-xl :icon="tab.icon" :title="tab.title" />
+                  <TabIcon text-xl :icon="tab.icon" :fallback="tab.fallbackIcon" :title="tab.title" />
                   <span>{{ tab.title }}</span>
                   <div flex-auto />
                   <template v-if="pinnedTabs.includes(tab.name)">

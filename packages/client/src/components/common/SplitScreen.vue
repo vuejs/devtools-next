@@ -72,11 +72,11 @@ const showGridPanel = ref(false)
           <TabIcon
             text-xl
             :icon="currentTab?.icon"
-            title="Settings"
+            :title="currentTab.name"
+            :fallback="(currentTab as ModuleBuiltinTab).fallbackIcon"
             :show-title="false"
           />
           <span capitalize>
-
             {{ currentTab?.name }}
           </span>
         </div>

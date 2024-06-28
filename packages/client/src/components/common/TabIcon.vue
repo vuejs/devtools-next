@@ -13,6 +13,10 @@ const props = withDefaults(defineProps<{
 
 const _icon = ref<string | undefined>(props.icon)
 
+watch(() => props.icon, (icon) => {
+  _icon.value = icon
+})
+
 function onLoadError() {
   _icon.value = props.fallback
 }

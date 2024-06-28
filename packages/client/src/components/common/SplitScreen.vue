@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueButton, VueCard, VueDropdown, vTooltip } from '@vue/devtools-ui'
 import { CustomTab } from '@vue/devtools-kit'
+import { CustomInspector as CustomInspectorComponent } from '@vue/devtools-applet'
 import { ModuleBuiltinTab } from '~/types'
 
 function close() {
@@ -13,6 +14,7 @@ const router = useRouter()
 const route = useRoute()
 const PageComponent = shallowRef()
 const customTabName = ref<string | null>(null)
+const customTabType = ref<'custom-tab' | 'custom-inspector' | null>(null)
 
 function isMatchedWithRoute(tab?: typeof flattenedTabs['value'][number]) {
   const routeTabName = getRouteTabName()
@@ -31,11 +33,16 @@ const mainViewName = computed(() =>
 )
 
 function getRouteTabName() {
-  return route.path.startsWith(`/${CUSTOM_TAB_VIEW}/`)
-    ? route.path.slice(CUSTOM_TAB_VIEW.length + 2)
-    : route.path.startsWith('/')
-      ? route.path.slice(1)
-      : route.path
+  if (route.path.startsWith(`/${CUSTOM_TAB_VIEW}/`)) {
+    return route.path.slice(CUSTOM_TAB_VIEW.length + 2)
+  }
+  if (route.path.startsWith(`/${CUSTOM_INSPECTOR_TAB_VIEW}/`)) {
+    return route.path.slice(CUSTOM_INSPECTOR_TAB_VIEW.length + 2)
+  }
+  if (route.path.startsWith('/')) {
+    return route.path.slice(1)
+  }
+  return route.path
 }
 
 watch(
@@ -46,6 +53,12 @@ watch(
     // check if is a custom tab
     if ((tab as CustomTab).view) {
       customTabName.value = tab.name
+      customTabType.value = 'custom-tab'
+      return
+    }
+    if ((tab as ModuleBuiltinTab).path.startsWith(CUSTOM_INSPECTOR_TAB_VIEW)) {
+      customTabName.value = tab.name
+      customTabType.value = 'custom-inspector'
       return
     }
     customTabName.value = null
@@ -93,7 +106,10 @@ const showGridPanel = ref(false)
         <div i-carbon:side-panel-open />
       </button>
     </div>
-    <CustomTabComponent v-if="customTabName && currentTab" :tab="currentTab as CustomTab" class="h-[calc(100%-50px)]" iframe-inline of-auto />
+    <template v-if="customTabName && currentTab">
+      <CustomTabComponent v-if="customTabType === 'custom-tab'" :tab="currentTab as CustomTab" class="h-[calc(100%-50px)]" iframe-inline of-auto />
+      <CustomInspectorComponent v-else :id="customTabName" />
+    </template>
     <div v-else-if="PageComponent && currentTab" of-auto class="h-[calc(100%-50px)]">
       <component :is="PageComponent" :key="`tab-${currentTab.name}`" />
     </div>

@@ -41,7 +41,7 @@ addCustomTab({
   name: 'vue-use',
   // title to display in the tab
   title: 'VueUse',
-  // any icon from Iconify Ic Baseline
+  // any icon from material design icons or a URL to an image
   icon: 'auto-awesome',
   // iframe view
   view: {
@@ -65,8 +65,8 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from material design icons
-  icon: 'auto-awesome',
+  // any icon from material design icons or a URL to an image
+  icon: 'https://vueuse.org/favicon.svg',
   action: {
     type: 'url',
     src: 'https://vueuse.org/'
@@ -79,8 +79,8 @@ addCustomCommand({
   id: 'vueuse',
   // title to display in the command
   title: 'VueUse',
-  // any icon from material design icons
-  icon: 'auto-awesome',
+  // any icon from material design icons or a URL to an image
+  icon: 'https://vueuse.org/favicon.svg',
   // submenu, which is shown when the menu is clicked
   children: [
     {
@@ -94,6 +94,7 @@ addCustomCommand({
     {
       id: 'vueuse:website',
       title: 'Website',
+      icon: 'auto-awesome',
       action: {
         type: 'url',
         src: 'https://vueuse.org/'

@@ -74,10 +74,17 @@ setTimeout(() => {
   addCustomCommand({
     id: 'vueuse',
     title: 'VueUse',
-    icon: 'auto-awesome',
-    action: {
-      type: 'url',
-      src: 'https://vueuse.org/',
-    },
+    icon: 'https://vueuse.org/favicon.svg',
+    children: [
+      {
+        id: 'vueuse-docs',
+        title: 'Docs',
+        icon: 'auto-awesome',
+        action: {
+          type: 'url',
+          src: 'https://vueuse.org/',
+        },
+      },
+    ],
   })
 }, 2000)

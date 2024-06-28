@@ -205,7 +205,7 @@ onUnmounted(() => {
               </div>
             </div>
           </div>
-          <RootStateViewer v-if="selected && !emptyState" class="p3" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
+          <RootStateViewer v-if="selected && !emptyState" class="no-scrollbar flex-1 select-none overflow-scroll" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
           <Empty v-else>
             No Data
           </Empty>

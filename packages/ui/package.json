@@ -46,7 +46,7 @@
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@iconify-json/ic": "^1.1.17",
-    "@types/node": "^20.14.5",
+    "@types/node": "^20.14.9",
     "@unocss/reset": "^0.61.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "floating-vue": "5.2.2",

@@ -34,9 +34,9 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^29.4.2",
+    "electron": "^29.4.3",
     "execa": "^8.0.1",
-    "h3": "^1.11.1",
+    "h3": "^1.12.0",
     "ip": "^2.0.1",
     "pathe": "^1.1.2",
     "socket.io": "^4.7.5",
@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "tsx": "^4.15.6",
+    "tsx": "^4.15.7",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.29"
+    "vue": "^3.4.31"
   }
 }

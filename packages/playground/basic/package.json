@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@tanstack/vue-query": "^5.48.2",
+    "@tanstack/vue-query": "^5.49.1",
     "@vueuse/core": "^10.11.0",
     "element-plus": "^2.7.6",
     "pinia": "^2.1.7",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.1",
-    "@tanstack/vue-query-devtools": "^5.48.2",
+    "@tanstack/vue-query-devtools": "^5.49.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/devtools": "workspace:^",
     "sass": "^1.77.6",

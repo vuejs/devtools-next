@@ -72,7 +72,7 @@
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.21.1",
+    "@antfu/eslint-config": "2.21.2",
     "@antfu/ni": "^0.21.12",
     "@arethetypeswrong/cli": "^0.15.3",
     "@clack/prompts": "^0.7.0",
@@ -110,8 +110,8 @@
     "simple-git-hooks": "^2.11.1",
     "taze": "^0.13.9",
     "tsup": "^8.1.0",
-    "tsx": "^4.15.7",
-    "turbo": "^2.0.5",
+    "tsx": "^4.16.0",
+    "turbo": "^2.0.6",
     "typescript": "^5.5.2",
     "unbuild": "^2.0.0",
     "unocss": "^0.61.0",

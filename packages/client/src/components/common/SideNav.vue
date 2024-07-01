@@ -12,8 +12,6 @@ const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSid
 const { enabledTabs, flattenedTabs } = useAllTabs()
 
 const ITEM_HEIGHT = 45
-const INIT_DISTANCE = 6
-const DIF_DISTANCE = 200
 
 const { height: windowHeight } = useWindowSize()
 const containerCapacity = computed(() => {
@@ -44,31 +42,26 @@ onClickOutside(
   { detectIframe: true },
 )
 
-const distance = ref(INIT_DISTANCE)
+const containerRef = ref<HTMLDivElement>()
 
-watch(
-  () => devtoolsClientState.value.expandSidebar,
-  (expandSidebar) => {
-    if (expandSidebar) {
-      distance.value = DIF_DISTANCE + INIT_DISTANCE
-    }
-    else {
-      distance.value = INIT_DISTANCE - DIF_DISTANCE
-    }
-  },
+const dropdownDistance = ref(6)
 
-)
+useResizeObserver(containerRef, () => {
+  // This is a hack to force the dropdown to reposition itself
+  dropdownDistance.value = dropdownDistance.value === 6 ? 6.01 : 6
+})
 </script>
 
 <template>
   <div
+    ref="containerRef"
     border="r base" flex="~ col items-start"
     class="$ui-z-max-override" h-full of-hidden bg-base
   >
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
     >
-      <VueDropdown placement="left-start" :distance :skidding="5" trigger="click" :shown="showDocking" class="w-full">
+      <VueDropdown placement="left-start" :distance="dropdownDistance" :skidding="5" trigger="click" :shown="showDocking" class="w-full">
         <button
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"

@@ -75,7 +75,7 @@ onDevToolsConnected(() => {
 })
 
 addEventListener('keyup', (e) => {
-  if (e.key.toLowerCase() === 'escape' && vueInspector.value?.enabled) {
+  if (e.key?.toLowerCase() === 'escape' && vueInspector.value?.enabled) {
     vueInspector.value?.disable()
   }
 })

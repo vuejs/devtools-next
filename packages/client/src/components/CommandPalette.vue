@@ -112,8 +112,8 @@ useEventListener('keydown', (e) => {
           @mouseover="selectedIndex = idx"
         >
           <div
-            flex="~ gap-2 items-center justify-between" rounded px3 py2
-            :class="selectedIndex === idx ? 'op100 bg-primary/10 text-primary saturate-100 bg-active' : 'op80'"
+            flex="~ gap-2 items-center justify-between h-10" rounded px3 py2
+            :class="selectedIndex === idx ? 'op100 saturate-100 bg-active' : 'op80'"
           >
             <TabIcon :icon="item.icon" :title="item.title" flex-none text-xl />
             <span flex flex-auto items-center gap2 of-hidden>
@@ -136,10 +136,10 @@ useEventListener('keydown', (e) => {
       <footer border="t base" flex="~ none justify-between items-center gap-4" pointer-events-none px4 py2>
         <div text-xs flex="~ items-center gap2">
           <button px1>
-            <VueIcon icon="carbon-arrow-down" />
+            <VueIcon icon="i-carbon-arrow-down" />
           </button>
           <button px1>
-            <VueIcon icon="carbon-arrow-up" />
+            <VueIcon icon="i-carbon-arrow-up" />
           </button>
           <span op75>to navigate</span>
         </div>

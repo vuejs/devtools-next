@@ -112,7 +112,7 @@ useEventListener('keydown', (e) => {
           @mouseover="selectedIndex = idx"
         >
           <div
-            flex="~ gap-2 items-center justify-between h-10" rounded px3 py2
+            flex="~ gap-2 items-center justify-between" rounded px3 py2
             :class="selectedIndex === idx ? 'op100 saturate-100 bg-active' : 'op80'"
           >
             <TabIcon :icon="item.icon" :title="item.title" flex-none text-xl />

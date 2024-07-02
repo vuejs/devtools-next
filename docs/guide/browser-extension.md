@@ -1,12 +1,12 @@
 # Browser Extension
 
 :::tip Compatibility Note
-The v7 version of detools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=zh-CN&utm_source=ext_sidebar).
+The v7 version of detools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?utm_source=ext_sidebar).
 :::
 
 ## Chrome
 
-The extension is in beta, remove or disable any existing versions and install the extension from [here](https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?hl=zh-CN&utm_source=ext_sidebar).
+The extension is in beta, remove or disable any existing versions and install the extension from [here](https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?utm_source=ext_sidebar).
 
  <div
   class="w-83 group cursor-pointer list-none rounded pr-5 hover:b-$vp-c-brand-1"

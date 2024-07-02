@@ -281,7 +281,6 @@
     "description": "compile-time-flags",
     "url": "https:/vuejs.org/api/compile-time-flags#VUE_PROD_HYDRATION_MISMATCH_DETAILS"
   },
-  null,
   {
     "id": "doc:component-instance:$data",
     "title": "$data",

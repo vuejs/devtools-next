@@ -130,14 +130,33 @@ export function registerCommands(getter: MaybeRefOrGetter<CommandItem[]>) {
 
 let _vueDocsCommands: CommandItem[] | undefined
 
+const apiIconMapping = {
+  'utility-types': 'i-mdi-language-typescript',
+  'ssr': 'i-codicon-server-process',
+  'custom-renderer': 'i-codicon-server-process',
+  'sfc-script-setup': 'i-material-symbols:magic-button',
+  'sfc-css-features': 'i-material-symbols-css',
+  'built-in-directives': 'i-material-symbols-code',
+  'built-in-special-attributes': 'i-material-symbols-code',
+  'component-instance': 'i-material-symbols-code',
+  'composition-api-dependency-injection': 'i-material-symbols-code',
+  'composition-api-lifecycle': 'i-material-symbols-code',
+  'general': 'i-material-symbols-code',
+  'compile-time-flags': 'i-material-symbols-toggle-on',
+  'reactivity-utilities': 'i-mdi-api',
+  'reactivity-advanced': 'i-mdi-api',
+  'render-function': 'i-mdi-api',
+  '...others': 'i-uim-vuejs',
+}
+
 export async function getVueDocsCommands() {
   if (!_vueDocsCommands) {
     const list = await import('../../data/vue-apis.json').then(i => i.default)
     _vueDocsCommands = list.map(i => ({
-      ...i!,
-      icon: 'i-carbon-api-1',
+      ...i,
+      icon: apiIconMapping[i.description] ?? apiIconMapping['...others'],
       action: () => {
-        window.open(i!.url, '_blank')
+        window.open(i.url, '_blank')
       },
     }))
   }

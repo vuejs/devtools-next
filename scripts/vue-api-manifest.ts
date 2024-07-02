@@ -59,11 +59,11 @@ const manifest = await Promise.all(files.map(async (file) => {
       url: `https:/vuejs.org/api${parentPath}#${path}`,
     }
   })
-})).then(r => r.filter(Boolean))
+})).then(r => r.flat(1).filter(Boolean))
 
 const targetDir = fileURLToPath(new URL('../packages/client/data', import.meta.url))
 
 if (!fse.existsSync(targetDir))
   fse.mkdirSync(targetDir)
 
-await fse.writeFile(`${targetDir}/vue-apis.json`, JSON.stringify(manifest.flat(1), null, 2))
+await fse.writeFile(`${targetDir}/vue-apis.json`, JSON.stringify(manifest, null, 2))

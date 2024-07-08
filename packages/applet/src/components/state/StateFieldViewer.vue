@@ -208,7 +208,7 @@ async function submitDrafting() {
         <span class="flex" v-html="normalizedDisplayedValue" />
       </span>
       <StateFieldEditor
-        :hovering="isHovering" :disable-edit="state.disableEdit"
+        :hovering="isHovering" :disable-edit="state.disableEdit || editing"
         :data="data" :depth="depth" @enable-edit-input="toggleEditing"
         @add-new-prop="addNewProp"
       />

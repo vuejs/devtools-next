@@ -89,16 +89,17 @@ export function getAssetsFunctions(ctx: RpcFunctionCtx) {
       ],
     })
 
-    cache = await Promise.all(files.map(async (path) => {
-      const filePath = resolve(dir, path)
+    cache = await Promise.all(files.map(async (relativePath) => {
+      const filePath = resolve(dir, relativePath)
       const stat = await fsp.lstat(filePath)
       // remove public prefix to resolve vite assets warning
-      path = path.startsWith('public/') ? path.slice(7) : path
+      const path = relativePath.startsWith('public/') ? relativePath.slice(7) : relativePath
       return {
         path,
+        relativePath,
         publicPath: join(baseURL, path),
         filePath,
-        type: guessType(path),
+        type: guessType(relativePath),
         size: stat.size,
         mtime: stat.mtimeMs,
       }

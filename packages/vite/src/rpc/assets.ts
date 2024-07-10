@@ -3,7 +3,7 @@ import { debounce } from 'perfect-debounce'
 import { getViteRpcServer } from '@vue/devtools-kit'
 import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from '@vue/devtools-core'
 import fg from 'fast-glob'
-import { join, resolve } from 'pathe'
+import { join, relative, resolve } from 'pathe'
 import { imageMeta } from 'image-meta'
 import { RpcFunctionCtx } from './types'
 
@@ -63,6 +63,11 @@ export function getAssetsFunctions(ctx: RpcFunctionCtx) {
   async function scan() {
     const dir = resolve(config.root)
     const baseURL = config.base
+
+    // publicDir in ResolvedConfig is an absolute path
+    const publicDir = config.publicDir
+    const relativePublicDir = publicDir === '' ? '' : `${relative(dir, publicDir)}/`
+
     const files = await fg([
       // image
       '**/*.(png|jpg|jpeg|gif|svg|webp|avif|ico|bmp|tiff)',
@@ -93,7 +98,7 @@ export function getAssetsFunctions(ctx: RpcFunctionCtx) {
       const filePath = resolve(dir, relativePath)
       const stat = await fsp.lstat(filePath)
       // remove public prefix to resolve vite assets warning
-      const path = relativePath.startsWith('public/') ? relativePath.slice(7) : relativePath
+      const path = relativePath.replace(relativePublicDir, '')
       return {
         path,
         relativePath,

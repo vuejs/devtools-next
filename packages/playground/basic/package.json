@@ -8,26 +8,26 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.51.0",
-    "@vueuse/core": "^10.11.0",
+    "@vueuse/core": "catalog:",
     "element-plus": "^2.7.6",
-    "pinia": "^2.1.7",
-    "unplugin-auto-import": "^0.17.6",
+    "pinia": "catalog:",
+    "unplugin-auto-import": "catalog:",
     "vee-validate": "^4.13.2",
-    "vue": "^3.4.31",
-    "vue-router": "^4.4.0",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.1",
     "@tanstack/vue-query-devtools": "^5.51.0",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "catalog:",
     "@vue/devtools": "workspace:^",
-    "sass": "^1.77.6",
-    "serve": "^14.2.3",
-    "typescript": "^5.5.3",
-    "unocss": "^0.61.3",
-    "vite": "^5.3.3",
-    "vite-plugin-inspect": "^0.8.4",
+    "sass": "catalog:",
+    "serve": "catalog:",
+    "typescript": "catalog:",
+    "unocss": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-inspect": "catalog:",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

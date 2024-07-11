@@ -38,20 +38,20 @@
   "dependencies": {
     "@vue/devtools-shared": "workspace:*",
     "@vueuse/components": "^10.11.0",
-    "@vueuse/core": "^10.11.0",
-    "@vueuse/integrations": "^10.11.0",
-    "colord": "^2.9.3",
+    "@vueuse/core": "catalog:",
+    "@vueuse/integrations": "catalog:",
+    "colord": "catalog:",
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@iconify-json/ic": "^1.1.17",
-    "@types/node": "^20.14.10",
-    "@unocss/reset": "^0.61.3",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "floating-vue": "5.2.2",
+    "@iconify/json": "catalog:",
+    "@unocss/reset": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "floating-vue": "catalog:",
     "histoire": "^0.17.17",
-    "unocss": "^0.61.3",
-    "vite-plugin-dts": "^3.9.1"
+    "unocss": "catalog:",
+    "vite-plugin-dts": "catalog:"
   }
 }

@@ -589,6 +589,9 @@ importers:
       '@iconify/json':
         specifier: 'catalog:'
         version: 2.2.225
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.14.10
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
         version: 5.0.5(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0))(vue@3.4.31(typescript@5.5.3))

@@ -17,9 +17,9 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "sass": "^1.77.6",
     "serve": "^14.2.3",
-    "typescript": "^5.5.2",
-    "unocss": "^0.61.0",
-    "vite": "^5.3.2",
+    "typescript": "^5.5.3",
+    "unocss": "^0.61.3",
+    "vite": "^5.3.3",
     "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-vue-devtools": "workspace:*"
   }

@@ -59,9 +59,9 @@
     "vite-plugin-vue-inspector": "^5.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "fast-glob": "^3.3.2",
-    "image-meta": "^0.2.0",
+    "image-meta": "^0.2.1",
     "pathe": "^1.1.2"
   }
 }

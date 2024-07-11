@@ -59,7 +59,7 @@
     "vite-plugin-vue-inspector": "^5.1.2"
   },
   "devDependencies": {
-    "@iconify/json": "catalog:",
+    "@types/node": "catalog:",
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.1",
     "pathe": "catalog:"

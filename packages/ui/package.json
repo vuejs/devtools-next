@@ -46,7 +46,7 @@
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@iconify-json/ic": "^1.1.17",
-    "@iconify/json": "catalog:",
+    "@types/node": "catalog:",
     "@unocss/reset": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "floating-vue": "catalog:",

@@ -29,6 +29,6 @@
     "rfdc": "^1.4.1"
   },
   "devDependencies": {
-    "@iconify/json": "catalog:"
+    "@types/node": "catalog:"
   }
 }

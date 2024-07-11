@@ -9,6 +9,9 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.225
       version: 2.2.225
+    '@types/node':
+      specifier: ^20.14.10
+      version: 20.14.10
     '@unocss/reset':
       specifier: ^0.61.3
       version: 0.61.3
@@ -101,9 +104,6 @@ importers:
       '@clack/prompts':
         specifier: ^0.7.0
         version: 0.7.0
-      '@iconify/json':
-        specifier: 'catalog:'
-        version: 2.2.225
       '@types/chrome':
         specifier: ^0.0.268
         version: 0.0.268
@@ -113,6 +113,9 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.14.10
       '@typescript-eslint/parser':
         specifier: ^7.16.0
         version: 7.16.0(eslint-ts-patch@8.57.0-0)(typescript@5.5.3)
@@ -371,6 +374,9 @@ importers:
       '@iconify/json':
         specifier: 'catalog:'
         version: 2.2.225
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.14.10
       '@types/splitpanes':
         specifier: ^2.2.6
         version: 2.2.6
@@ -857,9 +863,9 @@ importers:
         specifier: ^1.4.1
         version: 1.4.1
     devDependencies:
-      '@iconify/json':
+      '@types/node':
         specifier: 'catalog:'
-        version: 2.2.225
+        version: 20.14.10
 
   packages/ui:
     dependencies:
@@ -891,9 +897,9 @@ importers:
       '@iconify-json/ic':
         specifier: ^1.1.17
         version: 1.1.17
-      '@iconify/json':
+      '@types/node':
         specifier: 'catalog:'
-        version: 2.2.225
+        version: 20.14.10
       '@unocss/reset':
         specifier: 'catalog:'
         version: 0.61.3
@@ -940,9 +946,9 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0))
     devDependencies:
-      '@iconify/json':
+      '@types/node':
         specifier: 'catalog:'
-        version: 2.2.225
+        version: 20.14.10
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2

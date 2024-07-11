@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@iconify/json": "catalog:",
+    "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "sass": "catalog:",
     "vite": "catalog:",

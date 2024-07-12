@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import fs from 'node:fs'
 import { normalizePath } from 'vite'
 import type { PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import sirv from 'sirv'
@@ -11,6 +12,7 @@ import { bold, cyan, dim, green, yellow } from 'kolorist'
 import type { VitePluginInspectorOptions } from 'vite-plugin-vue-inspector'
 import { DIR_CLIENT } from './dir'
 import { getRpcFunctions } from './rpc'
+import { removeUrlQuery } from './utils'
 
 function getVueDevtoolsPath() {
   const pluginPath = normalizePath(path.dirname(fileURLToPath(import.meta.url)))
@@ -25,6 +27,8 @@ const toggleComboKeysMap = {
 function normalizeComboKeyPrint(toggleComboKey: string) {
   return toggleComboKey.split('-').map(key => toggleComboKeysMap[key] || key[0].toUpperCase() + key.slice(1)).join(dim('+'))
 }
+
+const devtoolsNextResourceSymbol = '?__vue-devtools-next-resource'
 
 export interface VitePluginVueDevToolsOptions {
   /**
@@ -134,12 +138,17 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       }
       else if (importee.startsWith('virtual:vue-devtools-path:')) {
         const resolved = importee.replace('virtual:vue-devtools-path:', `${vueDevtoolsPath}/`)
-        return resolved
+        return `${resolved}${devtoolsNextResourceSymbol}`
       }
     },
     async load(id) {
-      if (id === 'virtual:vue-devtools-options')
+      if (id === 'virtual:vue-devtools-options') {
         return `export default ${JSON.stringify({ base: config.base, componentInspector: pluginOptions.componentInspector })}`
+      }
+      else if (id.endsWith(devtoolsNextResourceSymbol)) {
+        const filename = removeUrlQuery(id)
+        return await fs.promises.readFile(filename, 'utf-8')
+      }
     },
     transform(code, id, options) {
       if (options?.ssr)

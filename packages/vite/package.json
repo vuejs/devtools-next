@@ -53,15 +53,15 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "execa": "^8.0.1",
+    "execa": "catalog:",
     "sirv": "^2.0.4",
-    "vite-plugin-inspect": "^0.8.4",
+    "vite-plugin-inspect": "catalog:",
     "vite-plugin-vue-inspector": "^5.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
+    "@types/node": "catalog:",
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.1",
-    "pathe": "^1.1.2"
+    "pathe": "catalog:"
   }
 }

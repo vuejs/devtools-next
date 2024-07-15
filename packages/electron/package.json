@@ -35,17 +35,17 @@
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
     "electron": "^29.4.3",
-    "execa": "^8.0.1",
+    "execa": "catalog:",
     "h3": "^1.12.0",
     "ip": "^2.0.1",
-    "pathe": "^1.1.2",
+    "pathe": "catalog:",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "catalog:",
     "tsx": "^4.16.2",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.31"
+    "vue": "catalog:"
   }
 }

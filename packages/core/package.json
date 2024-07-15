@@ -32,12 +32,12 @@
   "dependencies": {
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "mitt": "^3.0.1",
+    "mitt": "catalog:",
     "nanoid": "^3.3.4",
-    "pathe": "^1.1.2",
-    "vite-hot-client": "^0.2.3"
+    "pathe": "catalog:",
+    "vite-hot-client": "catalog:"
   },
   "devDependencies": {
-    "vue": "^3.4.31"
+    "vue": "catalog:"
   }
 }

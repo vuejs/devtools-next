@@ -79,7 +79,7 @@
     "@types/chrome": "^0.0.268",
     "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.14.10",
+    "@types/node": "catalog:",
     "@typescript-eslint/parser": "^7.16.0",
     "@typescript-eslint/utils": "^7.16.0",
     "@unocss/eslint-plugin": "^0.61.3",
@@ -94,7 +94,7 @@
     "eslint-plugin-format": "^0.1.2",
     "eslint-ts-patch": "8.57.0-0",
     "eslint-vitest-rule-tester": "^0.3.2",
-    "execa": "^8.0.1",
+    "execa": "catalog:",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "jsdom": "^24.1.0",
@@ -112,12 +112,12 @@
     "tsup": "^8.1.0",
     "tsx": "^4.16.2",
     "turbo": "^2.0.6",
-    "typescript": "^5.5.3",
+    "typescript": "catalog:",
     "unbuild": "^2.0.0",
-    "unocss": "^0.61.3",
-    "vite": "^5.3.3",
+    "unocss": "catalog:",
+    "vite": "catalog:",
     "vitest": "^1.6.0",
-    "vue": "^3.4.31"
+    "vue": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

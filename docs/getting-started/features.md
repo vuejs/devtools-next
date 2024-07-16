@@ -1,6 +1,8 @@
 # Features
 
-Discover all the features of the Vue DevTools
+After installation, you should see a small icon with the "Vue" logo at the bottom center of your screen. Clicking this(or pressing the "Toggle Vue DevTools" hotkey -- check your startup logs) will open the the Vue DevTools window.
+
+The Vue DevTools can be repositioned by dragging this icon.
 
 ## Overview
 

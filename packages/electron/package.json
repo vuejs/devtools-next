@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-electron",
   "type": "module",
-  "version": "7.3.5",
+  "version": "7.3.6",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "tsx": "^4.16.0",
+    "tsx": "^4.16.2",
     "unbuild": "^2.0.0",
     "vue": "^3.4.31"
   }

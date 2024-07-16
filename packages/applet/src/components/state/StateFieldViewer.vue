@@ -203,12 +203,12 @@ async function submitDrafting() {
         {{ normalizedDisplayedKey }}
       </span>
       <span mx1>:</span>
-      <StateFieldInputEditor v-if="editing" v-model="editingText" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
+      <StateFieldInputEditor v-if="editing" v-model="editingText" class="mr-1" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
       <span :class="stateFormatClass" class="flex whitespace-nowrap">
         <span class="flex" v-html="normalizedDisplayedValue" />
       </span>
       <StateFieldEditor
-        :hovering="isHovering" :disable-edit="state.disableEdit"
+        :hovering="isHovering" :disable-edit="state.disableEdit || editing"
         :data="data" :depth="depth" @enable-edit-input="toggleEditing"
         @add-new-prop="addNewProp"
       />

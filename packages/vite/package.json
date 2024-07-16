@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-vue-devtools",
   "type": "module",
-  "version": "7.3.5",
+  "version": "7.3.6",
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",
@@ -59,9 +59,9 @@
     "vite-plugin-vue-inspector": "^5.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "fast-glob": "^3.3.2",
-    "image-meta": "^0.2.0",
+    "image-meta": "^0.2.1",
     "pathe": "^1.1.2"
   }
 }

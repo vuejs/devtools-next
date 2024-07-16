@@ -808,7 +808,7 @@ importers:
         version: 7.5.4
       shiki:
         specifier: '>=1.10.0'
-        version: 1.10.0
+        version: 1.10.3
       vue:
         specifier: '>=3.0.0-0'
         version: 3.4.31(typescript@5.5.3)

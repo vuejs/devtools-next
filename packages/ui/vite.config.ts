@@ -35,7 +35,11 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,
     rollupOptions: {
-      external: [...Object.keys(peerDependencies), ...Object.keys(dependencies), /shiki/],
+      external: [
+        ...Object.keys(peerDependencies),
+        ...Object.keys(dependencies),
+        /^shiki/,
+      ],
       output: {
         globals: {
           vue: 'Vue',

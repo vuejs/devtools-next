@@ -48,7 +48,7 @@ const rendered = computed(() => {
   </template>
 </template>
 
-<style scoped lang="postcss">
+<style lang="postcss">
 .code-block-lines {
   .shiki {
     code {

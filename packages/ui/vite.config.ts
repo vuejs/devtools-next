@@ -7,6 +7,7 @@ import vue from '@vitejs/plugin-vue'
 import { HstVue } from '@histoire/plugin-vue'
 import unocss from 'unocss/vite'
 import dts from 'vite-plugin-dts'
+import { dependencies, peerDependencies } from './package.json'
 
 const IcIconDataPath = path.resolve(__dirname, './src/constants/ic-icons.ts')
 
@@ -34,7 +35,7 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,
     rollupOptions: {
-      external: ['vue', 'unocss', 'floating-vue'],
+      external: [...Object.keys(peerDependencies), ...Object.keys(dependencies), /shiki/],
       output: {
         globals: {
           vue: 'Vue',

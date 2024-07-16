@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { functions, getDevToolsClientUrl } from '@vue/devtools-core'
+import { type functions, getDevToolsClientUrl } from '@vue/devtools-core'
 import { target } from '@vue/devtools-shared'
 import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { devtools, getRpcServer, onDevToolsConnected, setIframeServerContext } from '@vue/devtools-kit'

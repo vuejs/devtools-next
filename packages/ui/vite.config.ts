@@ -32,13 +32,29 @@ export default defineConfig({
     },
   ],
   build: {
+    cssCodeSplit: true,
     rollupOptions: {
       external: ['vue', 'unocss', 'floating-vue'],
       output: {
         globals: {
           vue: 'Vue',
         },
+        /**
+         * 1. unocss css snippets is optional
+         * 2. vue sfc scoped css + node_modules css is necessary to be in the same chunk that imported by client
+         */
         manualChunks(id) {
+          // css #1
+          if (id.includes('uno.css') || id.includes('@unocss/reset')) {
+            return 'uno'
+          }
+          // css #2
+          if ((id.includes('.vue') && id.includes('type=style'))
+            || (id.includes('node_modules') && id.endsWith('.css'))) {
+            return 'style'
+          }
+
+          // js code splitting
           if (id.includes('node_modules')) {
             return 'vendor'
           }

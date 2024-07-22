@@ -1,11 +1,12 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { icons } from '@iconify-json/ic'
 import { devDependencies } from '../package.json'
 
 const VERSION_COMMENT_RE = /\/\/ Generated from @iconify-json\/ic@(.*)\n/
 
-const __dirname = dirname(new URL(import.meta.url).pathname)
+const __dirname = dirname(fileURLToPath(new URL(import.meta.url)))
 
 const targetPath = resolve(__dirname, '../src/constants/ic-icons.ts')
 

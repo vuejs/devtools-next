@@ -140,6 +140,9 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       if (importee === devtoolsOptionsImportee) {
         return resolvedDevtoolsOptions
       }
+      // Why use query instead of vite virtual module on devtools resource?
+      // Devtools resource will import `@vue/devtools-core` and other packages, which vite cannot analysis correctly on virtual module.
+      // So we should use absolute path + `query` to mark the resource as devtools resource.
       else if (importee.startsWith('virtual:vue-devtools-path:')) {
         const resolved = importee.replace('virtual:vue-devtools-path:', `${vueDevtoolsPath}/`)
         return `${resolved}${devtoolsNextResourceSymbol}`

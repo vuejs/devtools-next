@@ -62,7 +62,7 @@ const keys = [
             }" @click="copy(data.name)"
           />
         </span>
-        <button hover="underline" truncate text-left text-gray-500 @click="_openInEditor(data!.path)">
+        <button hover="underline" truncate text-left text-gray-500 :title="data?.displayPath" @click="_openInEditor(data!.path)">
           {{ data?.displayPath }}
         </button>
       </div>

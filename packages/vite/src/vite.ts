@@ -122,6 +122,10 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       console.log(`  ${green('➜')}  ${bold('Vue DevTools')}: ${green(`Press ${yellow(keys)} in App to toggle the Vue DevTools`)}\n`)
     }
   }
+
+  const devtoolsOptionsImportee = 'virtual:vue-devtools-options'
+  const resolvedDevtoolsOptions = `\0${devtoolsOptionsImportee}`
+
   const plugin = <PluginOption>{
     name: 'vite-plugin-vue-devtools',
     enforce: 'pre',
@@ -133,8 +137,8 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       configureServer(server)
     },
     async resolveId(importee: string) {
-      if (importee.startsWith('virtual:vue-devtools-options')) {
-        return importee
+      if (importee === devtoolsOptionsImportee) {
+        return resolvedDevtoolsOptions
       }
       else if (importee.startsWith('virtual:vue-devtools-path:')) {
         const resolved = importee.replace('virtual:vue-devtools-path:', `${vueDevtoolsPath}/`)
@@ -142,7 +146,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       }
     },
     async load(id) {
-      if (id === 'virtual:vue-devtools-options') {
+      if (id === resolvedDevtoolsOptions) {
         return `export default ${JSON.stringify({ base: config.base, componentInspector: pluginOptions.componentInspector })}`
       }
       else if (id.endsWith(devtoolsNextResourceSymbol)) {

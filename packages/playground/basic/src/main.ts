@@ -54,6 +54,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/CircularState.vue'),
     name: 'circular-state',
   },
+  {
+    path: '/inspect-custom-state',
+    component: () => import('./pages/InspectCustomState'),
+    name: 'inspect-custom-state',
+  },
 ]
 
 const router = createRouter({

@@ -29,7 +29,6 @@ const textContent = computedAsync(async () => {
   if (asset.value.type !== 'text')
     return undefined
 
-  // eslint-disable-next-line no-unused-expressions
   textContentCounter.value
 
   const content = await viteRpc.value.getTextAssetContent(asset.value.filePath).then(res => res)

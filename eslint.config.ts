@@ -25,7 +25,9 @@ export default antfu({
 
     'ts/no-invalid-this': 'off',
     'ts/consistent-type-imports': 'off',
-    'ts/ban-types': 'off',
+    'ts/no-unsafe-function-type': 'off',
+    'ts/no-empty-object-type': 'off',
+    'ts/no-unused-expressions': 'off',
   },
 }, {
   files: ['packages/devtools-kit/**/*.ts'],

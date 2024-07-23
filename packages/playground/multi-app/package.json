@@ -9,13 +9,13 @@
   "dependencies": {
     "@vueuse/core": "^10.11.0",
     "pinia": "^2.1.7",
-    "unplugin-auto-import": "^0.17.6",
+    "unplugin-auto-import": "^0.18.0",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "sass": "^1.77.6",
+    "sass": "^1.77.8",
     "serve": "^14.2.3",
     "typescript": "^5.5.3",
     "unocss": "^0.61.3",

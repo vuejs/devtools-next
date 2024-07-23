@@ -16,14 +16,14 @@
     "vue": "^3.4.31"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
-    "@babel/eslint-parser": "^7.24.7",
+    "@babel/core": "^7.24.9",
+    "@babel/eslint-parser": "^7.24.8",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/devtools": "workspace:*",
     "@vue/devtools-api": "workspace:*",
-    "eslint": "^9.6.0",
+    "eslint": "^9.7.0",
     "eslint-plugin-vue": "^9.27.0"
   },
   "eslintConfig": {

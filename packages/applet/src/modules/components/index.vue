@@ -129,7 +129,7 @@ const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('component-state')
 createSelectedContext()
 
-function getComponentsInspectorTree(filter = '') {
+async function getComponentsInspectorTree(filter = '') {
   return rpc.value.getInspectorTree({ inspectorId, filter }).then((data) => {
     const res = parse(data)
     tree.value = res
@@ -184,6 +184,18 @@ rpc.functions.on(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorSta
 
 getComponentsInspectorTree()
 
+function searchComponentTree(v: string) {
+  const value = v.trim().toLowerCase()
+  toggleFiltered()
+  getComponentsInspectorTree(value).then(() => {
+    toggleFiltered()
+  })
+}
+
+watchDebounced(filterComponentName, (v) => {
+  searchComponentTree(v)
+}, { debounce: 300 })
+
 function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
     inspectorId: string
@@ -191,7 +203,13 @@ function onInspectorTreeUpdated(_data: string) {
   }
   if (data.inspectorId !== inspectorId)
     return
-  tree.value = data.rootNodes
+
+  if (filterComponentName.value) {
+    searchComponentTree(filterComponentName.value)
+  }
+  else {
+    tree.value = data.rootNodes
+  }
 
   if (!flattenedTreeNodesIds.value.includes(activeComponentId.value)) {
     activeComponentId.value = tree.value?.[0]?.id
@@ -205,14 +223,6 @@ onUnmounted(() => {
   rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_STATE_UPDATED, onInspectorStateUpdated)
   rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
 })
-
-watchDebounced(filterComponentName, (v) => {
-  const value = v.trim().toLowerCase()
-  toggleFiltered()
-  getComponentsInspectorTree(value).then(() => {
-    toggleFiltered()
-  })
-}, { debounce: 300 })
 
 function inspectComponentInspector() {
   inspectComponentTipVisible.value = true

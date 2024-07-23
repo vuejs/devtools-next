@@ -54,6 +54,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/CircularState.vue'),
     name: 'circular-state',
   },
+  {
+    path: '/interval-update',
+    component: () => import('./pages/IntervalUpdate.vue'),
+    name: 'interval-update',
+  },
 ]
 
 const router = createRouter({

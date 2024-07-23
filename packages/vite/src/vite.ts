@@ -154,6 +154,7 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
       }
       else if (id.endsWith(devtoolsNextResourceSymbol)) {
         const filename = removeUrlQuery(id)
+        // read file ourselves to avoid getting shut out by vite's fs.allow check
         return await fs.promises.readFile(filename, 'utf-8')
       }
     },

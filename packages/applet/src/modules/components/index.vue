@@ -2,7 +2,7 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
-import { isInChromePanel, sortByKey } from '@vue/devtools-shared'
+import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
 import {
   DevToolsMessagingEvents,
   rpc,
@@ -289,7 +289,7 @@ function closeComponentRenderCode() {
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
             <VueInput v-model="filterComponentName" :loading-debounce-time="250" :loading="!filtered" placeholder="Find components..." class="flex-1 text-3.5" />
-            <button v-tooltip.bottom="'Select component in the page'" px-1 class="hover:(color-#00dc82)" @click="inspectComponentInspector">
+            <button v-if="!isInSeparateWindow" v-tooltip.bottom="'Select component in the page'" px-1 class="hover:(color-#00dc82)" @click="inspectComponentInspector">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 style="height: 1.1em; width: 1.1em;"

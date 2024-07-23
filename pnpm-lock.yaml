@@ -865,8 +865,8 @@ importers:
         specifier: ^0.8.4
         version: 0.8.4(rollup@4.13.0)(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0))
       vite-plugin-vue-inspector:
-        specifier: ^5.1.2
-        version: 5.1.2(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0))
+        specifier: ^5.1.3
+        version: 5.1.3(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0))
     devDependencies:
       '@types/node':
         specifier: ^20.14.10
@@ -8218,8 +8218,8 @@ packages:
       '@nuxt/kit':
         optional: true
 
-  vite-plugin-vue-inspector@5.1.2:
-    resolution: {integrity: sha512-M+yH2LlQtVNzJAljQM+61CqDXBvHim8dU5ImGaQuwlo13tMDHue5D7IC20YwDJuWDODiYc/cZBUYspVlyPf2vQ==}
+  vite-plugin-vue-inspector@5.1.3:
+    resolution: {integrity: sha512-pMrseXIDP1Gb38mOevY+BvtNGNqiqmqa2pKB99lnLsADQww9w9xMbAfT4GB6RUoaOkSPrtlXqpq2Fq+Dj2AgFg==}
     peerDependencies:
       vite: ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0
 
@@ -16943,7 +16943,7 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-vue-inspector@5.1.2(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0)):
+  vite-plugin-vue-inspector@5.1.3(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)(terser@5.26.0)):
     dependencies:
       '@babel/core': 7.24.7
       '@babel/plugin-proposal-decorators': 7.23.5(@babel/core@7.24.7)

@@ -20,6 +20,5 @@ export const openInEditor = async (file: string) => {
 
     return
   }
-  // @TODO: firefox extension => use eval
   return rpc.value.openInEditor({ file })
 }

@@ -321,7 +321,7 @@ function closeComponentRenderCode() {
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
               <i v-if="isInChromePanel" v-tooltip.bottom="'Inspect DOM'" class="i-material-symbols-light:menu-open h-5 w-5 cursor-pointer hover:(op-70)" @click="inspectDOM" />
-              <i v-if="activeTreeNodeFilePath && !isInChromePanel" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
+              <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />

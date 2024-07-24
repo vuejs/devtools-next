@@ -7,6 +7,7 @@ const GETTING_STARTED: DefaultTheme.NavItemWithLink[] = [
   { text: 'Introduction', link: '/getting-started/introduction' },
   { text: 'Installation', link: '/getting-started/installation' },
   { text: 'Features', link: '/getting-started/features' },
+  { text: 'Open in editor', link: '/getting-started/open-in-editor' },
 ]
 
 const GUIDES: DefaultTheme.NavItemWithLink[] = [

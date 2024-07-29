@@ -1,4 +1,5 @@
 import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, isPlainObject } from '@vue/devtools-kit'
+import type { CustomInspectorNode } from '@vue/devtools-kit'
 
 /**
  * Searches a key or value in the object, with a maximum deepness
@@ -131,4 +132,11 @@ function internalSearchArray(array, searchTerm, seen, depth) {
       break
   }
   return match
+}
+
+/**
+ * Recursively search for target tree Id in nodes and there children
+ */
+export function getValidNodeId(treeNode: CustomInspectorNode[], targetId?: string) {
+  return treeNode.some(({ id: treeNodeId, children }) => (children && getValidNodeId(children, targetId)) || treeNodeId === targetId) && (targetId as string)
 }

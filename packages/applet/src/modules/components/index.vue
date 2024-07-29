@@ -16,9 +16,12 @@ import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
-import { searchDeepInObject } from '~/utils'
+import { getValidNodeId, searchDeepInObject } from '~/utils'
 
-const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd'])
+const props = defineProps<{
+  savedSelectedId: string
+}>()
+const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd', 'onSelectId'])
 // responsive layout
 const splitpanesRef = ref<HTMLDivElement>()
 const splitpanesReady = ref(false)
@@ -133,7 +136,7 @@ async function getComponentsInspectorTree(filter = '') {
   return rpc.value.getInspectorTree({ inspectorId, filter }).then((data) => {
     const res = parse(data)
     tree.value = res
-    activeComponentId.value = tree.value?.[0]?.id
+    activeComponentId.value = getValidNodeId(tree.value, props.savedSelectedId) || tree.value?.[0]?.id
     expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
     componentTreeLoaded.value = true
   })
@@ -163,6 +166,7 @@ function getComponentState(id: string) {
 
 watch(activeComponentId, (id) => {
   getComponentState(id)
+  emit('onSelectId', id)
   if (componentRenderCodeVisible.value) {
     getComponentRenderCode()
   }

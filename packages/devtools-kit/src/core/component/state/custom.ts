@@ -1,5 +1,5 @@
 import type { InspectorState, customTypeEnums } from '../types'
-import { getComponentName, getInstanceName } from '../utils'
+import { ensurePropertyExists, getComponentName, getInstanceName } from '../utils'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'
 
@@ -225,7 +225,11 @@ export function getObjectDetails(object: Record<string, any>) {
   if (isState) {
     const stateTypeName = info.computed ? 'Computed' : info.ref ? 'Ref' : info.reactive ? 'Reactive' : null
     const value = toRaw(info.reactive ? object : object._value)
-    const raw = object.effect?.raw?.toString() || object.effect?.fn?.toString()
+
+    const raw = ensurePropertyExists(object, 'effect')
+      ? object.effect?.raw?.toString() || object.effect?.fn?.toString()
+      : null
+
     return {
       _custom: {
         type: stateTypeName?.toLowerCase(),
@@ -236,7 +240,7 @@ export function getObjectDetails(object: Record<string, any>) {
     }
   }
 
-  if (typeof object.__asyncLoader === 'function') {
+  if (ensurePropertyExists(object, '__asyncLoader') && typeof object.__asyncLoader === 'function') {
     return {
       _custom: {
         type: 'component-definition' satisfies customTypeEnums,

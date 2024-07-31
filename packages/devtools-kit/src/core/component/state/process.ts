@@ -1,7 +1,7 @@
 import { camelize } from '@vue/devtools-shared'
 import type { VueAppInstance } from '../../../types'
 import type { InspectorState } from '../types'
-import { returnError } from '../utils'
+import { ensurePropertyExists, returnError } from '../utils'
 import { vueBuiltins } from './constants'
 import { getPropType, getSetupStateType, toRaw } from './util'
 
@@ -151,8 +151,8 @@ function processSetupState(instance: VueAppInstance) {
       let result: Partial<InspectorState>
 
       let isOtherType = typeof value === 'function'
-        || typeof value?.render === 'function' // Components
-        || typeof value?.__asyncLoader === 'function' // Components
+        || (ensurePropertyExists(value, 'render') && typeof value.render === 'function') // Components
+        || (ensurePropertyExists(value, '__asyncLoader') && typeof value.__asyncLoader === 'function') // Components
         || (typeof value === 'object' && value && ('setup' in value || 'props' in value)) // Components
         || /^v[A-Z]/.test(key) // Directives
 
@@ -161,7 +161,9 @@ function processSetupState(instance: VueAppInstance) {
 
         const { stateType, stateTypeName } = getStateTypeAndName(info)
         const isState = info.ref || info.computed || info.reactive
-        const raw = rawData.effect?.raw?.toString() || rawData.effect?.fn?.toString()
+        const raw = ensurePropertyExists(rawData, 'effect')
+          ? rawData.effect?.raw?.toString() || rawData.effect?.fn?.toString()
+          : null
 
         if (stateType)
           isOtherType = false

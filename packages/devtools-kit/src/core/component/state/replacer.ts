@@ -98,7 +98,7 @@ export function stringifyReplacer(key: string | number, _value: any, depth?: num
     else if (val.constructor?.name === 'Store' && '_wrappedGetters' in val) {
       return '[object Store]'
     }
-    else if (ensurePropertyExists(val, 'currentRoute')) {
+    else if (ensurePropertyExists(val, 'currentRoute', true)) {
       return '[object Router]'
     }
     const customDetails = getObjectDetails(val)

@@ -19,7 +19,7 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { getValidNodeId, searchDeepInObject } from '~/utils'
 
 const props = defineProps<{
-  savedSelectedId: string
+  savedSelectedId?: string
 }>()
 const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd', 'onSelectId'])
 // responsive layout

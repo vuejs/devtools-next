@@ -4,21 +4,9 @@ import { isInChromePanel } from '@vue/devtools-shared'
 export const vueInspectorDetected = ref(false)
 
 export const openInEditor = async (file: string) => {
+  const opts: { file: string, host?: string } = { file }
   if (isInChromePanel) {
-    const fileName = file.replace(/\\/g, '\\\\')
-    // @TODO: support custom host
-    const src = `fetch('/__open-in-editor?file=${encodeURI(file)}').then(response => {
-      if (response.ok) {
-        console.log('File ${fileName} opened in editor')
-      } else {
-        const msg = 'Opening component ${fileName} failed'
-        console.log('%c' + msg, 'color:red')
-      }
-    })`
-    // @ts-expect-error skip type check
-    chrome.devtools.inspectedWindow.eval(src)
-
-    return
+    opts.host = 'chrome-extension'
   }
-  return rpc.value.openInEditor({ file })
+  return rpc.value.openInEditor(opts)
 }

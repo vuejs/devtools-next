@@ -2,7 +2,7 @@
 import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, onDevToolsConnected, rpc } from '@vue/devtools-core'
-import type { RouteLocationNormalizedLoaded, RouteRecordNormalized } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, RouteMeta, RouteRecordNormalized } from 'vue-router'
 
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)
@@ -15,6 +15,8 @@ const routeInputMatched = computed(() => {
 })
 
 const routes = ref<RouteRecordNormalized[]>([])
+
+const selectedMeta = ref<RouteMeta>()
 
 function init(data: RouterInfo) {
   routes.value = data.routes
@@ -107,7 +109,15 @@ onUnmounted(() => {
           :matched="currentRoute?.matched ?? []"
           :matched-pending="routeInputMatched"
           @navigate="navigateToRoute"
+          @select-meta="(meta: RouteMeta) => selectedMeta = meta"
         />
+        <DrawerRight
+          :model-value="!!selectedMeta"
+          auto-close w-120
+          @close="selectedMeta = undefined"
+        >
+          <RouteMetaDetail v-if="!!selectedMeta" :meta="selectedMeta" />
+        </DrawerRight>
       </SectionBlock>
     </div>
   </div>

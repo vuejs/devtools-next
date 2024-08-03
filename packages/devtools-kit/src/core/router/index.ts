@@ -14,7 +14,7 @@ function getRoutes(router?: Router) {
 
 function filterRoutes(routes: RouteRecordRaw[]) {
   return routes.map((item) => {
-    let { path, name, children } = item
+    let { path, name, children, meta } = item
     if (children?.length)
       children = filterRoutes(children)
 
@@ -22,6 +22,7 @@ function filterRoutes(routes: RouteRecordRaw[]) {
       path,
       name,
       children,
+      meta,
     }
   })
 }

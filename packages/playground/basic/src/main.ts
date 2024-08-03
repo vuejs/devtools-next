@@ -33,11 +33,13 @@ const routes: RouteRecordRaw[] = [
     path: '/hello',
     component: () => import('./pages/Hello.vue'),
     name: 'hello',
+    meta: { auth: 'admin', note: 'Hey! Manger' },
   },
   {
     path: '/hey/:id',
     component: Hey,
     name: 'hey',
+    meta: { auth: 'user', note: 'Hey!' },
   },
   {
     path: '/vue-query',

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CustomInspector as CustomInspectorPanel } from '@vue/devtools-applet'
+import { useDefaultSelect } from '../composables/select'
 import '@vue/devtools-applet/style.css'
 
 const route = useRoute()
@@ -13,6 +14,8 @@ function onLoadError() {
     router.replace('/overview')
   }, 2000)
 }
+
+const { saveSelectedId, savedSelectedId } = useDefaultSelect()
 </script>
 
 <template>
@@ -27,5 +30,8 @@ function onLoadError() {
       </p>
     </div>
   </div>
-  <CustomInspectorPanel v-else :id="route.params.name" @load-error="onLoadError" />
+  <CustomInspectorPanel
+    v-else :id="(route.params.name as string)" :saved-selected-id="savedSelectedId" @load-error="onLoadError"
+    @on-select-id="saveSelectedId"
+  />
 </template>

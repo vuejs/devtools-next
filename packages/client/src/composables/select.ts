@@ -44,3 +44,21 @@ export function useSelectWithContext(groupId: string, id: string, onSelect?: (id
     toggleSelected,
   }
 }
+
+export function useDefaultSelect() {
+  const router = useRouter()
+  const route = useRoute()
+
+  function saveSelectedId(id: string) {
+    router.push({
+      params: {
+        id,
+      },
+    })
+  }
+
+  return {
+    saveSelectedId,
+    savedSelectedId: route.params.id as string,
+  }
+}

@@ -11,8 +11,16 @@ import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
+import { getValidNodeId } from '~/utils'
 import { useCustomInspectorState } from '~/composables/custom-inspector-state'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+
+const props = defineProps<{
+  savedSelectedId?: string
+}>()
+const emit = defineEmits<{
+  (e: 'onSelectId', id: string): void
+}>()
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('custom-inspector-state')
@@ -118,6 +126,7 @@ function clearInspectorState() {
 watch(selected, () => {
   clearInspectorState()
   getInspectorState(selected.value)
+  emit('onSelectId', selected.value)
 })
 
 const getInspectorTree = () => {
@@ -125,9 +134,9 @@ const getInspectorTree = () => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
-      selected.value = data[0].id
+      selected.value = getValidNodeId(tree.value, props.savedSelectedId) || data[0].id
       expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
-      getInspectorState(data[0].id)
+      getInspectorState(selected.value)
     }
   })
 }

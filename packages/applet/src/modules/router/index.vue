@@ -9,7 +9,12 @@ import { createCustomInspectorStateContext } from '~/composables/custom-inspecto
 
 const props = defineProps<{
   id: string
+  savedSelectedId?: string
 }>()
+const emit = defineEmits<{
+  (e: 'onSelectId', id: string): void
+}>()
+
 const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
 const { VirtualRouterView, restoreRouter } = registerVirtualRouter([
@@ -61,10 +66,14 @@ watch(() => props.id, (v) => {
     getInspectorInfo()
   }
 })
+
+const handleSelectId = (id: string) => {
+  emit('onSelectId', id)
+}
 </script>
 
 <template>
   <div h-full w-full>
-    <VirtualRouterView />
+    <VirtualRouterView :saved-selected-id="savedSelectedId" @on-select-id="handleSelectId" />
   </div>
 </template>

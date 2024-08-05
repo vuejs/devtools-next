@@ -10,8 +10,15 @@ import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
-
+import { getValidNodeId } from '~/utils'
 import { createExpandedContext } from '~/composables/toggle-expanded'
+
+const props = defineProps<{
+  savedSelectedId?: string
+}>()
+const emit = defineEmits<{
+  (e: 'onSelectId', id: string): void
+}>()
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('pinia-store-state')
@@ -116,6 +123,7 @@ function clearPiniaState() {
 watch(selected, () => {
   clearPiniaState()
   getPiniaState(selected.value)
+  emit('onSelectId', selected.value)
 })
 
 const getPiniaInspectorTree = () => {
@@ -123,8 +131,8 @@ const getPiniaInspectorTree = () => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getPiniaState(data[0].id)
+      selected.value = getValidNodeId(tree.value, props.savedSelectedId) || data[0].id
+      getPiniaState(selected.value)
       expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
     }
   })

@@ -11,9 +11,10 @@ import { createCustomInspectorStateContext } from '~/composables/custom-inspecto
 
 const props = defineProps<{
   id: string
+  savedSelectedId?: string
 }>()
+const emit = defineEmits(['loadError', 'onSelectId'])
 
-const emit = defineEmits(['loadError'])
 const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
 
@@ -74,6 +75,10 @@ watch(() => props.id, () => {
 onUnmounted(() => {
   rpc.value.unhighlight()
 })
+
+function handleSelectId(id: string) {
+  emit('onSelectId', id)
+}
 </script>
 
 <template>
@@ -81,6 +86,6 @@ onUnmounted(() => {
     <div v-if="loading">
       <AppConnecting />
     </div>
-    <VirtualRouterView v-else />
+    <VirtualRouterView v-else :saved-selected-id="savedSelectedId" @on-select-id="handleSelectId" />
   </div>
 </template>

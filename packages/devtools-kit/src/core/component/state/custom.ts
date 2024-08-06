@@ -218,13 +218,27 @@ export function getHTMLElementDetails(value: HTMLElement) {
   }
 }
 
+/**
+ * - ObjectRefImpl, toRef({ foo: 'foo' }, 'foo'), `value` is the actual value
+ * - GetterRefImpl, toRef(() => state.foo), `value` is the actual value
+ * - RefImpl, ref('foo') / computed(() => 'foo'), `_value` is the actual value
+ */
+function tryGetRefValue(ref: { _value?: unknown } | { value?: unknown }) {
+  if (ensurePropertyExists<{ _value?: unknown }>(ref, '_value', true)) {
+    return ref._value
+  }
+  if (ensurePropertyExists(ref, 'value', true)) {
+    return ref.value
+  }
+}
+
 export function getObjectDetails(object: Record<string, any>) {
   const info = getSetupStateType(object)
 
   const isState = info.ref || info.computed || info.reactive
   if (isState) {
     const stateTypeName = info.computed ? 'Computed' : info.ref ? 'Ref' : info.reactive ? 'Reactive' : null
-    const value = toRaw(info.reactive ? object : object._value)
+    const value = toRaw(info.reactive ? object : tryGetRefValue(object))
 
     const raw = ensurePropertyExists(object, 'effect')
       ? object.effect?.raw?.toString() || object.effect?.fn?.toString()

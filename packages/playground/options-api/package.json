@@ -7,10 +7,10 @@
     "dev": "vite"
   },
   "dependencies": {
-    "vue": "^3.4.31"
+    "vue": "^3.4.37"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "^5.1.2",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

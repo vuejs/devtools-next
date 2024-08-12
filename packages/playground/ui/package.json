@@ -9,16 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@unocss/reset": "^0.61.3",
+    "@unocss/reset": "^0.61.9",
     "@vue/devtools-ui": "workspace:*",
-    "@vueuse/core": "^10.11.0",
-    "vue": "^3.4.31"
+    "@vueuse/core": "^10.11.1",
+    "vue": "^3.4.37"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.5",
-    "typescript": "^5.5.3",
-    "unocss": "^0.61.3",
-    "vite": "^5.3.3",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "^5.5.4",
+    "unocss": "^0.61.9",
+    "vite": "^5.4.0",
     "vue-tsc": "^1.8.27"
   }
 }

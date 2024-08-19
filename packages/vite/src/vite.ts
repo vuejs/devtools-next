@@ -76,7 +76,7 @@ export interface VitePluginVueDevToolsOptions {
 const defaultOptions: VitePluginVueDevToolsOptions = {
   appendTo: '',
   componentInspector: true,
-  launchEditor: process.env.LAUNCH_EDITOR ?? (guessEditor()[0] || 'code'),
+  launchEditor: guessEditor()[0] ?? process.env.LAUNCH_EDITOR ?? 'code',
 }
 
 function mergeOptions(options: VitePluginVueDevToolsOptions): VitePluginVueDevToolsOptions {

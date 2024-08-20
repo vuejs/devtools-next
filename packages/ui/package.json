@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@vue/devtools-shared": "workspace:*",
-    "@vueuse/components": "^10.11.1",
+    "@vueuse/components": "^11.0.1",
     "@vueuse/core": "^10.11.1",
     "@vueuse/integrations": "^10.11.1",
     "colord": "^2.9.3",

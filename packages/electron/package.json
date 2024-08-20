@@ -34,7 +34,7 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^29.4.5",
+    "electron": "^29.4.6",
     "execa": "^8.0.1",
     "h3": "^1.12.0",
     "ip": "^2.0.1",
@@ -46,6 +46,6 @@
     "@vitejs/plugin-vue": "^5.1.2",
     "tsx": "^4.17.0",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.37"
+    "vue": "^3.4.38"
   }
 }

@@ -30,7 +30,7 @@
     "@vue/devtools-ui": "workspace:^",
     "lodash-es": "^4.17.21",
     "perfect-debounce": "^1.0.0",
-    "shiki": "^1.12.1",
+    "shiki": "^1.14.1",
     "splitpanes": "^3.1.5",
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
@@ -38,7 +38,7 @@
     "@types/lodash-es": "^4.17.12",
     "unplugin-vue": "^5.0.5",
     "vite-plugin-dts": "^3.9.1",
-    "vue": "^3.4.37",
+    "vue": "^3.4.38",
     "vue-router": "^4.4.3"
   }
 }

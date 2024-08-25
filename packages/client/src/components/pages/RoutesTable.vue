@@ -64,10 +64,10 @@ const state = useDevToolsState()
               />
               <div op0 group-hover:op100 flex="~ gap1">
                 <button
-                  v-if="(item.file || item.meta?.file) && state.vitePluginDetected.value && _vueInspectorDetected"
+                  v-if="(item.meta?.file) && state.vitePluginDetected.value && _vueInspectorDetected"
                   text-sm op40 hover="op100 text-primary-400"
                   title="Open in editor"
-                  @click="openInEditor((item.file || item.meta?.file) as string)"
+                  @click="openInEditor((item.meta?.file) as string)"
                 >
                   <div i-carbon-script-reference />
                 </button>

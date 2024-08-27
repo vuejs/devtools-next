@@ -18,9 +18,9 @@
     "sass": "^1.77.8",
     "serve": "^14.2.3",
     "typescript": "^5.5.4",
-    "unocss": "^0.62.2",
-    "vite": "^5.4.1",
-    "vite-plugin-inspect": "^0.8.5",
+    "unocss": "^0.62.3",
+    "vite": "^5.4.2",
+    "vite-plugin-inspect": "^0.8.7",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.52.2",
-    "@vueuse/core": "^10.11.1",
+    "@vueuse/core": "^11.0.3",
     "element-plus": "^2.8.1",
     "pinia": "^2.2.2",
     "unplugin-auto-import": "^0.18.2",

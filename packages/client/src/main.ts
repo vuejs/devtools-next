@@ -28,15 +28,15 @@ import '~/assets/styles/main.css'
 const routes = [
   { path: '/', component: Index },
   { path: '/overview', component: Overview },
-  { path: '/components', component: Components },
-  { path: '/pinia', component: PiniaPage },
-  { path: '/router', component: RouterPage },
+  { path: '/components/:id?', component: Components },
+  { path: '/pinia/:id?', component: PiniaPage },
+  { path: '/router/:id?', component: RouterPage },
   { path: '/pages', component: Pages },
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },
   { path: '/settings', component: Settings },
   { path: `/${CUSTOM_TAB_VIEW}/:name`, component: CustomTabView },
-  { path: `/${CUSTOM_INSPECTOR_TAB_VIEW}/:name`, component: CustomInspectorTabView },
+  { path: `/${CUSTOM_INSPECTOR_TAB_VIEW}/:name/:id?`, component: CustomInspectorTabView },
 ]
 
 const router = createRouter({

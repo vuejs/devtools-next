@@ -4,6 +4,13 @@ import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
+const props = defineProps<{
+  savedSelectedId?: string
+}>()
+const emit = defineEmits<{
+  (e: 'onSelectId', id: string): void
+}>()
+
 const { VirtualRouterView } = registerVirtualRouter([
   {
     path: '/store',
@@ -26,10 +33,14 @@ const { VirtualRouterView } = registerVirtualRouter([
 ], {
   defaultRoutePath: '/store',
 })
+
+const handleSelectId = (id: string) => {
+  emit('onSelectId', id)
+}
 </script>
 
 <template>
   <div h-full w-full>
-    <VirtualRouterView />
+    <VirtualRouterView :saved-selected-id="savedSelectedId" @on-select-id="handleSelectId" />
   </div>
 </template>

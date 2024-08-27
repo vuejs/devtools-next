@@ -11,7 +11,15 @@ import Empty from '~/components/basic/Empty.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { useCustomInspectorState } from '~/composables/custom-inspector-state'
+import { getValidNodeId } from '~/utils'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+
+const props = defineProps<{
+  savedSelectedId?: string
+}>()
+const emit = defineEmits<{
+  (e: 'onSelectId', id: string): void
+}>()
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('routes-state')
@@ -90,6 +98,7 @@ function clearRoutesState() {
 watch(selected, () => {
   clearRoutesState()
   getRoutesState(selected.value)
+  emit('onSelectId', selected.value)
 })
 
 const getRoutesInspectorTree = () => {
@@ -97,8 +106,8 @@ const getRoutesInspectorTree = () => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
-      selected.value = data[0].id
-      getRoutesState(data[0].id)
+      selected.value = getValidNodeId(data, props.savedSelectedId) || data[0].id
+      getRoutesState(selected.value)
       expandedTreeNodes.value = getNodesByDepth(treeNodeLinkedList.value, 1)
     }
   })

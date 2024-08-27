@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.1",
+    "@vueuse/core": "^11.0.3",
     "pinia": "^2.2.2",
     "unplugin-auto-import": "^0.18.2",
     "vue": "^3.4.38",

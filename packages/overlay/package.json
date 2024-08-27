@@ -24,7 +24,7 @@
     "@vue/devtools-kit": "workspace:*",
     "@vue/devtools-shared": "workspace:^",
     "@vue/devtools-ui": "workspace:*",
-    "@vueuse/core": "^10.11.1"
+    "@vueuse/core": "^11.0.3"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.241",

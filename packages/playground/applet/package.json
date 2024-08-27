@@ -9,7 +9,7 @@
   "dependencies": {
     "@iconify/json": "^2.2.241",
     "@tresjs/core": "^4.2.7",
-    "@vueuse/core": "^10.11.1",
+    "@vueuse/core": "^11.0.3",
     "pinia": "^2.2.2",
     "three": "^0.167.1",
     "unplugin-auto-import": "^0.18.2",

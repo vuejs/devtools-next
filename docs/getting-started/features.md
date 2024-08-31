@@ -2,7 +2,7 @@
 
 Discover all the features of the Vue DevTools.
 
-You can open or close Vue DevTools with `Shift+Alt+D` or `Shift+Option+D` shortcut.
+If you are using Vite plugin, you can open or close Vue DevTools with `Shift+Alt+D` or `Shift+Option+D` shortcut.
 
 ## Overview
 

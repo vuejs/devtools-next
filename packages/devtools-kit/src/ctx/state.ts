@@ -15,6 +15,9 @@ export interface DevToolsState {
   tabs: CustomTab[]
   commands: CustomCommand[]
   highPerfModeEnabled: boolean
+  devtoolsClientDetected: {
+    [key: string]: boolean
+  }
 }
 
 global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
@@ -33,7 +36,8 @@ function initStateFactory() {
     activeAppRecordId: '',
     tabs: [],
     commands: [],
-    highPerfModeEnabled: false,
+    highPerfModeEnabled: true,
+    devtoolsClientDetected: {},
   }
 }
 global[STATE_KEY] ??= initStateFactory()

@@ -50,8 +50,8 @@
     "prepare:type": "turbo prepare:type --filter='./packages/*'",
     "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" nr prepare:type && nr build:ui && turbo stub --concurrency 20",
     "build": "turbo build",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "NODE_OPTIONS=--import=tsx eslint --config=eslint.config.ts .",
+    "lint:fix": "pnpm lint --fix",
     "lint:packages": "pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared,applet}' exec publint && pnpm -r --filter='./packages/{core,devtools,devtools-api,devtools-kit,electron,shared,applet}' exec attw --pack",
     "prepublishOnly": "npm run build",
     "release": "bumpp && nr build && pnpm -r publish --access public",
@@ -72,7 +72,7 @@
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.27.3",
+    "@antfu/eslint-config": "^3.0.0",
     "@antfu/ni": "^0.23.0",
     "@arethetypeswrong/cli": "^0.15.4",
     "@clack/prompts": "^0.7.0",
@@ -90,9 +90,8 @@
     "bumpp": "^9.5.2",
     "cross-env": "^7.0.3",
     "degit": "^2.8.4",
-    "eslint": "npm:eslint-ts-patch@8.57.0-0",
+    "eslint": "^9.9.1",
     "eslint-plugin-format": "^0.1.2",
-    "eslint-ts-patch": "8.57.0-0",
     "eslint-vitest-rule-tester": "^0.6.1",
     "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
@@ -110,7 +109,7 @@
     "simple-git-hooks": "^2.11.1",
     "taze": "^0.16.7",
     "tsup": "^8.2.4",
-    "tsx": "^4.18.0",
+    "tsx": "^4.19.0",
     "turbo": "^2.0.14",
     "typescript": "^5.5.4",
     "unbuild": "^2.0.0",
@@ -123,6 +122,6 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*": "pnpm lint:fix"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-ui",
   "type": "module",
-  "version": "7.3.7",
+  "version": "7.3.9",
   "author": "webfansplz",
   "license": "MIT",
   "exports": {
@@ -33,27 +33,27 @@
   "peerDependencies": {
     "@unocss/reset": ">=0.50.0-0",
     "floating-vue": ">=2.0.0-0",
-    "shiki": ">=1.10.0",
+    "shiki": ">=1.16.0",
     "unocss": ">=0.50.0-0",
     "vue": ">=3.0.0-0"
   },
   "dependencies": {
     "@vue/devtools-shared": "workspace:*",
-    "@vueuse/components": "^10.11.0",
-    "@vueuse/core": "^10.11.0",
-    "@vueuse/integrations": "^10.11.0",
+    "@vueuse/components": "^11.0.3",
+    "@vueuse/core": "^11.0.3",
+    "@vueuse/integrations": "^10.11.1",
     "colord": "^2.9.3",
     "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
-    "@iconify-json/ic": "^1.1.17",
-    "@types/node": "^20.14.10",
-    "@unocss/reset": "^0.61.3",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@iconify-json/ic": "^1.1.18",
+    "@types/node": "^20.16.1",
+    "@unocss/reset": "^0.62.3",
+    "@vitejs/plugin-vue": "^5.1.2",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.17",
-    "unocss": "^0.61.3",
+    "unocss": "^0.62.3",
     "vite-plugin-dts": "^3.9.1"
   }
 }

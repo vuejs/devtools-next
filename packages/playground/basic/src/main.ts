@@ -22,6 +22,11 @@ app.use(ElementPlus)
 
 // devtools.connect()
 
+// // @ts-expect-error skip type check
+// window.VUE_DEVTOOLS_CONFIG = {
+//   openInEditorHost: 'http://localhost:3000',
+// }
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',

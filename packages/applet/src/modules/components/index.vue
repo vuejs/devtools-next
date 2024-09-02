@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
 import {
   DevToolsMessagingEvents,
   rpc,
+  useDevToolsState,
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
@@ -13,6 +14,7 @@ import { VueButton, VueDialog, VueInput, vTooltip } from '@vue/devtools-ui'
 import { flatten, groupBy } from 'lodash-es'
 import ComponentRenderCode from './components/RenderCode.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+import SelectiveList from '~/components/basic/SelectiveList.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
@@ -280,11 +282,42 @@ function closeComponentRenderCode() {
   componentRenderCode.value = ''
   componentRenderCodeVisible.value = false
 }
+
+// #region toggle app
+const devtoolsState = useDevToolsState()
+const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
+  label: app.name + (app.version ? ` (${app.version})` : ''),
+  value: app.id,
+})))
+
+const normalizedAppRecords = computed(() => appRecords.value.map(app => ({
+  label: app.label,
+  id: app.value,
+})))
+
+const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
+watchEffect(() => {
+  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+})
+
+function toggleApp(id: string) {
+  rpc.value.toggleApp(id).then(() => {
+    activeComponentId.value = ''
+    getComponentsInspectorTree()
+  })
+}
+
+// #endregion
 </script>
 
 <template>
   <div class="h-full w-full">
     <Splitpanes ref="splitpanesRef" class="flex-1 overflow-auto" :horizontal="horizontal" @ready="splitpanesReady = true">
+      <Pane v-if="appRecords.length > 1" border="base h-full" size="20">
+        <div class="no-scrollbar h-full flex select-none gap-2 overflow-scroll">
+          <SelectiveList v-model="activeAppRecordId" :data="normalizedAppRecords" class="w-full" @select="toggleApp" />
+        </div>
+      </Pane>
       <Pane border="base" h-full>
         <div v-if="componentTreeLoaded" class="h-full flex flex-col p2">
           <div class="flex py2">
@@ -321,7 +354,7 @@ function closeComponentRenderCode() {
               <i v-tooltip.bottom="'Scroll to component'" class="i-material-symbols-light:eye-tracking-outline h-4 w-4 cursor-pointer hover:(op-70)" @click="scrollToComponent" />
               <i v-tooltip.bottom="'Show render code'" class="i-material-symbols-light:code h-5 w-5 cursor-pointer hover:(op-70)" @click="getComponentRenderCode" />
               <i v-if="isInChromePanel" v-tooltip.bottom="'Inspect DOM'" class="i-material-symbols-light:menu-open h-5 w-5 cursor-pointer hover:(op-70)" @click="inspectDOM" />
-              <i v-if="activeTreeNodeFilePath && !isInChromePanel" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
+              <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
           <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />

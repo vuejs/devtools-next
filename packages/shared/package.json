@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-shared",
   "type": "module",
-  "version": "7.3.7",
+  "version": "7.3.9",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
@@ -29,6 +29,6 @@
     "rfdc": "^1.4.1"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10"
+    "@types/node": "^20.16.1"
   }
 }

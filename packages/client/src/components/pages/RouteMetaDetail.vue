@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { VueCodeBlock } from '@vue/devtools-ui'
-import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import type { RouteMeta } from 'vue-router'
 
-const props = defineProps<{
+defineProps<{
   meta: RouteMeta
 }>()
-const colorMode = useColorMode()
-const meta = computed(() => props.meta)
+
+defineEmits<{
+  close: []
+}>()
 </script>
 
 <template>
-  <div h-full select-none overflow-scroll p-2 class="no-scrollbar">
+  <div p-2>
+    <div class="flex items-center justify-between">
+      <span class="font-500">Route meta detail</span>
+      <div class="i-carbon-close cursor-pointer p1 $ui-text" @click="$emit('close')" />
+    </div>
     <VueCodeBlock :code="JSON.stringify(meta, null, 2)" lang="json" lines />
   </div>
 </template>

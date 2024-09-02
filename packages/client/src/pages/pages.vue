@@ -3,6 +3,7 @@ import type { RouterInfo } from '@vue/devtools-kit'
 import { VueInput } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, onDevToolsConnected, rpc } from '@vue/devtools-core'
 import type { RouteLocationNormalizedLoaded, RouteMeta, RouteRecordNormalized } from 'vue-router'
+import { Pane, Splitpanes } from 'splitpanes'
 
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)
@@ -56,7 +57,7 @@ onUnmounted(() => {
 
 <template>
   <div block h-screen of-auto>
-    <div h-full of-auto>
+    <div h-full class="grid grid-rows-[auto_1fr]">
       <div border="b base" flex="~ col gap1" px4 py3>
         <div>
           <template v-if="false">
@@ -97,28 +98,28 @@ onUnmounted(() => {
         @navigate="navigateToRoute"
       />
     </SectionBlock> -->
-      <SectionBlock
-        icon="i-carbon-tree-view-alt"
-        text="All Routes"
-        :description="`${routes.length} routes registered in your application`"
-        :padding="false"
-      >
-        <RoutesTable
-          v-if="routes.length"
-          :pages="routes"
-          :matched="currentRoute?.matched ?? []"
-          :matched-pending="routeInputMatched"
-          @navigate="navigateToRoute"
-          @select-meta="(meta: RouteMeta) => selectedMeta = meta"
-        />
-        <DrawerRight
-          :model-value="!!selectedMeta"
-          auto-close w-120
-          @close="selectedMeta = undefined"
-        >
-          <RouteMetaDetail v-if="!!selectedMeta" :meta="selectedMeta" />
-        </DrawerRight>
-      </SectionBlock>
+      <Splitpanes class="of-hidden">
+        <Pane size="70" class="of-auto!">
+          <SectionBlock
+            icon="i-carbon-tree-view-alt"
+            text="All Routes"
+            :description="`${routes.length} routes registered in your application`"
+            :padding="false"
+          >
+            <RoutesTable
+              v-if="routes.length"
+              :pages="routes"
+              :matched="currentRoute?.matched ?? []"
+              :matched-pending="routeInputMatched"
+              @navigate="navigateToRoute"
+              @select-meta="(meta: RouteMeta) => selectedMeta = meta"
+            />
+          </SectionBlock>
+        </Pane>
+        <Pane v-if="!!selectedMeta" size="30" class="of-auto!">
+          <RouteMetaDetail :meta="selectedMeta" @close="selectedMeta = undefined" />
+        </Pane>
+      </Splitpanes>
     </div>
   </div>
 </template>

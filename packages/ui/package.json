@@ -33,7 +33,7 @@
   "peerDependencies": {
     "@unocss/reset": ">=0.50.0-0",
     "floating-vue": ">=2.0.0-0",
-    "shiki": ">=1.10.0",
+    "shiki": ">=1.16.0",
     "unocss": ">=0.50.0-0",
     "vue": ">=3.0.0-0"
   },

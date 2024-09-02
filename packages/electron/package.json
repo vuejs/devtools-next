@@ -34,7 +34,7 @@
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
     "@vue/devtools-shared": "workspace:^",
-    "electron": "^29.4.6",
+    "electron": "^32.0.1",
     "execa": "^8.0.1",
     "h3": "^1.12.0",
     "ip": "^2.0.1",

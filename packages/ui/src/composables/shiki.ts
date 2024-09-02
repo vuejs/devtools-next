@@ -1,6 +1,5 @@
 import type { BuiltinLanguage, HighlighterCore } from 'shiki'
-import { createHighlighterCore } from 'shiki/core'
-import getWasm from 'shiki/wasm'
+import { createHighlighterCore, createJavaScriptRegexEngine } from 'shiki/core'
 import { shallowRef } from 'vue'
 
 export const shiki = shallowRef<HighlighterCore>()
@@ -9,6 +8,7 @@ let promise: Promise<any> | null = null
 
 export function renderCodeHighlight(code: string, lang: BuiltinLanguage | 'text' = 'text') {
   if (!promise && !shiki.value) {
+    const jsEngine = createJavaScriptRegexEngine()
     // Only loading when needed
     promise = createHighlighterCore({
       themes: [
@@ -27,7 +27,7 @@ export function renderCodeHighlight(code: string, lang: BuiltinLanguage | 'text'
         import('shiki/langs/diff.mjs'),
         import('shiki/langs/shellscript.mjs'),
       ],
-      loadWasm: getWasm,
+      engine: jsEngine,
     }).then((i) => {
       shiki.value = i
     })

@@ -1,4 +1,4 @@
-import { DevToolsContextHookKeys, DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpcClient, getRpcServer, stringify, toggleClientConnected } from '@vue/devtools-kit'
+import { DevToolsContextHookKeys, DevToolsMessagingHookKeys, devtools, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpcClient, getRpcServer, stringify, toggleClientConnected, updateDevToolsClientDetected } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
 
@@ -147,6 +147,9 @@ export const functions = {
   },
   unhighlight() {
     devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
+  },
+  updateDevToolsClientDetected(params: Record<string, boolean>) {
+    updateDevToolsClientDetected(params)
   },
   // listen to devtools server events
   initDevToolsServerListener() {

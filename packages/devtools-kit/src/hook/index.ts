@@ -2,6 +2,7 @@ import { target } from '@vue/devtools-shared'
 import type { HookKeys, Hookable } from 'hookable'
 import { createHooks } from 'hookable'
 import { DevToolsEvent, DevToolsHook, DevToolsHooks, VueHooks } from '../types'
+import { devtoolsState } from '../ctx'
 
 export { VueHooks } from '../types'
 
@@ -87,7 +88,7 @@ export function subscribeDevToolsHook() {
 
   // component added hook
   hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]>(DevToolsHooks.COMPONENT_ADDED, async (app, uid, parentUid, component) => {
-    if (app?._instance?.type?.devtools?.hide)
+    if (app?._instance?.type?.devtools?.hide || devtoolsState.highPerfModeEnabled)
       return
 
     if (!app || (typeof uid !== 'number' && !uid) || !component)
@@ -98,7 +99,7 @@ export function subscribeDevToolsHook() {
 
   // component updated hook
   hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]>(DevToolsHooks.COMPONENT_UPDATED, (app, uid, parentUid, component) => {
-    if (!app || (typeof uid !== 'number' && !uid) || !component)
+    if (!app || (typeof uid !== 'number' && !uid) || !component || devtoolsState.highPerfModeEnabled)
       return
 
     devtoolsHooks.callHook(DevToolsHooks.COMPONENT_UPDATED, app, uid, parentUid, component)
@@ -106,7 +107,7 @@ export function subscribeDevToolsHook() {
 
   // component removed hook
   hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]>(DevToolsHooks.COMPONENT_REMOVED, async (app, uid, parentUid, component) => {
-    if (!app || (typeof uid !== 'number' && !uid) || !component)
+    if (!app || (typeof uid !== 'number' && !uid) || !component || devtoolsState.highPerfModeEnabled)
       return
 
     devtoolsHooks.callHook(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)

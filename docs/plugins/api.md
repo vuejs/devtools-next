@@ -4,7 +4,7 @@ Plugins API for easier DevTools integrations.
 
 :::tip
 
-Since v7.3.0, we are fully compatible with the v6 plugin API. You can check out the [API documentation](https://devtools.vuejs.org/plugin/api-reference.html) here.
+Since v7.3.0, we are fully compatible with the v6 plugin API. You can check out the [API documentation](https://devtools-v6.vuejs.org/plugin/api-reference.html) here.
 :::
 
 ## Installation

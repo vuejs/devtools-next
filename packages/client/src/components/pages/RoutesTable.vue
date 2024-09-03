@@ -26,6 +26,10 @@ function metaToString(meta: RouteMeta, num: number = 0) {
   const metaStr = JSON.stringify(meta, null, num)
   return metaStr === '{}' ? '-' : metaStr
 }
+
+const metaFieldVisible = computed(() => {
+  return sorted.value.some(item => Object.keys(item.meta)?.length)
+})
 </script>
 
 <template>
@@ -40,7 +44,7 @@ function metaToString(meta: RouteMeta, num: number = 0) {
           <th text-left>
             Name
           </th>
-          <th text-left>
+          <th v-if="metaFieldVisible" text-left>
             Route Meta
           </th>
         </tr>
@@ -85,7 +89,7 @@ function metaToString(meta: RouteMeta, num: number = 0) {
           <td w-0 ws-nowrap pr-1 text-left text-sm font-mono op50>
             {{ item.name }}
           </td>
-          <td w-50 ws-nowrap pr-1 text-left text-sm font-mono op50 hover="text-primary op100">
+          <td v-if="metaFieldVisible" w-50 ws-nowrap pr-1 text-left text-sm font-mono op50 hover="text-primary op100">
             <span inline-block w-50 cursor-pointer overflow-hidden text-ellipsis :title="metaToString(item.meta, 2)" @click="() => $emit('selectMeta', item.meta)">{{ metaToString(item.meta) }}</span>
           </td>
         </tr>

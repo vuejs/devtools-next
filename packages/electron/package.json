@@ -4,6 +4,11 @@
   "version": "7.4.0",
   "author": "webfansplz",
   "license": "MIT",
+  "repository": {
+    "directory": "packages/electron",
+    "type": "git",
+    "url": "git+https://github.com/vuejs/devtools-next.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

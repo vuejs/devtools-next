@@ -3,6 +3,7 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import About from './components/About.vue'
+import Settings from './components/Settings.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import AppConnecting from '~/components/basic/AppConnecting.vue'
@@ -16,6 +17,9 @@ const props = defineProps<{
 const emit = defineEmits(['loadError'])
 const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
+
+const pluginSettings = ref(null)
+provide('pluginSettings', pluginSettings)
 
 const routes = computed(() => {
   return [
@@ -36,6 +40,12 @@ const routes = computed(() => {
       name: 'About',
       component: About,
     },
+    pluginSettings.value && ({
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+      icon: 'i-mdi:cog-outline',
+    }),
   ].filter(Boolean) as VirtualRoute[]
 })
 
@@ -61,6 +71,14 @@ function getInspectorInfo() {
       inspectorState.value = state
       restoreRouter()
       loading.value = false
+    })
+    rpc.value.getPluginSettings(props.id).then((settings) => {
+      if (settings.options) {
+        pluginSettings.value = settings
+      }
+      else {
+        pluginSettings.value = null
+      }
     })
   })
 }

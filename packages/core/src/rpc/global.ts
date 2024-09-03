@@ -121,6 +121,12 @@ export const functions = {
   async toggleApp(id: string) {
     return devtools.ctx.api.toggleApp(id)
   },
+  updatePluginSettings(pluginId: string, key: string, value: string) {
+    return devtools.ctx.api.updatePluginSettings(pluginId, key, value)
+  },
+  getPluginSettings(pluginId: string) {
+    return devtools.ctx.api.getPluginSettings(pluginId)
+  },
   getRouterInfo() {
     return devtoolsRouterInfo
   },

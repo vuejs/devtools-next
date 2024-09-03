@@ -9,6 +9,7 @@ import { openInEditor } from '../core/open-in-editor'
 import { normalizeRouterInfo } from '../core/router'
 import { getComponentInspector } from '../core/component-inspector'
 import { registerDevToolsPlugin } from '../core/plugin'
+import { getPluginSettings, getPluginSettingsOptions, setPluginSettings } from '../core/plugin/plugin-settings'
 import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys } from './hook'
 import { activeAppRecord, devtoolsAppRecords, setActiveAppRecord, setActiveAppRecordId } from './state'
@@ -120,6 +121,15 @@ export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevTool
         if (el) {
           target.__VUE_DEVTOOLS_INSPECT_DOM_TARGET__ = el
         }
+      }
+    },
+    updatePluginSettings(pluginId: string, key: string, value: string) {
+      setPluginSettings(pluginId, key, value)
+    },
+    getPluginSettings(pluginId: string) {
+      return {
+        options: getPluginSettingsOptions(pluginId),
+        values: getPluginSettings(pluginId),
       }
     },
   }

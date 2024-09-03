@@ -1,10 +1,10 @@
 import type { DevtoolsContext } from '../../ctx'
 import type { App, ComponentBounds, ComponentInstance, CustomInspectorOptions, DevToolsPlugin, TimelineEventOptions, TimelineLayerOptions } from '../../types'
 import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
-import { devtoolsPluginBuffer } from '../../ctx/plugin'
 import { devtoolsHooks } from '../../hook'
 import { DevToolsHooks } from '../../types'
 import { getActiveInspectors } from '../../ctx/inspector'
+import { getPluginSettings, initPluginSettings } from '../../core/plugin/plugin-settings'
 
 export class DevToolsV6PluginAPI {
   private plugin: DevToolsPlugin
@@ -78,6 +78,9 @@ export class DevToolsV6PluginAPI {
   // custom inspector
   addInspector(options: CustomInspectorOptions) {
     this.hooks.callHook(DevToolsContextHookKeys.ADD_INSPECTOR, { inspector: options, plugin: this.plugin })
+    if (this.plugin.descriptor.settings) {
+      initPluginSettings(options.id, this.plugin.descriptor.settings)
+    }
   }
 
   sendInspectorTree(inspectorId: string) {
@@ -107,21 +110,9 @@ export class DevToolsV6PluginAPI {
 
   // settings
   getSettings(pluginId?: string) {
-    function _getSettings(settings) {
-      const _settings = {}
-      Object.keys(settings!).forEach((key) => {
-        _settings[key] = settings![key].defaultValue
-      })
+    const inspector = getActiveInspectors().find(i => i.packageName === this.plugin.descriptor.packageName)
 
-      return _settings
-    }
-    if (pluginId) {
-      const item = devtoolsPluginBuffer.find(item => item[0].id === pluginId)?.[0] ?? null
-      return _getSettings(item?.settings) ?? _getSettings(this.plugin.descriptor.settings)
-    }
-    else {
-      return _getSettings(this.plugin.descriptor.settings)
-    }
+    return getPluginSettings((pluginId ?? inspector?.id)!, this.plugin.descriptor.settings)
   }
 
   // utilities

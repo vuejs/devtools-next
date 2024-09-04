@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueSelect, VueSwitch } from '@vue/devtools-ui'
+import { VueInput, VueSelect, VueSwitch } from '@vue/devtools-ui'
 import { rpc } from '@vue/devtools-core'
 import { computed } from 'vue'
 

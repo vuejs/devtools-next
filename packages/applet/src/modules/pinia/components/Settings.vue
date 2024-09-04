@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
+import { computed, inject } from 'vue'
 import Settings from '~/components/settings/Settings.vue'
 import Navbar from '~/components/basic/Navbar.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
-const settings = inject('pluginSettings')
+const settings = inject<Ref<{
+  options: Record<string, unknown>
+  values: Record<string, unknown>
+}>>('pluginSettings')!
 const options = computed(() => settings.value.options)
 const values = computed(() => settings.value.values)
 const inspectorId = 'pinia'

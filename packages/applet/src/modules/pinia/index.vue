@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onRpcConnected, rpc } from '@vue/devtools-core'
+import { computed, provide, ref } from 'vue'
 import About from './components/About.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import Settings from './components/Settings.vue'
-import { registerVirtualRouter } from '~/composables/virtual-router'
+import { VirtualRoute, registerVirtualRouter } from '~/composables/virtual-router'
 
 const pluginSettings = ref(null)
 provide('pluginSettings', pluginSettings)
@@ -45,6 +46,7 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes, {
 onRpcConnected(() => {
   rpc.value.getPluginSettings('pinia').then((settings) => {
     if (settings.options) {
+      // @ts-expect-error skip type check
       pluginSettings.value = settings
     }
     else {

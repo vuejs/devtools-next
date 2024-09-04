@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, provide, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
 import About from './components/About.vue'
@@ -74,6 +74,7 @@ function getInspectorInfo() {
     })
     rpc.value.getPluginSettings(props.id).then((settings) => {
       if (settings.options) {
+      // @ts-expect-error skip type check
         pluginSettings.value = settings
       }
       else {

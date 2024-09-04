@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { computed, inject } from 'vue'
+import type { Ref } from 'vue'
 import Settings from '~/components/settings/Settings.vue'
 import { useCustomInspectorState } from '~/composables/custom-inspector-state'
 import Navbar from '~/components/basic/Navbar.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 
-const settings = inject('pluginSettings')
+const settings = inject<Ref<{
+  options: Record<string, unknown>
+  values: Record<string, unknown>
+}>>('pluginSettings')!
 const customInspectState = useCustomInspectorState()
 const options = computed(() => settings.value.options)
 const values = computed(() => settings.value.values)

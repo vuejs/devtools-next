@@ -24,6 +24,6 @@ function update(_settings) {
     <DevToolsHeader :doc-link="customInspectState.homepage!">
       <Navbar />
     </DevToolsHeader>
-    <Settings :plugin-id="customInspectState.id" :options="options" :values="values" @update="update" />
+    <Settings :plugin-id="customInspectState.id!" :options="options" :values="values" @update="update" />
   </div>
 </template>

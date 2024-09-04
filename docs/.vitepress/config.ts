@@ -1,6 +1,6 @@
 import type { DefaultTheme } from 'vitepress'
 import { defineConfig } from 'vitepress'
-import { version } from '../../package.json'
+import { version } from '../../packages/core/package.json'
 import vite from './vite.config'
 
 const GETTING_STARTED: DefaultTheme.NavItemWithLink[] = [

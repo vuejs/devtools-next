@@ -4,6 +4,11 @@
   "version": "7.4.3",
   "author": "webfansplz",
   "license": "MIT",
+  "repository": {
+    "directory": "packages/ui",
+    "type": "git",
+    "url": "git+https://github.com/vuejs/devtools-next.git"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/src/index.d.ts",

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-electron",
   "type": "module",
-  "version": "7.4.2",
+  "version": "7.4.3",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {

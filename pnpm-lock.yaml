@@ -386,7 +386,7 @@ importers:
         version: link:../shared
       vue:
         specifier: '>=3.0.0'
-        version: 3.4.27(typescript@5.4.5)
+        version: 3.4.38(typescript@5.5.4)
 
   packages/devtools-kit:
     dependencies:

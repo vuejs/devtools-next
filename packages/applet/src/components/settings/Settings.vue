@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { VueSelect, VueSwitch } from '@vue/devtools-ui'
 import { rpc } from '@vue/devtools-core'
-import { useCustomInspectorState } from '~/composables/custom-inspector-state'
+import { computed } from 'vue'
 
 const props = defineProps<{
   pluginId: string
-  options: Record<string, unknown>
-  values: Record<string, unknown>
+  options: Record<string, any>
+  values: Record<string, any>
 }>()
 const emit = defineEmits(['update'])
-const state = useCustomInspectorState()
 const options = computed(() => props.options)
 const values = computed(() => props.values)
 
-function toggleOption(key: string, v: unknown) {
+function toggleOption(key: any, v: any) {
   rpc.value.updatePluginSettings(props.pluginId, key, v)
   rpc.value.getPluginSettings(props.pluginId).then((_settings) => {
     emit('update', _settings)
@@ -34,18 +33,14 @@ function toggleOption(key: string, v: unknown) {
               :model-value="values[index]"
               class="row-reverse flex hover:bg-active py1 pl2 pr1"
               @update:model-value="(v: boolean) => toggleOption(index, v)"
-            >
-              <div flex="~ gap-2" flex-auto items-center justify-start>
-                <span capitalize op75>{{ name }}</span>
-              </div>
-            </VueSwitch>
+            />
           </div>
           <template v-else-if="item.type === 'choice'">
             <div>
               <VueSelect
                 :model-value="values[index]"
                 :options="item.options"
-                @update:model-value="(v: string) => toggleOption(index, v)"
+                @update:model-value="(v) => toggleOption(index, v)"
               />
             </div>
           </template>

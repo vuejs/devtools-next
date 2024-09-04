@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueDropdown } from '@vue/devtools-ui'
 
+const emit = defineEmits(['toggleDevtoolsClientVisible'])
 const showDocking = ref(false)
 const showMoreTabs = ref(false)
 const panel = ref()
@@ -8,10 +9,10 @@ const buttonDocking = ref<HTMLButtonElement>()
 const buttonMoreTabs = ref<HTMLButtonElement>()
 const sidebarExpanded = computed(() => devtoolsClientState.value.expandSidebar)
 const sidebarScrollable = computed(() => devtoolsClientState.value.scrollableSidebar)
-
 const { enabledTabs, flattenedTabs } = useAllTabs()
 
 const ITEM_HEIGHT = 45
+
 const { height: windowHeight } = useWindowSize()
 const containerCapacity = computed(() => {
   const containerHeight = windowHeight.value - 130
@@ -22,9 +23,11 @@ const overflowTabs = computed(() => flattenedTabs.value.slice(containerCapacity.
 const categorizedInlineTabs = getCategorizedTabs(inlineTabs, enabledTabs)
 const categorizedOverflowTabs = getCategorizedTabs(overflowTabs, enabledTabs)
 
-const displayedTabs = computed(() => (sidebarScrollable.value || sidebarExpanded.value)
-  ? enabledTabs.value
-  : categorizedInlineTabs.value)
+const displayedTabs = computed(() =>
+  (sidebarScrollable.value || sidebarExpanded.value)
+    ? enabledTabs.value
+    : categorizedInlineTabs.value,
+)
 
 onClickOutside(
   panel,
@@ -38,17 +41,38 @@ onClickOutside(
   },
   { detectIframe: true },
 )
+
+const containerRef = ref<HTMLDivElement>()
+
+const dropdownDistance = ref(6)
+
+useResizeObserver(containerRef, () => {
+  // This is a hack to force the dropdown to reposition itself
+  dropdownDistance.value = dropdownDistance.value === 6 ? 6.01 : 6
+})
+
+const hostEnv = useHostEnv()
+useIntersectionObserver(
+  containerRef,
+  ([{ isIntersecting }]) => {
+    emit('toggleDevtoolsClientVisible', {
+      visible: isIntersecting,
+      host: hostEnv,
+    })
+  },
+)
 </script>
 
 <template>
   <div
+    ref="containerRef"
     border="r base" flex="~ col items-start"
     class="$ui-z-max-override" h-full of-hidden bg-base
   >
     <div
       sticky top-0 z-1 w-full p1 bg-base border="b base"
     >
-      <VueDropdown placement="left-start" :distance="6" :skidding="5" trigger="click" :shown="showDocking" class="w-full">
+      <VueDropdown placement="left-start" :distance="dropdownDistance" :skidding="5" trigger="click" :shown="showDocking" class="w-full">
         <button
           ref="buttonDocking"
           flex="~ items-center justify-center gap-2"

@@ -47,13 +47,13 @@ function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen:
     const keys = Object.keys(data)
     for (i = 0, l = keys.length; i < l; i++) {
       key = keys[i]
+      // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
+      // @TODO: need to check if it will cause any other issues
+      if (key === 'compilerOptions')
+        return index
       value = data[key]
       const isVm = value != null && isObject(value, Object.prototype.toString.call(data)) && isVueInstance(value)
       try {
-        // fix vue warn for compilerOptions passing-options-to-vuecompiler-sfc
-        // @TODO: need to check if it will cause any other issues
-        if (key === 'compilerOptions')
-          return index
         if (replacer) {
           value = replacer.call(data, key, value, depth, seenVueInstance)
         }
@@ -123,7 +123,8 @@ export function stringifyCircularAutoChunks(data: Record<string, unknown>, repla
     // no circular references, JSON.stringify can handle this
     result = arguments.length === 1
       ? JSON.stringify(data)
-      : JSON.stringify(data, (k, v) => replacer?.(k, v), space!)
+      // @ts-expect-error skip type check
+      : JSON.stringify(data, (k, v) => replacer?.(k, v)?.call(this), space!)
   }
   catch (e) {
     // handle circular references

@@ -1,11 +1,15 @@
 /// <reference types="histoire" />
 
 import { readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { HstVue } from '@histoire/plugin-vue'
 import unocss from 'unocss/vite'
 import dts from 'vite-plugin-dts'
+import { dependencies, peerDependencies } from './package.json'
+
+const IcIconDataPath = path.resolve(__dirname, './src/constants/ic-icons.ts')
 
 export default defineConfig({
   plugins: [
@@ -29,11 +33,39 @@ export default defineConfig({
     },
   ],
   build: {
+    cssCodeSplit: true,
     rollupOptions: {
-      external: ['vue', 'unocss', 'floating-vue'],
+      external: [
+        ...Object.keys(peerDependencies),
+        ...Object.keys(dependencies),
+        /^shiki/,
+      ],
       output: {
         globals: {
           vue: 'Vue',
+        },
+        /**
+         * 1. unocss css snippets is optional
+         * 2. vue sfc scoped css + node_modules css is necessary to be in the same chunk that imported by client
+         */
+        manualChunks(id) {
+          // css #1
+          if (id.includes('uno.css') || id.includes('@unocss/reset')) {
+            return 'uno'
+          }
+          // css #2
+          if ((id.includes('.vue') && id.includes('type=style'))
+            || (id.includes('node_modules') && id.endsWith('.css'))) {
+            return 'style'
+          }
+
+          // js code splitting
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+          if (id === IcIconDataPath) {
+            return 'ic-icons-data'
+          }
         },
       },
     },

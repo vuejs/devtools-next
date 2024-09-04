@@ -2,6 +2,7 @@ import { randomStr } from '@vue/devtools-shared'
 import { CustomCommand } from '@vue/devtools-kit'
 import { MaybeRefOrGetter } from 'vue'
 import { useDevToolsState } from '@vue/devtools-core'
+import equal from 'fast-deep-equal'
 
 export interface CommandItem {
   id: string
@@ -26,17 +27,21 @@ export function useCommands() {
   const router = useRouter()
   const state = useDevToolsState()
 
-  const customCommands = ref<CustomCommand[]>(state.commands.value || [])
+  let cachedCustomCommands: CustomCommand[] = []
 
-  watchEffect(() => {
-    customCommands.value = state.commands.value || []
+  const customCommands = computed(() => {
+    if (equal(state.commands.value, cachedCustomCommands))
+      // Optimized computed value
+      return cachedCustomCommands
+    cachedCustomCommands = state.commands.value
+    return state.commands.value
   })
 
   const fixedCommands: CommandItem[] = [
     {
       id: 'fixed:settings',
       title: 'Settings',
-      icon: 'carbon-settings-adjust',
+      icon: 'i-carbon-settings-adjust',
       action: () => {
         router.push('/settings')
       },
@@ -125,12 +130,31 @@ export function registerCommands(getter: MaybeRefOrGetter<CommandItem[]>) {
 
 let _vueDocsCommands: CommandItem[] | undefined
 
+const apiIconMapping = {
+  'utility-types': 'i-mdi-language-typescript',
+  'ssr': 'i-codicon-server-process',
+  'custom-renderer': 'i-codicon-server-process',
+  'sfc-script-setup': 'i-material-symbols:magic-button',
+  'sfc-css-features': 'i-material-symbols-css',
+  'built-in-directives': 'i-material-symbols-code',
+  'built-in-special-attributes': 'i-material-symbols-code',
+  'component-instance': 'i-material-symbols-code',
+  'composition-api-dependency-injection': 'i-material-symbols-code',
+  'composition-api-lifecycle': 'i-material-symbols-code',
+  'general': 'i-material-symbols-code',
+  'compile-time-flags': 'i-material-symbols-toggle-on',
+  'reactivity-utilities': 'i-mdi-api',
+  'reactivity-advanced': 'i-mdi-api',
+  'render-function': 'i-mdi-api',
+  '...others': 'i-uim-vuejs',
+}
+
 export async function getVueDocsCommands() {
   if (!_vueDocsCommands) {
     const list = await import('../../data/vue-apis.json').then(i => i.default)
     _vueDocsCommands = list.map(i => ({
       ...i,
-      icon: 'carbon-api-1',
+      icon: apiIconMapping[i.description] ?? apiIconMapping['...others'],
       action: () => {
         window.open(i.url, '_blank')
       },

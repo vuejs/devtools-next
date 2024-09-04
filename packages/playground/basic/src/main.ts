@@ -4,10 +4,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { addCustomCommand } from '@vue/devtools-api'
 
+import ElementPlus from 'element-plus'
 import store from './stores/vuexStore'
 
 import App from './App.vue'
-
+import 'element-plus/dist/index.css'
 import Home from './pages/Home.vue'
 import Hey from './pages/Hey.vue'
 import VueQuery from './pages/VueQuery.vue'
@@ -16,10 +17,15 @@ import './style.css'
 import 'uno.css'
 
 const pinia = createPinia()
-
 const app = createApp(App)
+app.use(ElementPlus)
 
 // devtools.connect()
+
+// // @ts-expect-error skip type check
+// window.VUE_DEVTOOLS_CONFIG = {
+//   openInEditorHost: 'http://localhost:3000',
+// }
 
 const routes: RouteRecordRaw[] = [
   {
@@ -30,14 +36,15 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/hello',
-    // component: Hello,
     component: () => import('./pages/Hello.vue'),
     name: 'hello',
+    meta: { auth: 'admin', note: 'Hey! Manger' },
   },
   {
     path: '/hey/:id',
     component: Hey,
     name: 'hey',
+    meta: { auth: 'user', note: 'Hey!' },
   },
   {
     path: '/vue-query',
@@ -55,10 +62,15 @@ const routes: RouteRecordRaw[] = [
     name: 'circular-state',
   },
   {
+    path: '/interval-update',
+    component: () => import('./pages/IntervalUpdate.vue'),
+    name: 'interval-update',
+  },
+  {
     path: '/inspect-custom-state',
     component: () => import('./pages/InspectCustomState'),
     name: 'inspect-custom-state',
-  },
+  }
 ]
 
 const router = createRouter({
@@ -66,7 +78,6 @@ const router = createRouter({
   routes,
 })
 
-// setTimeout(() => {
 app.use(VueQueryPlugin, {
   enableDevtoolsV6Plugin: true,
 })
@@ -75,48 +86,22 @@ app.use(pinia)
 app.use(store)
 
 app.mount('#app')
-// }, 2000)
 
 setTimeout(() => {
   addCustomCommand({
     id: 'vueuse',
     title: 'VueUse',
-    action: {
-      type: 'url',
-      src: 'https://vueuse.org/',
-    },
+    icon: 'https://vueuse.org/favicon.svg',
+    children: [
+      {
+        id: 'vueuse-docs',
+        title: 'Docs',
+        icon: 'auto-awesome',
+        action: {
+          type: 'url',
+          src: 'https://vueuse.org/',
+        },
+      },
+    ],
   })
 }, 2000)
-
-// setTimeout(() => {
-//   addCustomTab({
-//   // unique identifier
-//     name: 'vue-use',
-//     // title to display in the tab
-//     title: 'VueUse',
-//     // any icon from Iconify, or a URL to an image
-//     icon: 'i-logos-vueuse',
-//     // iframe view
-//     view: {
-//       type: 'iframe',
-//       src: 'https://vueuse.org/',
-//     },
-//     category: 'advanced',
-//   })
-//   setTimeout(() => {
-//     addCustomTab({
-//     // unique identifier
-//       name: 'vue-use1',
-//       // title to display in the tab
-//       title: 'VueUse1',
-//       // any icon from Iconify, or a URL to an image
-//       icon: 'i-logos-vueuse',
-//       // iframe view
-//       view: {
-//         type: 'iframe',
-//         src: 'https://vueuse.org/',
-//       },
-//       category: 'advanced',
-//     })
-//   }, 2000)
-// }, 2000)

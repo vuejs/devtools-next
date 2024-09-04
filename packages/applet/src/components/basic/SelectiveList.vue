@@ -5,10 +5,11 @@ import NodeTag from '~/components/basic/NodeTag.vue'
 
 defineProps<{ data: CustomInspectorNode[] }>()
 
+const emit = defineEmits(['select'])
 const selected = defineModel()
-
 function select(id: string) {
   selected.value = id
+  emit('select', id)
 }
 </script>
 

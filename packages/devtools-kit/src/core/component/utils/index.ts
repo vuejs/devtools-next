@@ -1,5 +1,5 @@
 import { basename, classify } from '@vue/devtools-shared'
-import { Fragment } from 'vue'
+import { Fragment } from '../../../shared/stub-vue'
 import type { AppRecord, VueAppInstance } from '../../../types'
 
 function getComponentTypeName(options: VueAppInstance['type']) {
@@ -137,4 +137,13 @@ export function getComponentInstance(appRecord: AppRecord, instanceId: string | 
 
   // @TODO: find a better way to handle it
   return instance || appRecord.instanceMap.get(':root')
+}
+
+// #542, should use 'in' operator to check if the key exists in the object
+export function ensurePropertyExists<R = Record<string, unknown>>(obj: unknown, key: string, skipObjCheck = false): obj is R {
+  return skipObjCheck
+    ? key in (obj as object)
+    : typeof obj === 'object' && obj !== null
+      ? key in obj
+      : false
 }

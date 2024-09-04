@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, VueSwitch } from '@vue/devtools-ui'
-// import { isInChromePanel } from '@vue/devtools-shared'
 
 // #region view mode
 // const viewMode = inject<Ref<'overlay' | 'panel'>>('viewMode', ref('overlay'))
@@ -10,7 +9,14 @@ import { VueButton, VueCard, VueCheckbox, VueConfirm, VueDarkToggle, VueSelect, 
 
 const { categorizedTabs: categories } = useAllTabs()
 
-const { scale, interactionCloseOnOutsideClick, showPanel, minimizePanelInteractive, expandSidebar, scrollableSidebar } = toRefs(devtoolsClientState.value)
+const hostEnv = useHostEnv()
+
+/**
+ * Enable feature settings in separate window because someone is using it, related #458
+ */
+const enableFeatureSettings = hostEnv === 'iframe' || hostEnv === 'separate-window'
+
+const { scale, interactionCloseOnOutsideClick, showPanel, minimizePanelInteractive, expandSidebar, scrollableSidebar } = toRefs(toReactive(devtoolsClientState))
 
 // #region settings
 const scaleOptions = [
@@ -119,7 +125,7 @@ const minimizePanelInteractiveLabel = computed(() => {
                 @update:model-value="(v: boolean) => toggleTab(tab.name, v)"
               >
                 <div flex="~ gap-2" flex-auto items-center justify-start pr-4 text-sm>
-                  <TabIcon text-xl :icon="tab.icon" :title="tab.title" />
+                  <TabIcon text-xl :icon="tab.icon" :fallback="tab.fallbackIcon" :title="tab.title" />
                   <span>{{ tab.title }}</span>
                   <div flex-auto />
                   <template v-if="pinnedTabs.includes(tab.name)">
@@ -184,26 +190,28 @@ const minimizePanelInteractiveLabel = computed(() => {
           </div>
         </VueCard>
 
-        <h3 mt2 text-lg>
-          Features
-        </h3>
-        <VueCard p4 flex="~ col gap-2">
-          <div class="flex items-center gap2 text-sm">
-            <VueCheckbox v-model="interactionCloseOnOutsideClick" />
-            <span op75>Close DevTools when clicking outside</span>
-          </div>
-          <div class="flex items-center gap2 text-sm">
-            <VueCheckbox v-model="showPanel" />
-            <span op75>Always show the floating panel</span>
-          </div>
+        <template v-if="enableFeatureSettings">
+          <h3 mt2 text-lg>
+            Features
+          </h3>
+          <VueCard p4 flex="~ col gap-2">
+            <div class="flex items-center gap2 text-sm">
+              <VueCheckbox v-model="interactionCloseOnOutsideClick" />
+              <span op75>Close DevTools when clicking outside</span>
+            </div>
+            <div class="flex items-center gap2 text-sm">
+              <VueCheckbox v-model="showPanel" />
+              <span op75>Always show the floating panel</span>
+            </div>
 
-          <div mx--2 my1 h-1px border="b base" op75 />
+            <div mx--2 my1 h-1px border="b base" op75 />
 
-          <p>Minimize floating panel on inactive</p>
-          <div>
-            <VueSelect v-model="minimizePanelInteractive" :button-props="{ outlined: true }" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
-          </div>
-        </VueCard>
+            <p>Minimize floating panel on inactive</p>
+            <div>
+              <VueSelect v-model="minimizePanelInteractive" :button-props="{ outlined: true }" :options="minimizePanelInteractiveOptions" :placeholder="minimizePanelInteractiveLabel" />
+            </div>
+          </VueCard>
+        </template>
 
         <h3 mt2 text-lg>
           Debug

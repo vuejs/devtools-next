@@ -1,7 +1,7 @@
 import { DEVTOOLS_API_INSPECT_STATE_KEY, camelize } from '@vue/devtools-shared'
 import type { VueAppInstance } from '../../../types'
 import type { InspectorState } from '../types'
-import { returnError } from '../utils'
+import { ensurePropertyExists, returnError } from '../utils'
 import { vueBuiltins } from './constants'
 import { getPropType, getSetupStateType, toRaw } from './util'
 
@@ -162,8 +162,8 @@ function processSetupState(instance: VueAppInstance) {
       let result: Partial<InspectorState>
 
       let isOtherType = typeof value === 'function'
-        || typeof value?.render === 'function' // Components
-        || typeof value?.__asyncLoader === 'function' // Components
+        || (ensurePropertyExists(value, 'render') && typeof value.render === 'function') // Components
+        || (ensurePropertyExists(value, '__asyncLoader') && typeof value.__asyncLoader === 'function') // Components
         || (typeof value === 'object' && value && ('setup' in value || 'props' in value)) // Components
         || /^v[A-Z]/.test(key) // Directives
 
@@ -172,7 +172,9 @@ function processSetupState(instance: VueAppInstance) {
 
         const { stateType, stateTypeName } = getStateTypeAndName(info)
         const isState = info.ref || info.computed || info.reactive
-        const raw = rawData.effect?.raw?.toString() || rawData.effect?.fn?.toString()
+        const raw = ensurePropertyExists(rawData, 'effect')
+          ? rawData.effect?.raw?.toString() || rawData.effect?.fn?.toString()
+          : null
 
         if (stateType)
           isOtherType = false
@@ -280,7 +282,7 @@ function processInject(instance: VueAppInstance, mergedType: Record<string, unkn
 function processRefs(instance: VueAppInstance) {
   return Object.keys(instance.refs)
     .map(key => ({
-      type: 'refs',
+      type: 'template refs',
       key,
       value: returnError(() => instance.refs[key]),
     }))
@@ -289,7 +291,7 @@ function processRefs(instance: VueAppInstance) {
 function processEventListeners(instance: VueAppInstance) {
   const emitsDefinition = instance.type.emits
   const declaredEmits = Array.isArray(emitsDefinition) ? emitsDefinition : Object.keys(emitsDefinition ?? {})
-  const keys = Object.keys(instance.vnode.props ?? {})
+  const keys = Object.keys(instance?.vnode?.props ?? {})
   const result: InspectorState[] = []
   for (const key of keys) {
     const [prefix, ...eventNameParts] = key.split(/(?=[A-Z])/)

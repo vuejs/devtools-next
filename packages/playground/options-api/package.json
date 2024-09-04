@@ -1,16 +1,16 @@
 {
   "name": "playground-options-api",
   "type": "module",
-  "version": "7.3.0",
+  "version": "7.3.2",
   "private": true,
   "scripts": {
     "dev": "vite"
   },
   "dependencies": {
-    "vue": "^3.4.27"
+    "vue": "^3.4.38"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "^5.1.3",
     "vite-plugin-vue-devtools": "workspace:*"
   }
 }

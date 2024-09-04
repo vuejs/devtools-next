@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-kit",
   "type": "module",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
@@ -27,9 +27,6 @@
     "prepare:type": "tsup --dts-only",
     "stub": "tsup --watch --onSuccess 'tsup --dts-only'"
   },
-  "peerDependencies": {
-    "vue": "^3.0.0"
-  },
   "dependencies": {
     "@vue/devtools-shared": "workspace:^",
     "birpc": "^0.2.17",
@@ -41,7 +38,7 @@
   },
   "devDependencies": {
     "@types/speakingurl": "^13.0.6",
-    "vue": "^3.4.27",
-    "vue-router": "^4.3.3"
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.3"
   }
 }

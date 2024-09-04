@@ -4,6 +4,7 @@ import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
+import { until } from '@vueuse/core'
 import Navbar from '~/components/basic/Navbar.vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
@@ -32,16 +33,19 @@ function dfs(node: { id: string, children?: { id: string }[] }, path: string[] =
   if (node.children?.length === 0)
     linkedList.push([...path])
 
-  node.children?.forEach((child) => {
-    dfs(child, path, linkedList)
-  })
+  if (Array.isArray(node.children)) {
+    node.children.forEach((child) => {
+      dfs(child, path, linkedList)
+    })
+  }
+
   path.pop()
   return linkedList
 }
 
 function getNodesByDepth(list: string[][], depth: number) {
   const nodes: string[] = []
-  list.forEach((item) => {
+  list?.forEach((item) => {
     nodes.push(...item.slice(0, depth + 1))
   })
   return [...new Set(nodes)]
@@ -50,7 +54,7 @@ function getNodesByDepth(list: string[][], depth: number) {
 function flattenTreeNodes(tree: CustomInspectorNode[]) {
   const res: CustomInspectorNode[] = []
   const find = (treeNode: CustomInspectorNode[]) => {
-    treeNode.forEach((item) => {
+    treeNode?.forEach((item) => {
       res.push(item)
       if (item.children?.length)
         find(item.children)
@@ -70,8 +74,11 @@ function filterEmptyState(data: Record<string, unknown[] | string | undefined>) 
 
 function getRoutesState(nodeId: string) {
   rpc.value.getInspectorState({ inspectorId: inspectorId.value, nodeId }).then((data) => {
+    const parsedData = parse(data!)
+    if (!parsedData)
+      return
     // @ts-expect-error skip type check
-    state.value = filterEmptyState(parse(data!))
+    state.value = filterEmptyState(parsedData)
     expandedStateNodes.value = Array.from({ length: Object.keys(state.value).length }, (_, i) => `${i}`)
   })
 }
@@ -96,7 +103,8 @@ const getRoutesInspectorTree = () => {
     }
   })
 }
-getRoutesInspectorTree()
+
+until(inspectorId).toBeTruthy().then(getRoutesInspectorTree)
 
 function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {

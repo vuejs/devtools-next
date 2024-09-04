@@ -1,8 +1,16 @@
-export function isVueInstance(value: Record<string, unknown>) {
-  return value._ && Object.keys(value._).includes('vnode')
+import { ensurePropertyExists } from '../utils'
+
+export function isVueInstance(value: any) {
+  if (!ensurePropertyExists(value, '_')) {
+    return false
+  }
+  if (!isPlainObject(value._)) {
+    return false
+  }
+  return Object.keys(value._).includes('vnode')
 }
 
-export function isPlainObject(obj: unknown) {
+export function isPlainObject(obj: unknown): obj is object {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
@@ -13,8 +21,8 @@ export function isPrimitive(data: unknown) {
   const type = typeof data
   return (
     type === 'string'
-      || type === 'number'
-      || type === 'boolean'
+    || type === 'number'
+    || type === 'boolean'
   )
 }
 

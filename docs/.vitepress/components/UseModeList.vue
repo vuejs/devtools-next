@@ -14,10 +14,10 @@ const list = [
     link: '/guide/standalone',
   },
   {
-    name: 'Chrome Extension',
+    name: 'Chrome Extension (Beta)',
     logo: '/features/chrome-logo.svg',
-    link: '/guide/browser-extension',
-    disabled: true,
+    link: 'https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?utm_source=ext_sidebar',
+    blank: true,
   },
 ]
 </script>
@@ -36,6 +36,7 @@ const list = [
     >
       <a
         :href="item.link"
+        :target="item.blank ? '_blank' : '_self'"
         class="group text-! h-full w-full flex cursor-pointer list-none items-center rounded pr-5 hover:b-$vp-c-brand-1 text-$vp-c-text-1! decoration-none!"
       >
         <img :src="item.logo" :alt="item.name" class="mx-2 h-10">

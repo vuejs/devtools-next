@@ -2,7 +2,8 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 
-import Home from './components/Home.vue'
+import About from './components/About.vue'
+import Settings from './components/Settings.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import AppConnecting from '~/components/basic/AppConnecting.vue'
@@ -17,14 +18,11 @@ const emit = defineEmits(['loadError'])
 const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
 
+const pluginSettings = ref(null)
+provide('pluginSettings', pluginSettings)
+
 const routes = computed(() => {
   return [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-      icon: 'https://raw.githubusercontent.com/TanStack/query/main/packages/vue-query/media/vue-query.svg',
-    },
     {
       path: '/state',
       name: 'State',
@@ -37,10 +35,23 @@ const routes = computed(() => {
       component: Timeline,
       icon: 'i-mdi:timeline-clock-outline',
     }),
+    {
+      path: '/about',
+      name: 'About',
+      component: About,
+    },
+    pluginSettings.value && ({
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+      icon: 'i-mdi:cog-outline',
+    }),
   ].filter(Boolean) as VirtualRoute[]
 })
 
-const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes)
+const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes, {
+  defaultRoutePath: '/state',
+})
 
 function getInspectorInfo() {
   loading.value = true
@@ -60,6 +71,14 @@ function getInspectorInfo() {
       inspectorState.value = state
       restoreRouter()
       loading.value = false
+    })
+    rpc.value.getPluginSettings(props.id).then((settings) => {
+      if (settings.options) {
+        pluginSettings.value = settings
+      }
+      else {
+        pluginSettings.value = null
+      }
     })
   })
 }

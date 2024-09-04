@@ -10,7 +10,6 @@ export default defineConfig(mergeConfigs([unoConfig, {
     presetIcons({
       prefix: ['i-', ''],
       collections: {},
-      cdn: 'https://esm.sh/',
       scale: 1.2,
       extraProperties: {
         'display': 'inline-block',
@@ -69,5 +68,10 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'i-ic-baseline-error-outline',
     'i-ic-baseline-done-outline',
     'i-ic-baseline-delete-sweep',
+    'i-ic-baseline-restore',
+    'i-ic-baseline-content-copy',
+    'i-ic-baseline-content-paste',
+    'i-ic-baseline-save',
+    'i-ic-baseline-folder-open',
   ],
 }])) as any

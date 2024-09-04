@@ -50,7 +50,7 @@ export function getActiveInspectors() {
         id: options.id,
         label: options.label,
         logo: descriptor.logo!,
-        icon: `i-ic-baseline-${options?.icon?.replace(/_/g, '-')}`,
+        icon: `custom-ic-baseline-${options?.icon?.replace(/_/g, '-')}`,
         packageName: descriptor.packageName,
         homepage: descriptor.homepage,
       }

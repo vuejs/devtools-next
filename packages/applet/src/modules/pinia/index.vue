@@ -1,33 +1,57 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import Home from './components/Home.vue'
+import { onRpcConnected, rpc } from '@vue/devtools-core'
+import About from './components/About.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
+import Settings from './components/Settings.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
 
-const { VirtualRouterView } = registerVirtualRouter([
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    icon: 'i-logos-pinia',
-  },
-  {
-    path: '/store',
-    name: 'Store',
-    component: Store,
-    icon: 'i-carbon-tree-view-alt',
-  },
-  {
-    path: '/timeline',
-    name: 'Timeline',
-    component: Timeline,
-    icon: 'i-mdi:timeline-clock-outline',
-  },
-])
+const pluginSettings = ref(null)
+provide('pluginSettings', pluginSettings)
 
-const routePath = ref('/')
+const routes = computed(() => {
+  return [
+    {
+      path: '/store',
+      name: 'Store',
+      component: Store,
+      icon: 'i-carbon-tree-view-alt',
+    },
+    {
+      path: '/timeline',
+      name: 'Timeline',
+      component: Timeline,
+      icon: 'i-mdi:timeline-clock-outline',
+    },
+    {
+      path: '/',
+      name: 'About',
+      component: About,
+      icon: 'i-logos-pinia',
+    },
+    pluginSettings.value && ({
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+      icon: 'i-mdi:cog-outline',
+    }),
+  ].filter(Boolean) as VirtualRoute[]
+})
+
+const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes, {
+  defaultRoutePath: '/store',
+})
+
+onRpcConnected(() => {
+  rpc.value.getPluginSettings('pinia').then((settings) => {
+    if (settings.options) {
+      pluginSettings.value = settings
+    }
+    else {
+      pluginSettings.value = null
+    }
+  })
+})
 </script>
 
 <template>

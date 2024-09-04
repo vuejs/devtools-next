@@ -4,7 +4,7 @@
     "jsx": "preserve",
     "lib": ["esnext", "dom"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
       "@vue/devtools-shared": ["./packages/shared/src/index.ts"],
       "@vue/devtools-core": ["./packages/core/src/index.ts"],

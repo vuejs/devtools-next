@@ -43,13 +43,12 @@
     "128": "icons/128-beta.png"
   },
   "manifest_version": 2,
-  "name": "Vue.js DevTools",
+  "name": "Vue.js devtools (beta)",
   "permissions": [
-    "<all_urls>",
-    "storage"
+    "<all_urls>"
   ],
-  "version": "7.0.0.1",
-  "version_name": "7.0.0 beta 1",
+  "version": "7.0.0.6",
+  "version_name": "7.0.0 beta 6",
   "web_accessible_resources": [
     "dist/user-app.js",
     "client/devtools-panel.css",

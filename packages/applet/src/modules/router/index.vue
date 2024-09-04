@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
-import Home from './components/Home.vue'
+import About from './components/About.vue'
 import Routes from './components/routes/Index.vue'
 import Timeline from './components/timeline/Index.vue'
 import { registerVirtualRouter } from '~/composables/virtual-router'
@@ -14,12 +14,6 @@ const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
 const { VirtualRouterView, restoreRouter } = registerVirtualRouter([
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    icon: 'i-ri-route-line',
-  },
-  {
     path: '/routes',
     name: 'Routes',
     component: Routes,
@@ -31,7 +25,15 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter([
     component: Timeline,
     icon: 'i-mdi:timeline-clock-outline',
   },
-])
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+    icon: 'i-ri-route-line',
+  },
+], {
+  defaultRoutePath: '/routes',
+})
 
 function getInspectorInfo() {
   loading.value = true

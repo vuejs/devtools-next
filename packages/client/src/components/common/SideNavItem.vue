@@ -55,7 +55,7 @@ function onClick() {
           text-xl
           :icon="tab.icon"
           :fallback="tab.fallbackIcon"
-          title="Settings"
+          :title="tab.name"
           :show-title="false"
         />
         <span v-if="!minimized" text-md overflow-hidden text-ellipsis ws-nowrap>

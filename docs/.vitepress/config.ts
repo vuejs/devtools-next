@@ -60,6 +60,10 @@ export default defineConfig({
         ],
       },
       {
+        text: '💚️ Sponsor',
+        link: 'https://github.com/sponsors/webfansplz',
+      },
+      {
         // text: `v${version}`,
         // items: VERSIONS,
         text: `v${version} (current)`,

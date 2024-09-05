@@ -6,69 +6,63 @@ Discover all the features of the Vue DevTools
 
 Shows a quick overview of your app, including the Vue version, pages and components.
 
-![overview](/features/overview.svg)
+![overview](/features/overview.png)
 
 ## Pages
 
 Pages tab shows your current routes with some useful information, and provides a quick way to navigate between pages. You can also use the textbox to see how each route is matched.
 
-![pages](/features/pages.svg)
+![pages](/features/pages.png)
 
 ## Components
 
 Components tab shows your components information, including the node tree, state and so on. And provides some interactive features, e.g. edit state, scroll to component, etc.
 
-![components](/features/components.svg)
+![components](/features/components.png)
 
-## Assets
+## Assets（Vite only）
 
 Assets tab shows your files from the project directory, you can see the information of selected file with some helpful actions.
 
-![assets](/features/assets.svg)
-
-## Timeline
-
-Timeline tab allows you to travel through previous versions of your states or events.
-
-![timeline](/features/timeline.svg)
+![assets](/features/assets.png)
 
 ## Router
 
 Router tab is a feature integrated with [vue-router](https://github.com/vuejs/router), allowing you to view the routes list and its details.
 
-![router](/features/router.svg)
+![router](/features/router.png)
 
 ## Pinia
 
 Pinia tab is a feature integrated with [pinia](https://github.com/vuejs/pinia), allowing you to view the store list and its details, and edit the state.
 
-![pinia](/features/pinia.svg)
+![pinia](/features/pinia.png)
 
 ## Graph
 
 Graph tab shows the relationship between modules.
 
-![graph](/features/graph.svg)
+![graph](/features/graph.png)
 
 ## Settings
 
 Settings tab provides some options to customize the DevTools.
 
-![settings](/features/settings.svg)
+![settings](/features/settings.png)
 
-## Inspect
+## Inspect（Vite only）
 
 Inspect expose the [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) integration, allowing you to inspect transformation steps of Vite.
 
-![inspect](/features/inspect.svg)
+![inspect](/features/inspect.png)
 
-## Inspector
+## Inspector（Vite only）
 
 Inspector expose the [vite-plugin-vue-inspector](https://github.com/webfansplz/vite-plugin-vue-inspector) integration, you can inspect your app's DOM tree and see which component is rendering it. Finding the place to make changes are much easier.
 
-![inspector](/features/inspector.svg)
+![inspector](/features/inspector.png)
 
-## Separate Window
+## Separate Window（Vite only）
 
 Vue DevTools is able to run as a separate window, it's so helpful when you want to debug your app in a small screen.
 

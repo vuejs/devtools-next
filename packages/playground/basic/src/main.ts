@@ -66,6 +66,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/IntervalUpdate.vue'),
     name: 'interval-update',
   },
+  {
+    path: '/inspect-custom-state',
+    component: () => import('./pages/InspectCustomState'),
+    name: 'inspect-custom-state',
+  },
 ]
 
 const router = createRouter({

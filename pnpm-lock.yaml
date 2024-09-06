@@ -381,6 +381,12 @@ importers:
       '@vue/devtools-kit':
         specifier: workspace:^
         version: link:../devtools-kit
+      '@vue/devtools-shared':
+        specifier: workspace:*
+        version: link:../shared
+      vue:
+        specifier: '>=3.0.0'
+        version: 3.4.38(typescript@5.5.4)
 
   packages/devtools-kit:
     dependencies:

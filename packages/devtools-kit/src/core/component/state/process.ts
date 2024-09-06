@@ -1,4 +1,4 @@
-import { camelize } from '@vue/devtools-shared'
+import { DEVTOOLS_API_INSPECT_STATE_KEY, camelize } from '@vue/devtools-shared'
 import type { VueAppInstance } from '../../../types'
 import type { InspectorState } from '../types'
 import { ensurePropertyExists, returnError } from '../utils'
@@ -132,10 +132,21 @@ function getStateTypeAndName(info: ReturnType<typeof getSetupStateType>) {
 
 function processSetupState(instance: VueAppInstance) {
   const raw = instance.devtoolsRawSetupState || {}
-  return Object.keys(instance.setupState)
+  const customInspectStateKeys = raw[DEVTOOLS_API_INSPECT_STATE_KEY] || []
+
+  // Shallow clone to prevent mutating the original
+  const setupState = {
+    ...instance.setupState,
+    ...customInspectStateKeys.reduce((map, key) => {
+      map[key] = raw[key]
+      return map
+    }, {}),
+  }
+
+  return Object.keys(setupState)
     .filter(key => !vueBuiltins.has(key) && key.split(/(?=[A-Z])/)[0] !== 'use')
     .map((key) => {
-      const value = returnError(() => toRaw(instance.setupState[key])) as unknown as {
+      const value = returnError(() => toRaw(setupState[key])) as unknown as {
         render: Function
         __asyncLoader: Function
 

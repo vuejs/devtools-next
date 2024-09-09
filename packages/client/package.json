@@ -36,7 +36,7 @@
     "fast-deep-equal": "^3.1.3",
     "fuse.js": "^7.0.0",
     "minimatch": "^10.0.1",
-    "shiki": "^1.16.1",
+    "shiki": "^1.16.2",
     "splitpanes": "^3.1.5",
     "vis-network": "^9.1.9",
     "vite-hot-client": "^0.2.3",
@@ -44,8 +44,8 @@
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.243",
-    "@types/node": "^20.16.3",
+    "@iconify/json": "^2.2.245",
+    "@types/node": "^20.16.5",
     "@types/splitpanes": "^2.2.6",
     "@unocss/core": "^0.62.3",
     "@unocss/reset": "^0.62.3",
@@ -55,13 +55,13 @@
     "floating-vue": "5.2.2",
     "ohash": "^1.1.3",
     "pinia": "^2.2.2",
-    "sass": "^1.77.8",
+    "sass": "^1.78.0",
     "simple-git-hooks": "^2.11.1",
     "unocss": "^0.62.3",
-    "unplugin": "^1.12.3",
+    "unplugin": "^1.13.1",
     "unplugin-auto-import": "^0.18.2",
     "unplugin-vue-components": "^0.27.4",
-    "vite": "^5.4.2",
-    "vue": "^3.4.38"
+    "vite": "^5.4.3",
+    "vue": "^3.5.3"
   }
 }

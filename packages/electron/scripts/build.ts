@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises'
 import { resolve as _resolve } from 'pathe'
-import type { Options } from 'tsup'
 import { build } from 'tsup'
 import { build as unbuild } from 'unbuild'
+import type { Options } from 'tsup'
 import { dependencies } from '../package.json'
 
 const ExternalModules = Object.keys(dependencies)

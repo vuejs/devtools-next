@@ -1,6 +1,6 @@
 import { target } from '@vue/devtools-shared'
-import type { PluginDescriptor, TimelineLayerOptions } from '../types'
 import { getAppRecord } from '../core/component/utils'
+import type { PluginDescriptor, TimelineLayerOptions } from '../types'
 
 interface DevToolsKitTimelineLayer extends TimelineLayerOptions {
   appRecord: unknown

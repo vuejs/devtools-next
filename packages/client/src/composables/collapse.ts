@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
 import { computed, ref } from 'vue'
+import type { Ref } from 'vue'
 
 export function createCollapseContext(id: string) {
   const collapseMap = ref<Record<string, boolean>>({})

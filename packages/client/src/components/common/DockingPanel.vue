@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
+import { VueButton, VueDarkToggle, VueIcon, VueSelect } from '@vue/devtools-ui'
 
 const router = useRouter()
 

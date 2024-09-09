@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { RouterInfo } from '@vue/devtools-kit'
-import { VueInput } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, onDevToolsConnected, rpc } from '@vue/devtools-core'
-import type { RouteLocationNormalizedLoaded, RouteMeta, RouteRecordNormalized } from 'vue-router'
+import { VueInput } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
+import type { RouterInfo } from '@vue/devtools-kit'
+import type { RouteLocationNormalizedLoaded, RouteMeta, RouteRecordNormalized } from 'vue-router'
 
 const routeInput = ref('')
 const currentRoute = ref<RouteLocationNormalizedLoaded | null>(null)

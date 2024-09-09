@@ -1,4 +1,4 @@
-import { INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, isPlainObject } from '@vue/devtools-kit'
+import { INFINITY, isPlainObject, NAN, NEGATIVE_INFINITY, UNDEFINED } from '@vue/devtools-kit'
 
 /**
  * Searches a key or value in the object, with a maximum deepness

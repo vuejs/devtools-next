@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
-import { Pane, Splitpanes } from 'splitpanes'
-import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
-import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
 import {
   DevToolsMessagingEvents,
   rpc,
   useDevToolsState,
 } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
+import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
+import { vTooltip, VueButton, VueDialog, VueInput } from '@vue/devtools-ui'
 import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
-import { VueButton, VueDialog, VueInput, vTooltip } from '@vue/devtools-ui'
 import { flatten, groupBy } from 'lodash-es'
-import ComponentRenderCode from './components/RenderCode.vue'
-import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { Pane, Splitpanes } from 'splitpanes'
+import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
+import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
-import { createExpandedContext } from '~/composables/toggle-expanded'
-import { createSelectedContext } from '~/composables/select'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
+import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { createSelectedContext } from '~/composables/select'
+import { createExpandedContext } from '~/composables/toggle-expanded'
 import { searchDeepInObject } from '~/utils'
+import ComponentRenderCode from './components/RenderCode.vue'
 
 const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd'])
 // responsive layout

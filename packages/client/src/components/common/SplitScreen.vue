@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { VueButton, VueCard, VueDropdown, vTooltip } from '@vue/devtools-ui'
-import { CustomTab } from '@vue/devtools-kit'
 import { CustomInspector as CustomInspectorComponent } from '@vue/devtools-applet'
+import { CustomTab } from '@vue/devtools-kit'
+import { vTooltip, VueButton, VueCard, VueDropdown } from '@vue/devtools-ui'
 import { ModuleBuiltinTab } from '~/types'
 
 function close() {

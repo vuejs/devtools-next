@@ -1,8 +1,8 @@
-import type { VueAppInstance } from '../../types'
-import { getComponentId, getComponentInstance, getInstanceName } from '../component/utils'
 import { activeAppRecord } from '../../ctx'
-import { getRootElementsFromComponentInstance } from '../component/tree/el'
 import { getComponentBoundingRect } from '../component/state/bounding-rect'
+import { getRootElementsFromComponentInstance } from '../component/tree/el'
+import { getComponentId, getComponentInstance, getInstanceName } from '../component/utils'
+import type { VueAppInstance } from '../../types'
 import type { ComponentHighLighterOptions, ScrollToComponentOptions } from './types'
 
 export type * from './types'

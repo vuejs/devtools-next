@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueInput, VueSelect, VueSwitch } from '@vue/devtools-ui'
 import { rpc } from '@vue/devtools-core'
+import { VueInput, VueSelect, VueSwitch } from '@vue/devtools-ui'
 import { computed } from 'vue'
 
 const props = defineProps<{

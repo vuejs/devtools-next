@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
-import { computed, onUnmounted, ref } from 'vue'
-
-import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import { parse } from '@vue/devtools-kit'
-import EventList from './EventList.vue'
-import Navbar from '~/components/basic/Navbar.vue'
+import { Pane, Splitpanes } from 'splitpanes'
+
+import { computed, onUnmounted, ref } from 'vue'
+import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
+import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
+import Navbar from '~/components/basic/Navbar.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
-import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
+import EventList from './EventList.vue'
 
 const props = defineProps<{
   layerIds: string[]

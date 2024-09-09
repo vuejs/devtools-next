@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, nextTick } from 'vue'
 import { useVModel } from '@vueuse/core'
+import { computed, nextTick } from 'vue'
 import { useDevToolsColorMode } from '../composables'
 
 const props = withDefaults(defineProps<{

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueButton, VueDrawer, showVueNotification } from '@vue/devtools-ui'
 import { useDevToolsState } from '@vue/devtools-core'
+import { showVueNotification, VueButton, VueDrawer } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 
 defineProps<{

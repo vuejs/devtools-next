@@ -1,7 +1,6 @@
+import { target } from '@vue/devtools-shared'
 import { BirpcReturn, createBirpc, createBirpcGroup } from 'birpc'
 import type { BirpcGroup, BirpcOptions, ChannelOptions } from 'birpc'
-import { target } from '@vue/devtools-shared'
-import { MergeableChannelOptions } from './types'
 import {
   createBroadcastChannel,
   createElectronClientChannel,
@@ -15,17 +14,18 @@ import {
   createViteClientChannel,
   createViteServerChannel,
 } from './presets'
+import { MergeableChannelOptions } from './types'
 
 export type Presets = 'iframe' | 'electron' | 'vite' | 'broadcast' | 'extension'
 export {
+  getExtensionClientContext,
   setElectronClientContext,
-  setElectronServerContext,
   setElectronProxyContext,
+  setElectronServerContext,
+  setExtensionClientContext,
+  setIframeServerContext,
   setViteClientContext,
   setViteServerContext,
-  setIframeServerContext,
-  setExtensionClientContext,
-  getExtensionClientContext,
 } from './presets'
 export interface CreateRpcClientOptions<RemoteFunctions> {
   options?: BirpcOptions<RemoteFunctions>

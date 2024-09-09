@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { ComponentTreeNode, InspectorTree } from '@vue/devtools-kit'
+import NodeTag from '~/components/basic/NodeTag.vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import ComponentTreeViewer from '~/components/tree/TreeViewer.vue'
-import NodeTag from '~/components/basic/NodeTag.vue'
 
-import { useToggleExpanded } from '~/composables/toggle-expanded'
 import { useSelect } from '~/composables/select'
+import { useToggleExpanded } from '~/composables/toggle-expanded'
 
 withDefaults(defineProps<{
   data: ComponentTreeNode[] | InspectorTree[]

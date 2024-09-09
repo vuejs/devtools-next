@@ -72,16 +72,16 @@
     "gen:vue-apis": "tsx ./scripts/vue-api-manifest.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.0.0",
+    "@antfu/eslint-config": "^3.4.1",
     "@antfu/ni": "^0.23.0",
-    "@arethetypeswrong/cli": "^0.15.4",
+    "@arethetypeswrong/cli": "^0.16.1",
     "@clack/prompts": "^0.7.0",
     "@types/chrome": "^0.0.270",
     "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.16.3",
-    "@typescript-eslint/parser": "^8.3.0",
-    "@typescript-eslint/utils": "^8.3.0",
+    "@types/node": "^20.16.5",
+    "@typescript-eslint/parser": "^8.4.0",
+    "@typescript-eslint/utils": "^8.4.0",
     "@unocss/eslint-plugin": "^0.62.3",
     "@vue/devtools-core": "workspace:^",
     "@vue/devtools-kit": "workspace:^",
@@ -90,7 +90,7 @@
     "bumpp": "^9.5.2",
     "cross-env": "^7.0.3",
     "degit": "^2.8.4",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "eslint-plugin-format": "^0.1.2",
     "eslint-vitest-rule-tester": "^0.6.1",
     "execa": "^8.0.1",
@@ -99,7 +99,7 @@
     "jsdom": "^25.0.0",
     "lint-staged": "^15.2.10",
     "npm-run-all2": "^6.2.2",
-    "picocolors": "^1.0.1",
+    "picocolors": "^1.1.0",
     "pnpm": "^9.9.0",
     "progress": "^2.0.3",
     "publint": "^0.2.10",
@@ -114,9 +114,9 @@
     "typescript": "^5.5.4",
     "unbuild": "^2.0.0",
     "unocss": "^0.62.3",
-    "vite": "^5.4.2",
+    "vite": "^5.4.3",
     "vitest": "^2.0.5",
-    "vue": "^3.4.38"
+    "vue": "^3.5.3"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

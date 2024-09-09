@@ -1,5 +1,5 @@
-import type { DefaultTheme } from 'vitepress'
 import { defineConfig } from 'vitepress'
+import type { DefaultTheme } from 'vitepress'
 import { version } from '../../packages/core/package.json'
 import vite from './vite.config'
 

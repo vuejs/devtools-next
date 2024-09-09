@@ -1,18 +1,18 @@
-import { createPinia } from 'pinia'
-import type { RouteRecordRaw } from 'vue-router'
-import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { addCustomCommand } from '@vue/devtools-api'
-
 import ElementPlus from 'element-plus'
-import store from './stores/vuexStore'
+import { createPinia } from 'pinia'
+import { createRouter, createWebHistory } from 'vue-router'
 
+import type { RouteRecordRaw } from 'vue-router'
 import App from './App.vue'
-import 'element-plus/dist/index.css'
-import Home from './pages/Home.vue'
+
 import Hey from './pages/Hey.vue'
-import VueQuery from './pages/VueQuery.vue'
+import Home from './pages/Home.vue'
 import VeeValidate from './pages/VeeValidate.vue'
+import VueQuery from './pages/VueQuery.vue'
+import store from './stores/vuexStore'
+import 'element-plus/dist/index.css'
 import './style.css'
 import 'uno.css'
 

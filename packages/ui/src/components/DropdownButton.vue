@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { VClosePopper as vClosePopper } from 'floating-vue'
-import type { ComputedGetter } from 'vue'
 import { inject } from 'vue'
-import type { ButtonProps } from './Button.vue'
+import type { ComputedGetter } from 'vue'
 import VueButton from './Button.vue'
+import type { ButtonProps } from './Button.vue'
 
 const props = withDefaults(defineProps<ButtonProps & {
   keepOpen?: boolean

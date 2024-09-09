@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Pane, Splitpanes } from 'splitpanes'
-import { useDevToolsColorMode } from '@vue/devtools-ui'
 import { DevToolsMessagingEvents, onDevToolsConnected, onRpcConnected, refreshCurrentPageData, rpc, useDevToolsState } from '@vue/devtools-core'
+import { useDevToolsColorMode } from '@vue/devtools-ui'
+import { Pane, Splitpanes } from 'splitpanes'
 
 useDevToolsColorMode()
 const router = useRouter()

@@ -1,5 +1,5 @@
-import type { InjectionKey, Ref } from 'vue'
 import { inject, provide, ref } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 const SelectedSymbolKey: InjectionKey<Ref<string>> = Symbol('SelectedSymbolKey')
 

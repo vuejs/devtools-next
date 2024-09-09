@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { AssetInfo } from '@vue/devtools-core'
 import { VueIcon } from '@vue/devtools-ui'
+import type { AssetInfo } from '@vue/devtools-core'
 
 const props = withDefaults(defineProps<{
   item: any

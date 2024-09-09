@@ -1,6 +1,6 @@
 import { computed, inject, onUnmounted, ref, watch } from 'vue'
-import type { App, InjectionKey, Ref } from 'vue'
 import type { AppRecord, CustomCommand, CustomTab } from '@vue/devtools-kit'
+import type { App, InjectionKey, Ref } from 'vue'
 import { DevToolsMessagingEvents, onRpcConnected, rpc } from '../rpc'
 
 interface DevToolsState {

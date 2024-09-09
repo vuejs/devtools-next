@@ -1,12 +1,12 @@
 import { target } from '@vue/devtools-shared'
-import type { App } from 'vue'
 import { debounce } from 'perfect-debounce'
-import type { CustomInspectorOptions, PluginDescriptor } from '../types'
-import { getAppRecord } from '../core/component/utils'
-import { activeAppRecord } from './state'
-import { DevToolsMessagingHookKeys } from './hook'
-import { devtoolsTimelineLayers } from './timeline'
+import type { App } from 'vue'
 import { devtoolsContext } from '.'
+import { getAppRecord } from '../core/component/utils'
+import { DevToolsMessagingHookKeys } from './hook'
+import { activeAppRecord } from './state'
+import { devtoolsTimelineLayers } from './timeline'
+import type { CustomInspectorOptions, PluginDescriptor } from '../types'
 
 interface DevToolsKitInspector {
   options: CustomInspectorOptions

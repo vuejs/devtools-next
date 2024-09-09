@@ -1,6 +1,6 @@
+import { devtoolsContext, DevToolsV6PluginAPIHookKeys, getInspector } from '../../ctx'
 import { devtoolsPluginBuffer } from '../../ctx/plugin'
 import { PluginDescriptor } from '../../types'
-import { DevToolsV6PluginAPIHookKeys, devtoolsContext, getInspector } from '../../ctx'
 
 function _getSettings(settings: PluginDescriptor['settings']) {
   const _settings = {}

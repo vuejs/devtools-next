@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
 import { onViteRpcConnected, viteRpc } from '@vue/devtools-core'
-import type { AssetInfo } from '@vue/devtools-core'
+import { VueCheckbox, VueDrawer, VueIcon, VueSelect } from '@vue/devtools-ui'
 import Fuse from 'fuse.js'
+import type { AssetInfo } from '@vue/devtools-core'
 
 const DETAILS_MAX_ITEMS = 50
 const search = ref('')

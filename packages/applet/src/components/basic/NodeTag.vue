@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { InspectorNodeTag } from '@vue/devtools-kit'
 import { vTooltip } from '@vue/devtools-ui'
+import type { InspectorNodeTag } from '@vue/devtools-kit'
 import { toHex } from '~/utils'
 
 defineProps<{

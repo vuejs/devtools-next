@@ -1,12 +1,12 @@
 import { debounce } from 'perfect-debounce'
-import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
-import { hook } from '../../hook'
-import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
-import { DevToolsV6PluginAPIHookKeys, activeAppRecord, devtoolsContext, devtoolsState } from '../../ctx'
-import { ComponentWalker } from '../../core/component/tree/walker'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
+import { ComponentWalker } from '../../core/component/tree/walker'
+import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
+import { activeAppRecord, devtoolsContext, devtoolsState, DevToolsV6PluginAPIHookKeys } from '../../ctx'
+import { hook } from '../../hook'
 import { exposeInstanceToWindow } from '../vm'
+import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 
 const INSPECTOR_ID = 'components'
 

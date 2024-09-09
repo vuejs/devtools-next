@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useDevToolsState, viteRpc } from '@vue/devtools-core'
+import { vTooltip, VueButton, VueIcon } from '@vue/devtools-ui'
 import { useTimeAgo } from '@vueuse/core'
 import type { AssetInfo, CodeSnippet } from '@vue/devtools-core'
-import { useDevToolsState, viteRpc } from '@vue/devtools-core'
-import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
 import { openInEditor } from '../../composables/open-in-editor'
 
 const props = defineProps<{

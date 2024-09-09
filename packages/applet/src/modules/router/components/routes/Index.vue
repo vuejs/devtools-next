@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue'
-import { Pane, Splitpanes } from 'splitpanes'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import { until } from '@vueuse/core'
-import Navbar from '~/components/basic/Navbar.vue'
+import { Pane, Splitpanes } from 'splitpanes'
+import { computed, onUnmounted, ref, watch } from 'vue'
+import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
+import Navbar from '~/components/basic/Navbar.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
-import { createExpandedContext } from '~/composables/toggle-expanded'
-import { useCustomInspectorState } from '~/composables/custom-inspector-state'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { useCustomInspectorState } from '~/composables/custom-inspector-state'
+import { createExpandedContext } from '~/composables/toggle-expanded'
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('routes-state')

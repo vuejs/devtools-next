@@ -1,7 +1,7 @@
-import type { InspectorState, customTypeEnums } from '../types'
 import { ensurePropertyExists, getComponentName, getInstanceName } from '../utils'
 import { processInstanceState } from './process'
 import { escape, getSetupStateType, toRaw } from './util'
+import type { customTypeEnums, InspectorState } from '../types'
 
 export function getFunctionDetails(func: Function) {
   let string = ''

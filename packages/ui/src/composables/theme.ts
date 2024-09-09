@@ -1,4 +1,4 @@
-import { type UseColorModeOptions, useColorMode } from '@vueuse/core'
+import { useColorMode, type UseColorModeOptions } from '@vueuse/core'
 import { computed } from 'vue'
 
 export const THEME_KEY = '__vue-devtools-theme__'

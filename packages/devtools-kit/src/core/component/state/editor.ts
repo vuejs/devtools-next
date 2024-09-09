@@ -1,8 +1,8 @@
 import type { MaybeRef, Ref } from 'vue'
-import { isReactive, isRef, toRaw } from '../../../shared/stub-vue'
-import { getComponentInstance } from '../utils'
 import { activeAppRecord } from '../../../ctx'
+import { isReactive, isRef, toRaw } from '../../../shared/stub-vue'
 import { EditStatePayload } from '../../../types'
+import { getComponentInstance } from '../utils'
 
 import type { InspectorStateEditorPayload, PropPath } from '../types'
 

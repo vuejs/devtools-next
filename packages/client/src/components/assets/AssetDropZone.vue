@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { AssetEntry } from '@vue/devtools-core'
 import { VueButton, VueIcon, VueInput } from '@vue/devtools-ui'
+import type { AssetEntry } from '@vue/devtools-core'
 
 const props = defineProps({
   modelValue: {

@@ -1,8 +1,8 @@
-import type { MaybeRef } from 'vue'
-import type { CustomTab } from '@vue/devtools-kit'
+import { useDevToolsState } from '@vue/devtools-core'
 import { isInChromePanel, isInElectron } from '@vue/devtools-shared'
 import equal from 'fast-deep-equal'
-import { useDevToolsState } from '@vue/devtools-core'
+import type { CustomTab } from '@vue/devtools-kit'
+import type { MaybeRef } from 'vue'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
 

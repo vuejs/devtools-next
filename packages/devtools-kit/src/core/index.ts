@@ -1,12 +1,12 @@
 import { isNuxtApp, target } from '@vue/devtools-shared'
-import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
+import { onLegacyDevToolsPluginApiAvailable } from '../compat'
 import {
-  DevToolsMessagingHookKeys,
   activeAppRecord,
   addDevToolsAppRecord,
   addDevToolsPluginToBuffer,
   devtoolsAppRecords,
   devtoolsContext,
+  DevToolsMessagingHookKeys,
   devtoolsPluginBuffer,
   devtoolsState,
   getDevToolsEnv,
@@ -15,7 +15,7 @@ import {
   setActiveAppRecordId,
   updateDevToolsState,
 } from '../ctx'
-import { onLegacyDevToolsPluginApiAvailable } from '../compat'
+import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
 import { DevToolsHooks } from '../types'
 import { createAppRecord, removeAppRecordId } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, removeRegisteredPluginApp, setupDevToolsPlugin } from './plugin'

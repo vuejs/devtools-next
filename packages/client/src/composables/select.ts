@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 
 export function createSelectContext(id: string) {
   const selected = ref<string>('')

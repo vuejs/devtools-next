@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { TimelineEventOptions } from '@vue/devtools-kit'
 import { computed, ref, watch } from 'vue'
 import { RecycleScroller } from 'vue-virtual-scroller'
+import type { TimelineEventOptions } from '@vue/devtools-kit'
 import { formatTime } from '~/utils'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 

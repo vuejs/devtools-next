@@ -1,8 +1,8 @@
 import { target as global, isUrlString } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
-import type { AppRecord, CustomCommand, CustomTab } from '../types'
-import { DevToolsMessagingHookKeys } from './hook'
 import { devtoolsContext } from '.'
+import { DevToolsMessagingHookKeys } from './hook'
+import type { AppRecord, CustomCommand, CustomTab } from '../types'
 
 export interface DevToolsAppRecords extends AppRecord {}
 

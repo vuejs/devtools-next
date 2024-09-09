@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
-import { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
-import { computed, ref, watch } from 'vue'
 import { rpc } from '@vue/devtools-core'
+import { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
-import { VueButton, VueIcon, vTooltip } from '@vue/devtools-ui'
+import { vTooltip, VueButton, VueIcon } from '@vue/devtools-ui'
+import { computed, ref, watch } from 'vue'
+import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
+import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
+import { useHover } from '~/composables/hover'
+import { useStateEditor, useStateEditorContext, useStateEditorDrafting } from '~/composables/state-editor'
+import type { EditorAddNewPropType } from '~/composables/state-editor'
+import { useToggleExpanded } from '~/composables/toggle-expanded'
 import ChildStateViewer from './ChildStateViewer.vue'
 import StateFieldEditor from './StateFieldEditor.vue'
 import StateFieldInputEditor from './StateFieldInputEditor.vue'
-import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
-import { useToggleExpanded } from '~/composables/toggle-expanded'
-import { useStateEditor, useStateEditorContext, useStateEditorDrafting } from '~/composables/state-editor'
-import type { EditorAddNewPropType } from '~/composables/state-editor'
-import { useHover } from '~/composables/hover'
 
 const props = defineProps<{
   data: CustomInspectorState

@@ -1,9 +1,9 @@
-import path from 'node:path'
 import fs from 'node:fs'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import archiver from 'archiver'
-import readdirGlob from 'readdir-glob'
 import ProgressBar from 'progress'
+import readdirGlob from 'readdir-glob'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const INCLUDE_FILES = [

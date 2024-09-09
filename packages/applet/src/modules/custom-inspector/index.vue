@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, onUnmounted, provide, ref, watch } from 'vue'
 import { onRpcConnected, rpc } from '@vue/devtools-core'
+import { computed, onUnmounted, provide, ref, watch } from 'vue'
 
+import AppConnecting from '~/components/basic/AppConnecting.vue'
+import { createCustomInspectorStateContext } from '~/composables/custom-inspector-state'
+import { registerVirtualRouter, VirtualRoute } from '~/composables/virtual-router'
 import About from './components/About.vue'
 import Settings from './components/Settings.vue'
 import State from './components/state/Index.vue'
 import Timeline from './components/timeline/Index.vue'
-import AppConnecting from '~/components/basic/AppConnecting.vue'
-import { VirtualRoute, registerVirtualRouter } from '~/composables/virtual-router'
-import { createCustomInspectorStateContext } from '~/composables/custom-inspector-state'
 
 const props = defineProps<{
   id: string

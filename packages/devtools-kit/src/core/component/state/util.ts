@@ -1,4 +1,4 @@
-import { ESC, INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED, fnTypeRE } from './constants'
+import { ESC, fnTypeRE, INFINITY, NAN, NEGATIVE_INFINITY, UNDEFINED } from './constants'
 import { isComputed, isPlainObject, isPrimitive, isReactive, isReadOnly, isRef } from './is'
 
 export const tokenMap = {

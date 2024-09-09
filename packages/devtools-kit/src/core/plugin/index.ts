@@ -1,9 +1,9 @@
 import { target } from '@vue/devtools-shared'
-import { App, PluginDescriptor, PluginSetupFunction } from '../../types'
-import { hook } from '../../hook'
-import { devtoolsContext, devtoolsInspector, devtoolsPluginBuffer } from '../../ctx'
 import { DevToolsPluginAPI } from '../../api'
 import { initPluginSettings } from '../../core/plugin/plugin-settings'
+import { devtoolsContext, devtoolsInspector, devtoolsPluginBuffer } from '../../ctx'
+import { hook } from '../../hook'
+import { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 
 export * from './components'
 

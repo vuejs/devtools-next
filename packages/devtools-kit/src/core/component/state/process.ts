@@ -1,9 +1,9 @@
 import { camelize } from '@vue/devtools-shared'
-import type { VueAppInstance } from '../../../types'
-import type { InspectorState } from '../types'
 import { ensurePropertyExists, returnError } from '../utils'
 import { vueBuiltins } from './constants'
 import { getPropType, getSetupStateType, toRaw } from './util'
+import type { VueAppInstance } from '../../../types'
+import type { InspectorState } from '../types'
 
 function mergeOptions(
   to: any,

@@ -1,5 +1,5 @@
-import { defineConfig, mergeConfigs, presetAttributify, presetIcons, presetTypography, presetUno, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { unoConfig } from '@vue/devtools-ui/theme'
+import { defineConfig, mergeConfigs, presetAttributify, presetIcons, presetTypography, presetUno, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default defineConfig(mergeConfigs([unoConfig, {
   transformers: [transformerVariantGroup(), transformerDirectives()],

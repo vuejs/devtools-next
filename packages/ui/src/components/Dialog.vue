@@ -2,8 +2,8 @@
 import { onKeyStroke, useScrollLock, useVModel } from '@vueuse/core'
 import { onMounted, ref, watchEffect } from 'vue'
 import Button from './Button.vue'
-import type { OverlayProps } from './Overlay.vue'
 import Overlay from './Overlay.vue'
+import type { OverlayProps } from './Overlay.vue'
 
 const props = withDefaults(
   defineProps<{

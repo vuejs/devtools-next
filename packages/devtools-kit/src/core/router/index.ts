@@ -1,10 +1,10 @@
-import type { RouteLocationNormalizedLoaded, RouteRecordRaw, Router } from 'vue-router'
 import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
+import type { RouteLocationNormalizedLoaded, Router, RouteRecordRaw } from 'vue-router'
+import { devtoolsContext, DevToolsMessagingHookKeys } from '../../ctx'
 import { ROUTER_INFO_KEY, ROUTER_KEY } from '../../ctx/router'
-import { DevToolsMessagingHookKeys, devtoolsContext } from '../../ctx'
-import type { AppRecord } from '../../types'
 import { hook } from '../../hook'
+import type { AppRecord } from '../../types'
 // import { DevToolsEvents, apiHooks } from '../../api/hook'
 
 function getRoutes(router?: Router) {

@@ -1,6 +1,6 @@
+import { isFragment } from '../utils'
 import type { VueAppInstance } from '../../../types'
 import type { ComponentBoundingRect } from '../types'
-import { isFragment } from '../utils'
 
 // #region rect util
 function createRect() {

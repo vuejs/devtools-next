@@ -1,5 +1,5 @@
-import slug from 'speakingurl'
 import { target } from '@vue/devtools-shared'
+import slug from 'speakingurl'
 import { AppRecord, VueAppInstance } from '../../types'
 
 const appRecordInfo = target.__VUE_DEVTOOLS_NEXT_APP_RECORD_INFO__ ??= {

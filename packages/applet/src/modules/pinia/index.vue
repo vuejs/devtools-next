@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onRpcConnected, rpc } from '@vue/devtools-core'
 import { computed, provide, ref } from 'vue'
+import { registerVirtualRouter, VirtualRoute } from '~/composables/virtual-router'
 import About from './components/About.vue'
+import Settings from './components/Settings.vue'
 import Store from './components/store/Index.vue'
 import Timeline from './components/timeline/Index.vue'
-import Settings from './components/Settings.vue'
-import { VirtualRoute, registerVirtualRouter } from '~/composables/virtual-router'
 
 const pluginSettings = ref(null)
 provide('pluginSettings', pluginSettings)

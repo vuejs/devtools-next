@@ -27,8 +27,5 @@
   },
   "dependencies": {
     "@vue/devtools-kit": "workspace:^"
-  },
-  "publishConfig": {
-    "tag": "next"
   }
 }

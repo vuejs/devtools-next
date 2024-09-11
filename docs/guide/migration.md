@@ -1,7 +1,7 @@
 # Migration Guide
 
 :::tip Compatibility Note
-The v7 version of devtools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/iaajmlceplecbljialhhkmedjlpdblhp?utm_source=ext_sidebar?utm_source=ext_sidebar). If you're still using v5 version, you can install it [here]().
+The v7 version of devtools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/iaajmlceplecbljialhhkmedjlpdblhp?utm_source=ext_sidebar?utm_source=ext_sidebar). If you're still using v5 version, you can install it here.
 :::
 
 ## Features Improvements

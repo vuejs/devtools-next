@@ -4,6 +4,7 @@ import type { InjectionKey, Ref } from 'vue'
 type CustomInspectorState = Partial<{
   homepage: string
   id: string
+  pluginId: string
   label: string
   logo: string
   timelineLayerIds: string[]

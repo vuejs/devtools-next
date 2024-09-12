@@ -12,12 +12,12 @@ import Timeline from './components/timeline/Index.vue'
 
 const props = defineProps<{
   id: string
+  pluginId: string
 }>()
 
 const emit = defineEmits(['loadError'])
 const inspectorState = createCustomInspectorStateContext()
 const loading = ref(false)
-
 const pluginSettings = ref(null)
 provide('pluginSettings', pluginSettings)
 
@@ -67,14 +67,14 @@ function getInspectorInfo() {
         label: payload?.label,
         logo: payload?.logo,
         timelineLayerIds: payload?.timelineLayers.map(item => item.id),
+        pluginId: props.pluginId,
       }
       inspectorState.value = state
       restoreRouter()
       loading.value = false
     })
-    rpc.value.getPluginSettings(props.id).then((settings) => {
+    rpc.value.getPluginSettings(props.pluginId).then((settings) => {
       if (settings.options) {
-      // @ts-expect-error skip type check
         pluginSettings.value = settings
       }
       else {

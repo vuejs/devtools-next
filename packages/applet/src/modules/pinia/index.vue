@@ -44,9 +44,9 @@ const { VirtualRouterView, restoreRouter } = registerVirtualRouter(routes, {
 })
 
 onRpcConnected(() => {
-  rpc.value.getPluginSettings('pinia').then((settings) => {
+  const pluginDescriptorId = 'dev.esm.pinia'
+  rpc.value.getPluginSettings(pluginDescriptorId).then((settings) => {
     if (settings.options) {
-      // @ts-expect-error skip type check
       pluginSettings.value = settings
     }
     else {

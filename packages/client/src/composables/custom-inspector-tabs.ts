@@ -16,6 +16,7 @@ export function useCustomInspectorTabs() {
         title: inspector.label,
         path: `${CUSTOM_INSPECTOR_TAB_VIEW}/${inspector.id}`,
         category: 'modules',
+        pluginId: inspector.pluginId,
       }
     })
   })

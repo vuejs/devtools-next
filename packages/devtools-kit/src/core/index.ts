@@ -19,6 +19,7 @@ import { createDevToolsHook, hook, subscribeDevToolsHook } from '../hook'
 import { DevToolsHooks } from '../types'
 import { createAppRecord, removeAppRecordId } from './app'
 import { callDevToolsPluginSetupFn, createComponentsDevToolsPlugin, registerDevToolsPlugin, removeRegisteredPluginApp, setupDevToolsPlugin } from './plugin'
+import { initPluginSettings } from './plugin/plugin-settings'
 import { normalizeRouterInfo } from './router'
 
 export function initDevTools() {
@@ -61,7 +62,9 @@ export function initDevTools() {
   hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
     addDevToolsPluginToBuffer(pluginDescriptor, setupFn)
     const { app } = activeAppRecord ?? {}
-
+    if (pluginDescriptor.settings) {
+      initPluginSettings(pluginDescriptor.id, pluginDescriptor.settings)
+    }
     if (!app)
       return
 

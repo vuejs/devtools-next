@@ -1,4 +1,4 @@
-import { devtoolsContext, DevToolsV6PluginAPIHookKeys, getInspector } from '../../ctx'
+import { devtoolsContext, DevToolsV6PluginAPIHookKeys } from '../../ctx'
 import { devtoolsPluginBuffer } from '../../ctx/plugin'
 import { PluginDescriptor } from '../../types'
 
@@ -16,8 +16,7 @@ function getPluginLocalKey(pluginId: string) {
 }
 
 export function getPluginSettingsOptions(pluginId: string) {
-  const descriptor = getInspector(pluginId)?.descriptor
-  const item = devtoolsPluginBuffer.find(item => item[0].id === descriptor?.id)?.[0] ?? null
+  const item = devtoolsPluginBuffer.find(item => item[0].id === pluginId && !!(item[0]?.settings))?.[0] ?? null
   return item?.settings ?? null
 }
 

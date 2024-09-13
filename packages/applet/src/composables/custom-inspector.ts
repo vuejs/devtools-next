@@ -8,6 +8,7 @@ export interface CustomInspectorType {
   icon: string
   packageName: string | undefined
   homepage: string | undefined
+  pluginId: string
 }
 
 export function useCustomInspector() {

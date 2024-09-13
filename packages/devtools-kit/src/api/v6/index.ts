@@ -1,6 +1,7 @@
 import { getPluginSettings, initPluginSettings } from '../../core/plugin/plugin-settings'
 import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
 import { getActiveInspectors } from '../../ctx/inspector'
+
 import { devtoolsHooks } from '../../hook'
 import { DevToolsHooks } from '../../types'
 import type { DevtoolsContext } from '../../ctx'
@@ -110,9 +111,7 @@ export class DevToolsV6PluginAPI {
 
   // settings
   getSettings(pluginId?: string) {
-    const inspector = getActiveInspectors().find(i => i.packageName === this.plugin.descriptor.packageName)
-
-    return getPluginSettings((pluginId ?? inspector?.id)!, this.plugin.descriptor.settings)
+    return getPluginSettings((pluginId ?? this.plugin.descriptor.id)!, this.plugin.descriptor.settings)
   }
 
   // utilities

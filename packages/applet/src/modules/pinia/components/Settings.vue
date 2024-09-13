@@ -23,6 +23,6 @@ function update(_settings) {
     <DevToolsHeader doc-link="https://pinia.vuejs.org/" github-repo-link="https://github.com/vuejs/pinia">
       <Navbar />
     </DevToolsHeader>
-    <Settings :plugin-id="inspectorId" :options="options" :values="values" @update="update" />
+    <Settings plugin-id="dev.esm.pinia" :options="options" :values="values" @update="update" />
   </div>
 </template>

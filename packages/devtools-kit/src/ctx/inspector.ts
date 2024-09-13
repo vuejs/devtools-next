@@ -53,6 +53,7 @@ export function getActiveInspectors() {
         icon: `custom-ic-baseline-${options?.icon?.replace(/_/g, '-')}`,
         packageName: descriptor.packageName,
         homepage: descriptor.homepage,
+        pluginId: descriptor.id,
       }
     })
 }

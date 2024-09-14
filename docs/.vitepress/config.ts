@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress'
 import type { DefaultTheme } from 'vitepress'
-import { version } from '../../packages/core/package.json'
 import vite from './vite.config'
 
 const GETTING_STARTED: DefaultTheme.NavItemWithLink[] = [
@@ -17,6 +16,7 @@ const GUIDES: DefaultTheme.NavItemWithLink[] = [
 ]
 
 const HELP: DefaultTheme.NavItemWithLink[] = [
+  { text: 'Migration Guide', link: '/guide/migration' },
   { text: 'Contributing', link: '/help/contributing' },
   { text: 'FAQ', link: '/help/faq' },
   { text: 'Troubleshooting', link: '/help/troubleshooting' },
@@ -60,14 +60,12 @@ export default defineConfig({
         ],
       },
       {
-        text: '💚️ Sponsor',
-        link: 'https://github.com/sponsors/webfansplz',
+        text: 'Migration Guide',
+        link: '/guide/migration',
       },
       {
-        // text: `v${version}`,
-        // items: VERSIONS,
-        text: `v${version} (current)`,
-        link: 'https://github.com/vuejs/devtools-next/releases',
+        text: '💚️ Sponsor',
+        link: 'https://github.com/sponsors/webfansplz',
       },
       {
         text: 'Playground',

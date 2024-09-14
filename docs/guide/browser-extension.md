@@ -1,7 +1,7 @@
 # Browser Extension
 
 :::tip Compatibility Note
-The v7 version of devtools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?utm_source=ext_sidebar).
+The v7 version of devtools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/iaajmlceplecbljialhhkmedjlpdblhp?utm_source=ext_sidebar?utm_source=ext_sidebar).
 :::
 
 ## Chrome

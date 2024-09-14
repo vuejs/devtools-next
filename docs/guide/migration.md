@@ -15,6 +15,8 @@ Due to high performance costs and potential memory leak risks, we have removed s
 - `Performance` Timeline
 - `Component Events` Timeline
 
+💡 By the way, we are looking for a balanced approach to re-enable it with better performance. You can follow the latest progress [here](https://github.com/vuejs/devtools-next/issues/609).
+
 ### Feature Adjustments
 
 - Timeline Tab

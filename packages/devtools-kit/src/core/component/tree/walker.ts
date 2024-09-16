@@ -1,11 +1,11 @@
 import type { SuspenseBoundary, VNode } from 'vue'
+import type { ComponentTreeNode, VueAppInstance } from '../../../types'
+import type { ComponentFilter } from './filter'
 // import { devtoolsAppRecords, devtoolsContext } from '../../../state'
 import { activeAppRecord } from '../../../ctx'
 import { getAppRecord, getInstanceName, getRenderKey, getUniqueComponentId, isBeingDestroyed, isFragment } from '../utils'
 import { getRootElementsFromComponentInstance } from './el'
 import { createComponentFilter } from './filter'
-import type { ComponentTreeNode, VueAppInstance } from '../../../types'
-import type { ComponentFilter } from './filter'
 
 interface ComponentWalkerOptions {
   filterText?: string

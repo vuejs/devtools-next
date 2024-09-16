@@ -1,10 +1,10 @@
+import type { RouteRecordRaw } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { addCustomCommand } from '@vue/devtools'
 import ElementPlus from 'element-plus'
 import { createPinia } from 'pinia'
-import { createRouter, createWebHistory } from 'vue-router'
 
-import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
 import Hey from './pages/Hey.vue'

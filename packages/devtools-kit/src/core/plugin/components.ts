@@ -1,3 +1,4 @@
+import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 import { debounce } from 'perfect-debounce'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
@@ -6,7 +7,6 @@ import { getAppRecord, getComponentId, getComponentInstance } from '../../core/c
 import { activeAppRecord, devtoolsContext, devtoolsState, DevToolsV6PluginAPIHookKeys } from '../../ctx'
 import { hook } from '../../hook'
 import { exposeInstanceToWindow } from '../vm'
-import type { App, PluginDescriptor, PluginSetupFunction } from '../../types'
 
 const INSPECTOR_ID = 'components'
 

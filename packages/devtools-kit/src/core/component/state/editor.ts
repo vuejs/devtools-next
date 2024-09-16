@@ -1,10 +1,10 @@
 import type { MaybeRef, Ref } from 'vue'
+import type { InspectorStateEditorPayload, PropPath } from '../types'
 import { activeAppRecord } from '../../../ctx'
 import { isReactive, isRef, toRaw } from '../../../shared/stub-vue'
 import { EditStatePayload } from '../../../types'
-import { getComponentInstance } from '../utils'
 
-import type { InspectorStateEditorPayload, PropPath } from '../types'
+import { getComponentInstance } from '../utils'
 
 export type Recordable = Record<PropertyKey, any>
 

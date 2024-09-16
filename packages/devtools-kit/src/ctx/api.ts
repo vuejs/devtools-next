@@ -1,5 +1,7 @@
-import { target } from '@vue/devtools-shared'
 import type { Hookable, HookKeys } from 'hookable'
+import type { CustomInspectorState } from '../types'
+import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
+import { target } from '@vue/devtools-shared'
 import { StateEditor } from '../core/component/state/editor'
 import { getRootElementsFromComponentInstance } from '../core/component/tree/el'
 import { getComponentInstance } from '../core/component/utils'
@@ -12,8 +14,6 @@ import { normalizeRouterInfo } from '../core/router'
 import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys } from './hook'
 import { callInspectorUpdatedHook, getInspector } from './inspector'
 import { activeAppRecord, devtoolsAppRecords, setActiveAppRecord, setActiveAppRecordId } from './state'
-import type { CustomInspectorState } from '../types'
-import type { DevToolsContextHooks, DevToolsMessagingHooks, DevToolsV6PluginAPIHookPayloads } from './hook'
 
 export function createDevToolsApi(hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>) {
   return {

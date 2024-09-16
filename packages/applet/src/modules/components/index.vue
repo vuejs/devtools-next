@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import {
   DevToolsMessagingEvents,
   rpc,
@@ -11,7 +12,6 @@ import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
 import { flatten, groupBy } from 'lodash-es'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
-import type { CustomInspectorNode, CustomInspectorState } from '@vue/devtools-kit'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'

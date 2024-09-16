@@ -1,10 +1,10 @@
+import type { UserConfig } from 'unocss'
 import {
   presetIcons,
   presetUno,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import type { UserConfig } from 'unocss'
 import { theme } from './theme'
 
 export const unoConfig = {

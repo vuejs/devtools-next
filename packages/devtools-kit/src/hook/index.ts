@@ -1,6 +1,6 @@
+import type { Hookable, HookKeys } from 'hookable'
 import { target } from '@vue/devtools-shared'
 import { createHooks } from 'hookable'
-import type { Hookable, HookKeys } from 'hookable'
 import { devtoolsState } from '../ctx'
 import { DevToolsEvent, DevToolsHook, DevToolsHooks, VueHooks } from '../types'
 

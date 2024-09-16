@@ -1,6 +1,6 @@
+import type { DeepReadonly, Ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { readonly } from 'vue'
-import type { DeepReadonly, Ref } from 'vue'
 
 interface DevToolsFrameState {
   width: number

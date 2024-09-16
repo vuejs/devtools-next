@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { VueButton, VueCodeBlock } from '@vue/devtools-ui'
 import type { CodeSnippet } from '@vue/devtools-core'
 import type { BuiltinLanguage } from 'shiki'
+import { VueButton, VueCodeBlock } from '@vue/devtools-ui'
 
 const props = defineProps<{
   codeSnippets: CodeSnippet[]

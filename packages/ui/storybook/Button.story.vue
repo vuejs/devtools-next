@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { ButtonType } from '../src/components/Button.vue'
 import { logEvent } from 'histoire/client'
 import { reactive, ref } from 'vue'
 import Badge from '../src/components/Badge.vue'
 import Button from '../src/components/Button.vue'
 import Icon from '../src/components/Icon.vue'
-import type { ButtonType } from '../src/components/Button.vue'
 
 const state = reactive<{
   type: ButtonType

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue'
 import type { CustomInspectorState } from '@vue/devtools-kit'
+import { watchEffect } from 'vue'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { createStateEditorContext } from '~/composables/state-editor'
 import { useToggleExpanded } from '~/composables/toggle-expanded'

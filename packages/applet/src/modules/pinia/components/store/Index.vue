@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { vTooltip } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch } from 'vue'
-import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import Navbar from '~/components/basic/Navbar.vue'

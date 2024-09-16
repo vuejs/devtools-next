@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import { Pane, Splitpanes } from 'splitpanes'
 
+import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref } from 'vue'
-import type { CustomInspectorState, TimelineEventOptions } from '@vue/devtools-kit'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
 import Empty from '~/components/basic/Empty.vue'
 import Navbar from '~/components/basic/Navbar.vue'

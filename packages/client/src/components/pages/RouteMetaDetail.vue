@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueCodeBlock } from '@vue/devtools-ui'
 import type { RouteMeta } from 'vue-router'
+import { VueCodeBlock } from '@vue/devtools-ui'
 
 defineProps<{
   meta: RouteMeta

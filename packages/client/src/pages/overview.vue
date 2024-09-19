@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, onDevToolsConnected, rpc, useDevToolsState } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
 import { isInChromePanel, isInElectron, isMacOS } from '@vue/devtools-shared'
 import { VueButton } from '@vue/devtools-ui'
-import type { CustomInspectorNode } from '@vue/devtools-kit'
 import { version } from '../../../core/package.json'
 
 const { vueVersion } = useDevToolsState()

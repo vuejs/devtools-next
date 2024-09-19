@@ -1,10 +1,3 @@
-import { createHooks } from 'hookable'
-import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
-import { getInstanceName } from '../core/component/utils'
-import { highlight, unhighlight } from '../core/component-highlighter'
-import { addInspector, getInspector } from './inspector'
-import { activeAppRecord, DevToolsState } from './state'
-import { addTimelineLayer } from './timeline'
 import type {
   App,
   ComponentInstance,
@@ -20,6 +13,13 @@ import type {
   TimelineEventOptions,
   TimelineLayerOptions,
 } from '../types'
+import { createHooks } from 'hookable'
+import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
+import { getInstanceName } from '../core/component/utils'
+import { highlight, unhighlight } from '../core/component-highlighter'
+import { addInspector, getInspector } from './inspector'
+import { activeAppRecord, DevToolsState } from './state'
+import { addTimelineLayer } from './timeline'
 
 // v6 plugin api hooks
 export enum DevToolsV6PluginAPIHookKeys {

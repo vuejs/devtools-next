@@ -1,10 +1,10 @@
+import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from '@vue/devtools-core'
 import fsp from 'node:fs/promises'
 import { getViteRpcServer } from '@vue/devtools-kit'
 import fg from 'fast-glob'
 import { imageMeta } from 'image-meta'
 import { join, relative, resolve } from 'pathe'
 import { debounce } from 'perfect-debounce'
-import type { AssetImporter, AssetInfo, AssetType, ImageMeta, ViteRPCFunctions } from '@vue/devtools-core'
 import { RpcFunctionCtx } from './types'
 
 const defaultAllowedExtensions = [

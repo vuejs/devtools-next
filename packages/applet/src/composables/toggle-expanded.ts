@@ -1,5 +1,5 @@
-import { inject, provide, ref } from 'vue'
 import type { Ref } from 'vue'
+import { inject, provide, ref } from 'vue'
 
 const expandedKey = 'expanded-state'
 

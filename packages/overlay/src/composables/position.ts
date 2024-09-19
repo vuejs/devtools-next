@@ -1,6 +1,6 @@
+import type { CSSProperties, Ref } from 'vue'
 import { useEventListener, useScreenSafeArea, useWindowSize } from '@vueuse/core'
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
-import type { CSSProperties, Ref } from 'vue'
 import { clamp, pixelToNumber } from '../utils'
 import { useFrameState } from './state'
 

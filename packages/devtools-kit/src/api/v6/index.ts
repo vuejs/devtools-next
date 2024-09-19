@@ -1,11 +1,11 @@
-import { getPluginSettings, initPluginSettings } from '../../core/plugin/plugin-settings'
-import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
-import { getActiveInspectors } from '../../ctx/inspector'
-
-import { devtoolsHooks } from '../../hook'
-import { DevToolsHooks } from '../../types'
 import type { DevtoolsContext } from '../../ctx'
 import type { App, ComponentBounds, ComponentInstance, CustomInspectorOptions, DevToolsPlugin, TimelineEventOptions, TimelineLayerOptions } from '../../types'
+import { getPluginSettings, initPluginSettings } from '../../core/plugin/plugin-settings'
+
+import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
+import { getActiveInspectors } from '../../ctx/inspector'
+import { devtoolsHooks } from '../../hook'
+import { DevToolsHooks } from '../../types'
 
 export class DevToolsV6PluginAPI {
   private plugin: DevToolsPlugin

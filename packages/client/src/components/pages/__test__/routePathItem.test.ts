@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import type { RouteRecordNormalized } from 'vue-router'
+import { mount } from '@vue/test-utils'
 import RoutePathItem from '../RoutePathItem.vue'
 
 describe('component: RoutePathItem', () => {

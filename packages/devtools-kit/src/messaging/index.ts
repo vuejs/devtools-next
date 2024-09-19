@@ -1,6 +1,6 @@
+import type { BirpcGroup, BirpcOptions, ChannelOptions } from 'birpc'
 import { target } from '@vue/devtools-shared'
 import { BirpcReturn, createBirpc, createBirpcGroup } from 'birpc'
-import type { BirpcGroup, BirpcOptions, ChannelOptions } from 'birpc'
 import {
   createBroadcastChannel,
   createElectronClientChannel,

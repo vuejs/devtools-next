@@ -48,7 +48,7 @@
     "@vueuse/core": "^11.0.3",
     "@vueuse/integrations": "^11.0.3",
     "colord": "^2.9.3",
-    "focus-trap": "^7.5.4"
+    "focus-trap": "^7.6.0"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",

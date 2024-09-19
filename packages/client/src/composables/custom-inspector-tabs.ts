@@ -1,5 +1,5 @@
-import { useCustomInspector } from '@vue/devtools-applet'
 import type { CustomInspectorType } from '@vue/devtools-applet'
+import { useCustomInspector } from '@vue/devtools-applet'
 
 import type { ModuleBuiltinTab } from '~/types/tab'
 

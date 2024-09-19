@@ -1,6 +1,6 @@
+import type { AppRecord, VueAppInstance } from '../../../types'
 import { basename, classify } from '@vue/devtools-shared'
 import { Fragment } from '../../../shared/stub-vue'
-import type { AppRecord, VueAppInstance } from '../../../types'
 
 function getComponentTypeName(options: VueAppInstance['type']) {
   return options.name || options._componentTag || options.__VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__ || options.__name

@@ -1,11 +1,11 @@
+import type { App as VueApp } from 'vue'
 import { createViteClientRpc, functions, rpc, VueDevToolsVuePlugin } from '@vue/devtools-core'
 import { createRpcClient, setViteClientContext } from '@vue/devtools-kit'
-import { isInChromePanel, isInSeparateWindow } from '@vue/devtools-shared'
 
+import { isInChromePanel, isInSeparateWindow } from '@vue/devtools-shared'
 import { getViteClient } from 'vite-hot-client'
 import { createApp } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import type { App as VueApp } from 'vue'
 import WaitForConnection from '~/components/WaitForConnection.vue'
 import Assets from '~/pages/assets.vue'
 import Components from '~/pages/components.vue'

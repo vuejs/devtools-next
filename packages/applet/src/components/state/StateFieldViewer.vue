@@ -57,7 +57,7 @@ const normalizedDisplayedKey = computed(() => normalizedPath.value[normalizedPat
 // normalized display value
 const normalizedDisplayedValue = computed(() => {
   const directlyDisplayedValueMap = ['Reactive']
-  const extraDisplayedValue = (props.data as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
+  const extraDisplayedValue = (props.data.value as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
   if (directlyDisplayedValueMap.includes(extraDisplayedValue as string)) {
     return extraDisplayedValue
   }

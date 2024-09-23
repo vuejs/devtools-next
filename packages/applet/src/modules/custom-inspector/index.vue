@@ -75,6 +75,7 @@ function getInspectorInfo() {
     })
     rpc.value.getPluginSettings(props.pluginId).then((settings) => {
       if (settings.options) {
+        // @ts-expect-error skip type check
         pluginSettings.value = settings
       }
       else {

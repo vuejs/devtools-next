@@ -47,6 +47,7 @@ onRpcConnected(() => {
   const pluginDescriptorId = 'dev.esm.pinia'
   rpc.value.getPluginSettings(pluginDescriptorId).then((settings) => {
     if (settings.options) {
+      // @ts-expect-error skip type check
       pluginSettings.value = settings
     }
     else {

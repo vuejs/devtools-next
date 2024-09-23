@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
 import { rpc } from '@vue/devtools-core'
 import { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, formatInspectorStateValue, getInspectorStateValueType, getRaw, toEdit, toSubmit } from '@vue/devtools-kit'
 import { isArray, isObject, sortByKey } from '@vue/devtools-shared'
 import { vTooltip, VueButton, VueIcon } from '@vue/devtools-ui'
 import { computed, ref, watch } from 'vue'
+import type { CustomInspectorState, InspectorCustomState } from '@vue/devtools-kit'
 import ToggleExpanded from '~/components/basic/ToggleExpanded.vue'
 import { useHover } from '~/composables/hover'
 import { useStateEditor, useStateEditorContext, useStateEditorDrafting } from '~/composables/state-editor'
@@ -57,7 +57,7 @@ const normalizedDisplayedKey = computed(() => normalizedPath.value[normalizedPat
 // normalized display value
 const normalizedDisplayedValue = computed(() => {
   const directlyDisplayedValueMap = ['Reactive']
-  const extraDisplayedValue = (props.data as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
+  const extraDisplayedValue = (props.data.value as InspectorCustomState)?._custom?.stateTypeName || props.data?.stateTypeName
   if (directlyDisplayedValueMap.includes(extraDisplayedValue as string)) {
     return extraDisplayedValue
   }

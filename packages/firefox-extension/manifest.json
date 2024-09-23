@@ -47,8 +47,8 @@
   "permissions": [
     "<all_urls>"
   ],
-  "version": "7.0.0.6",
-  "version_name": "7.0.0 beta 6",
+  "version": "7.0.0.7",
+  "version_name": "7.0.0 beta 7",
   "web_accessible_resources": [
     "dist/user-app.js",
     "client/devtools-panel.css",

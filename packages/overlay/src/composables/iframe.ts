@@ -9,7 +9,6 @@ export function useIframe(clientUrl: string, onLoad: () => void) {
     iframe.value.id = 'vue-devtools-iframe'
     iframe.value.src = clientUrl
     iframe.value.setAttribute('data-v-inspector-ignore', 'true')
-    iframe.value.setAttribute('credentialless', '')
     iframe.value.onload = onLoad
     return iframe.value
   }

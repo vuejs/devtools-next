@@ -18,6 +18,7 @@ import Pages from '~/pages/pages.vue'
 import PiniaPage from '~/pages/pinia.vue'
 import RouterPage from '~/pages/router.vue'
 import Settings from '~/pages/settings.vue'
+import Timeline from '~/pages/timeline.vue'
 import App from './App.vue'
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
@@ -32,6 +33,7 @@ const routes = [
   { path: '/pinia', component: PiniaPage },
   { path: '/router', component: RouterPage },
   { path: '/pages', component: Pages },
+  { path: '/timeline', component: Timeline },
   { path: '/assets', component: Assets },
   { path: '/graph', component: Graph },
   { path: '/settings', component: Settings },

@@ -26,6 +26,7 @@ export interface DevToolsEvent {
   [DevToolsHooks.APP_CONNECTED]: () => void
   [DevToolsHooks.APP_UNMOUNT]: (app: VueAppInstance['appContext']['app']) => void | Promise<void>
   [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void | Promise<void>
+  [DevToolsHooks.COMPONENT_EMIT]: (app: HookAppInstance, instance: VueAppInstance, event: string, params: unknown) => void | Promise<void>
   [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
   [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction, options?: { target?: string }) => void
@@ -51,6 +52,7 @@ export interface VueHooks {
     vueAppUnmount: (fn: DevToolsEvent[DevToolsHooks.APP_UNMOUNT]) => void
     vueAppConnected: (fn: DevToolsEvent[DevToolsHooks.APP_CONNECTED]) => void
     componentAdded: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_ADDED]) => () => void
+    componentEmit: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_EMIT]) => () => void
     componentUpdated: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) => () => void
     componentRemoved: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) => () => void
     setupDevtoolsPlugin: (fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) => void

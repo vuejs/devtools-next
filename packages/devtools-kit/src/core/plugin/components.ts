@@ -3,7 +3,7 @@ import { debounce } from 'perfect-debounce'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
 import { ComponentWalker } from '../../core/component/tree/walker'
-import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
+import { getAppRecord, getComponentId, getComponentInstance, getInstanceName } from '../../core/component/utils'
 import { activeAppRecord, devtoolsContext, devtoolsState, DevToolsV6PluginAPIHookKeys } from '../../ctx'
 import { hook } from '../../hook'
 import { exposeInstanceToWindow } from '../vm'
@@ -81,6 +81,15 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
     const debounceSendInspectorState = debounce(() => {
       api.sendInspectorState(INSPECTOR_ID)
     }, 120)
+
+    hook.on.componentEmit(async (app, instance, event, params) => {
+      const appRecord = await getAppRecord(app)
+
+      if (!appRecord)
+        return
+      const componentName = getInstanceName(instance)
+      console.log('component-emit', componentName, event, params)
+    })
 
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
       if (devtoolsState.highPerfModeEnabled)

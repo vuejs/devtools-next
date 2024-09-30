@@ -21,6 +21,9 @@ const on: VueHooks['on'] = {
   componentAdded(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
   },
+  componentEmit(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.COMPONENT_EMIT, fn)
+  },
   componentUpdated(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
   },
@@ -111,6 +114,12 @@ export function subscribeDevToolsHook() {
       return
 
     devtoolsHooks.callHook(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_EMIT]>(DevToolsHooks.COMPONENT_EMIT, async (app, instance, event, params) => {
+    if (!app || !instance || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.COMPONENT_EMIT, app, instance, event, params)
   })
 
   // devtools plugin setup

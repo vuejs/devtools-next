@@ -12,11 +12,14 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import EventList from './EventList.vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   layerIds: string[]
   docLink: string
   githubRepoLink?: string
-}>()
+  headerVisible?: boolean
+}>(), {
+  headerVisible: true,
+})
 
 const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
 
@@ -96,7 +99,7 @@ onUnmounted(() => {
 
 <template>
   <div class="h-full flex flex-col">
-    <DevToolsHeader :doc-link="docLink" :github-repo-link="githubRepoLink">
+    <DevToolsHeader v-if="headerVisible" :doc-link="docLink" :github-repo-link="githubRepoLink">
       <Navbar />
     </DevToolsHeader>
     <template v-if="eventList.length">

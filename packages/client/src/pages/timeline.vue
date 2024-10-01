@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SelectiveList } from '@vue/devtools-applet'
+import { SelectiveList, Timeline } from '@vue/devtools-applet'
 import {
   rpc,
   useDevToolsState,
@@ -36,6 +36,17 @@ function toggleApp(id: string) {
 }
 
 // #endregion
+
+const activeTimelineLayer = 'component-event'
+const timelineLayers = [
+  {
+    label: 'Component events',
+    id: 'component-event',
+  },
+]
+
+function toggleTimelineLayer(id: string) {
+}
 </script>
 
 <template>
@@ -47,20 +58,15 @@ function toggleApp(id: string) {
         </div>
       </Pane>
       <Pane border="base" h-full>
-        <div class="h-full flex flex-col p2">
-          <div class="flex py2">
-            3
-          </div>
-          <div class="no-scrollbar flex-1 select-none overflow-scroll">
-            2
+        <div class="h-full flex flex-col">
+          <div class="no-scrollbar h-full flex select-none gap-2 overflow-scroll">
+            <SelectiveList v-model="activeTimelineLayer" :data="timelineLayers" class="w-full" @select="toggleTimelineLayer" />
           </div>
         </div>
       </Pane>
-      <Pane relative h-full>
+      <Pane relative h-full size="65">
         <div class="h-full flex flex-col p2">
-          <div class="flex py2">
-            1
-          </div>
+          <Timeline :layer-ids="['component-event']" :header-visible="false" doc-link="" />
         </div>
       </Pane>
     </Splitpanes>

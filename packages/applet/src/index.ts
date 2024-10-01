@@ -1,4 +1,5 @@
 import SelectiveList from './components/basic/SelectiveList.vue'
+import Timeline from './components/timeline/index.vue'
 import 'uno.css'
 import '@unocss/reset/tailwind.css'
 import './styles/base.css'
@@ -13,4 +14,5 @@ export * from './modules/router'
 
 export {
   SelectiveList,
+  Timeline,
 }

@@ -9,6 +9,7 @@ import { hook } from '../../hook'
 import { exposeInstanceToWindow } from '../vm'
 
 const INSPECTOR_ID = 'components'
+const COMPONENT_EVENT_LAYER_ID = 'component-event'
 
 export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, PluginSetupFunction] {
   const descriptor: PluginDescriptor = {
@@ -22,6 +23,12 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
       id: INSPECTOR_ID,
       label: 'Components',
       treeFilterPlaceholder: 'Search components',
+    })
+
+    api.addTimelineLayer({
+      id: COMPONENT_EVENT_LAYER_ID,
+      label: 'Component events',
+      color: 0x4FC08D,
     })
 
     api.on.getInspectorTree(async (payload) => {
@@ -87,8 +94,31 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
 
       if (!appRecord)
         return
-      const componentName = getInstanceName(instance)
-      console.log('component-emit', componentName, event, params)
+
+      const componentId = `${appRecord.id}:${instance.uid}`
+      const componentName = getInstanceName(instance) || 'Unknown Component'
+
+      api.addTimelineEvent({
+        layerId: COMPONENT_EVENT_LAYER_ID,
+        event: {
+          time: Date.now(),
+          data: {
+            component: {
+              _custom: {
+                type: 'component-definition',
+                display: componentName,
+              },
+            },
+            event,
+            params,
+          },
+          title: event,
+          subtitle: `by ${componentName}`,
+          meta: {
+            componentId,
+          },
+        },
+      })
     })
 
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {

@@ -57,6 +57,7 @@ export function createAppRecord(app: VueAppInstance['appContext']['app']): AppRe
       id,
       name,
       instanceMap: new Map(),
+      perfGroupIds: new Map(),
       rootInstance,
     }
 

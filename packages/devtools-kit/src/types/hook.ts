@@ -30,6 +30,8 @@ export interface DevToolsEvent {
   [DevToolsHooks.COMPONENT_UPDATED]: DevToolsEvent['component:added']
   [DevToolsHooks.COMPONENT_REMOVED]: DevToolsEvent['component:added']
   [DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction, options?: { target?: string }) => void
+  [DevToolsHooks.PERFORMANCE_START]: (app: App, uid: number, vm: HookAppInstance, type: string, time: number) => void
+  [DevToolsHooks.PERFORMANCE_END]: (app: App, uid: number, vm: HookAppInstance, type: string, time: number) => void
 }
 
 export interface DevToolsHook {
@@ -56,6 +58,8 @@ export interface VueHooks {
     componentUpdated: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_UPDATED]) => () => void
     componentRemoved: (fn: DevToolsEvent[DevToolsHooks.COMPONENT_REMOVED]) => () => void
     setupDevtoolsPlugin: (fn: DevToolsEvent[DevToolsHooks.SETUP_DEVTOOLS_PLUGIN]) => void
+    perfStart: (fn: DevToolsEvent[DevToolsHooks.PERFORMANCE_START]) => void
+    perfEnd: (fn: DevToolsEvent[DevToolsHooks.PERFORMANCE_END]) => void
   }
   setupDevToolsPlugin: (pluginDescriptor: PluginDescriptor, setupFn: PluginSetupFunction) => void
 }

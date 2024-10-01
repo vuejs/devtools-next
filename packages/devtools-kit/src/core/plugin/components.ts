@@ -3,13 +3,13 @@ import { debounce } from 'perfect-debounce'
 import { getInstanceState } from '../../core/component/state'
 import { editState } from '../../core/component/state/editor'
 import { ComponentWalker } from '../../core/component/tree/walker'
-import { getAppRecord, getComponentId, getComponentInstance, getInstanceName } from '../../core/component/utils'
+import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
 import { activeAppRecord, devtoolsContext, devtoolsState, DevToolsV6PluginAPIHookKeys } from '../../ctx'
 import { hook } from '../../hook'
+import { setupBuiltinTimelineLayers } from '../timeline'
 import { exposeInstanceToWindow } from '../vm'
 
 const INSPECTOR_ID = 'components'
-const COMPONENT_EVENT_LAYER_ID = 'component-event'
 
 export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, PluginSetupFunction] {
   const descriptor: PluginDescriptor = {
@@ -25,11 +25,7 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
       treeFilterPlaceholder: 'Search components',
     })
 
-    api.addTimelineLayer({
-      id: COMPONENT_EVENT_LAYER_ID,
-      label: 'Component events',
-      color: 0x4FC08D,
-    })
+    setupBuiltinTimelineLayers(api)
 
     api.on.getInspectorTree(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
@@ -88,38 +84,6 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
     const debounceSendInspectorState = debounce(() => {
       api.sendInspectorState(INSPECTOR_ID)
     }, 120)
-
-    hook.on.componentEmit(async (app, instance, event, params) => {
-      const appRecord = await getAppRecord(app)
-
-      if (!appRecord)
-        return
-
-      const componentId = `${appRecord.id}:${instance.uid}`
-      const componentName = getInstanceName(instance) || 'Unknown Component'
-
-      api.addTimelineEvent({
-        layerId: COMPONENT_EVENT_LAYER_ID,
-        event: {
-          time: Date.now(),
-          data: {
-            component: {
-              _custom: {
-                type: 'component-definition',
-                display: componentName,
-              },
-            },
-            event,
-            params,
-          },
-          title: event,
-          subtitle: `by ${componentName}`,
-          meta: {
-            componentId,
-          },
-        },
-      })
-    })
 
     const componentAddedCleanup = hook.on.componentAdded(async (app, uid, parentUid, component) => {
       if (devtoolsState.highPerfModeEnabled)

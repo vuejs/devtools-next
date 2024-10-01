@@ -33,6 +33,12 @@ const on: VueHooks['on'] = {
   setupDevtoolsPlugin(fn) {
     devtoolsHooks.hook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
   },
+  perfStart(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.PERFORMANCE_START, fn)
+  },
+  perfEnd(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.PERFORMANCE_END, fn)
+  },
 }
 
 export function createDevToolsHook(): DevToolsHook {
@@ -120,6 +126,18 @@ export function subscribeDevToolsHook() {
     if (!app || !instance || devtoolsState.highPerfModeEnabled)
       return
     devtoolsHooks.callHook(DevToolsHooks.COMPONENT_EMIT, app, instance, event, params)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.PERFORMANCE_START]>(DevToolsHooks.PERFORMANCE_START, (app, uid, vm, type, time) => {
+    if (!app || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.PERFORMANCE_START, app, uid, vm, type, time)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.PERFORMANCE_END]>(DevToolsHooks.PERFORMANCE_END, (app, uid, vm, type, time) => {
+    if (!app || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.PERFORMANCE_END, app, uid, vm, type, time)
   })
 
   // devtools plugin setup

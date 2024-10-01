@@ -6,6 +6,8 @@ import {
 } from '@vue/devtools-core'
 import { Pane, Splitpanes } from 'splitpanes'
 
+const timelineRef = ref()
+
 // responsive layout
 const splitpanesRef = ref<HTMLDivElement>()
 const splitpanesReady = ref(false)
@@ -32,20 +34,38 @@ watchEffect(() => {
 
 function toggleApp(id: string) {
   rpc.value.toggleApp(id).then(() => {
+    clearTimelineEvents()
   })
 }
 
 // #endregion
 
-const activeTimelineLayer = 'component-event'
+const activeTimelineLayer = ref('component-event')
 const timelineLayers = [
+  {
+    label: 'Mouse',
+    id: 'mouse',
+  },
+  {
+    label: 'Keyboard',
+    id: 'keyboard',
+  },
   {
     label: 'Component events',
     id: 'component-event',
   },
+  {
+    label: 'Performance',
+    id: 'performance',
+  },
 ]
 
-function toggleTimelineLayer(id: string) {
+function clearTimelineEvents() {
+  timelineRef.value?.clear()
+}
+
+function toggleTimelineLayer() {
+  clearTimelineEvents()
 }
 </script>
 
@@ -66,7 +86,7 @@ function toggleTimelineLayer(id: string) {
       </Pane>
       <Pane relative h-full size="65">
         <div class="h-full flex flex-col p2">
-          <Timeline :layer-ids="['component-event']" :header-visible="false" doc-link="" />
+          <Timeline ref="timelineRef" :layer-ids="[activeTimelineLayer]" :header-visible="false" doc-link="" />
         </div>
       </Pane>
     </Splitpanes>

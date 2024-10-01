@@ -18,6 +18,7 @@ export interface DevToolsState {
   devtoolsClientDetected: {
     [key: string]: boolean
   }
+  perfUniqueGroupId: number
 }
 
 global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
@@ -38,6 +39,7 @@ function initStateFactory() {
     commands: [],
     highPerfModeEnabled: true,
     devtoolsClientDetected: {},
+    perfUniqueGroupId: 0,
   }
 }
 global[STATE_KEY] ??= initStateFactory()

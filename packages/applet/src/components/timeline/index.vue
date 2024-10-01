@@ -95,6 +95,13 @@ rpc.functions.on(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEvent
 onUnmounted(() => {
   rpc.functions.off(DevToolsMessagingEvents.TIMELINE_EVENT_UPDATED, onTimelineEventUpdated)
 })
+
+defineExpose({
+  clear() {
+    eventList.value = []
+    groupList.value.clear()
+  },
+})
 </script>
 
 <template>

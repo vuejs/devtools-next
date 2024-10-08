@@ -41,7 +41,7 @@
     "@vue/devtools-shared": "workspace:^",
     "electron": "^29.4.6",
     "execa": "^8.0.1",
-    "h3": "^1.12.0",
+    "h3": "^1.13.0",
     "ip": "^2.0.1",
     "pathe": "^1.1.2",
     "socket.io": "^4.8.0",
@@ -51,6 +51,6 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "tsx": "^4.19.1",
     "unbuild": "^2.0.0",
-    "vue": "^3.5.10"
+    "vue": "^3.5.11"
   }
 }

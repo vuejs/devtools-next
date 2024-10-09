@@ -68,10 +68,20 @@ function injectScript(scriptName: string, cb: () => void) {
       script.parentNode.removeChild(script);
     })()
   `
-  chrome.devtools.inspectedWindow.eval(src, (res, err) => {
-    if (err)
-      console.error(err)
+  let timeoutId: number = null!
+  function execute() {
+    clearTimeout(timeoutId)
+    chrome.devtools.inspectedWindow.eval(src, (res, err) => {
+      if (err) {
+        // @ts-expect-error skip type check
+        timeoutId = setTimeout(() => {
+          execute()
+        }, 100)
+        return
+      }
 
-    cb()
-  })
+      cb()
+    })
+  }
+  execute()
 }

@@ -7,25 +7,25 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@tanstack/vue-query": "^5.56.2",
+    "@tanstack/vue-query": "^5.59.1",
     "@vueuse/core": "^11.1.0",
     "element-plus": "^2.8.4",
-    "pinia": "^2.2.2",
+    "pinia": "^2.2.4",
     "unplugin-auto-import": "^0.18.3",
     "vee-validate": "^4.13.2",
-    "vue": "^3.5.10",
+    "vue": "^3.5.11",
     "vue-router": "^4.4.5",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.3",
-    "@tanstack/vue-query-devtools": "^5.58.0",
+    "@tanstack/vue-query-devtools": "^5.59.1",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/devtools": "workspace:^",
     "sass": "^1.79.4",
     "serve": "^14.2.3",
     "typescript": "^5.6.2",
-    "unocss": "^0.63.1",
+    "unocss": "^0.63.4",
     "vite": "^5.4.8",
     "vite-plugin-inspect": "^0.8.7",
     "vite-plugin-vue-devtools": "workspace:*"

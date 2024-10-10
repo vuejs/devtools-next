@@ -3,7 +3,11 @@ import { basename, classify } from '@vue/devtools-shared'
 import { Fragment } from '../../../shared/stub-vue'
 
 function getComponentTypeName(options: VueAppInstance['type']) {
-  return options.name || options._componentTag || options.__VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__ || options.__name
+  const name = options.name || options._componentTag || options.__VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__ || options.__name
+  if (name === 'index' && options.__file?.endsWith('index.vue')) {
+    return ''
+  }
+  return name
 }
 
 function getComponentFileName(options: VueAppInstance['type']) {

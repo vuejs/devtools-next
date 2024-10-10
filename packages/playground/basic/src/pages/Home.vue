@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Foo from '../components/Foo.vue'
+import IndexComponent from '../components/IndexComponent/index.vue'
 
 const visible = ref(false)
 
@@ -23,6 +24,7 @@ const toRefObj = toRefs(obj)
   <div class="m-auto mt-3 h-80 w-120 flex flex-col items-center justify-center rounded bg-[#363636]">
     Home
     <Foo v-if="visible" />
+    <IndexComponent v-if="visible" />
     <img src="/vite.svg" alt="Vite Logo">
     <button class="w-30 cursor-pointer" @click="visible = !visible">
       Toggle Foo

@@ -26,6 +26,13 @@ export const builtinTab: [string, ModuleBuiltinTab[]][] = [
       title: 'Pages',
     },
     {
+      icon: 'i-carbon-roadmap',
+      name: 'Timeline',
+      order: -100,
+      path: 'timeline',
+      title: 'Timeline',
+    },
+    {
       icon: 'i-carbon-image-copy',
       name: 'assets',
       order: -100,

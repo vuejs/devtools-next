@@ -12,6 +12,7 @@ interface DevToolsState {
   vitePluginDetected: boolean
   appRecords: AppRecord[]
   activeAppRecordId: string
+  timelineLayersState: Record<string, boolean>
 }
 
 type DevToolsRefState = {
@@ -44,6 +45,7 @@ export function createDevToolsStateContext() {
   const vitePluginDetected = ref(false)
   const appRecords = ref<Array<AppRecord>>([])
   const activeAppRecordId = ref('')
+  const timelineLayersState = ref<Record<string, boolean>>({})
 
   function updateState(data: DevToolsState) {
     connected.value = data.connected
@@ -54,6 +56,7 @@ export function createDevToolsStateContext() {
     vitePluginDetected.value = data.vitePluginDetected
     appRecords.value = data.appRecords
     activeAppRecordId.value = data.activeAppRecordId!
+    timelineLayersState.value = data.timelineLayersState!
   }
 
   function getDevToolsState() {
@@ -76,6 +79,7 @@ export function createDevToolsStateContext() {
     vitePluginDetected,
     appRecords,
     activeAppRecordId,
+    timelineLayersState,
   }
 }
 

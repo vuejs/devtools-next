@@ -40,7 +40,7 @@ function toggleApp(id: string) {
 
 // #endregion
 
-const activeTimelineLayer = ref('component-event')
+const activeTimelineLayer = ref('')
 const timelineLayers = [
   {
     label: 'Mouse',
@@ -80,7 +80,7 @@ function toggleTimelineLayer() {
       <Pane border="base" h-full>
         <div class="h-full flex flex-col">
           <div class="no-scrollbar h-full flex select-none gap-2 overflow-scroll">
-            <SelectiveList v-model="activeTimelineLayer" :data="timelineLayers" class="w-full" @select="toggleTimelineLayer" />
+            <TimelineLayers v-model="activeTimelineLayer" :data="timelineLayers" class="w-full" @select="toggleTimelineLayer" @clear="clearTimelineEvents" />
           </div>
         </div>
       </Pane>

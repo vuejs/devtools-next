@@ -1,6 +1,7 @@
 import type { DevToolsV6PluginAPI } from '../../api/v6'
 import { isBrowser } from '@vue/devtools-shared'
 import { getAppRecord, getInstanceName } from '../../core/component/utils'
+import { devtoolsState } from '../../ctx/state'
 import { hook } from '../../hook'
 import { PERFORMANCE_EVENT_LAYER_ID, performanceMarkEnd, performanceMarkStart } from './perf'
 
@@ -19,6 +20,8 @@ export function setupBuiltinTimelineLayers(api: DevToolsV6PluginAPI) {
   })
 
   ;(['mousedown', 'mouseup', 'click', 'dblclick'] as const).forEach((eventType) => {
+    if (!devtoolsState.timelineLayersState.recordingState || !devtoolsState.timelineLayersState.mouseEventEnabled)
+      return
     window.addEventListener(eventType, async (event: MouseEvent) => {
       await api.addTimelineEvent({
         layerId: 'mouse',
@@ -48,6 +51,8 @@ export function setupBuiltinTimelineLayers(api: DevToolsV6PluginAPI) {
 
   ;(['keyup', 'keydown', 'keypress'] as const).forEach((eventType) => {
     window.addEventListener(eventType, async (event: KeyboardEvent) => {
+      if (!devtoolsState.timelineLayersState.recordingState || !devtoolsState.timelineLayersState.keyboardEventEnabled)
+        return
       await api.addTimelineEvent({
         layerId: 'keyboard',
         event: {
@@ -78,6 +83,9 @@ export function setupBuiltinTimelineLayers(api: DevToolsV6PluginAPI) {
   })
 
   hook.on.componentEmit(async (app, instance, event, params) => {
+    if (!devtoolsState.timelineLayersState.recordingState || !devtoolsState.timelineLayersState.componentEventEnabled)
+      return
+
     const appRecord = await getAppRecord(app)
 
     if (!appRecord)
@@ -118,10 +126,14 @@ export function setupBuiltinTimelineLayers(api: DevToolsV6PluginAPI) {
   })
 
   hook.on.perfStart((app, uid, vm, type, time) => {
+    if (!devtoolsState.timelineLayersState.recordingState || !devtoolsState.timelineLayersState.performanceEventEnabled)
+      return
     performanceMarkStart(api, app, uid, vm, type, time)
   })
 
   hook.on.perfEnd((app, uid, vm, type, time) => {
+    if (!devtoolsState.timelineLayersState.recordingState || !devtoolsState.timelineLayersState.performanceEventEnabled)
+      return
     performanceMarkEnd(api, app, uid, vm, type, time)
   })
 }

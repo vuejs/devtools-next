@@ -19,6 +19,7 @@ export interface DevToolsState {
     [key: string]: boolean
   }
   perfUniqueGroupId: number
+  timelineLayersState: Record<string, boolean>
 }
 
 global.__VUE_DEVTOOLS_KIT_APP_RECORDS__ ??= []
@@ -40,6 +41,13 @@ function initStateFactory() {
     highPerfModeEnabled: true,
     devtoolsClientDetected: {},
     perfUniqueGroupId: 0,
+    timelineLayersState: {
+      recordingState: false,
+      mouseEventEnabled: false,
+      keyboardEventEnabled: false,
+      componentEventEnabled: false,
+      performanceEventEnabled: false,
+    },
   }
 }
 global[STATE_KEY] ??= initStateFactory()

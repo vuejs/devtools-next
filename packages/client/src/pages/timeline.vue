@@ -39,7 +39,6 @@ function toggleApp(id: string) {
 }
 
 // #endregion
-
 const activeTimelineLayer = ref('')
 const timelineLayers = [
   {

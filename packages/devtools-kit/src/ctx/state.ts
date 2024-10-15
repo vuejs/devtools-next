@@ -2,6 +2,7 @@ import type { AppRecord, CustomCommand, CustomTab } from '../types'
 import { target as global, isUrlString } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
 import { devtoolsContext } from '.'
+import { getTimelineLayersStateFromStorage } from '../core/timeline/storage'
 import { DevToolsMessagingHookKeys } from './hook'
 
 export interface DevToolsAppRecords extends AppRecord {}
@@ -41,13 +42,7 @@ function initStateFactory() {
     highPerfModeEnabled: true,
     devtoolsClientDetected: {},
     perfUniqueGroupId: 0,
-    timelineLayersState: {
-      recordingState: false,
-      mouseEventEnabled: false,
-      keyboardEventEnabled: false,
-      componentEventEnabled: false,
-      performanceEventEnabled: false,
-    },
+    timelineLayersState: getTimelineLayersStateFromStorage(),
   }
 }
 global[STATE_KEY] ??= initStateFactory()

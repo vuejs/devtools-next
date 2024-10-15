@@ -19,7 +19,16 @@ const selected = defineModel()
 function select(id: string) {
   selected.value = id
   emit('select', id)
+  rpc.value.updateTimelineLayersState({
+    selected: id,
+  })
 }
+
+watch(() => timelineLayersState.value.selected, (state: string) => {
+  selected.value = state
+}, {
+  immediate: true,
+})
 
 function getTimelineLayerEnabled(id: string) {
   return {
@@ -59,6 +68,9 @@ function toggleTimelineLayerEnabled(id: string) {
         </div>
         <div v-tooltip.bottom-end="{ content: 'Clear all timelines' }" class="flex items-center gap1" @click="emit('clear')">
           <VueIcIcon name="baseline-delete" cursor-pointer text-xl op70 hover:op100 />
+        </div>
+        <div v-tooltip.bottom-end="{ content: '<p style=\'width: 285px\'>Timeline events can cause significant performance overhead in large applications, so we recommend enabling it only when needed and on-demand. </p>', html: true }" class="flex items-center gap1">
+          <VueIcIcon name="baseline-tips-and-updates" cursor-pointer text-xl op70 hover:op100 />
         </div>
       </div>
     </div>

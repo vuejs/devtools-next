@@ -1,6 +1,7 @@
 import type { PluginDescriptor, TimelineLayerOptions } from '../types'
 import { target } from '@vue/devtools-shared'
 import { getAppRecord } from '../core/component/utils'
+import { addTimelineLayersStateToStorage } from '../core/timeline/storage'
 import { devtoolsState, updateDevToolsState } from './state'
 
 interface DevToolsKitTimelineLayer extends TimelineLayerOptions {
@@ -25,10 +26,12 @@ export function addTimelineLayer(options: TimelineLayerOptions, descriptor: Plug
 }
 
 export function updateTimelineLayersState(state: Record<string, boolean>) {
+  const updatedState = {
+    ...devtoolsState.timelineLayersState,
+    ...state,
+  }
+  addTimelineLayersStateToStorage(updatedState)
   updateDevToolsState({
-    timelineLayersState: {
-      ...devtoolsState.timelineLayersState,
-      ...state,
-    },
+    timelineLayersState: updatedState,
   })
 }

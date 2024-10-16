@@ -8,20 +8,11 @@ The v7 version of devtools only supports Vue3. If your application is still usin
 
 In v7, we've made some feature-level adjustments compared to v6. You can view the v7 feature overview in the [Features](/getting-started/features). Here, we mainly mention some of the main feature changes.
 
-### Deprecated Features
-
-Due to high performance costs and potential memory leak risks, we have removed some features in v7. These features are:
-
-- `Performance` Timeline
-- `Component Events` Timeline
-
-💡 By the way, we are looking for a balanced approach to re-enable it with better performance. You can follow the latest progress [here](https://github.com/vuejs/devtools-next/issues/609).
-
 ### Feature Adjustments
 
-- Timeline Tab
+- Plugin Timeline Tab
 
-In v7, we moved the timeline tab to be managed within each plugin's menu. Here is a screenshot of the pinia devtools plugin:
+In v7, we moved the plugin timeline tab to be managed within each plugin's menu. Here is a screenshot of the pinia devtools plugin:
 
 ![pinia-timeline](/features/pinia-timeline.png)
 

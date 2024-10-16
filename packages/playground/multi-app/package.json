@@ -8,18 +8,18 @@
   },
   "dependencies": {
     "@vueuse/core": "^11.1.0",
-    "pinia": "^2.2.2",
+    "pinia": "^2.2.4",
     "unplugin-auto-import": "^0.18.3",
-    "vue": "^3.5.8",
+    "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
-    "sass": "^1.79.3",
+    "sass": "^1.79.5",
     "serve": "^14.2.3",
-    "typescript": "^5.6.2",
-    "unocss": "^0.62.4",
-    "vite": "^5.4.7",
+    "typescript": "^5.6.3",
+    "unocss": "^0.63.4",
+    "vite": "^5.4.9",
     "vite-plugin-inspect": "^0.8.7",
     "vite-plugin-vue-devtools": "workspace:*"
   }

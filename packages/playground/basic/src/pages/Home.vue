@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Foo from '../components/Foo.vue'
+import IndexComponent from '../components/IndexComponent/index.vue'
 
 const emit = defineEmits(['update'])
 const visible = ref(false)
@@ -30,6 +31,7 @@ const toRefObj = toRefs(obj)
       Click me
     </button>
     <Foo v-if="visible" />
+    <IndexComponent v-if="visible" />
     <img src="/vite.svg" alt="Vite Logo">
     <button class="w-30 cursor-pointer" @click="visible = !visible">
       Toggle Foo

@@ -60,7 +60,8 @@ function toggleTimelineLayerEnabled(id: string) {
 
 <template>
   <div h-full flex flex-col p2>
-    <div class="mb-1 flex justify-end pb-1" border="b dashed base">
+    <div class="relative mb-1 w-full flex items-center justify-end pb-1" border="b dashed base">
+      <span v-if="!recordingState" class="absolute left-0 text-xs text-gray-300 dark:text-gray-500">Not recording</span>
       <div class="flex items-center gap-2 px-1">
         <div v-tooltip.bottom-end="{ content: recordingTooltip }" class="flex items-center gap1" @click="toggleRecordingState">
           <span v-if="recordingState" class="recording recording-btn bg-[#ef4444]" />

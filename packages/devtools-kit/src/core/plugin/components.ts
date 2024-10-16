@@ -6,6 +6,7 @@ import { ComponentWalker } from '../../core/component/tree/walker'
 import { getAppRecord, getComponentId, getComponentInstance } from '../../core/component/utils'
 import { activeAppRecord, devtoolsContext, devtoolsState, DevToolsV6PluginAPIHookKeys } from '../../ctx'
 import { hook } from '../../hook'
+import { setupBuiltinTimelineLayers } from '../timeline'
 import { exposeInstanceToWindow } from '../vm'
 
 const INSPECTOR_ID = 'components'
@@ -23,6 +24,8 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
       label: 'Components',
       treeFilterPlaceholder: 'Search components',
     })
+
+    setupBuiltinTimelineLayers(api)
 
     api.on.getInspectorTree(async (payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {

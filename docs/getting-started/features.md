@@ -1,6 +1,6 @@
 # Features
 
-Discover all the features of the Vue DevTools
+Below is a list of all the features and functionality of Vue DevTools.
 
 ## Overview
 

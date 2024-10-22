@@ -44,8 +44,8 @@
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.260",
-    "@types/node": "^20.16.11",
+    "@iconify/json": "^2.2.262",
+    "@types/node": "^20.16.14",
     "@types/splitpanes": "^2.2.6",
     "@unocss/core": "^0.63.4",
     "@unocss/reset": "^0.63.4",
@@ -55,7 +55,7 @@
     "floating-vue": "5.2.2",
     "ohash": "^1.1.4",
     "pinia": "^2.2.4",
-    "sass": "^1.79.5",
+    "sass": "^1.80.3",
     "simple-git-hooks": "^2.11.1",
     "unocss": "^0.63.4",
     "unplugin": "^1.14.1",

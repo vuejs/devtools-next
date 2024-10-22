@@ -11,6 +11,12 @@ function isArray(_data: unknown, proto: string): _data is unknown[] {
   return proto === '[object Array]'
 }
 
+// See https://github1s.com/vuejs/core/blob/HEAD/packages/reactivity/src/dep.ts#L32-L33
+function isVueReactiveLinkNode(node) {
+  const constructorName = node.constructor.name
+  return (constructorName === 'Dep' && 'activeLink' in node) || (constructorName === 'Link' && 'dep' in node)
+}
+
 /**
  * This function is used to serialize object with handling circular references.
  *
@@ -41,6 +47,9 @@ function encode(data: unknown, replacer: Replacer | null, list: unknown[], seen:
   const index = list.length
   const proto = Object.prototype.toString.call(data)
   if (isObject(data, proto)) {
+    if (isVueReactiveLinkNode(data)) {
+      return index
+    }
     stored = {}
     seen.set(data, index)
     list.push(stored)

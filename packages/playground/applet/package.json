@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.260",
+    "@iconify/json": "^2.2.262",
     "@tresjs/core": "^4.3.1",
     "@vueuse/core": "^11.1.0",
     "pinia": "^2.2.4",
@@ -23,8 +23,8 @@
     "@vue/devtools-core": "workspace:*",
     "@vue/devtools-kit": "workspace:*",
     "@vue/devtools-shared": "workspace:*",
-    "sass": "^1.79.5",
-    "serve": "^14.2.3",
+    "sass": "^1.80.3",
+    "serve": "^14.2.4",
     "typescript": "^5.6.3",
     "unocss": "^0.63.4",
     "vite": "^5.4.9",

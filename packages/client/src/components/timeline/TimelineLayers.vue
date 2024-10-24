@@ -79,7 +79,7 @@ function toggleTimelineLayerEnabled(id: string) {
       <li
         v-for="item in data" :key="item.id"
         class="group relative selectable-item"
-        :class="{ active: item.id === selected }"
+        :class="{ active: item.id === selected, op60: !getTimelineLayerEnabled(item.id) }"
         @click="select(item.id)"
       >
         {{ item.label }}

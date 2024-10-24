@@ -28,7 +28,7 @@ $ bun add -D vite-plugin-vue-devtools
 
 :::
 
-## Usage
+## Setup
 
 ```ts
 //  Configuration Vite
@@ -43,7 +43,13 @@ export default defineConfig({
 })
 ```
 
-## Options
+## Usage
+
+If the Vite Plugin has been installed and setup correctly, you should see a small icon with the "Vue" logo at the bottom center of your screen. Clicking this (or pressing the "Toggle Vue DevTools" hotkey -- check your startup logs) will open the Vue DevTools window.
+
+The Vue DevTools can be repositioned by dragging this icon.
+
+## Configuration Options
 
 ```ts
 interface VitePluginVueDevToolsOptions {

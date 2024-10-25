@@ -84,7 +84,7 @@ function toggleTimelineLayerEnabled(id: string) {
       >
         {{ item.label }}
         <span class="absolute right-2 rounded-1 bg-primary-500 px1 text-3 text-white op0 [.active_&]:(bg-primary-400 dark:bg-gray-600) group-hover:op80 hover:op100!" @click.stop="toggleTimelineLayerEnabled(item.id)">
-          {{ getTimelineLayerEnabled(item.id) ? 'Disabled' : 'Enabled' }}
+          {{ getTimelineLayerEnabled(item.id) ? 'Disable' : 'Enable' }}
         </span>
       </li>
     </ul>

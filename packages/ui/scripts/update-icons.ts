@@ -26,7 +26,7 @@ const withIcVersionComment = (s: string) => `// Generated from @iconify-json/ic@
 export const icIcons: Record<string, { body: string }> = Object.keys(icons.icons).filter(i => i.startsWith('baseline')).reduce((a, b) => ({ ...a, [b]: icons.icons[b].body }), {})
 
 function update() {
-  writeFileSync(resolve(__dirname, '../src/constants/ic-icons.ts'), withIcVersionComment(`export const icIcons: Record<string, string> = ${JSON.stringify(icIcons, null, 2)}`))
+  writeFileSync(targetPath, withIcVersionComment(`export const icIcons: Record<string, string> = ${JSON.stringify(icIcons, null, 2)}`))
   console.log('ic icons updated')
 }
 

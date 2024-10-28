@@ -7,13 +7,13 @@
   "description": "DevTools for Vue.js",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/vuejs/devtools-next#readme",
+  "homepage": "https://github.com/vuejs/devtools#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools.git"
   },
   "bugs": {
-    "url": "https://github.com/vuejs/devtools-next/issues"
+    "url": "https://github.com/vuejs/devtools/issues"
   },
   "keywords": [
     "vue-devtools",

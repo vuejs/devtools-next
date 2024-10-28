@@ -14,6 +14,7 @@ import type {
   TimelineLayerOptions,
 } from '../types'
 import { createHooks } from 'hookable'
+import { debounce } from 'perfect-debounce'
 import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
 import { getInstanceName } from '../core/component/utils'
 import { highlight, unhighlight } from '../core/component-highlighter'
@@ -236,8 +237,7 @@ export function createDevToolsCtxHooks() {
     addInspector(inspector, plugin.descriptor)
   })
 
-  // send inspector tree
-  hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_TREE, async ({ inspectorId, plugin }) => {
+  const debounceSendInspectorTree = debounce(async ({ inspectorId, plugin }) => {
     if (!inspectorId || !plugin?.descriptor?.app)
       return
 
@@ -251,6 +251,7 @@ export function createDevToolsCtxHooks() {
       filter: inspector?.treeFilter || '',
       rootNodes: [],
     }
+
     await new Promise<void>((resolve) => {
       // @ts-expect-error hookable
       hooks.callHookWith(async (callbacks) => {
@@ -266,10 +267,12 @@ export function createDevToolsCtxHooks() {
         rootNodes: _payload.rootNodes,
       })))
     }, DevToolsMessagingHookKeys.SEND_INSPECTOR_TREE_TO_CLIENT)
-  })
+  }, 120)
 
-  // send inspector state
-  hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_STATE, async ({ inspectorId, plugin }) => {
+  // send inspector tree
+  hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_TREE, debounceSendInspectorTree)
+
+  const debounceSendInspectorState = debounce(async ({ inspectorId, plugin }) => {
     if (!inspectorId || !plugin?.descriptor?.app)
       return
 
@@ -305,7 +308,10 @@ export function createDevToolsCtxHooks() {
         state: _payload.state,
       })))
     }, DevToolsMessagingHookKeys.SEND_INSPECTOR_STATE_TO_CLIENT)
-  })
+  }, 120)
+
+  // send inspector state
+  hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_STATE, debounceSendInspectorState)
 
   // select inspector node
   hooks.hook(DevToolsContextHookKeys.CUSTOM_INSPECTOR_SELECT_NODE, ({ inspectorId, nodeId, plugin }) => {

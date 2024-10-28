@@ -46,7 +46,7 @@
     "128": "icons/128.png"
   },
   "manifest_version": 3,
-  "name": "Vue.js devtools (beta)",
+  "name": "Vue.js devtools",
   "permissions": [
     "scripting"
   ],

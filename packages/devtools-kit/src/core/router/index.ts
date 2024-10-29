@@ -2,7 +2,7 @@ import type { RouteLocationNormalizedLoaded, Router, RouteRecordRaw } from 'vue-
 import type { AppRecord } from '../../types'
 import { deepClone, target as global } from '@vue/devtools-shared'
 import { debounce } from 'perfect-debounce'
-import { devtoolsContext, DevToolsMessagingHookKeys } from '../../ctx'
+import { devtoolsContext, DevToolsMessagingHookKeys, devtoolsState } from '../../ctx'
 import { ROUTER_INFO_KEY, ROUTER_KEY } from '../../ctx/router'
 import { hook } from '../../hook'
 // import { DevToolsEvents, apiHooks } from '../../api/hook'
@@ -66,6 +66,8 @@ export function normalizeRouterInfo(appRecord: AppRecord, activeAppRecord: { val
       return
 
     init()
+    if (devtoolsState.highPerfModeEnabled)
+      return
     devtoolsContext.hooks.callHook(DevToolsMessagingHookKeys.ROUTER_INFO_UPDATED, { state: global[ROUTER_INFO_KEY] })
   }, 200))
 }

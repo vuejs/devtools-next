@@ -19,7 +19,7 @@ import { getComponentBoundingRect } from '../core/component/state/bounding-rect'
 import { getInstanceName } from '../core/component/utils'
 import { highlight, unhighlight } from '../core/component-highlighter'
 import { addInspector, getInspector } from './inspector'
-import { activeAppRecord, DevToolsState } from './state'
+import { activeAppRecord, DevToolsState, devtoolsState } from './state'
 import { addTimelineLayer } from './timeline'
 
 // v6 plugin api hooks
@@ -238,7 +238,7 @@ export function createDevToolsCtxHooks() {
   })
 
   const debounceSendInspectorTree = debounce(async ({ inspectorId, plugin }) => {
-    if (!inspectorId || !plugin?.descriptor?.app)
+    if (!inspectorId || !plugin?.descriptor?.app || devtoolsState.highPerfModeEnabled)
       return
 
     // 1. get inspector
@@ -273,7 +273,7 @@ export function createDevToolsCtxHooks() {
   hooks.hook(DevToolsContextHookKeys.SEND_INSPECTOR_TREE, debounceSendInspectorTree)
 
   const debounceSendInspectorState = debounce(async ({ inspectorId, plugin }) => {
-    if (!inspectorId || !plugin?.descriptor?.app)
+    if (!inspectorId || !plugin?.descriptor?.app || devtoolsState.highPerfModeEnabled)
       return
 
     // 1. get inspector

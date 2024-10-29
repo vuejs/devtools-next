@@ -18,6 +18,7 @@ export const devtoolsTimelineLayers = new Proxy<DevToolsKitTimelineLayer[]>(targ
 })
 
 export function addTimelineLayer(options: TimelineLayerOptions, descriptor: PluginDescriptor) {
+  devtoolsState.timelineLayersState[descriptor.id] = false
   devtoolsTimelineLayers.push({
     ...options,
     descriptorId: descriptor.id,

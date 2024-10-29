@@ -335,6 +335,8 @@ export function createDevToolsCtxHooks() {
 
   // add timeline event
   hooks.hook(DevToolsContextHookKeys.TIMELINE_EVENT_ADDED, ({ options, plugin }) => {
+    if (devtoolsState.highPerfModeEnabled || !devtoolsState.timelineLayersState?.[plugin.descriptor.id])
+      return
     // @ts-expect-error hookable
     hooks.callHookWith(async (callbacks) => {
       await Promise.all(callbacks.map(cb => cb(options)))

@@ -19,8 +19,10 @@ const props = withDefaults(defineProps<{
   docLink: string
   githubRepoLink?: string
   headerVisible?: boolean
+  switcherVisible?: boolean
 }>(), {
   headerVisible: true,
+  switcherVisible: true,
 })
 
 const { expanded: expandedStateNodes } = createExpandedContext('timeline-state')
@@ -143,7 +145,7 @@ function toggleRecordingState() {
       No events
     </Empty>
 
-    <div class="absolute right-3 top-12 flex items-center justify-end b-1 border-base rounded-1 b-solid px2 py1">
+    <div v-if="switcherVisible" class="absolute right-3 top-12 flex items-center justify-end b-1 border-base rounded-1 b-solid px2 py1">
       <div class="flex items-center gap-2 px-1">
         <div v-tooltip.bottom-end="{ content: recordingTooltip }" class="flex items-center gap1" @click="toggleRecordingState">
           <span v-if="recordingState" class="recording recording-btn bg-[#ef4444]" />

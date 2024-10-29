@@ -85,7 +85,7 @@ function toggleTimelineLayer() {
       </Pane>
       <Pane relative h-full size="65">
         <div class="h-full flex flex-col p2">
-          <Timeline ref="timelineRef" :layer-ids="[activeTimelineLayer]" :header-visible="false" doc-link="" />
+          <Timeline ref="timelineRef" :layer-ids="[activeTimelineLayer]" :header-visible="false" doc-link="" plugin-id="" :switcher-visible="false" />
         </div>
       </Pane>
     </Splitpanes>

@@ -4,7 +4,11 @@
 The v7 version of devtools only supports Vue3. If your application is still using Vue2, please install the [v6 version](https://chromewebstore.google.com/detail/vuejs-devtools/iaajmlceplecbljialhhkmedjlpdblhp?utm_source=ext_sidebar?utm_source=ext_sidebar). If you're still using v5 version, you can install it [here](https://chromewebstore.google.com/detail/vuejs-devtools-v5/hkddcnbhifppgmfgflgaelippbigjpjo).
 :::
 
-## Chrome
+## Installation
+
+Installation of the browser extension differs from browser to browser.
+
+### Chrome
 
 The extension is in beta, remove or disable any existing versions and install the extension from [here](https://chromewebstore.google.com/detail/vuejs-devtools-beta/ljjemllljcmogpfapbkkighbhhppjdbg?utm_source=ext_sidebar).
 
@@ -24,7 +28,7 @@ The extension is in beta, remove or disable any existing versions and install th
   </a>
 </div>
 
-## Edge (Arc/Brave)
+### Edge (Arc/Brave)
 
 ...and other Chromium-based browsers.
 
@@ -46,6 +50,12 @@ This is the same as the Chrome extension, but you need to install it from the Ch
   </a>
 </div>
 
-## Firefox
+### Firefox
 
 We'll launch on the Firefox App Store once v7.0 is stable.
+
+## Usage
+Once installed as a browser extension, Vue DevTools can be found within your browser's Developer Tools. These can typically be opened using `Ctrl+Shift+I` or `F12` depending on
+your browser and operating system.
+
+Within your browser's Developer Tools, you should see a new tab at the top that reads "Vue". Keep in mind that it may be hidden within a dropdown if there are many tabs.

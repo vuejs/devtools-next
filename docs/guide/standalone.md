@@ -50,7 +50,7 @@ $ bun add -D @vue/devtools@next
 
 :::
 
-## Usage
+## Starting the Standalone App
 
 ### Using global package
 
@@ -60,7 +60,7 @@ Once you installed the package globally, run:
 vue-devtools
 ```
 
-Then add this code to the `<head>` section of your application HTML file:
+This will start up the Standalone App. Then add this code to the `<head>` section of your application HTML file:
 
 ```html
 <script src="http://localhost:8098"></script>
@@ -85,11 +85,13 @@ Or if you want to debug your device remotely:
 
 ### Using dependency package
 
-Once you installed the package as project dependency, run:
+If you've installed the package as a project dependency, run:
 
 ```sh
 ./node_modules/.bin/vue-devtools
 ```
+
+This will start up the Standalone App.
 
 :::tip
 You can also use the global `vue-devtools` to start the app, but you might want to check if the local version matches the global one in this scenario to avoid any incompatibilities.
@@ -115,6 +117,12 @@ Make sure to invoke devtools connect function before creating Vue App, otherwise
 **host** - is an optional argument that tells your application where devtools middleware server is running, if you debug your app on your computer you don't have to set this (the default is `http://localhost`), but if you want to debug your app on mobile devices, you might want to pass your local IP (e.g. `http://192.168.1.12`).
 
 **port** - is an optional argument that tells your application on what port devtools middleware server is running. If you use proxy server, you might want to set it to `null` so the port won't be added to connection URL.
+
+## Usage
+
+The Standalone App must be manually opened from the command line each time you want to start using it (see above).
+
+It will stay accessible in a regular application window on your desktop until closed.
 
 ## FAQ
 

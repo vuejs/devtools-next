@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-applet",
   "type": "module",
-  "version": "7.5.6",
+  "version": "7.6.0",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {

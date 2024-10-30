@@ -87,6 +87,13 @@ chrome.runtime.onConnect.addListener((port) => {
 })
 
 chrome.runtime.onMessage.addListener((req, sender) => {
+  if (sender.tab && req.vue2Detected) {
+    chrome.browserAction.setPopup({
+      tabId: sender.tab.id,
+      popup: 'popups/vue2-migration-guide.html',
+    })
+  }
+
   if (sender.tab && req.vueDetected) {
     let suffix = ''
 

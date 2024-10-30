@@ -22,7 +22,7 @@ export enum DevToolsHooks {
 }
 
 export interface DevToolsEvent {
-  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string) => void | Promise<void>
+  [DevToolsHooks.APP_INIT]: (app: VueAppInstance['appContext']['app'], version: string, types: Record<string, string | symbol>) => void | Promise<void>
   [DevToolsHooks.APP_CONNECTED]: () => void
   [DevToolsHooks.APP_UNMOUNT]: (app: VueAppInstance['appContext']['app']) => void | Promise<void>
   [DevToolsHooks.COMPONENT_ADDED]: (app: HookAppInstance, uid: number, parentUid: number, component: VueAppInstance) => void | Promise<void>

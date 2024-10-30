@@ -79,8 +79,8 @@ export function initDevTools() {
   })
 
   // create app record
-  hook.on.vueAppInit(async (app, version) => {
-    const appRecord = createAppRecord(app)
+  hook.on.vueAppInit(async (app, version, types) => {
+    const appRecord = createAppRecord(app, types)
     const normalizedAppRecord = {
       ...appRecord,
       app,

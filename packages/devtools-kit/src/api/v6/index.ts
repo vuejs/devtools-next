@@ -2,7 +2,7 @@ import type { DevtoolsContext } from '../../ctx'
 import type { App, ComponentBounds, ComponentInstance, CustomInspectorOptions, DevToolsPlugin, TimelineEventOptions, TimelineLayerOptions } from '../../types'
 import { getPluginSettings, initPluginSettings } from '../../core/plugin/plugin-settings'
 
-import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
+import { DevToolsContextHookKeys, DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, DevToolsV6PluginAPIHooks } from '../../ctx/hook'
 import { getActiveInspectors } from '../../ctx/inspector'
 import { devtoolsHooks } from '../../hook'
 import { DevToolsHooks } from '../../types'
@@ -94,6 +94,10 @@ export class DevToolsV6PluginAPI {
 
   selectInspectorNode(inspectorId: string, nodeId: string) {
     this.hooks.callHook(DevToolsContextHookKeys.CUSTOM_INSPECTOR_SELECT_NODE, { inspectorId, nodeId, plugin: this.plugin })
+  }
+
+  visitComponentTree(payload: DevToolsV6PluginAPIHookPayloads[DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE]) {
+    return this.hooks.callHook(DevToolsV6PluginAPIHookKeys.VISIT_COMPONENT_TREE, payload)
   }
 
   // timeline

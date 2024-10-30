@@ -84,11 +84,11 @@ export function createDevToolsHook(): DevToolsHook {
 export function subscribeDevToolsHook() {
   const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__ as DevToolsHook
   // app init hook
-  hook.on<DevToolsEvent[DevToolsHooks.APP_INIT]>(DevToolsHooks.APP_INIT, (app, version) => {
+  hook.on<DevToolsEvent[DevToolsHooks.APP_INIT]>(DevToolsHooks.APP_INIT, (app, version, types) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version)
+    devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version, types)
   })
 
   hook.on<DevToolsEvent[DevToolsHooks.APP_UNMOUNT]>(DevToolsHooks.APP_UNMOUNT, (app) => {

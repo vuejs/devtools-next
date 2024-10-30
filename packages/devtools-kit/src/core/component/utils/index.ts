@@ -1,6 +1,5 @@
 import type { AppRecord, VueAppInstance } from '../../../types'
 import { basename, classify } from '@vue/devtools-shared'
-import { Fragment } from '../../../shared/stub-vue'
 
 function getComponentTypeName(options: VueAppInstance['type']) {
   const name = options.name || options._componentTag || options.__VUE_DEVTOOLS_COMPONENT_GUSSED_NAME__ || options.__name
@@ -56,14 +55,11 @@ export async function getComponentId(options: { app: VueAppInstance, uid: number
 
 export function isFragment(instance: VueAppInstance) {
   const subTreeType = instance.subTree?.type
-  // TODO: resolve static type, the subTree.children of static type will be a string instead of children like Fragment
-  // return subTreeType === Fragment || (
-  //   subTreeType === Static
-  //     // @ts-expect-error vue internal type
-  //     ? instance.subTree.staticCount > 1
-  //     : false
-  // )
-  return subTreeType === Fragment
+  const appRecord = getAppRecord(instance)
+  if (appRecord) {
+    return appRecord?.types?.Fragment === subTreeType
+  }
+  return false
 }
 
 export function isBeingDestroyed(instance: VueAppInstance) {

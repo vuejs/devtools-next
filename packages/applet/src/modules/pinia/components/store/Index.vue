@@ -2,7 +2,7 @@
 import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import { vTooltip, VueInput } from '@vue/devtools-ui'
+import { vTooltip } from '@vue/devtools-ui'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch } from 'vue'
 import DevToolsHeader from '~/components/basic/DevToolsHeader.vue'
@@ -11,18 +11,14 @@ import Navbar from '~/components/basic/Navbar.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 
-import { useCustomInspectorState } from '~/composables/custom-inspector-state'
 import { createExpandedContext } from '~/composables/toggle-expanded'
-import { filterInspectorState } from '~/utils'
-import { PiniaPluginInspectorId } from '../../constants'
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('pinia-store-state')
 
-const inspectorId = PiniaPluginInspectorId
+const inspectorId = 'pinia'
 const nodeActions = ref<CustomInspectorOptions['nodeActions']>([])
 const actions = ref<CustomInspectorOptions['nodeActions']>([])
-const inspectorState = useCustomInspectorState()
 
 const selected = ref('')
 const tree = ref<CustomInspectorNode[]>([])
@@ -30,21 +26,6 @@ const treeNodeLinkedList = computed(() => tree.value?.length ? dfs(tree.value?.[
 const flattenedTreeNodes = computed(() => flattenTreeNodes(tree.value))
 const flattenedTreeNodesIds = computed(() => flattenedTreeNodes.value.map(node => node.id))
 const state = ref<Record<string, CustomInspectorState[]>>({})
-const filterStoreKey = ref('')
-const filterStateKey = ref('')
-
-watch(filterStoreKey, (value, oldValue) => {
-  if (!value.trim().length && !oldValue.trim().length)
-    return
-  getPiniaInspectorTree(value)
-})
-
-const displayState = computed(() => {
-  return filterInspectorState({
-    state: state.value,
-    filterKey: filterStateKey.value,
-  })
-})
 
 const emptyState = computed(() => !state.value.state?.length && !state.value.getters?.length)
 
@@ -137,8 +118,8 @@ watch(selected, () => {
   getPiniaState(selected.value)
 })
 
-function getPiniaInspectorTree(filter: string = '') {
-  rpc.value.getInspectorTree({ inspectorId, filter }).then((_data) => {
+const getPiniaInspectorTree = () => {
+  rpc.value.getInspectorTree({ inspectorId, filter: '' }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
@@ -203,9 +184,8 @@ onUnmounted(() => {
     <Splitpanes class="flex-1 overflow-auto">
       <Pane border="r base" size="40" h-full>
         <div class="h-full flex flex-col p2">
-          <div class="grid grid-cols-[1fr_auto] mb1 items-center gap2 pb1" border="b dashed base">
-            <VueInput v-model="filterStoreKey" :placeholder="inspectorState.treeFilterPlaceholder" />
-            <div v-if="actions?.length" class="flex items-center gap-2 px-1">
+          <div v-if="actions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
+            <div class="flex items-center gap-2 px-1">
               <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
                 <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
               </div>
@@ -218,15 +198,14 @@ onUnmounted(() => {
       </Pane>
       <Pane size="60">
         <div class="h-full flex flex-col p2">
-          <div class="grid grid-cols-[1fr_auto] mb1 items-center gap2 pb1" border="b dashed base">
-            <VueInput v-model="filterStateKey" :placeholder="inspectorState.stateFilterPlaceholder" />
-            <div v-if="nodeActions?.length" class="flex items-center gap-2 px-1">
+          <div v-if="nodeActions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
+            <div class="flex items-center gap-2 px-1">
               <div v-for="(action, index) in nodeActions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callNodeAction(index)">
                 <i :class="`i-ic-baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
               </div>
             </div>
           </div>
-          <RootStateViewer v-if="selected && !emptyState" class="no-scrollbar flex-1 select-none overflow-scroll" :data="displayState" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
+          <RootStateViewer v-if="selected && !emptyState" class="no-scrollbar flex-1 select-none overflow-scroll" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="pinia-store-state" />
           <Empty v-else>
             No Data
           </Empty>

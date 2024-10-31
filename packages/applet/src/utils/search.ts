@@ -1,4 +1,4 @@
-import { CustomInspectorState, INFINITY, isPlainObject, NAN, NEGATIVE_INFINITY, UNDEFINED } from '@vue/devtools-kit'
+import { INFINITY, isPlainObject, NAN, NEGATIVE_INFINITY, UNDEFINED } from '@vue/devtools-kit'
 
 /**
  * Searches a key or value in the object, with a maximum deepness
@@ -131,27 +131,4 @@ function internalSearchArray(array, searchTerm, seen, depth) {
       break
   }
   return match
-}
-
-export function filterInspectorState<T extends CustomInspectorState>(params: {
-  state: Record<string, T[]>
-  filterKey?: string | null | undefined
-  // Each group is a flatten object
-  processGroup?: (item: T[]) => T[]
-}) {
-  const { state, filterKey, processGroup } = params
-  if (!filterKey || !filterKey.trim().length)
-    return state
-  const result = {}
-  for (const groupKey in state) {
-    const group = state[groupKey]
-    const groupFields = group.filter(el => searchDeepInObject({
-      // @ts-expect-error typing weak
-      [el.key]: el.value,
-    }, filterKey))
-    if (groupFields.length) {
-      result[groupKey] = processGroup ? processGroup(groupFields) : groupFields
-    }
-  }
-  return result
 }

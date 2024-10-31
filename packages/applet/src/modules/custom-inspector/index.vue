@@ -68,8 +68,6 @@ function getInspectorInfo() {
         logo: payload?.logo,
         timelineLayerIds: payload?.timelineLayers.map(item => item.id),
         pluginId: props.pluginId,
-        treeFilterPlaceholder: payload.treeFilterPlaceholder,
-        stateFilterPlaceholder: payload.stateFilterPlaceholder,
       }
       inspectorState.value = state
       restoreRouter()

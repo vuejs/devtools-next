@@ -13,6 +13,7 @@ interface DevToolsKitInspector {
   descriptor: PluginDescriptor
   treeFilterPlaceholder: string
   stateFilterPlaceholder: string
+  treeFilter: string
   selectedNodeId: string
   appRecord: unknown
 }
@@ -34,6 +35,7 @@ export function addInspector(inspector: CustomInspectorOptions, descriptor: Plug
     descriptor,
     treeFilterPlaceholder: inspector.treeFilterPlaceholder ?? 'Search tree...',
     stateFilterPlaceholder: inspector.stateFilterPlaceholder ?? 'Search state...',
+    treeFilter: '',
     selectedNodeId: '',
     appRecord: getAppRecord(descriptor.app),
   })

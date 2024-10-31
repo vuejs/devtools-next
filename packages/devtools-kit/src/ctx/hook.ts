@@ -248,7 +248,7 @@ export function createDevToolsCtxHooks() {
     const _payload = {
       app: plugin.descriptor.app,
       inspectorId,
-      filter: inspector?.treeFilter || '',
+      filter: inspector?.treeFilterPlaceholder || '',
       rootNodes: [],
     }
 

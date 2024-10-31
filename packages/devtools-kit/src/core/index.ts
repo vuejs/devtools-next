@@ -33,20 +33,21 @@ export function initDevTools() {
   if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isDevToolsNext)
     return
 
-  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
-    target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
-  }
-  else {
-    // respect old devtools hook in nuxt application
-    if (!isNuxtApp) {
-      // override devtools hook directly
-      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
+  const _devtoolsHook = createDevToolsHook()
+
+  if (target.__VUE_DEVTOOLS_HOOK_REPLAY__) {
+    try {
+      target.__VUE_DEVTOOLS_HOOK_REPLAY__.forEach(cb => cb(_devtoolsHook))
+      target.__VUE_DEVTOOLS_HOOK_REPLAY__ = []
+    }
+    catch (e) {
+      console.error('[vue-devtools] Error during hook replay', e)
     }
   }
 
   // @ts-expect-error skip type check
   // Vue2 app detection
-  target.__VUE_DEVTOOLS_GLOBAL_HOOK__.once('init', (Vue) => {
+  _devtoolsHook.once('init', (Vue) => {
     target.__VUE_DEVTOOLS_VUE2_APP_DETECTED__ = true
 
     console.log('%c[_____Vue DevTools v7 log_____]', 'color: red; font-bold: 600; font-size: 16px;')
@@ -76,7 +77,7 @@ export function initDevTools() {
   onLegacyDevToolsPluginApiAvailable(() => {
     const normalizedPluginBuffer = devtoolsPluginBuffer.filter(([item]) => item.id !== 'components')
     normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
-      target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
+      _devtoolsHook.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
     })
   })
 
@@ -102,7 +103,7 @@ export function initDevTools() {
       connected: true,
     })
 
-    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.push(app)
+    _devtoolsHook.apps.push(app)
   })
 
   hook.on.vueAppUnmount(async (app) => {
@@ -126,7 +127,22 @@ export function initDevTools() {
     removeRegisteredPluginApp(app)
   })
 
-  subscribeDevToolsHook()
+  subscribeDevToolsHook(_devtoolsHook)
+
+  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    Object.defineProperty(target, '__VUE_DEVTOOLS_GLOBAL_HOOK__', {
+      get() {
+        return _devtoolsHook
+      },
+    })
+  }
+  else {
+    // respect old devtools hook in nuxt application
+    if (!isNuxtApp) {
+      // override devtools hook directly
+      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, _devtoolsHook)
+    }
+  }
 }
 
 export function onDevToolsClientConnected(fn: () => void) {

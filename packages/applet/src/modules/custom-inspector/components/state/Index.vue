@@ -13,6 +13,7 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { useCustomInspectorState } from '~/composables/custom-inspector-state'
 import { createExpandedContext } from '~/composables/toggle-expanded'
+import { filterInspectorState } from '~/utils'
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
 const { expanded: expandedStateNodes } = createExpandedContext('custom-inspector-state')
@@ -31,6 +32,24 @@ const selected = ref('')
 
 const state = ref<Record<string, CustomInspectorState[]>>({})
 const emptyState = computed(() => !Object.keys(state.value).length)
+
+const inspectorState = useCustomInspectorState()
+
+const filterTreeKey = ref('')
+const filterStateKey = ref('')
+
+watch(filterTreeKey, (value, oldValue) => {
+  if (!value.trim().length && !oldValue.trim().length)
+    return
+  getInspectorTree(value)
+})
+
+const displayState = computed(() => {
+  return filterInspectorState({
+    state: state.value,
+    filterKey: filterStateKey.value,
+  })
+})
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -120,8 +139,8 @@ watch(selected, () => {
   getInspectorState(selected.value)
 })
 
-const getInspectorTree = () => {
-  rpc.value.getInspectorTree({ inspectorId: inspectorId.value, filter: '' }).then((_data) => {
+function getInspectorTree(filter = '') {
+  rpc.value.getInspectorTree({ inspectorId: inspectorId.value, filter }).then((_data) => {
     const data = parse(_data!)
     tree.value = data
     if (!selected.value && data.length) {
@@ -183,8 +202,9 @@ onUnmounted(() => {
       <Splitpanes class="flex-1 overflow-auto">
         <Pane border="r base" size="40" h-full>
           <div class="h-full flex flex-col p2">
-            <div v-if="actions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
-              <div class="flex items-center gap-2 px-1">
+            <div class="grid grid-cols-[1fr_auto] mb1 items-center gap2 pb1" border="b dashed base">
+              <VueInput v-model="filterTreeKey" :placeholder="inspectorState.treeFilterPlaceholder" />
+              <div v-if="actions?.length" class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in actions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callAction(index)">
                   <VueIcIcon :name="`baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
                 </div>
@@ -197,14 +217,15 @@ onUnmounted(() => {
         </Pane>
         <Pane size="60">
           <div class="h-full flex flex-col p2">
-            <div v-if="nodeActions?.length" class="mb-1 flex justify-end pb-1" border="b dashed base">
-              <div class="flex items-center gap-2 px-1">
+            <div class="grid grid-cols-[1fr_auto] mb1 items-center gap2 pb1" border="b dashed base">
+              <VueInput v-model="filterStateKey" :placeholder="inspectorState.stateFilterPlaceholder" />
+              <div v-if="nodeActions?.length" class="flex items-center gap-2 px-1">
                 <div v-for="(action, index) in nodeActions" :key="index" v-tooltip.bottom-end="{ content: action.tooltip }" class="flex items-center gap1" @click="callNodeAction(index)">
                   <VueIcIcon :name="`baseline-${action.icon.replace(/\_/g, '-')}`" cursor-pointer op70 text-base hover:op100 />
                 </div>
               </div>
             </div>
-            <RootStateViewer v-if="selected && !emptyState" :data="state" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="custom-inspector-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
+            <RootStateViewer v-if="selected && !emptyState" :data="displayState" :node-id="selected" :inspector-id="inspectorId" expanded-state-id="custom-inspector-state" class="no-scrollbar flex-1 select-none overflow-scroll" />
             <Empty v-else>
               No Data
             </Empty>

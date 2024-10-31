@@ -17,7 +17,7 @@ import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
 import { createSelectedContext } from '~/composables/select'
 import { createExpandedContext } from '~/composables/toggle-expanded'
-import { searchDeepInObject } from '~/utils'
+import { filterInspectorState } from '~/utils'
 import ComponentRenderCode from './components/RenderCode.vue'
 
 const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd'])
@@ -104,27 +104,14 @@ const activeTreeNode = computed(() => {
 })
 const activeTreeNodeFilePath = computed(() => activeTreeNode.value?.file ?? '')
 
-const filteredState = computed(() => {
-  const result = {}
-  for (const groupKey in activeComponentState.value) {
-    const group = activeComponentState.value[groupKey]
-    const groupFields = group.filter((el) => {
-      try {
-        return searchDeepInObject({
-          [el.key]: el.value,
-        }, filterStateName.value)
-      }
-      catch (e) {
-        return {
-          [el.key]: e,
-        }
-      }
-    })
-    const normalized = flatten(Object.values(groupBy(sortByKey(groupFields), 'stateType')))
-    if (groupFields.length)
-      result[groupKey] = normalized
-  }
-  return result
+const displayState = computed(() => {
+  return filterInspectorState({
+    state: activeComponentState.value,
+    filterKey: filterStateName.value,
+    processGroup(groupFields) {
+      return flatten(Object.values(groupBy(sortByKey(groupFields), 'stateType')))
+    },
+  })
 })
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
@@ -357,7 +344,7 @@ function toggleApp(id: string) {
               <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
-          <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+          <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="displayState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
         <ComponentRenderCode v-if="componentRenderCodeVisible && componentRenderCode" :code="componentRenderCode" @close="closeComponentRenderCode" />
       </Pane>

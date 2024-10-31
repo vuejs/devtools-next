@@ -11,7 +11,8 @@ import { devtoolsTimelineLayers } from './timeline'
 interface DevToolsKitInspector {
   options: CustomInspectorOptions
   descriptor: PluginDescriptor
-  treeFilter: string
+  treeFilterPlaceholder: string
+  stateFilterPlaceholder: string
   selectedNodeId: string
   appRecord: unknown
 }
@@ -31,7 +32,8 @@ export function addInspector(inspector: CustomInspectorOptions, descriptor: Plug
   devtoolsInspector.push({
     options: inspector,
     descriptor,
-    treeFilter: '',
+    treeFilterPlaceholder: inspector.treeFilterPlaceholder ?? 'Search tree...',
+    stateFilterPlaceholder: inspector.stateFilterPlaceholder ?? 'Search state...',
     selectedNodeId: '',
     appRecord: getAppRecord(descriptor.app),
   })
@@ -76,6 +78,8 @@ export function getInspectorInfo(id: string) {
     packageName: descriptor.packageName,
     homepage: descriptor.homepage,
     timelineLayers,
+    treeFilterPlaceholder: inspector.treeFilterPlaceholder,
+    stateFilterPlaceholder: inspector.stateFilterPlaceholder,
   }
 }
 

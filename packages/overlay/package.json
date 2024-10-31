@@ -30,7 +30,7 @@
     "@iconify/json": "^2.2.262",
     "@types/node": "^20.16.14",
     "@vitejs/plugin-vue": "^5.1.4",
-    "sass": "^1.80.3",
+    "sass-embedded": "^1.80.5",
     "vite": "^5.4.9",
     "vue": "^3.5.12"
   }

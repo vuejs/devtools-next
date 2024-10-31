@@ -22,7 +22,7 @@
     "@tanstack/vue-query-devtools": "^5.59.13",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/devtools": "workspace:^",
-    "sass": "^1.80.3",
+    "sass-embedded": "^1.80.5",
     "serve": "^14.2.4",
     "typescript": "^5.6.3",
     "unocss": "^0.63.4",

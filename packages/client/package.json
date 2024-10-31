@@ -55,7 +55,7 @@
     "floating-vue": "5.2.2",
     "ohash": "^1.1.4",
     "pinia": "^2.2.4",
-    "sass": "^1.80.3",
+    "sass-embedded": "^1.80.5",
     "simple-git-hooks": "^2.11.1",
     "unocss": "^0.63.4",
     "unplugin": "^1.14.1",

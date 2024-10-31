@@ -2,7 +2,7 @@
 import type { CustomInspectorNode, CustomInspectorOptions, CustomInspectorState } from '@vue/devtools-kit'
 import { DevToolsMessagingEvents, onRpcConnected, rpc } from '@vue/devtools-core'
 import { parse } from '@vue/devtools-kit'
-import { vTooltip, VueIcIcon } from '@vue/devtools-ui'
+import { vTooltip, VueIcIcon, VueInput } from '@vue/devtools-ui'
 import { until } from '@vueuse/core'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch } from 'vue'
@@ -151,7 +151,7 @@ function getInspectorTree(filter = '') {
   })
 }
 
-until(inspectorId).toBeTruthy().then(getInspectorTree)
+until(inspectorId).toBeTruthy().then(() => getInspectorTree())
 
 function onInspectorTreeUpdated(_data: string) {
   const data = parse(_data) as {
@@ -198,7 +198,10 @@ onUnmounted(() => {
     <DevToolsHeader :doc-link="customInspectState.homepage!">
       <Navbar />
     </DevToolsHeader>
-    <template v-if="tree.length">
+    <Empty v-if="!tree.length && !filterTreeKey.trim().length">
+      No Data
+    </Empty>
+    <template v-else>
       <Splitpanes class="flex-1 overflow-auto">
         <Pane border="r base" size="40" h-full>
           <div class="h-full flex flex-col p2">
@@ -210,9 +213,12 @@ onUnmounted(() => {
                 </div>
               </div>
             </div>
-            <div class="no-scrollbar flex-1 select-none overflow-scroll">
+            <div v-if="tree.length" class="no-scrollbar flex-1 select-none overflow-scroll">
               <ComponentTree v-model="selected" :data="tree" />
             </div>
+            <Empty v-else>
+              No Data
+            </Empty>
           </div>
         </Pane>
         <Pane size="60">
@@ -233,8 +239,5 @@ onUnmounted(() => {
         </Pane>
       </Splitpanes>
     </template>
-    <Empty v-else>
-      No Data
-    </Empty>
   </div>
 </template>

@@ -61,7 +61,7 @@ function resolveMergedOptions(
  */
 function processProps(instance: VueAppInstance) {
   const props: InspectorState[] = []
-  const propDefinitions = instance.type.props
+  const propDefinitions = instance?.type?.props
 
   for (const key in instance.props) {
     const propDefinition = propDefinitions ? propDefinitions[key] : null

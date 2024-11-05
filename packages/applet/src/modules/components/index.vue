@@ -342,7 +342,7 @@ function toggleApp(id: string) {
             <!-- component name -->
             <span v-if="activeTreeNode?.name" class="font-state-field flex items-center px-1 text-3.5">
               <span class="text-gray-400 dark:text-gray-600">&lt;</span>
-              <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis ws-nowrap [.active_&]:(text-white)">{{ activeTreeNode.name }}</span>
+              <span group-hover:text-white class="max-w-40 of-hidden text-ellipsis ws-nowrap text-green-500 dark:text-green-600 [.active_&]:(text-white!)">{{ activeTreeNode.name }}</span>
               <span class="text-gray-400 dark:text-gray-600">&gt;</span>
             </span>
 

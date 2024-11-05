@@ -61,11 +61,11 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'x-divider': 'h-1px w-full bg-gray/15',
 
     // glass
-    'glass-effect': 'backdrop-blur-6 bg-white/80 dark:bg-[#121212]/90',
+    'glass-effect': 'backdrop-blur-6 bg-white/80 dark:bg-#212427/90',
     'navbar-glass': 'sticky z-10 top-0 glass-effect',
 
     // code
-    'code-block': 'dark:bg-[#121212] bg-white',
+    'code-block': 'dark:bg-#212427 bg-white',
 
     // panel grids
     'panel-grids': 'panel-grids-light dark:panel-grids-dark',

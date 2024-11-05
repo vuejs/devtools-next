@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.267",
-    "@types/node": "^20.17.6",
+    "@types/node": "^22.9.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "sass-embedded": "^1.80.6",
     "vite": "^5.4.10",

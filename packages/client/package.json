@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.267",
-    "@types/node": "^20.17.6",
+    "@types/node": "^22.9.0",
     "@types/splitpanes": "^2.2.6",
     "@unocss/core": "^0.63.6",
     "@unocss/reset": "^0.63.6",

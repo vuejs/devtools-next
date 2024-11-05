@@ -51,8 +51,8 @@ export default defineConfig(mergeConfigs([unoConfig, {
   ],
   shortcuts: [{
     // general
-    'bg-base': 'bg-white dark:bg-[#121212]',
-    'text-base': 'text-black dark:text-white',
+    'bg-base': 'bg-white dark:bg-#212427',
+    'text-base': 'text-black dark:text-#dfe0e2',
     'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
     'navbar-base': 'border-b border-base h-50px',

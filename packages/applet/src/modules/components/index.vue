@@ -8,7 +8,7 @@ import {
 import { parse } from '@vue/devtools-kit'
 import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
 import { vTooltip, VueButton, VueDialog, VueInput } from '@vue/devtools-ui'
-import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
+import { useElementSize, useEventListener, useToggle, watchDebounced } from '@vueuse/core'
 import { flatten, groupBy } from 'lodash-es'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
@@ -236,6 +236,15 @@ function cancelInspectComponentInspector() {
   inspectComponentTipVisible.value = false
   rpc.value.cancelInspectComponentInspector()
 }
+
+useEventListener('keydown', (event) => {
+  if ((event.key === 's') && (event.ctrlKey || event.metaKey) && !inspectComponentTipVisible.value) {
+    inspectComponentInspector()
+  }
+  else if (event.key === 'Escape' && inspectComponentTipVisible.value) {
+    cancelInspectComponentInspector()
+  }
+})
 
 function scrollToComponent() {
   rpc.value.scrollToComponent(activeComponentId.value)

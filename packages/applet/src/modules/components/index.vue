@@ -15,6 +15,7 @@ import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { useComponentHighlight } from '~/composables/component-highlight'
 import { createSelectedContext } from '~/composables/select'
 import { createExpandedContext } from '~/composables/toggle-expanded'
 import { filterInspectorState } from '~/utils'
@@ -34,6 +35,7 @@ const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
 const componentRenderCode = ref('')
 const componentRenderCodeVisible = ref(false)
+const highlighter = useComponentHighlight()
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -321,7 +323,7 @@ function toggleApp(id: string) {
             </button>
           </div>
           <div ref="componentTreeContainer" class="no-scrollbar flex-1 select-none overflow-scroll">
-            <ComponentTree v-model="activeComponentId" :data="tree" :with-tag="true" />
+            <ComponentTree v-model="activeComponentId" :data="tree" :with-tag="true" @hover="highlighter.highlight" @leave="highlighter.unhighlight" />
           </div>
         </div>
       </Pane>

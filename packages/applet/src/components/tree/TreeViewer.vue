@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
   depth: 0,
   withTag: false,
 })
+const emit = defineEmits(['hover', 'leave'])
 const selectedNodeId = defineModel()
 const { expanded, toggleExpanded } = useToggleExpanded()
 const { select: _select } = useSelect()
@@ -43,6 +44,8 @@ function select(id: string) {
       :class="{ 'bg-primary-600! active': selectedNodeId === item.id }"
       @click="select(item.id)"
       @dblclick="toggleExpanded(item.id)"
+      @mouseover="() => emit('hover', item.id)"
+      @mouseleave="() => emit('leave')"
     >
       <ToggleExpanded
         v-if="item?.children?.length"
@@ -86,7 +89,9 @@ function select(id: string) {
     <div
       v-if="item?.children?.length && expanded.includes(item.id)"
     >
-      <ComponentTreeViewer v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" :with-tag="withTag" />
+      <ComponentTreeViewer
+        v-model="selectedNodeId" :data="item?.children" :depth="depth + 1" :with-tag="withTag" @hover="(id) => emit('hover', id)" @leave="emit('leave')"
+      />
     </div>
   </div>
 </template>

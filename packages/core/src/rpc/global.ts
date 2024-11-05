@@ -155,8 +155,11 @@ export const functions = {
   getInspectorInfo(id: string) {
     return getInspectorInfo(id)
   },
+  highlighComponent(uid: string) {
+    return devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_HIGHLIGHT, { uid })
+  },
   unhighlight() {
-    devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
+    return devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
   },
   updateDevToolsClientDetected(params: Record<string, boolean>) {
     updateDevToolsClientDetected(params)

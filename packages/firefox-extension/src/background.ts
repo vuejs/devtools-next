@@ -92,6 +92,14 @@ chrome.runtime.onMessage.addListener((req, sender) => {
       tabId: sender.tab.id,
       popup: 'popups/vue2-migration-guide.html',
     })
+    chrome.browserAction.setIcon({
+      tabId: sender.tab.id,
+      path: {
+        16: `icons/16.png`,
+        48: `icons/48.png`,
+        128: `icons/128.png`,
+      },
+    })
   }
 
   if (sender.tab && req.vueDetected) {

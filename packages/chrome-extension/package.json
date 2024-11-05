@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-chrome-extension",
   "type": "module",
-  "version": "7.6.2",
+  "version": "7.6.3",
   "private": true,
   "author": "webfansplz",
   "license": "MIT",

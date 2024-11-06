@@ -50,7 +50,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'code-block': 'dark:bg-#212427 bg-white',
 
     // state
-    'string-state-type': 'text-#e74c3c dark:(text-#c41a16)',
+    'string-state-type': 'text-#e74c3c dark:(text-#FFB980)',
     'literal-state-type': 'text-#03c dark:(text-#997fff)',
     'boolean-state-type': 'text-#27ae60 dark:(text-#abebc6)',
     'null-state-type': 'text-#999',

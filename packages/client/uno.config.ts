@@ -80,7 +80,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     'state-value': 'text-#444 dark:(text-#bdc6cf)',
     'state-value-label': 'text-gray-500',
     'state-value-literal': 'text-#03c dark:(text-#997fff)',
-    'state-value-string': 'text-#c41a16',
+    'state-value-string': 'text-#FFB980',
   }, [/^theme-card-(\w+)$/, $ => `p2 flex gap2 border border-base bg-base items-center rounded min-w-40 min-h-25 justify-center transition-all saturate-0 op50 shadow hover:(op100 bg-${$[1]}/10 text-${$[1]}6 saturate-100)`]],
   presets: [
     presetAttributify(),

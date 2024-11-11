@@ -50,7 +50,7 @@ const { expanded, toggleExpanded } = useToggleExpanded(props.expandedStateId)
         />
         <!-- placeholder -->
         <span v-else pl5 />
-        <span font-state-field text-3.5>
+        <span font-state-field text-3.5 text-hex-a3a3a3>
           {{ key }}
         </span>
       </div>

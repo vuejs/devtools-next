@@ -22,7 +22,7 @@ export function getFunctionDetails(func: Function) {
   return {
     _custom: {
       type: 'function' satisfies customTypeEnums,
-      displayText: `<span style="opacity:.5;margin-right:5px;">function</span> <span style="white-space:nowrap;">${escape(name)}${args}</span>`,
+      displayText: `<span style="opacity:.8;margin-right:5px;">function</span> <span style="white-space:nowrap;">${escape(name)}${args}</span>`,
       tooltipText: string.trim() ? `<pre>${string}</pre>` : null,
     },
   }

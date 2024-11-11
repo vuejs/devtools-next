@@ -57,7 +57,7 @@ function select(id: string) {
       <span v-else pl5 />
       <span font-state-field text-3.5>
         <span v-if="withTag" class="text-gray-400 dark:text-gray-600 group-hover:(text-white op50) [.active_&]:(op50 text-white!)">&lt;</span>
-        <span class="ws-nowrap text-green-500 dark:text-green-600 group-hover:text-white [.active_&]:text-white!">{{ normalizeLabel(item) }}</span>
+        <span group-hover:text-white class="ws-nowrap [.active_&]:(text-white)">{{ normalizeLabel(item) }}</span>
         <!-- @vue-expect-error skip type check -->
         <span
           v-if="(item.renderKey === 0 || !!item.renderKey) && item.renderKey !== UNDEFINED"

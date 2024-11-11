@@ -38,7 +38,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
   ],
   shortcuts: [{
     // general
-    'bg-base': 'bg-white dark:bg-#212427',
+    'bg-base': 'bg-white dark:bg-#121212',
     'text-base': 'text-black dark:text-#dfe0e2',
     'bg-active': 'bg-gray:5',
     'border-base': 'border-gray/20',
@@ -47,7 +47,7 @@ export default defineConfig(mergeConfigs([unoConfig, {
     // selective list
     'selectable-item': 'flex items-center px-2 py-1 rounded cursor-pointer hover:bg-primary-200 dark:(hover:bg-gray-800) @active:(text-white bg-primary-600 hover:(text-white bg-primary-600))',
 
-    'code-block': 'dark:bg-#212427 bg-white',
+    'code-block': 'dark:bg-#121212 bg-white',
 
     // state
     'string-state-type': 'text-#e74c3c dark:(text-#FFB980)',

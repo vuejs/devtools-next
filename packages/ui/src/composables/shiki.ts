@@ -48,10 +48,6 @@ export function renderCodeHighlight(code: string, lang: BuiltinLanguage | 'text'
         dark: 'vitesse-dark',
         light: 'vitesse-light',
       },
-      colorReplacements: {
-        // vitesse-dark bg color
-        '#121212': 'transparent',
-      },
     }),
     supported: true,
   }

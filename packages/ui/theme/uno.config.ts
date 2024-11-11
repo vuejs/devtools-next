@@ -44,7 +44,7 @@ export const unoConfig = {
     '$ui-z-max-override': 'z-2147483647',
 
     // general
-    '$ui-bg-base': 'bg-white dark:bg-#212427',
+    '$ui-bg-base': 'bg-white dark:bg-#121212',
     '$ui-base': 'box-border font-inherit',
     '$ui-transition': 'transition-all duration-300 ease-in-out',
     '$ui-borderless': '!border-transparent !shadow-none',

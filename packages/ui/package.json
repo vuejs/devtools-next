@@ -48,17 +48,17 @@
     "@vueuse/core": "^11.2.0",
     "@vueuse/integrations": "^11.2.0",
     "colord": "^2.9.3",
-    "focus-trap": "^7.6.0"
+    "focus-trap": "^7.6.1"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@iconify-json/ic": "^1.2.1",
     "@types/node": "^22.9.0",
-    "@unocss/reset": "^0.63.6",
-    "@vitejs/plugin-vue": "^5.1.4",
+    "@unocss/reset": "^0.64.0",
+    "@vitejs/plugin-vue": "^5.1.5",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.17",
-    "unocss": "^0.63.6",
+    "unocss": "^0.64.0",
     "vite-plugin-dts": "^3.9.1"
   }
 }

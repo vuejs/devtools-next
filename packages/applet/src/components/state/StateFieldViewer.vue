@@ -38,7 +38,7 @@ const stateFormatClass = computed(() => {
   if (type.value === 'custom')
     return `${(props.data.value as InspectorCustomState)._custom?.type ?? 'string'}-custom-state`
   else
-    return ``
+    return 'unknown-state-type'
 })
 
 const fieldsCount = computed(() => {
@@ -199,12 +199,12 @@ async function submitDrafting() {
       />
       <!-- placeholder -->
       <span v-else pl5 />
-      <span op70 class="whitespace-nowrap">
+      <span whitespace-nowrap text-purple-700 op70 dark:text-purple-300>
         {{ normalizedDisplayedKey }}
       </span>
       <span mx1>:</span>
       <StateFieldInputEditor v-if="editing" v-model="editingText" class="mr-1" :custom-type="raw.customType" @cancel="toggleEditing" @submit="submit" />
-      <span :class="stateFormatClass" class="flex whitespace-nowrap">
+      <span :class="stateFormatClass" class="flex whitespace-nowrap dark:text-#bdc6cf">
         <span class="flex" v-html="normalizedDisplayedValue" />
       </span>
       <StateFieldEditor
@@ -230,6 +230,17 @@ async function submitDrafting() {
     </div>
   </div>
 </template>
+
+<style lang="scss">
+// Maybe related https://github.com/vuejs/core/issues/12241
+// Let's leave it global for now, until it's fixed
+// This will compiled to `.dark[v-xxx] selectors` if using scoped
+.function-custom-state {
+  & > span {
+    --at-apply: 'dark:text-#997fff!';
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 // string

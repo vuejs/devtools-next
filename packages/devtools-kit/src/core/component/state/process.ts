@@ -61,15 +61,16 @@ function resolveMergedOptions(
  */
 function processProps(instance: VueAppInstance) {
   const props: InspectorState[] = []
-  const propDefinitions = instance.type.props
+  const propDefinitions = instance?.type?.props
 
-  for (const key in instance.props) {
+  for (const key in instance?.props) {
     const propDefinition = propDefinitions ? propDefinitions[key] : null
     const camelizeKey = camelize(key)
     props.push({
       type: 'props',
       key: camelizeKey,
       value: returnError(() => instance.props[key]),
+      editable: true,
       meta: propDefinition
         ? {
             type: propDefinition.type ? getPropType(propDefinition.type) : 'any',
@@ -95,7 +96,7 @@ function processProps(instance: VueAppInstance) {
  */
 function processState(instance: VueAppInstance) {
   const type = instance.type
-  const props = type.props
+  const props = type?.props
   const getters
     = type.vuex
     && type.vuex.getters

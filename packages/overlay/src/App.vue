@@ -22,7 +22,7 @@ const panelState = ref<{
 const cssVars = computed(() => {
   const dark = mode.value === 'dark'
   return {
-    '--vue-devtools-widget-bg': dark ? '#111' : '#ffffff',
+    '--vue-devtools-widget-bg': dark ? '#121212' : '#ffffff',
     '--vue-devtools-widget-fg': dark ? '#F5F5F5' : '#111',
     '--vue-devtools-widget-border': dark ? '#3336' : '#efefef',
     '--vue-devtools-widget-shadow': dark ? 'rgba(0,0,0,0.3)' : 'rgba(128,128,128,0.1)',

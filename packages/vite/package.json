@@ -1,18 +1,18 @@
 {
   "name": "vite-plugin-vue-devtools",
   "type": "module",
-  "version": "7.5.4",
+  "version": "7.6.4",
   "description": "A vite plugin for Vue DevTools",
   "author": "webfansplz",
   "license": "MIT",
-  "homepage": "https://github.com/vuejs/devtools-next#readme",
+  "homepage": "https://github.com/vuejs/devtools#readme",
   "repository": {
     "directory": "packages/vite",
     "type": "git",
-    "url": "git+https://github.com/vuejs/devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools.git"
   },
   "bugs": {
-    "url": "https://github.com/vuejs/devtools-next/issues"
+    "url": "https://github.com/vuejs/devtools/issues"
   },
   "keywords": [
     "vue-devtools",
@@ -59,7 +59,7 @@
     "vite-plugin-vue-inspector": "^5.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.16.14",
+    "@types/node": "^22.9.0",
     "fast-glob": "^3.3.2",
     "image-meta": "^0.2.1",
     "pathe": "^1.1.2"

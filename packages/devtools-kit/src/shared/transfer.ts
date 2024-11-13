@@ -13,7 +13,7 @@ function isArray(_data: unknown, proto: string): _data is unknown[] {
 
 // See https://github1s.com/vuejs/core/blob/HEAD/packages/reactivity/src/dep.ts#L32-L33
 function isVueReactiveLinkNode(node) {
-  const constructorName = node.constructor.name
+  const constructorName = node?.constructor?.name
   return (constructorName === 'Dep' && 'activeLink' in node) || (constructorName === 'Link' && 'dep' in node)
 }
 

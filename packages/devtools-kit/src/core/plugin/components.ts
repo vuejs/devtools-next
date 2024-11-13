@@ -37,6 +37,7 @@ export function createComponentsDevToolsPlugin(app: App): [PluginDescriptor, Plu
             // @TODO: should make this configurable?
             maxDepth: 100,
             recursively: false,
+            api,
           })
           // @ts-expect-error skip type @TODO
           payload.rootNodes = await walker.getComponentTree(instance)

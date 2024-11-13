@@ -145,6 +145,8 @@ export function toggleComponentHighLighter(options: ComponentHighLighterOptions)
 
 export function highlight(instance: VueAppInstance) {
   const bounds = getComponentBoundingRect(instance)
+  if (!bounds.width && !bounds.height)
+    return
   const name = getInstanceName(instance)
   const container = getContainerElement()
   container ? update({ bounds, name }) : create({ bounds, name })

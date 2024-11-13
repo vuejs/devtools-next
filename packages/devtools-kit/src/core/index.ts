@@ -33,30 +33,33 @@ export function initDevTools() {
   if (target.__VUE_DEVTOOLS_GLOBAL_HOOK__ && isDevToolsNext)
     return
 
-  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
-    target.__VUE_DEVTOOLS_GLOBAL_HOOK__ = createDevToolsHook()
-  }
-  else {
-    // respect old devtools hook in nuxt application
-    if (!isNuxtApp) {
-      // override devtools hook directly
-      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, createDevToolsHook())
+  const _devtoolsHook = createDevToolsHook()
+
+  if (target.__VUE_DEVTOOLS_HOOK_REPLAY__) {
+    try {
+      target.__VUE_DEVTOOLS_HOOK_REPLAY__.forEach(cb => cb(_devtoolsHook))
+      target.__VUE_DEVTOOLS_HOOK_REPLAY__ = []
+    }
+    catch (e) {
+      console.error('[vue-devtools] Error during hook replay', e)
     }
   }
 
   // @ts-expect-error skip type check
   // Vue2 app detection
-  target.__VUE_DEVTOOLS_GLOBAL_HOOK__.once('init', (Vue) => {
-    console.log('%c[_____Vue DevTools v7 log_____]', 'color: red; font-bold: 700; font-size: 20px;')
+  _devtoolsHook.once('init', (Vue) => {
+    target.__VUE_DEVTOOLS_VUE2_APP_DETECTED__ = true
 
-    console.log('%cVue DevTools v7 detected in your Vue2 project. v7 only supports Vue3 and will not work.', 'font-bold: 700; font-size: 16px;')
+    console.log('%c[_____Vue DevTools v7 log_____]', 'color: red; font-bold: 600; font-size: 16px;')
+
+    console.log('%cVue DevTools v7 detected in your Vue2 project. v7 only supports Vue3 and will not work.', 'font-bold: 500; font-size: 14px;')
 
     const url = 'https://chromewebstore.google.com/detail/vuejs-devtools/iaajmlceplecbljialhhkmedjlpdblhp'
-    console.log(`%cThe legacy version that supports both Vue 2 and Vue 3 has been moved to %c ${url}`, 'font-size: 16px;', 'text-decoration: underline; cursor: pointer;font-size: 16px;')
+    console.log(`%cThe legacy version that supports both Vue 2 and Vue 3 has been moved to %c ${url}`, 'font-size: 14px;', 'text-decoration: underline; cursor: pointer;font-size: 14px;')
 
-    console.log('%cPlease install and enable only the legacy version for your Vue2 app.', 'font-bold: 700; font-size: 16px;')
+    console.log('%cPlease install and enable only the legacy version for your Vue2 app.', 'font-bold: 500; font-size: 14px;')
 
-    console.log('%c[_____Vue DevTools v7 log_____]', 'color: red; font-bold: 700; font-size: 20px;')
+    console.log('%c[_____Vue DevTools v7 log_____]', 'color: red; font-bold: 600; font-size: 16px;')
   })
 
   hook.on.setupDevtoolsPlugin((pluginDescriptor, setupFn) => {
@@ -74,13 +77,13 @@ export function initDevTools() {
   onLegacyDevToolsPluginApiAvailable(() => {
     const normalizedPluginBuffer = devtoolsPluginBuffer.filter(([item]) => item.id !== 'components')
     normalizedPluginBuffer.forEach(([pluginDescriptor, setupFn]) => {
-      target.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
+      _devtoolsHook.emit(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, pluginDescriptor, setupFn, { target: 'legacy' })
     })
   })
 
   // create app record
-  hook.on.vueAppInit(async (app, version) => {
-    const appRecord = createAppRecord(app)
+  hook.on.vueAppInit(async (app, version, types) => {
+    const appRecord = createAppRecord(app, types)
     const normalizedAppRecord = {
       ...appRecord,
       app,
@@ -100,7 +103,7 @@ export function initDevTools() {
       connected: true,
     })
 
-    target.__VUE_DEVTOOLS_GLOBAL_HOOK__.apps.push(app)
+    _devtoolsHook.apps.push(app)
   })
 
   hook.on.vueAppUnmount(async (app) => {
@@ -124,7 +127,22 @@ export function initDevTools() {
     removeRegisteredPluginApp(app)
   })
 
-  subscribeDevToolsHook()
+  subscribeDevToolsHook(_devtoolsHook)
+
+  if (!target.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    Object.defineProperty(target, '__VUE_DEVTOOLS_GLOBAL_HOOK__', {
+      get() {
+        return _devtoolsHook
+      },
+    })
+  }
+  else {
+    // respect old devtools hook in nuxt application
+    if (!isNuxtApp) {
+      // override devtools hook directly
+      Object.assign(__VUE_DEVTOOLS_GLOBAL_HOOK__, _devtoolsHook)
+    }
+  }
 }
 
 export function onDevToolsClientConnected(fn: () => void) {

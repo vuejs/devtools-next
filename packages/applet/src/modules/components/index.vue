@@ -8,16 +8,17 @@ import {
 import { parse } from '@vue/devtools-kit'
 import { isInChromePanel, isInSeparateWindow, sortByKey } from '@vue/devtools-shared'
 import { vTooltip, VueButton, VueDialog, VueInput } from '@vue/devtools-ui'
-import { useElementSize, useToggle, watchDebounced } from '@vueuse/core'
+import { useElementSize, useEventListener, useToggle, watchDebounced } from '@vueuse/core'
 import { flatten, groupBy } from 'lodash-es'
 import { Pane, Splitpanes } from 'splitpanes'
 import { computed, onUnmounted, ref, watch, watchEffect } from 'vue'
 import SelectiveList from '~/components/basic/SelectiveList.vue'
 import RootStateViewer from '~/components/state/RootStateViewer.vue'
 import ComponentTree from '~/components/tree/TreeViewer.vue'
+import { useComponentHighlight } from '~/composables/component-highlight'
 import { createSelectedContext } from '~/composables/select'
 import { createExpandedContext } from '~/composables/toggle-expanded'
-import { searchDeepInObject } from '~/utils'
+import { filterInspectorState } from '~/utils'
 import ComponentRenderCode from './components/RenderCode.vue'
 
 const emit = defineEmits(['openInEditor', 'onInspectComponentStart', 'onInspectComponentEnd'])
@@ -34,6 +35,7 @@ const componentTreeLoaded = ref(false)
 const inspectComponentTipVisible = ref(false)
 const componentRenderCode = ref('')
 const componentRenderCodeVisible = ref(false)
+const highlighter = useComponentHighlight()
 
 // tree
 function dfs(node: { id: string, children?: { id: string }[] }, path: string[] = [], linkedList: string[][] = []) {
@@ -104,27 +106,14 @@ const activeTreeNode = computed(() => {
 })
 const activeTreeNodeFilePath = computed(() => activeTreeNode.value?.file ?? '')
 
-const filteredState = computed(() => {
-  const result = {}
-  for (const groupKey in activeComponentState.value) {
-    const group = activeComponentState.value[groupKey]
-    const groupFields = group.filter((el) => {
-      try {
-        return searchDeepInObject({
-          [el.key]: el.value,
-        }, filterStateName.value)
-      }
-      catch (e) {
-        return {
-          [el.key]: e,
-        }
-      }
-    })
-    const normalized = flatten(Object.values(groupBy(sortByKey(groupFields), 'stateType')))
-    if (groupFields.length)
-      result[groupKey] = normalized
-  }
-  return result
+const displayState = computed(() => {
+  return filterInspectorState({
+    state: activeComponentState.value,
+    filterKey: filterStateName.value,
+    processGroup(groupFields) {
+      return flatten(Object.values(groupBy(sortByKey(groupFields), 'stateType')))
+    },
+  })
 })
 
 const { expanded: expandedTreeNodes } = createExpandedContext()
@@ -248,6 +237,15 @@ function cancelInspectComponentInspector() {
   rpc.value.cancelInspectComponentInspector()
 }
 
+useEventListener('keydown', (event) => {
+  if ((event.key === 's') && (event.ctrlKey || event.metaKey) && !inspectComponentTipVisible.value) {
+    inspectComponentInspector()
+  }
+  else if (event.key === 'Escape' && inspectComponentTipVisible.value) {
+    cancelInspectComponentInspector()
+  }
+})
+
 function scrollToComponent() {
   rpc.value.scrollToComponent(activeComponentId.value)
 }
@@ -334,7 +332,7 @@ function toggleApp(id: string) {
             </button>
           </div>
           <div ref="componentTreeContainer" class="no-scrollbar flex-1 select-none overflow-scroll">
-            <ComponentTree v-model="activeComponentId" :data="tree" :with-tag="true" />
+            <ComponentTree v-model="activeComponentId" :data="tree" :with-tag="true" @hover="highlighter.highlight" @leave="highlighter.unhighlight" />
           </div>
         </div>
       </Pane>
@@ -357,7 +355,7 @@ function toggleApp(id: string) {
               <i v-if="activeTreeNodeFilePath" v-tooltip.bottom="'Open in Editor'" class="i-carbon-launch h-4 w-4 cursor-pointer hover:(op-70)" @click="openInEditor" />
             </div>
           </div>
-          <RootStateViewer class="no-scrollbar flex-1 select-none overflow-scroll" :data="filteredState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
+          <RootStateViewer class="no-scrollbar flex-1 overflow-scroll" :data="displayState" :node-id="activeComponentId" :inspector-id="inspectorId" expanded-state-id="component-state" />
         </div>
         <ComponentRenderCode v-if="componentRenderCodeVisible && componentRenderCode" :code="componentRenderCode" @close="closeComponentRenderCode" />
       </Pane>

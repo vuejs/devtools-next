@@ -1,13 +1,13 @@
 {
   "name": "@vue/devtools-core",
   "type": "module",
-  "version": "7.5.4",
+  "version": "7.6.4",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
     "directory": "packages/core",
     "type": "git",
-    "url": "git+https://github.com/vuejs/devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools.git"
   },
   "exports": {
     ".": {

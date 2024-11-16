@@ -22,6 +22,15 @@ function trigger() {
 }
 
 const toRefObj = toRefs(obj)
+const topLevelProxy = new Proxy({
+  foo() {
+    return 'foo'
+  },
+}, {
+  get(target, key) {
+    return target[key]()
+  },
+})
 </script>
 
 <template>

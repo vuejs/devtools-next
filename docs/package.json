@@ -8,10 +8,10 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
-    "@unocss/reset": "^0.64.0",
-    "@vueuse/core": "^11.2.0",
+    "@unocss/reset": "^0.64.1",
+    "@vueuse/core": "^11.3.0",
     "unplugin-vue-components": "^0.27.4",
     "vitepress": "1.5.0",
-    "vue": "^3.5.12"
+    "vue": "^3.5.13"
   }
 }

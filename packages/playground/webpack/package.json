@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "core-js": "^3.39.0",
-    "vue": "^3.5.12"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -23,8 +23,8 @@
     "@vue/cli-service": "~5.0.8",
     "@vue/devtools": "workspace:*",
     "@vue/devtools-api": "workspace:*",
-    "eslint": "^9.14.0",
-    "eslint-plugin-vue": "^9.30.0"
+    "eslint": "^9.15.0",
+    "eslint-plugin-vue": "^9.31.0"
   },
   "eslintConfig": {
     "env": {

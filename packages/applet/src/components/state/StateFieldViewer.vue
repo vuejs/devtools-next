@@ -279,4 +279,13 @@ async function submitDrafting() {
     --at-apply: 'text-#aaa';
   }
 }
+
+// native error
+:deep(.native.Error-state-type) {
+  --at-apply: 'text-red-500';
+  &::before {
+    content: 'Error:';
+    margin-right: 4px;
+  }
+}
 </style>

@@ -140,7 +140,7 @@ export const functions = {
   getMatchedRoutes(path: string) {
     const c = console.warn
     console.warn = () => {}
-    const matched = devtoolsRouter.value?.resolve({
+    const matched = devtoolsRouter.value?.resolve?.({
       path: path || '/',
     }).matched ?? []
     console.warn = c

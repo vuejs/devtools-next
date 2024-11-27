@@ -177,6 +177,8 @@ function onInspectorStateUpdated(_data: string) {
     return
 
   const _state = data.state
+  if (!_state)
+    return
 
   // @ts-expect-error skip type check
   state.value = filterEmptyState({

@@ -1,7 +1,7 @@
 {
   "name": "@vue/devtools-firefox-extension",
   "type": "module",
-  "version": "7.6.4",
+  "version": "7.6.5",
   "private": true,
   "author": "webfansplz",
   "license": "MIT",

@@ -856,7 +856,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       vite:
-        specifier: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
+        specifier: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0-0
         version: 5.4.11(@types/node@22.10.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)
       vite-plugin-inspect:
         specifier: ^0.8.8

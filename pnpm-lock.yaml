@@ -579,8 +579,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0)
       vite-plugin-inspect:
-        specifier: ^0.10.1
-        version: 0.10.1(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
+        specifier: 0.8.8
+        version: 0.8.8(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
       vite-plugin-vue-devtools:
         specifier: workspace:*
         version: link:../../vite
@@ -643,8 +643,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0)
       vite-plugin-inspect:
-        specifier: ^0.10.1
-        version: 0.10.1(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
+        specifier: 0.8.8
+        version: 0.8.8(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
       vite-plugin-vue-devtools:
         specifier: workspace:*
         version: link:../../vite
@@ -686,8 +686,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0)
       vite-plugin-inspect:
-        specifier: ^0.10.1
-        version: 0.10.1(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
+        specifier: 0.8.8
+        version: 0.8.8(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0))
       vite-plugin-vue-devtools:
         specifier: workspace:*
         version: link:../../vite
@@ -859,8 +859,8 @@ importers:
         specifier: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0-0
         version: 5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)
       vite-plugin-inspect:
-        specifier: ^0.10.1
-        version: 0.10.1(rollup@4.24.4)(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0))
+        specifier: 0.8.8
+        version: 0.8.8(rollup@4.24.4)(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0))
       vite-plugin-vue-inspector:
         specifier: ^5.3.1
         version: 5.3.1(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0))
@@ -8985,12 +8985,12 @@ packages:
       vite:
         optional: true
 
-  vite-plugin-inspect@0.10.1:
-    resolution: {integrity: sha512-psgxZmE3qL5w/B9sgG+AEG06VhO/SDqf+Rd2Zztu5YdigIjBPdvA86z8yaLj5S/HXfYTk2Y3zu58QiwuLf/jqw==}
+  vite-plugin-inspect@0.8.8:
+    resolution: {integrity: sha512-aZlBuXsWUPJFmMK92GIv6lH7LrwG2POu4KJ+aEdcqnu92OAf+rhBnfMDQvxIJPEB7hE2t5EyY/PMgf5aDLT8EA==}
     engines: {node: '>=14'}
     peerDependencies:
       '@nuxt/kit': '*'
-      vite: ^6.0.0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0-0
     peerDependenciesMeta:
       '@nuxt/kit':
         optional: true
@@ -18566,7 +18566,7 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-inspect@0.10.1(rollup@4.24.4)(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)):
+  vite-plugin-inspect@0.8.8(rollup@4.24.4)(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.3(rollup@4.24.4)
@@ -18582,7 +18582,7 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-inspect@0.10.1(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0)):
+  vite-plugin-inspect@0.8.8(rollup@4.24.4)(vite@6.0.1(@types/node@22.10.1)(jiti@2.0.0)(sass-embedded@1.81.0)(sass@1.80.3)(terser@5.26.0)(tsx@4.19.2)(yaml@2.5.0)):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.3(rollup@4.24.4)

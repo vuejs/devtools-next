@@ -95,6 +95,15 @@ export default function VitePluginVueDevTools(options?: VitePluginVueDevToolsOpt
     server.middlewares.use(`${base}__devtools__`, sirv(DIR_CLIENT, {
       single: true,
       dev: true,
+      setHeaders(response) {
+        if (config.server.headers == null)
+          return
+        Object.entries(config.server.headers).forEach(([key, value]) => {
+          if (value == null)
+            return
+          response.setHeader(key, value)
+        })
+      },
     }))
 
     // vite client <-> server messaging

@@ -98,7 +98,7 @@ You can also use the global `vue-devtools` to start the app, but you might want 
 Then import it directly in your app:
 
 ```ts
-import { devtools } from '@vue/devtools'
+import { devtools } from '@vue/devtools-kit'
 ```
 
 And connect to host:

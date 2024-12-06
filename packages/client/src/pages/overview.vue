@@ -90,19 +90,19 @@ onUnmounted(() => {
         </RouterLink>
       </div>
       <div flex="~ gap-6 wrap" mt-5 items-center justify-center>
-        <a href="https://github.com/vuejs/devtools-next" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-blue" transition>
+        <a href="https://github.com/vuejs/devtools" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-blue" transition>
           <div i-carbon-star />
           Star on GitHub
         </a>
-        <a href="https://github.com/vuejs/devtools-next/discussions/111" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
+        <a href="https://github.com/vuejs/devtools/discussions/111" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-yellow" transition>
           <div i-carbon-data-enrichment />
           Ideas & Suggestions
         </a>
-        <a href="https://github.com/vuejs/devtools-next/discussions/112" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-lime" transition>
+        <a href="https://github.com/vuejs/devtools/discussions/112" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-lime" transition>
           <div i-carbon-plan />
           Project Roadmap
         </a>
-        <a href="https://github.com/vuejs/devtools-next/issues" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-rose" transition>
+        <a href="https://github.com/vuejs/devtools/issues" target="_blank" flex="~ gap1" items-center op50 hover="op100 text-rose" transition>
           <div i-carbon-debug />
           Bug Reports
         </a>

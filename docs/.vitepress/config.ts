@@ -27,7 +27,7 @@ const PLUGINS: DefaultTheme.NavItemWithLink[] = [
 ]
 
 // const VERSIONS: DefaultTheme.NavItemWithLink[] = [
-//   { text: `v${version} (current)`, link: 'https://github.com/vuejs/devtools-next/releases' },
+//   { text: `v${version} (current)`, link: 'https://github.com/vuejs/devtools/releases' },
 // ]
 
 // https://vitepress.dev/reference/site-config
@@ -117,7 +117,7 @@ export default defineConfig({
     ),
 
     editLink: {
-      pattern: 'https://github.com/vuejs/devtools-next/edit/main/docs/:path',
+      pattern: 'https://github.com/vuejs/devtools/edit/main/docs/:path',
       text: 'Suggest changes to this page',
     },
     search: {
@@ -125,7 +125,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/devtools-next' },
+      { icon: 'github', link: 'https://github.com/vuejs/devtools' },
     ],
 
     footer: {

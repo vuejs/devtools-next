@@ -20,6 +20,12 @@ Components tab shows your components information, including the node tree, state
 
 ![components](/features/components.png)
 
+## Timeline
+
+Timeline tab shows the performance of your app, including the time spent on rendering, updating, and so on.
+
+![timeline](/features/timeline.png)
+
 ## Assets（Vite only）
 
 Assets tab shows your files from the project directory, you can see the information of selected file with some helpful actions.

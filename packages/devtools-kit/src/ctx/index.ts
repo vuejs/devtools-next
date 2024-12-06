@@ -14,6 +14,7 @@ export * from './inspector'
 export * from './plugin'
 export * from './router'
 export * from './state'
+export { updateTimelineLayersState } from './timeline'
 
 export interface DevtoolsContext {
   hooks: Hookable<DevToolsContextHooks & DevToolsMessagingHooks, HookKeys<DevToolsContextHooks & DevToolsMessagingHooks>>

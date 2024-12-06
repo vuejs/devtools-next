@@ -1,13 +1,13 @@
 {
   "name": "@vue/devtools-applet",
   "type": "module",
-  "version": "7.4.6",
+  "version": "7.6.7",
   "author": "webfansplz",
   "license": "MIT",
   "repository": {
     "directory": "packages/applet",
     "type": "git",
-    "url": "git+https://github.com/vuejs/devtools-next.git"
+    "url": "git+https://github.com/vuejs/devtools.git"
   },
   "exports": {
     ".": {
@@ -35,15 +35,15 @@
     "@vue/devtools-ui": "workspace:^",
     "lodash-es": "^4.17.21",
     "perfect-debounce": "^1.0.0",
-    "shiki": "^1.22.0",
+    "shiki": "^1.24.0",
     "splitpanes": "^3.1.5",
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
-    "unplugin-vue": "^5.1.5",
-    "vite-plugin-dts": "^3.9.1",
-    "vue": "^3.5.11",
-    "vue-router": "^4.4.5"
+    "unplugin-vue": "^5.2.1",
+    "vite-plugin-dts": "^4.3.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   }
 }

@@ -1,5 +1,5 @@
 import type { DevToolsV6PluginAPIHookKeys, DevToolsV6PluginAPIHookPayloads, OpenInEditorOptions } from '@vue/devtools-kit'
-import { devtools, DevToolsContextHookKeys, DevToolsMessagingHookKeys, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpcClient, getRpcServer, stringify, toggleClientConnected, updateDevToolsClientDetected } from '@vue/devtools-kit'
+import { devtools, DevToolsContextHookKeys, DevToolsMessagingHookKeys, devtoolsRouter, devtoolsRouterInfo, getActiveInspectors, getInspector, getInspectorActions, getInspectorInfo, getInspectorNodeActions, getRpcClient, getRpcServer, stringify, toggleClientConnected, updateDevToolsClientDetected, updateTimelineLayersState } from '@vue/devtools-kit'
 import { createHooks } from 'hookable'
 
 const hooks = createHooks()
@@ -32,6 +32,7 @@ function getDevToolsState() {
       routerId: item.routerId,
     })),
     activeAppRecordId: state.activeAppRecordId,
+    timelineLayersState: state.timelineLayersState,
   }
 }
 
@@ -93,6 +94,9 @@ export const functions = {
   getInspectorActions(id: string) {
     return getInspectorActions(id)
   },
+  updateTimelineLayersState(state: Record<string, boolean>) {
+    return updateTimelineLayersState(state)
+  },
   callInspectorNodeAction(inspectorId: string, actionIndex: number, nodeId: string) {
     const nodeActions = getInspectorNodeActions(inspectorId)
     if (nodeActions?.length) {
@@ -136,7 +140,7 @@ export const functions = {
   getMatchedRoutes(path: string) {
     const c = console.warn
     console.warn = () => {}
-    const matched = devtoolsRouter.value?.resolve({
+    const matched = devtoolsRouter.value?.resolve?.({
       path: path || '/',
     }).matched ?? []
     console.warn = c
@@ -151,8 +155,11 @@ export const functions = {
   getInspectorInfo(id: string) {
     return getInspectorInfo(id)
   },
+  highlighComponent(uid: string) {
+    return devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_HIGHLIGHT, { uid })
+  },
   unhighlight() {
-    devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
+    return devtools.ctx.hooks.callHook(DevToolsContextHookKeys.COMPONENT_UNHIGHLIGHT)
   },
   updateDevToolsClientDetected(params: Record<string, boolean>) {
     updateDevToolsClientDetected(params)

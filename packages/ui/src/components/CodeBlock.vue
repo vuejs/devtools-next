@@ -68,6 +68,10 @@ const rendered = computed(() => {
         }
       }
     }
+    span {
+      --at-apply: '$ui-bg-base!';
+    }
+    --at-apply: '$ui-bg-base!';
   }
   pre {
     &:focus-visible {

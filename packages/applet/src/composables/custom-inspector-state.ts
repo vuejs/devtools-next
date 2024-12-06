@@ -8,6 +8,8 @@ type CustomInspectorState = Partial<{
   label: string
   logo: string
   timelineLayerIds: string[]
+  treeFilterPlaceholder: string
+  stateFilterPlaceholder: string
 }>
 
 const VueDevToolsStateSymbol: InjectionKey<Ref<CustomInspectorState>> = Symbol.for('VueDevToolsCustomInspectorStateSymbol')

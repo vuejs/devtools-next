@@ -21,6 +21,9 @@ const on: VueHooks['on'] = {
   componentAdded(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_ADDED, fn)
   },
+  componentEmit(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.COMPONENT_EMIT, fn)
+  },
   componentUpdated(fn) {
     return devtoolsHooks.hook(DevToolsHooks.COMPONENT_UPDATED, fn)
   },
@@ -29,6 +32,12 @@ const on: VueHooks['on'] = {
   },
   setupDevtoolsPlugin(fn) {
     devtoolsHooks.hook(DevToolsHooks.SETUP_DEVTOOLS_PLUGIN, fn)
+  },
+  perfStart(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.PERFORMANCE_START, fn)
+  },
+  perfEnd(fn) {
+    return devtoolsHooks.hook(DevToolsHooks.PERFORMANCE_END, fn)
   },
 }
 
@@ -72,14 +81,13 @@ export function createDevToolsHook(): DevToolsHook {
   }
 }
 
-export function subscribeDevToolsHook() {
-  const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__ as DevToolsHook
+export function subscribeDevToolsHook(hook: DevToolsHook) {
   // app init hook
-  hook.on<DevToolsEvent[DevToolsHooks.APP_INIT]>(DevToolsHooks.APP_INIT, (app, version) => {
+  hook.on<DevToolsEvent[DevToolsHooks.APP_INIT]>(DevToolsHooks.APP_INIT, (app, version, types) => {
     if (app?._instance?.type?.devtools?.hide)
       return
 
-    devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version)
+    devtoolsHooks.callHook(DevToolsHooks.APP_INIT, app, version, types)
   })
 
   hook.on<DevToolsEvent[DevToolsHooks.APP_UNMOUNT]>(DevToolsHooks.APP_UNMOUNT, (app) => {
@@ -111,6 +119,24 @@ export function subscribeDevToolsHook() {
       return
 
     devtoolsHooks.callHook(DevToolsHooks.COMPONENT_REMOVED, app, uid, parentUid, component)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.COMPONENT_EMIT]>(DevToolsHooks.COMPONENT_EMIT, async (app, instance, event, params) => {
+    if (!app || !instance || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.COMPONENT_EMIT, app, instance, event, params)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.PERFORMANCE_START]>(DevToolsHooks.PERFORMANCE_START, (app, uid, vm, type, time) => {
+    if (!app || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.PERFORMANCE_START, app, uid, vm, type, time)
+  })
+
+  hook.on<DevToolsEvent[DevToolsHooks.PERFORMANCE_END]>(DevToolsHooks.PERFORMANCE_END, (app, uid, vm, type, time) => {
+    if (!app || devtoolsState.highPerfModeEnabled)
+      return
+    devtoolsHooks.callHook(DevToolsHooks.PERFORMANCE_END, app, uid, vm, type, time)
   })
 
   // devtools plugin setup

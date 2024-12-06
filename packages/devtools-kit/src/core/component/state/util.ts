@@ -72,11 +72,21 @@ export function sanitize(data: unknown) {
 }
 
 export function getSetupStateType(raw) {
-  return {
-    ref: isRef(raw),
-    computed: isComputed(raw),
-    reactive: isReactive(raw),
-    readonly: isReadOnly(raw),
+  try {
+    return {
+      ref: isRef(raw),
+      computed: isComputed(raw),
+      reactive: isReactive(raw),
+      readonly: isReadOnly(raw),
+    }
+  }
+  catch {
+    return {
+      ref: false,
+      computed: false,
+      reactive: false,
+      readonly: false,
+    }
   }
 }
 

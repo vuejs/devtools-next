@@ -1,5 +1,5 @@
-import { deepClone, isInChromePanel, isInElectron } from '@vue/devtools-shared'
 import type { ModuleBuiltinTab } from '~/types'
+import { deepClone, isInChromePanel, isInElectron } from '@vue/devtools-shared'
 
 // @unocss-include
 export const builtinTab: [string, ModuleBuiltinTab[]][] = [

@@ -12,7 +12,6 @@ import Components from '~/pages/components.vue'
 import CustomInspectorTabView from '~/pages/custom-inspector-tab-view.vue'
 import CustomTabView from '~/pages/custom-tab-view.vue'
 import Graph from '~/pages/graph.vue'
-import Index from '~/pages/index.vue'
 import Overview from '~/pages/overview.vue'
 import Pages from '~/pages/pages.vue'
 import PiniaPage from '~/pages/pinia.vue'
@@ -27,7 +26,7 @@ import '@vue/devtools-ui/style.css'
 import '~/assets/styles/main.css'
 
 const routes = [
-  { path: '/', component: Index },
+  { path: '/', redirect: '/overview' },
   { path: '/overview', component: Overview },
   { path: '/components', component: Components },
   { path: '/pinia', component: PiniaPage },

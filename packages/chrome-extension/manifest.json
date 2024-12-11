@@ -50,8 +50,8 @@
   "permissions": [
     "scripting"
   ],
-  "version": "7.6.5",
-  "version_name": "7.6.5",
+  "version": "7.6.8",
+  "version_name": "7.6.8",
   "web_accessible_resources": [
     {
       "extension_ids": [],

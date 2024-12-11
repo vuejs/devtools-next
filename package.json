@@ -3,7 +3,7 @@
   "type": "module",
   "version": "7.3.2",
   "private": true,
-  "packageManager": "pnpm@9.14.2",
+  "packageManager": "pnpm@9.15.0",
   "description": "DevTools for Vue.js",
   "author": "webfansplz",
   "license": "MIT",

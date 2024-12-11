@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
-import { computed, nextTick } from 'vue'
-import { useDevToolsColorMode } from '../composables'
+import { useDark, useToggle } from '@vueuse/core'
+import { nextTick } from 'vue'
 
 const props = withDefaults(defineProps<{
   isDark?: boolean
@@ -13,19 +12,8 @@ const props = withDefaults(defineProps<{
   animationDuration: 400,
 })
 
-const isDarkModel = useVModel(props, 'isDark')
-
-const { colorMode: mode } = useDevToolsColorMode({
-  initialValue: isDarkModel.value ? 'dark' : 'light',
-  onChanged: (value) => {
-    isDarkModel.value = value === 'dark'
-  },
-})
-
-const isDark = computed({
-  get: () => mode.value === 'dark',
-  set: v => mode.value = v ? 'dark' : 'light',
-})
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 
 const isAppearanceTransition = !!document.startViewTransition
   && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -35,7 +23,7 @@ const isAppearanceTransition = !!document.startViewTransition
  */
 function toggle(event?: MouseEvent) {
   if (!isAppearanceTransition || !event || !props.animation) {
-    isDark.value = !isDark.value
+    toggleDark()
     return
   }
   const x = event.clientX
@@ -44,10 +32,12 @@ function toggle(event?: MouseEvent) {
     Math.max(x, innerWidth - x),
     Math.max(y, innerHeight - y),
   )
+
   const transition = document.startViewTransition(async () => {
     isDark.value = !isDark.value
     await nextTick()
   })
+
   transition.ready.then(() => {
     const clipPath = [
       `circle(0px at ${x}px ${y}px)`,
@@ -73,6 +63,6 @@ function toggle(event?: MouseEvent) {
 
 <template>
   <span class="$ui-dark-toggle-vtr">
-    <slot v-bind="{ mode, isDark, toggle }" />
+    <slot v-bind="{ isDark, toggle }" />
   </span>
 </template>

@@ -53,12 +53,12 @@
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
     "@iconify-json/ic": "^1.2.1",
-    "@types/node": "^22.10.1",
-    "@unocss/reset": "^0.64.1",
+    "@types/node": "^22.10.2",
+    "@unocss/reset": "^0.65.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "floating-vue": "5.2.2",
     "histoire": "^0.17.17",
-    "unocss": "^0.64.1",
+    "unocss": "^0.65.1",
     "vite-plugin-dts": "^4.3.0"
   }
 }

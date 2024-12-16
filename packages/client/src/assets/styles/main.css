@@ -8,6 +8,12 @@ html {
   scrollbar-width: none; /* Firefox */
 }
 
+html.reduce-motion,
+html.reduce-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+
 html.dark {
   color-scheme: dark;
 }

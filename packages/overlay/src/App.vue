@@ -103,6 +103,7 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
       'vue-devtools__anchor--vertical': isVertical,
       'vue-devtools__anchor--hide': isHidden,
       'fullscreen': panelState.viewMode === 'fullscreen',
+      'reduce-motion': state.reduceMotion,
     }" @mousemove="bringUp"
   >
     <div
@@ -161,6 +162,15 @@ const { iframe, getIframe } = useIframe(clientUrl, async () => {
     z-index: 2147483645;
     transform-origin: center center;
     transform: translate(-50%, -50%) rotate(0);
+
+    &.reduce-motion {
+      transition: none !important;
+      animation: none !important;
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
 
     &.fullscreen {
       transform: none !important;

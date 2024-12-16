@@ -32,6 +32,7 @@ onRpcSeverReady(() => {
         minimizePanelInactive: v.minimizePanelInteractive,
         closeOnOutsideClick: v.closeOnOutsideClick,
         preferShowFloatingPanel: v.showFloatingPanel,
+        reduceMotion: v.reduceMotion,
       })
     }
   })

@@ -239,21 +239,30 @@ async function toggleApp(id: string) {
 }
 // #endregion
 
-function inspectComponentInspector() {
+async function inspectComponentInspector() {
   inspectComponentTipVisible.value = true
   emit('onInspectComponentStart')
-  rpc.value.inspectComponentInspector().then((_data) => {
-    const data = JSON.parse(_data! as unknown as string)
+
+  try {
+    const data = JSON.parse(await rpc.value.inspectComponentInspector())
+
+    const appId = data.id.split(':')[0]
+    if (activeAppRecordId.value !== data.appId) {
+      await toggleApp(appId)
+    }
+
     activeComponentId.value = data.id
-    if (!expandedTreeNodes.value.includes(data.id))
+    if (!expandedTreeNodes.value.includes(data.id)) {
       expandedTreeNodes.value.push(data.id)
+    }
 
     expandedTreeNodes.value = [...new Set([...expandedTreeNodes.value, ...getTargetLinkedNodes(treeNodeLinkedList.value, data.id)])]
     scrollToActiveTreeNode()
-  }).finally(() => {
+  }
+  finally {
     inspectComponentTipVisible.value = false
     emit('onInspectComponentEnd')
-  })
+  }
 }
 
 function cancelInspectComponentInspector() {

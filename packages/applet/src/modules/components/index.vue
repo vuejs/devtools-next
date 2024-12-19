@@ -215,6 +215,30 @@ onUnmounted(() => {
   rpc.functions.off(DevToolsMessagingEvents.INSPECTOR_TREE_UPDATED, onInspectorTreeUpdated)
 })
 
+// #region toggle app
+const devtoolsState = useDevToolsState()
+const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
+  label: app.name + (app.version ? ` (${app.version})` : ''),
+  value: app.id,
+})))
+
+const normalizedAppRecords = computed(() => appRecords.value.map(app => ({
+  label: app.label,
+  id: app.value,
+})))
+
+const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
+watchEffect(() => {
+  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
+})
+
+async function toggleApp(id: string) {
+  await rpc.value.toggleApp(id)
+  activeComponentId.value = ''
+  await getComponentsInspectorTree()
+}
+// #endregion
+
 function inspectComponentInspector() {
   inspectComponentTipVisible.value = true
   emit('onInspectComponentStart')
@@ -280,32 +304,6 @@ function closeComponentRenderCode() {
   componentRenderCode.value = ''
   componentRenderCodeVisible.value = false
 }
-
-// #region toggle app
-const devtoolsState = useDevToolsState()
-const appRecords = computed(() => devtoolsState.appRecords.value.map(app => ({
-  label: app.name + (app.version ? ` (${app.version})` : ''),
-  value: app.id,
-})))
-
-const normalizedAppRecords = computed(() => appRecords.value.map(app => ({
-  label: app.label,
-  id: app.value,
-})))
-
-const activeAppRecordId = ref(devtoolsState.activeAppRecordId.value)
-watchEffect(() => {
-  activeAppRecordId.value = devtoolsState.activeAppRecordId.value
-})
-
-function toggleApp(id: string) {
-  rpc.value.toggleApp(id).then(() => {
-    activeComponentId.value = ''
-    getComponentsInspectorTree()
-  })
-}
-
-// #endregion
 </script>
 
 <template>

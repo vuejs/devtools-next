@@ -30,6 +30,7 @@ onRpcConnected(() => {
       minimizePanelInteractive: devtoolsClientState.value.minimizePanelInteractive,
       closeOnOutsideClick: devtoolsClientState.value.interactionCloseOnOutsideClick,
       showFloatingPanel: devtoolsClientState.value.showPanel,
+      reduceMotion: devtoolsClientState.value.reduceMotion,
     })
   })
 })
@@ -125,6 +126,11 @@ function toggleDevToolsClientVisible(params: { visible: boolean, host: string })
     [host]: visible,
   })
 }
+
+watchEffect(() => {
+  const html = document.documentElement
+  html.classList.toggle('reduce-motion', devtoolsClientState.value.reduceMotion)
+})
 </script>
 
 <template>
